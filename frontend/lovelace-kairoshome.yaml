@@ -1,11 +1,17 @@
 kiosk_mode:
-  hide_header: true
+  hide_header: false
   hide_sidebar: true
+  hide_menubutton: true
+  hide_overflow: true
   user_settings:
     - users:
         - kairoshub
+        - utente
         - user
+      hide_header: false
       hide_sidebar: true
+      hide_menubutton: true
+      hide_overflow: true
 
 button_card_templates: !include hakairos-configuration/frontend/components/button_card_templates.yaml
 

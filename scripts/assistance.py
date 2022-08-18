@@ -1,13 +1,15 @@
-import os
+import os, time
 import paho.mqtt.client as paho
 from subprocess import check_output
 
 TOPIC_COMMAND               = "kairostech/command"
 TOPIC_STATE                 = "kairostech/state"
+TOPIC_STATE_DETAIL          = "kairostech/state/detail"
 TOPIC_VPN_PROCESS           = "kairostech/state/vpn_process"
 
 ASSISTANCE_START_COMMAND    = "ASSISTANCE_START"
 ASSISTANCE_STOP_COMMAND     = "ASSISTANCE_STOP"
+KAIROSHUB_RELEASE_COMMAND   = "KAIROSHUB_RELEASE_CHECK"
 
 global vpn_pid
 
@@ -22,6 +24,7 @@ def on_message(client, userdata, msg):
             vpn_pid = check_output(["pidof","openvpn"])
             client.publish(TOPIC_VPN_PROCESS, vpn_pid, qos=1, retain=True)
             client.publish(TOPIC_STATE, "MAINTENEANCE", qos=1, retain=True)
+            client.publish(TOPIC_STATE_DETAIL, "MAINTENEANCE REQUESTED", qos=1, retain=True)
 
             return
 
@@ -31,9 +34,22 @@ def on_message(client, userdata, msg):
             os.system("sudo kill "+vpn_pid.decode("utf-8"))
             client.publish(TOPIC_STATE, "NORMAL", qos=1, retain=True)
             client.publish(TOPIC_VPN_PROCESS, "", qos=1, retain=True)
+            client.publish(TOPIC_STATE_DETAIL, "", qos=1, retain=True)
 
             return 
 
+        #RELEASE CHECK COMMAND
+        if payload == KAIROSHUB_RELEASE_COMMAND:
+            client.publish(TOPIC_STATE, "MAINTENEANCE", qos=1, retain=True)
+            client.publish(TOPIC_STATE_DETAIL, "CHECKING FOR A NEW RELEASE OF HAKAIROS CONFIGURATION", qos=1, retain=True)
+            os.system("sh /home/pi/workspace/hakairos-configuration/scripts/os/release_hakairos-configuration.sh")
+            time.sleep(30)
+            client.publish(TOPIC_STATE_DETAIL, "CHECKING FOR A NEW RELEASE OF KAIROSHUB", qos=1, retain=True)
+            os.system("sh /home/pi/workspace/hakairos-configuration/scripts/os/release_kairoshub.sh")
+            time.sleep(30)
+            client.publish(TOPIC_STATE, "NORMAL", qos=1, retain=True)
+            client.publish(TOPIC_STATE_DETAIL, "CHECKING FOR A NEW SOFTWARE RELEASE COMPLETE", qos=1, retain=True)
+            return
 
 def on_publish(client, userdata, mid):
     print("mid: "+str(mid))
