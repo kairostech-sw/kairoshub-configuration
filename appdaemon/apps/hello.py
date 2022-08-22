@@ -14,3 +14,4 @@ class HelloWorld(hass.Hass):
     def ha_event(self, event_name, data, kwargs):    
         self.log("Hello from AppDaemon")
         self.log("You are now ready to run Apps!")
+        

@@ -139,3 +139,4 @@ cython_debug/
 
 #logs
 logs/
+appdaemon/appdaemon.yaml
