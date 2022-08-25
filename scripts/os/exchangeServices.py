@@ -1,13 +1,15 @@
-import os
+import os, time
 import paho.mqtt.client as paho
 from subprocess import check_output
 
 TOPIC_COMMAND               = "kairostech/command"
 TOPIC_STATE                 = "kairostech/state"
+TOPIC_STATE_DETAIL          = "kairostech/state/detail"
 TOPIC_VPN_PROCESS           = "kairostech/state/vpn_process"
 
 ASSISTANCE_START_COMMAND    = "ASSISTANCE_START"
 ASSISTANCE_STOP_COMMAND     = "ASSISTANCE_STOP"
+KAIROSHUB_RELEASE_COMMAND   = "KAIROSHUB_RELEASE_CHECK"
 
 global vpn_pid
 
@@ -34,6 +36,19 @@ def on_message(client, userdata, msg):
 
             return 
         
+        #RELEASE CHECK COMMAND
+        if payload == KAIROSHUB_RELEASE_COMMAND:
+            client.publish(TOPIC_STATE, "MAINTENEANCE", qos=1, retain=True)
+            client.publish(TOPIC_STATE_DETAIL, "CHECKING FOR A NEW RELEASE OF HAKAIROS CONFIGURATION", qos=1, retain=True)
+            os.system("sh /home/pi/workspace/hakairos-configuration/scripts/os/release_hakairos-configuration.sh")
+            time.sleep(30)
+            client.publish(TOPIC_STATE_DETAIL, "CHECKING FOR A NEW RELEASE OF KAIROSHUB", qos=1, retain=True)
+            os.system("sh /home/pi/workspace/hakairos-configuration/scripts/os/release_kairoshub.sh")
+            time.sleep(30)
+            client.publish(TOPIC_STATE, "NORMAL", qos=1, retain=True)
+            client.publish(TOPIC_STATE_DETAIL, "CHECKING FOR A NEW SOFTWARE RELEASE COMPLETE", qos=1, retain=True)
+            return
+
         if "SET_CONSUMER_TOPIC_" in payload: 
             systemCode : str = payload[-6:]
             if "00" in systemCode:
