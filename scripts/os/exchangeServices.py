@@ -40,10 +40,10 @@ def on_message(client, userdata, msg):
         if payload == KAIROSHUB_RELEASE_COMMAND:
             client.publish(TOPIC_STATE, "MAINTENEANCE", qos=1, retain=True)
             client.publish(TOPIC_STATE_DETAIL, "CHECKING FOR A NEW RELEASE OF HAKAIROS CONFIGURATION", qos=1, retain=True)
-            os.system("sh /home/pi/workspace/hakairos-configuration/scripts/os/release_hakairos-configuration.sh")
+            os.system("sh /home/pi/workspace/scripts/release_hakairos-configuration.sh")
             time.sleep(30)
             client.publish(TOPIC_STATE_DETAIL, "CHECKING FOR A NEW RELEASE OF KAIROSHUB", qos=1, retain=True)
-            os.system("sh /home/pi/workspace/hakairos-configuration/scripts/os/release_kairoshub.sh")
+            os.system("sh /home/pi/workspace/scripts/release_kairoshub.sh")
             time.sleep(30)
             client.publish(TOPIC_STATE, "NORMAL", qos=1, retain=True)
             client.publish(TOPIC_STATE_DETAIL, "CHECKING FOR A NEW SOFTWARE RELEASE COMPLETE", qos=1, retain=True)
