@@ -5,6 +5,16 @@
   action:
     - delay: 00:00:30
     - event: HA_STARTUP_COMPLETE
+- alias: KAFKA CONSUMER SET
+  trigger: 
+    platform: state
+    entity_id: input_text.system_code
+    for: "00:00:15"
+  action: 
+    - service: mqtt.publish
+      data_template: 
+        topic: 'kairostech/command'
+        payload: "SET_CONSUMER_TOPIC_{{ states('input_text.system_code') }}"
 - alias: RUN Entity metrics collect
   trigger:
     platform: time_pattern
