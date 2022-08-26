@@ -17,9 +17,9 @@ state   = sys.argv[1]
 detail  = sys.argv[2]
 
 if state == "ON":
-    publish.single(TOPIC_COMMAND, ASSISTANCE_START_COMMAND, hostname="localhost", port=1884, auth=auth_data, retain=True)
+    publish.single(TOPIC_COMMAND, ASSISTANCE_START_COMMAND, hostname="localhost", port=1884, auth=auth_data, retain=False)
 else:
-    publish.single(TOPIC_COMMAND, ASSISTANCE_STOP_COMMAND, hostname="localhost", port=1884, auth=auth_data, retain=True)   
+    publish.single(TOPIC_COMMAND, ASSISTANCE_STOP_COMMAND, hostname="localhost", port=1884, auth=auth_data, retain=False)
 
 if detail:
     publish.single(TOPIC_STATE_DETAIL, detail, hostname="localhost", port=1884, auth=auth_data, retain=True)
