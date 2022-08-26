@@ -11,6 +11,6 @@ appdaemon:
     HASS:
       type: hass
       ha_url: http://kairoshub:8123
-      token: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJiMTI5MTVkNDk0MjU0YjIwYmY5YjA3MTM1N2ZiNTQxYSIsImlhdCI6MTY1NTEzOTExOCwiZXhwIjoxOTcwNDk5MTE4fQ.jwNauNOotFjLGeqP4Osmb-B2xgHJCZHwGCKP8uG4HFk
+      token: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiIzM2NiMGNhZmJjZDA0ZDYzYmVhZTJkZjgyYmI2OWJjNSIsImlhdCI6MTY1NjM0ODU0OCwiZXhwIjoxOTcxNzA4NTQ4fQ.ioU9oF4m6YVZdUNv4ikzBW1wO8TDcWKDtajGsrAxcng
  # python_packages:
  #   - lxml
