@@ -1,3 +1,4 @@
+from inspect import Attribute
 import hassapi as hass
 
 KAIROSHUB_STATE_ENTITY              = "sensor.system_state"
@@ -26,6 +27,7 @@ class HelloWorld(hass.Hass):
         khSwLastCheck   = self.get_state(KAIROSHUB_SW_LAST_CHECK)
         khConfSwLastCheck   = self.get_state(KAIROSHUB_CONFIGURATION_SW_LAST_CHECK)
         khConfSwVersion     = self.get_state(KAIROSHUB_CONFIGURATION_SW_VERSION)
+        assistanceAttributes = self.get_state("input_boolean.assistance_request",attribute="all").get("attributes",{})
 
         hassState["state"] = state
         hassState["stateDetail"] = stateDetail
@@ -34,6 +36,13 @@ class HelloWorld(hass.Hass):
         hassState["kairoshub_configuration_version"] = khConfSwVersion
         hassState["kairoshub_configuration_last_software_check"] = khConfSwLastCheck 
 
+        if state=="MAINTENEANCE":
+            self.set_state("input_boolean.assistance_request",state='on', attributes=assistanceAttributes)
+            self.log("Restoring Assistance Button state. state: on",level="INFO")
+        else:
+            self.set_state("input_boolean.assistance_request",state='off', attributes=assistanceAttributes)
+            self.log("Restoring Assistance Button state. state: off",level="INFO")
+        
         self.log("Retrieved global state for the application. state: %s", hassState, level="INFO")
 
         eventData = {
