@@ -1,10 +1,13 @@
 - alias: Hassio start routine
   trigger:
-    event: start
-    platform: homeassistant
+    - event: start
+      platform: homeassistant
+    - platform: event
+      event_type: "test" 
   action:
     - delay: 00:00:30
     - event: HA_STARTUP_COMPLETE
+    - event: AD_KAIROSHUB_STARTED
 - alias: KAFKA CONSUMER SET
   trigger: 
     platform: state

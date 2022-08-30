@@ -8,7 +8,6 @@ events:
     callback:
       - event: HAKAFKA_CONSUMER_START
       - event: HAKAFKA_PRODUCER_START
-      - event: AD_KAIROSHUB_STARTED
   - event: HA_SHUTDOWN_REQUEST
     platform: HASSIO_EVENT
     type: listener
