@@ -2,8 +2,6 @@
   trigger:
     - event: start
       platform: homeassistant
-    - platform: event
-      event_type: "test" 
   action:
     - delay: 00:00:10
     - event: HA_SET_CONSUMER_TOPIC
