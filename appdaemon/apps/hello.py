@@ -1,3 +1,4 @@
+from inspect import Attribute
 import hassapi as hass
 
 KAIROSHUB_STATE_ENTITY              = "sensor.system_state"
@@ -6,6 +7,7 @@ KAIROSHUB_SW_VERSION                = "sensor.kairoshub_sw_version"
 KAIROSHUB_SW_LAST_CHECK             = "sensor.kairoshub_sw_last_check"
 KAIROSHUB_CONFIGURATION_SW_VERSION   = "sensor.hakairos_configuration_sw_version"
 KAIROSHUB_CONFIGURATION_SW_LAST_CHECK= "sensor.hakairos_configuration_sw_last_check"
+KAIROSHUB_SYSTEM_OWNER               = "input_text.system_name"
 
 class HelloWorld(hass.Hass):
     def initialize(self):
@@ -26,14 +28,25 @@ class HelloWorld(hass.Hass):
         khSwLastCheck   = self.get_state(KAIROSHUB_SW_LAST_CHECK)
         khConfSwLastCheck   = self.get_state(KAIROSHUB_CONFIGURATION_SW_LAST_CHECK)
         khConfSwVersion     = self.get_state(KAIROSHUB_CONFIGURATION_SW_VERSION)
+        systemOwner         = self.get_state(KAIROSHUB_SYSTEM_OWNER)
+        assistanceAttributes = self.get_state("input_boolean.assistance_request",attribute="all").get("attributes",{})
 
         hassState["state"] = state
         hassState["stateDetail"] = stateDetail
         hassState["kairoshub_version"] = khSwVersion
         hassState["kairoshub_last_software_check"] = khSwLastCheck
         hassState["kairoshub_configuration_version"] = khConfSwVersion
-        hassState["kairoshub_configuration_last_software_check"] = khConfSwLastCheck 
+        hassState["kairoshub_configuration_last_software_check"] = khConfSwLastCheck
+        hassState["system_owner"] = systemOwner
+        hassState["system_id"] = systemCode   
 
+        if state=="MAINTENEANCE":
+            self.set_state("input_boolean.assistance_request",state='on', attributes=assistanceAttributes)
+            self.log("Restoring Assistance Button state. state: on",level="INFO")
+        else:
+            self.set_state("input_boolean.assistance_request",state='off', attributes=assistanceAttributes)
+            self.log("Restoring Assistance Button state. state: off",level="INFO")
+        
         self.log("Retrieved global state for the application. state: %s", hassState, level="INFO")
 
         eventData = {
