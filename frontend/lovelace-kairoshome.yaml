@@ -107,3 +107,10 @@ views:
       - type: vertical-stack
         cards:
           - !include hakairos-configuration/frontend/panels/clima/p1-7.yaml
+  - path: notification
+    panel: true
+    visible: false
+    cards:
+      - type: vertical-stack
+        cards:
+          - !include hakairos-configuration/frontend/panels/notification.yaml
