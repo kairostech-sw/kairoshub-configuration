@@ -1,4 +1,3 @@
-from inspect import Attribute
 import hassapi as hass
 
 KAIROSHUB_STATE_ENTITY              = "sensor.system_state"

@@ -4,3 +4,6 @@ hello_world:
 heating_manager:
   module: heatingManager
   class: HeatingManager
+system_metrics:
+  module: systemMetrics
+  class: systemMetrics
