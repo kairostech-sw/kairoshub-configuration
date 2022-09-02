@@ -35,11 +35,11 @@
       event_data:
         payload: "{{ trigger.payload }}"
 - alias: SYSTEM METRICS
-    trigger:
-      platform: time_pattern
-      minutes: "/30"
-    action:
-      - event: AD_SYSTEM_METRICS
+  trigger:
+    platform: time_pattern
+    minutes: "/30"
+  action:
+    - event: AD_SYSTEM_METRICS
 - alias: HA system metrics collection
   trigger: 
     platform: mqtt
