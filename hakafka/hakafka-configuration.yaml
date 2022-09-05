@@ -28,6 +28,10 @@ producers:
     port: 9093
     topic: "HASSIO_SYSTEM_METRICS"
     security: "ssl"
+  - host: quattrostagioni.linkedsolutions.it
+    port: 9093
+    topic: "HASSIO_SETTINGS"
+    security: "ssl"
 consumers:
   - host: quattrostagioni.linkedsolutions.it
     port: 9093

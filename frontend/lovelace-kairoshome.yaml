@@ -42,6 +42,13 @@ views:
       - type: vertical-stack
         cards:
           - !include hakairos-configuration/frontend/panels/clima.yaml
+  - title: IMPOSTAZIONI
+    path: impostazioni
+    panel: true
+    cards:
+      - type: vertical-stack
+        cards:
+          - !include hakairos-configuration/frontend/panels/settings.yaml
   - title: ASSISTENZA
     icon: 
     path: assistenza
@@ -114,3 +121,10 @@ views:
       - type: vertical-stack
         cards:
           - !include hakairos-configuration/frontend/panels/notification.yaml
+  - path: impostazioni-tapparelle
+    panel: true
+    visible: false
+    cards:
+      - type: vertical-stack
+        cards:
+          - !include hakairos-configuration/frontend/panels/settings/tapparelle.yaml

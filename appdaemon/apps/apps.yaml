@@ -6,4 +6,7 @@ heating_manager:
   class: HeatingManager
 system_metrics:
   module: systemMetrics
-  class: systemMetrics
+  class: SystemMetrics
+user_settings:
+  module: userSettings
+  class: UserSettings

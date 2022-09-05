@@ -1102,6 +1102,14 @@ button_return_to_program1:
   tap_action:
     action: navigate
     navigation_path: /lovelace-kairoshub/clima-p1
+
+button_return_to_preferenze:
+  type: 'custom:button-card'
+  template: header_button_menu
+  name: Indietro
+  tap_action:
+    action: navigate
+    navigation_path: /lovelace-kairoshub/preferenze
     
 ####################
 # CLIMA

@@ -57,4 +57,5 @@ class HelloWorld(hass.Hass):
         }
        
         self.fire_event("HAKAFKA_PRODUCER_PRODUCE", topic="HASSIO", message=eventData)
+        self.fire_event("AD_SETTINGS_RESTORE")
         
