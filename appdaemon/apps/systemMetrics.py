@@ -1,6 +1,6 @@
 import hassapi as hass
 
-class systemMetrics(hass.Hass):
+class SystemMetrics(hass.Hass):
 
     def initialize(self):
         self.listen_event(self.ha_event,"AD_SYSTEM_METRICS")
