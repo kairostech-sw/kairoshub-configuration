@@ -65,6 +65,30 @@ views:
       - type: vertical-stack
         cards:
           - !include hakairos-configuration/frontend/panels/clima/p1.yaml
+  - title: Programma 2
+    path: clima-p2
+    panel: true
+    visible: false
+    cards:
+      - type: vertical-stack
+        cards:
+          - !include hakairos-configuration/frontend/panels/clima/p2.yaml
+  - title: Programma 3
+    path: clima-p3
+    panel: true
+    visible: false
+    cards:
+      - type: vertical-stack
+        cards:
+          - !include hakairos-configuration/frontend/panels/clima/p3.yaml
+  - title: Programma 4
+    path: clima-p4
+    panel: true
+    visible: false
+    cards:
+      - type: vertical-stack
+        cards:
+          - !include hakairos-configuration/frontend/panels/clima/p4.yaml
   - path: clima-p1-1
     panel: true
     visible: false
