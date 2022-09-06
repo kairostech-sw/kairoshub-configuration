@@ -26,12 +26,12 @@ events:
   - event: HAKAFKA_PRODUCER_STOP
     platform: HAKAFKA
     type: dispatcher
-  - event: INBOUND_EVENT
-    platform: HASSIO_EVENT
-    type: listener
-    callback:
-      - event: HAKAFKA_PRODUCER_PRODUCE
-        topic: "HASSIO"
+  # - event: INBOUND_EVENT
+  #   platform: HASSIO_EVENT
+  #   type: listener
+  #   callback:
+  #     - event: HAKAFKA_PRODUCER_PRODUCE
+  #       topic: "HASSIO"
   - event: HAKAFKA_PRODUCER_PRODUCE
     platform: HAKAFKA
     type: dispatcher

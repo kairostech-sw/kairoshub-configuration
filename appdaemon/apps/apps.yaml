@@ -7,6 +7,9 @@ heating_manager:
 system_metrics:
   module: systemMetrics
   class: SystemMetrics
-user_settings:
-  module: userSettings
-  class: UserSettings
+kairoshub_event:
+  module: kairoshubEvent
+  class: KairoshubEvent
+kairoshub_settings:
+  module: kairoshubSettings
+  class: KairoshubSettings
