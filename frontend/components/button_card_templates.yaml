@@ -1103,6 +1103,30 @@ button_return_to_program1:
     action: navigate
     navigation_path: /lovelace-kairoshub/clima-p1
 
+button_return_to_program2:
+  type: 'custom:button-card'
+  template: header_button_menu
+  name: Indietro
+  tap_action:
+    action: navigate
+    navigation_path: /lovelace-kairoshub/clima-p2
+
+button_return_to_program3:
+  type: 'custom:button-card'
+  template: header_button_menu
+  name: Indietro
+  tap_action:
+    action: navigate
+    navigation_path: /lovelace-kairoshub/clima-p3
+
+button_return_to_program4:
+  type: 'custom:button-card'
+  template: header_button_menu
+  name: Indietro
+  tap_action:
+    action: navigate
+    navigation_path: /lovelace-kairoshub/clima-p4
+
 button_return_to_settings:
   type: 'custom:button-card'
   template: header_button_menu

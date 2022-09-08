@@ -68,7 +68,7 @@ cards:
   - type: horizontal-stack
     cards:
       - type: custom:button-card
-        entity: 'input_boolean.thermostat_monday'
+        entity: 'input_boolean.thermostat_monday_program1'
         template: program_day_overview_theme
         name: Lunedì
         variables: 
@@ -76,7 +76,7 @@ cards:
           thermostat_period_on: input_datetime.thermostat_monday_on_period1
           thermostat_period_off: input_datetime.thermostat_monday_off_period1
       - type: custom:button-card
-        entity: 'input_boolean.thermostat_tuesday'
+        entity: 'input_boolean.thermostat_tuesday_program1'
         template: program_day_overview_theme
         name: Martedì
         variables: 
@@ -84,7 +84,7 @@ cards:
           thermostat_period_on: input_datetime.thermostat_tuesday_on_period1
           thermostat_period_off: input_datetime.thermostat_tuesday_off_period1
       - type: custom:button-card
-        entity: 'input_boolean.thermostat_wednesday'
+        entity: 'input_boolean.thermostat_wednesday_program1'
         template: program_day_overview_theme
         name: Mercoledì
         variables: 
@@ -93,10 +93,10 @@ cards:
           thermostat_period_off: input_datetime.thermostat_wednesday_off_period1
       - type: custom:button-card
         template: program_day_overview_theme
-        entity: input_boolean.thermostat_thursday
+        entity: 'input_boolean.thermostat_thursday_program1'
         name: Giovedì
         variables:  
-          entityRef: input_boolean.thermostat_thursday
+          entityRef: 'input_boolean.thermostat_thursday_program1'
           navigation_path: clima-p1-4
           thermostat_period_on: input_datetime.thermostat_thursday_on_period1
           thermostat_period_off: input_datetime.thermostat_thursday_off_period1
@@ -106,7 +106,7 @@ cards:
   - type: horizontal-stack
     cards:
       - type: custom:button-card
-        entity: 'input_boolean.thermostat_friday'
+        entity: 'input_boolean.thermostat_friday_program1'
         template: program_day_overview_theme
         name: Venerdì
         variables: 
@@ -114,7 +114,7 @@ cards:
           thermostat_period_on: input_datetime.thermostat_friday_on_period1
           thermostat_period_off: input_datetime.thermostat_friday_off_period1
       - type: custom:button-card
-        entity: 'input_boolean.thermostat_saturday'
+        entity: 'input_boolean.thermostat_saturday_program1'
         template: program_day_overview_theme
         name: Sabato
         variables: 
@@ -122,7 +122,7 @@ cards:
           thermostat_period_on: input_datetime.thermostat_saturday_on_period1
           thermostat_period_off: input_datetime.thermostat_saturday_off_period1
       - type: custom:button-card
-        entity: 'input_boolean.thermostat_sunday'
+        entity: 'input_boolean.thermostat_sunday_program1'
         template: program_day_overview_theme
         name: Domenica
         variables: 

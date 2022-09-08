@@ -5,7 +5,7 @@ cards:
   - type: horizontal-stack
     cards:
       - type: 'custom:button-card'
-        entity: input_boolean.heater_program1
+        entity: input_boolean.heater_program3
         layout: vertical
         template: 
           - header_page_text
@@ -25,9 +25,9 @@ cards:
               action: call-service
               service: input_number.decrement
               service_data:
-                entity_id: input_number.temperature_period1
+                entity_id: input_number.temperature_period3
           - type: 'custom:button-card'
-            entity: input_number.temperature_period1
+            entity: input_number.temperature_period3
             layout: vertical
             template: no_background
             name: Temp. comfort
@@ -56,7 +56,7 @@ cards:
               action: call-service
               service: input_number.increment
               service_data:
-                entity_id: input_number.temperature_period1
+                entity_id: input_number.temperature_period3
       - type: 'custom:button-card'
         template: button_return_to_clima
           
@@ -68,70 +68,70 @@ cards:
   - type: horizontal-stack
     cards:
       - type: custom:button-card
-        entity: 'input_boolean.thermostat_monday'
+        entity: 'input_boolean.thermostat_monday_program3'
         template: program_day_overview_theme
         name: Lunedì
         variables: 
-          navigation_path: clima-p1-1
-          thermostat_period_on: input_datetime.thermostat_monday_on_period1
-          thermostat_period_off: input_datetime.thermostat_monday_off_period1
+          navigation_path: clima-p3-1
+          thermostat_period_on: input_datetime.thermostat_monday_on_period3
+          thermostat_period_off: input_datetime.thermostat_monday_off_period3
       - type: custom:button-card
-        entity: 'input_boolean.thermostat_tuesday'
+        entity: 'input_boolean.thermostat_tuesday_program3'
         template: program_day_overview_theme
         name: Martedì
         variables: 
-          navigation_path: clima-p1-2
-          thermostat_period_on: input_datetime.thermostat_tuesday_on_period1
-          thermostat_period_off: input_datetime.thermostat_tuesday_off_period1
+          navigation_path: clima-p3-2
+          thermostat_period_on: input_datetime.thermostat_tuesday_on_period3
+          thermostat_period_off: input_datetime.thermostat_tuesday_off_period3
       - type: custom:button-card
-        entity: 'input_boolean.thermostat_wednesday'
+        entity: 'input_boolean.thermostat_wednesday_program3'
         template: program_day_overview_theme
         name: Mercoledì
         variables: 
-          navigation_path: clima-p1-3
-          thermostat_period_on: input_datetime.thermostat_wednesday_on_period1
-          thermostat_period_off: input_datetime.thermostat_wednesday_off_period1
+          navigation_path: clima-p3-3
+          thermostat_period_on: input_datetime.thermostat_wednesday_on_period3
+          thermostat_period_off: input_datetime.thermostat_wednesday_off_period3
       - type: custom:button-card
         template: program_day_overview_theme
-        entity: input_boolean.thermostat_thursday
+        entity: 'input_boolean.thermostat_thursday_program3'
         name: Giovedì
         variables:  
-          entityRef: input_boolean.thermostat_thursday
-          navigation_path: clima-p1-4
-          thermostat_period_on: input_datetime.thermostat_thursday_on_period1
-          thermostat_period_off: input_datetime.thermostat_thursday_off_period1
+          entityRef: 'input_boolean.thermostat_thursday_program3'
+          navigation_path: clima-p3-4
+          thermostat_period_on: input_datetime.thermostat_thursday_on_period3
+          thermostat_period_off: input_datetime.thermostat_thursday_off_period3
       
   
 
   - type: horizontal-stack
     cards:
       - type: custom:button-card
-        entity: 'input_boolean.thermostat_friday'
+        entity: 'input_boolean.thermostat_friday_program3'
         template: program_day_overview_theme
         name: Venerdì
         variables: 
-          navigation_path: clima-p1-5
-          thermostat_period_on: input_datetime.thermostat_friday_on_period1
-          thermostat_period_off: input_datetime.thermostat_friday_off_period1
+          navigation_path: clima-p3-5
+          thermostat_period_on: input_datetime.thermostat_friday_on_period3
+          thermostat_period_off: input_datetime.thermostat_friday_off_period3
       - type: custom:button-card
-        entity: 'input_boolean.thermostat_saturday'
+        entity: 'input_boolean.thermostat_saturday_program3'
         template: program_day_overview_theme
         name: Sabato
         variables: 
-          navigation_path: clima-p1-6
-          thermostat_period_on: input_datetime.thermostat_saturday_on_period1
-          thermostat_period_off: input_datetime.thermostat_saturday_off_period1
+          navigation_path: clima-p3-6
+          thermostat_period_on: input_datetime.thermostat_saturday_on_period3
+          thermostat_period_off: input_datetime.thermostat_saturday_off_period3
       - type: custom:button-card
-        entity: 'input_boolean.thermostat_sunday'
+        entity: 'input_boolean.thermostat_sunday_program3'
         template: program_day_overview_theme
         name: Domenica
         variables: 
-          navigation_path: clima-p1-7
-          thermostat_period_on: input_datetime.thermostat_sunday_on_period1
-          thermostat_period_off: input_datetime.thermostat_sunday_off_period1
+          navigation_path: clima-p3-7
+          thermostat_period_on: input_datetime.thermostat_sunday_on_period3
+          thermostat_period_off: input_datetime.thermostat_sunday_off_period3
       - type: 'custom:button-card'
         template: icon_state_header
-        entity: input_boolean.heater_program1
+        entity: input_boolean.heater_program3
         icon: mdi:power 
         show_state: true
         styles:
