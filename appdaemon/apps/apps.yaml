@@ -13,3 +13,6 @@ kairoshub_event:
 kairoshub_settings:
   module: kairoshubSettings
   class: KairoshubSettings
+async_mqtt_helper:
+  module: asyncMQTTHelper
+  class: AsyncMQTTHelper
