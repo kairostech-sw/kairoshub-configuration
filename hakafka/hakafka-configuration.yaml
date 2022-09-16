@@ -35,6 +35,6 @@ producers:
 consumers:
   - host: quattrostagioni.linkedsolutions.it
     port: 9093
-    topic: KAIROS_XXXXXX
+    topic: KAIROS_XXXXX
     group: "hassio"
     security: "ssl"

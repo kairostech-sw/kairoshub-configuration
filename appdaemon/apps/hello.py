@@ -49,13 +49,12 @@ class HelloWorld(hass.Hass):
         self.log("Retrieved global state for the application. state: %s", hassState, level="INFO")
 
         eventData = {
-            "eventType" : "TECHNICAL",
+            "eventType" : "HELLO",
             "systemCode": systemCode,
-            "platform"  : "HASSIO_EVENT",
             "message"   : "HELLO",
             "technicalMessage": hassState
         }
        
-        self.fire_event("HAKAFKA_PRODUCER_PRODUCE", topic="HASSIO", message=eventData)
+        self.fire_event("HAKAFKA_PRODUCER_PRODUCE", topic="TECHNICAL", message=eventData)
         self.fire_event("AD_SETTINGS_RESTORE")
         
