@@ -12,12 +12,12 @@ class SystemMetrics(hass.Hass):
         statMessage = {}
 
         systemCode                           = self.get_state("input_text.system_code")
-        statMessage["disk_use"]              = self.get_state("sensor.disk_use_percent")
-        statMessage["memory_use"]            = self.get_state("sensor.memory_use_percent")
-        statMessage["processor_use"]         = self.get_state("sensor.processor_use")
-        statMessage["processor_temperature"] = self.get_state("sensor.processor_temperature")
+        statMessage["disk_use"]              = self.get_state("sensor.stat_disk_use")
+        statMessage["memory_use"]            = self.get_state("sensor.stat_memory_use")
+        statMessage["processor_use"]         = self.get_state("sensor.stat_processor_use")
+        statMessage["processor_temperature"] = self.get_state("sensor.stat_processor_temperature")
         statMessage["last_boot"]             = self.get_state("sensor.last_boot")
-        statMessage["processor_max_use"]     = self.get_state("sensor.processor_use",attribute="max_value")
+        statMessage["processor_max_use"]     = self.get_state("sensor.stat_processor_use",attribute="max_value")
 
         self.log("System Metrics: %s", statMessage, level="INFO")
 
