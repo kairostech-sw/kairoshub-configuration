@@ -1,6 +1,9 @@
 import asyncio
+import json
 import hassapi as hass
-from datetime import datetime
+from datetime import datetime, timedelta
+
+file="/home/pi/workspace/kairoshubSettings.json"
 
 class HeatingManager(hass.Hass):
 
@@ -23,14 +26,29 @@ class HeatingManager(hass.Hass):
         else: self.heatingOff(event_name, data, kwargs)
 
     def handleProgOnEvent(self, event_name, data, kwargs):
-        today=datetime.now().strftime("%A").lower()
+        
         progNumber=data["program"][-1]
-        now="{}:00".format(self.get_state("sensor.time"))
-        on_time=data["on_off_time_{}".format(today)]["on_time"]
-        off_time=data["on_off_time_{}".format(today)]["off_time"]
+        now=datetime.strptime(self.get_state("sensor.date_time_iso"),"%Y-%m-%dT%H:%M:%S")
+        today=now.strftime("%A").lower()
+        date=now.strftime("%Y-%m-%dT")
+        nextdate=(now+timedelta(days=1)).strftime("%Y-%m-%dT")
+        with open(file,"r+") as f:
+            timers=f.readline()
+            if len(timers)==0:
+                on_time=datetime.strptime(date+data["on_off_time_{}".format(today)]["on_time"],"%Y-%m-%dT%H:%M:%S")
+                off_time=datetime.strptime(date+data["on_off_time_{}".format(today)]["off_time"],"%Y-%m-%dT%H:%M:%S")
+                delta=on_time-off_time
+                if delta>timedelta(0):
+                    off_time=datetime.strptime(nextdate+data["on_off_time_{}".format(today)]["off_time"],"%Y-%m-%dT%H:%M:%S")                   
+                json.dump({"on_time":on_time.strftime("%Y-%m-%dT%H:%M:%S"),"off_time":off_time.strftime("%Y-%m-%dT%H:%M:%S")},f)
+            else:
+                timers=json.loads(timers)
+                on_time=datetime.strptime(timers["on_time"],"%Y-%m-%dT%H:%M:%S")
+                off_time=datetime.strptime(timers["off_time"],"%Y-%m-%dT%H:%M:%S")
+
         self.log("Checking if another program is on", level="INFO")
 
-        if self.isHeatingProgramOn(): 
+        if self.isHeatingProgramOn()==int(progNumber): 
             if off_time<=now:
                 self.log("The heating program {} is now ending".format(progNumber), level="INFO")
                 self.turn_off("input_boolean.heater_program{}_on".format(progNumber))
@@ -40,7 +58,7 @@ class HeatingManager(hass.Hass):
         self.log("Checking the heating program state", level="INFO")
 
         if self.get_state("input_boolean.thermostat_{}_program{}".format(today,progNumber))=="off": 
-            self.log("The program is not active for today", level="INFO")
+            self.log("The Program is not active for today", level="INFO")
             return
 
        
@@ -61,6 +79,10 @@ class HeatingManager(hass.Hass):
         trvNum=self.get_state("sensor.temperatura",attribute="count_sensors")-len(temperatureSensorGroup)
         sensor_temperatura=self.get_state("sensor.temperatura")
 
+        if program=="manual":
+            self.log("Checking if another program is on", level="INFO")
+            if self.isHeatingProgramOn()!=0: return
+
         self.log("Retrieving Temperature sensors", level="INFO")
         for entity in temperatureSensorGroup:
             attributes={}
@@ -75,10 +97,6 @@ class HeatingManager(hass.Hass):
         self.heatingOn(program,trvList)
  
     def heatingOn(self, program:str, trvList:list):
-        
-        if program=="manual":
-            self.log("Checking if another program is on", level="INFO")
-            if self.isHeatingProgramOn(): return
 
         self.log("Setting temperature", level="INFO")
         self.setTargetTempFromProgram(trvList, program)
@@ -90,8 +108,11 @@ class HeatingManager(hass.Hass):
         #self.notify()  
               
     def heatingOff(self, event_name, data, kwargs):
-        program:str=data["program"]
+        program=data["program"]
         self.log("Turning off heating", level="INFO")
+
+        with open(file,"w") as f:
+            f.write("")
         
         if program!="manual":
             input_bool="input_boolean.heater_program{}_on".format(program[-1])
@@ -106,8 +127,8 @@ class HeatingManager(hass.Hass):
         for index in range(1,5):
             if self.get_state("input_boolean.heater_program{}_on".format(index))=="on":
                 self.log("Program {} is already active".format(index), level="INFO")
-                return True
-        return False
+                return index
+        return 0
  
     async def isHeaterOff(self, kwargs):
         self.log("Checking if the heater was turned off. Try: %s", kwargs["counter"], level="INFO")
@@ -148,6 +169,7 @@ class HeatingManager(hass.Hass):
             else:
                 self.log("No valves are open", level="INFO")
                 #self.notify()
+                return
             
     def setTargetTempFromProgram(self, trvList, program):
         for trv in trvList:
@@ -164,7 +186,7 @@ class HeatingManager(hass.Hass):
 
     def setTargetTemp(self, topic, value):
         topic=topic+"target_t"
-        if value <4: value=4
+        if value <18: value=18
         if value >31: value=31
 
         #mqtt publish on topic with value
