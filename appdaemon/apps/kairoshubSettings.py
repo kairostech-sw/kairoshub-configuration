@@ -44,8 +44,7 @@ class KairoshubSettings(hass.Hass):
         eventData= {
             "eventType" : "SETTINGS_SYNC",
             "sender"    : systemCode,
-            "message"   : "SETTINGS SYNC",
-            "technicalMessage": jsonData
+            "message"   : "SETTINGS SYNC"
         }
 
         self.fire_event("HAKAIROS_PRODUCER_PRODUCE", topic="TECHNICAL", message=eventData)
@@ -74,8 +73,7 @@ class KairoshubSettings(hass.Hass):
             eventData = {
                 "eventType" : "SETTINGS_RESTORE_REQ",
                 "sender" : systemCode,
-                "message" : "SETTINGS RESTORE REQUEST",
-                "technicalMessage" : "{}"
+                "message" : "SETTINGS RESTORE REQUEST"
             } 
 
             self.fire_event("HAKAFKA_PRODUCER_PRODUCE", topic="TECHNICAL", message=eventData)
