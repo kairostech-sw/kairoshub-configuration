@@ -1,13 +1,14 @@
 import hassapi as hass
 import json
 
-file="/home/pi/workspace/kairoshubSettings.json"
+file="./kairoshubSettings.json"
 
 class KairoshubSettings(hass.Hass):
     def initialize(self):
         self.listen_event(self.syncSettings, "AD_SETTINGS_SYNC")
         self.listen_event(self.restoreSettings, "AD_SETTINGS_RESTORE")
         self.listen_event(self.pushSettings, "AD_SETTINGS_PUSH")
+        self.listen_event(self.fileCheck, "AD_SETTINGS_FILE_CHECK")
     
     def syncSettings(self, event_name, data, kwargs):
         self.log("Retrieving user settings")
@@ -26,10 +27,9 @@ class KairoshubSettings(hass.Hass):
             userSettings[entity]=attributes
         
         for entity in functionSettingsList:
-            attributes=self.get_state(entity,attribute="all").get("attributes",{})
-            attributes["state"]=self.get_state(entity)
-            functionSettings[entity]=attributes
-        
+            # attributes=self.get_stafileCheck]=attributes
+            functionSettings[entity]=self.get_state(entity)
+
         self.log("User settings: %s", userSettings, level="DEBUG")
         self.log("Functionalities: %s", functionSettings, level="DEBUG")
         
@@ -44,10 +44,11 @@ class KairoshubSettings(hass.Hass):
         eventData= {
             "eventType" : "SETTINGS_SYNC",
             "sender"    : systemCode,
-            "message"   : "SETTINGS SYNC"
+            "message"   : "SETTINGS SYNC",
+            "technicalMessage": jsonData
         }
 
-        self.fire_event("HAKAIROS_PRODUCER_PRODUCE", topic="TECHNICAL", message=eventData)
+        self.fire_event("HAKAFKA_PRODUCER_PRODUCE", topic="TECHNICAL", message=eventData)
             
     def restoreSettings(self, event_name, data, kwargs):
 
@@ -60,11 +61,11 @@ class KairoshubSettings(hass.Hass):
         try:
             with open(file) as f:
                 jsonData=json.load(f)
-                userSettings=jsonData["userSettings"]
-                functionSettings=jsonData["functionSettings"]
+                userSettings=jsonData["userSettings"] if "userSettings" in jsonData else ""
+                functionSettings=jsonData["functionSettings"] if "functionSettings" in jsonData else ""
                 
                 self.__writeToFile__(userSettings, functionSettings)
-                self.log("User settings restored",level="INFO")
+                self.log("User settings restored by filesystem",level="INFO")
 
         except FileNotFoundError:
             self.log("User settings not found", level="WARNING")
@@ -83,24 +84,35 @@ class KairoshubSettings(hass.Hass):
 
     def pushSettings(self, event_name, data, kwargs):
        
-        self.log("Pushing settings to file",level="INFO")
-        
-        jsonData=data["eventData"]["technicalMessage"]
+        self.log("Pushing settings to file. Settings provided: %s", data, level="INFO")
+
+        jsonData=data["data"]["technicalMessage"]
         try:        
             with open(file,"w") as f:
                 json.dump(jsonData,f)
-                userSettings=jsonData["userSettings"]
-                functionSettings=jsonData["functionSettings"]
+                userSettings=jsonData["userSettings"] if "userSettings" in jsonData else ""
+                functionSettings=jsonData["functionSettings"] if "functionSettings" in jsonData else ""
                 self.__writeToFile__(userSettings, functionSettings)
         except Exception:
             raise
 
         self.log("Settings pushed", level="INFO")
-        
+
+    def fileCheck(self, event_name, data, kwargs):
+        self.log("Checking file content. file: %s", file)
+        try:
+            with open(file) as f:
+                jsonData=json.load(f)
+                
+                self.log("File settings content: %s", jsonData,level="INFO")
+
+        except FileNotFoundError:
+            self.log("File settings not found", level="WARNING")
+
     def __writeToFile__(self, userSettings, functionSettings):
 
         for entity in userSettings:
             self.set_state(entity,state=userSettings[entity].pop("state"),attributes=userSettings[entity])
     
         for entity in functionSettings:
-            self.set_state(entity,state=functionSettings[entity].pop("state"),attributes=functionSettings[entity])
+            self.set_state(entity,state=functionSettings[entity])

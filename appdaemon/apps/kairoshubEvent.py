@@ -9,9 +9,15 @@ class KairoshubEvent(hass.Hass):
 
     def ha_event(self, event_name, data, kwargs):    
 
-        event = data["data"]["eventType"]
+        event = None
+        try:
+            event = data["eventType"]
+
+            if "SETTINGS" in event: 
+                self.fire_event("AD_"+ event, data=data)
+           
+        except Exception as e:
+            self.log(e, level="ERROR")
+        finally:
+            self.log("Event name: %s, event data: %s", event, data)
         
-        if "SETTINGS" in event: 
-            self.fire_event("AD_"+ event, data=data)
-        else: 
-            self.log(event)
