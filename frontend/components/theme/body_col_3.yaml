@@ -53,7 +53,7 @@ cards:
             name: 'Fuori Casa'
         
       - type: custom:button-card
-        entity: 'switch.sw_thermostat'
+        entity: 'input_boolean.sw_thermostat_frontend'
         template: button_hold
         show_icon: true
         show_name: true
