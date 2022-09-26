@@ -3,14 +3,12 @@ import json
 import hassapi as hass
 from datetime import datetime, timedelta
 
-file="/home/pi/workspace/kairoshubSettings.json"
+file="./kairoshubHeating.json"
 
 class HeatingManager(hass.Hass):
 
     def initialize(self):
         self.listen_event(self.manageHeating, "HA_MANAGE_HEATER")
-        self.listen_event(self.handleHeatingOnEvent,"AD_HEATING_ON")
-        self.listen_event(self.heatingOff,"AD_HEATING_OFF")
         self.listen_event(self.handleHeating, "AD_HEATING")
 
     def manageHeating(self, event_name, data, kwargs):
@@ -22,6 +20,7 @@ class HeatingManager(hass.Hass):
 
     def handleHeating(self, event_name, data, kwargs):
         if self.get_state("switch.sw_thermostat") =="off":
+            self.turn_on("input_boolean.sw_thermostat_frontend")
             self.handleHeatingOnEvent(event_name, data, kwargs)
         else: self.heatingOff(event_name, data, kwargs)
 
@@ -30,44 +29,37 @@ class HeatingManager(hass.Hass):
         progNumber=data["program"][-1]
         now=datetime.strptime(self.get_state("sensor.date_time_iso"),"%Y-%m-%dT%H:%M:%S")
         today=now.strftime("%A").lower()
-        date=now.strftime("%Y-%m-%dT")
-        nextdate=(now+timedelta(days=1)).strftime("%Y-%m-%dT")
-        with open(file,"r+") as f:
-            timers=f.readline()
-            if len(timers)==0:
-                on_time=datetime.strptime(date+data["on_off_time_{}".format(today)]["on_time"],"%Y-%m-%dT%H:%M:%S")
-                off_time=datetime.strptime(date+data["on_off_time_{}".format(today)]["off_time"],"%Y-%m-%dT%H:%M:%S")
-                delta=on_time-off_time
-                if delta>timedelta(0):
-                    off_time=datetime.strptime(nextdate+data["on_off_time_{}".format(today)]["off_time"],"%Y-%m-%dT%H:%M:%S")                   
-                json.dump({"on_time":on_time.strftime("%Y-%m-%dT%H:%M:%S"),"off_time":off_time.strftime("%Y-%m-%dT%H:%M:%S")},f)
-            else:
-                timers=json.loads(timers)
-                on_time=datetime.strptime(timers["on_time"],"%Y-%m-%dT%H:%M:%S")
-                off_time=datetime.strptime(timers["off_time"],"%Y-%m-%dT%H:%M:%S")
-
+        self.log("Starting Program %s",progNumber, level="INFO")
         self.log("Checking if another program is on", level="INFO")
 
-        if self.isHeatingProgramOn()==int(progNumber): 
+        activeProgram=self.isHeatingProgramOn()
+        if activeProgram!=int(progNumber) and  activeProgram!=0: 
+            self.log("Program {} is already active".format(activeProgram), level="INFO") 
+            return
+        if activeProgram==0:
+            self.log("Checking the heating program state", level="INFO")
+            
+            if self.get_state("input_boolean.thermostat_{}_program{}".format(today,progNumber))=="off": 
+                self.log("The Program is not active for today", level="INFO")
+                return
+            on_time, off_time= self.programTime(data)
+
+            if on_time<=now<off_time:
+                if self.get_state("input_boolean.heater_program{}_on".format(progNumber))=="off":
+                    self.log("The heating program {} is now starting".format(progNumber), level="INFO")
+                    self.turn_on("input_boolean.heater_program{}_on".format(progNumber))
+                    self.handleHeatingOnEvent(event_name, data, kwargs)
+                else:
+                    self.log("This program is already active", level="INFO")
+            else:
+                self.log("Program {} is not active right now".format(progNumber), level="INFO")
+        else:
+            off_time= self.programTime(data)[1]
             if off_time<=now:
                 self.log("The heating program {} is now ending".format(progNumber), level="INFO")
                 self.turn_off("input_boolean.heater_program{}_on".format(progNumber))
                 self.heatingOff(event_name, data, kwargs)
                 return
-
-        self.log("Checking the heating program state", level="INFO")
-
-        if self.get_state("input_boolean.thermostat_{}_program{}".format(today,progNumber))=="off": 
-            self.log("The Program is not active for today", level="INFO")
-            return
-
-       
-        if on_time<=now<off_time:
-            self.log("The heating program {} is now starting".format(progNumber), level="INFO")
-            self.turn_on("input_boolean.heater_program{}_on".format(progNumber))
-            self.handleHeatingOnEvent(event_name, data, kwargs)
-        else:
-            self.log("The Program is not active right now", level="INFO")
         
     def handleHeatingOnEvent(self, event_name, data, kwargs):
         
@@ -121,12 +113,12 @@ class HeatingManager(hass.Hass):
                 self.log("Program%s was turned off",program[-1])
         
         self.turn_off("switch.sw_thermostat")
+        self.turn_off("input_boolean.sw_thermostat_frontend")
         asyncio.run(self.isHeaterOff({"counter":1}))
 
     def isHeatingProgramOn(self):
         for index in range(1,5):
             if self.get_state("input_boolean.heater_program{}_on".format(index))=="on":
-                self.log("Program {} is already active".format(index), level="INFO")
                 return index
         return 0
  
@@ -146,6 +138,7 @@ class HeatingManager(hass.Hass):
                 
         else:
             self.log("The heater didn't turn off", level="INFO")
+            self.turn_on("input_boolean.sw_thermostat_frontend")
             #self.notify("ERROR: The heater didn't turn off")
     
     async def isValveOpen(self, kwargs):
@@ -169,6 +162,7 @@ class HeatingManager(hass.Hass):
             else:
                 self.log("No valves are open", level="INFO")
                 #self.notify()
+                self.turn_off("input_boolean.sw_thermostat_frontend")
                 return
             
     def setTargetTempFromProgram(self, trvList, program):
@@ -242,4 +236,23 @@ class HeatingManager(hass.Hass):
 
         return trvList
 
-
+    def programTime(self,data):
+        now=datetime.strptime(self.get_state("sensor.date_time_iso"),"%Y-%m-%dT%H:%M:%S")
+        today=now.strftime("%A").lower()
+        date=now.strftime("%Y-%m-%dT")
+        nextdate=(now+timedelta(days=1)).strftime("%Y-%m-%dT")
+        with open(file,"r+") as f:
+            timers=f.readline()
+            if len(timers)==0:
+                on_time=datetime.strptime(date+data["on_off_time_{}".format(today)]["on_time"],"%Y-%m-%dT%H:%M:%S")
+                off_time=datetime.strptime(date+data["on_off_time_{}".format(today)]["off_time"],"%Y-%m-%dT%H:%M:%S")
+                delta=on_time-off_time
+                if delta>timedelta(0):
+                    off_time=datetime.strptime(nextdate+data["on_off_time_{}".format(today)]["off_time"],"%Y-%m-%dT%H:%M:%S")                   
+                json.dump({data["program"]:{"on_time":on_time.strftime("%Y-%m-%dT%H:%M:%S"),"off_time":off_time.strftime("%Y-%m-%dT%H:%M:%S")}},f)
+            else:
+                timers=json.loads(timers)
+                if data["program"]==list(timers.keys())[0]:
+                    on_time=datetime.strptime(timers[data["program"]]["on_time"],"%Y-%m-%dT%H:%M:%S")
+                    off_time=datetime.strptime(timers[data["program"]]["off_time"],"%Y-%m-%dT%H:%M:%S")
+            return on_time,off_time
