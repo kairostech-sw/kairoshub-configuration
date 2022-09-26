@@ -48,6 +48,7 @@ class HelloWorld(hass.Hass):
         if state=="MAINTENEANCE":
             self.set_state("input_boolean.assistance_request",state='on', attributes=assistanceAttributes)
             self.log("Restoring Assistance Button state. state: on",level="INFO")
+            self.fire_event("systemAssistanceOnCommand")
         else:
             self.set_state("input_boolean.assistance_request",state='off', attributes=assistanceAttributes)
             self.log("Restoring Assistance Button state. state: off",level="INFO")
