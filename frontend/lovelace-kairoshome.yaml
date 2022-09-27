@@ -299,3 +299,10 @@ views:
       - type: vertical-stack
         cards:
           - !include hakairos-configuration/frontend/panels/settings/tapparelle.yaml
+  - path: impostazioni-riscaldamento
+    panel: true
+    visible: false
+    cards:
+      - type: vertical-stack
+        cards:
+          - !include hakairos-configuration/frontend/panels/settings/riscaldamento.yaml
