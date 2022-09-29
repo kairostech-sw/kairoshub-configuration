@@ -120,6 +120,7 @@ class HeatingManager(hass.Hass):
         else:
             if program!="prog0":
                 self.turn_off("input_boolean.heater_program{}_on".format(program[-1]))
+            self.turn_off("input_boolean.sw_thermostat_frontend")
         #self.notify()  
 
     def turnHeatingOff(self, data):
@@ -196,11 +197,11 @@ class HeatingManager(hass.Hass):
             self.log("This program schedule should not change")
             return f_on_time, f_off_time, "running"
         else:
-            on_time=datetime.strptime(date+kwargs["on_off_time_{}".format(today)]["on_time"],"%Y-%m-%dT%H:%M:%S")
-            off_time=datetime.strptime(date+kwargs["on_off_time_{}".format(today)]["off_time"],"%Y-%m-%dT%H:%M:%S")
+            on_time=datetime.strptime(date+self.get_state("input_datetime.thermostat_{}_on_period{}".format(today,progID)),"%Y-%m-%dT%H:%M:%S")
+            off_time=datetime.strptime(date+self.get_state("input_datetime.thermostat_{}_off_period{}".format(today,progID)),"%Y-%m-%dT%H:%M:%S")
             delta=on_time-off_time
             if delta>timedelta(0):
-                off_time=datetime.strptime(nextdate+kwargs["on_off_time_{}".format(today)]["off_time"],"%Y-%m-%dT%H:%M:%S")
+                off_time=datetime.strptime(nextdate+self.get_state("input_datetime.thermostat_{}_off_period{}".format(today,progID)),"%Y-%m-%dT%H:%M:%S")
         f_on_time=on_time
         f_off_time=off_time
         schedule["on_time"]=f_on_time.strftime("%Y-%m-%dT%H:%M:%S")
@@ -235,6 +236,7 @@ class HeatingManager(hass.Hass):
             self.log("The heater didn't turn off", level="INFO")
             self.turn_on("input_boolean.sw_thermostat_frontend")
             #self.notify("ERROR: The heater didn't turn off")
+            return False
     
     async def isValveOpen(self, kwargs):
 
@@ -257,8 +259,7 @@ class HeatingManager(hass.Hass):
             else:
                 self.log("No valves are open", level="INFO")
                 #self.notify()
-                self.turn_off("input_boolean.sw_thermostat_frontend")
-                return
+                return False
             
     def setTargetTempFromProgram(self, trvList, program):
         for trv in trvList:
