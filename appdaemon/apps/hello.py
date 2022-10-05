@@ -1,4 +1,3 @@
-from inspect import Attribute
 import hassapi as hass
 
 KAIROSHUB_STATE_ENTITY              = "sensor.system_state"
@@ -22,6 +21,12 @@ class HelloWorld(hass.Hass):
         hassState       = {}
 
         systemCode      = self.get_state("input_text.system_code")
+
+        if systemCode != systemCode.upper():
+            self.log("Normalizing system code vale to UPPERCASE")
+            self.set_state("input_text.system_code", state=systemCode.upper())
+            systemCode  = self.get_state("input_text.system_code")
+            
         state           = self.get_state(KAIROSHUB_STATE_ENTITY)
         stateDetail     = self.get_state(KAIROSHUB_STATE_DETAIL_ENTITY)
         khSwVersion     = self.get_state(KAIROSHUB_SW_VERSION)
@@ -43,6 +48,7 @@ class HelloWorld(hass.Hass):
         if state=="MAINTENEANCE":
             self.set_state("input_boolean.assistance_request",state='on', attributes=assistanceAttributes)
             self.log("Restoring Assistance Button state. state: on",level="INFO")
+            self.fire_event("systemAssistanceOnCommand")
         else:
             self.set_state("input_boolean.assistance_request",state='off', attributes=assistanceAttributes)
             self.log("Restoring Assistance Button state. state: off",level="INFO")
@@ -50,12 +56,12 @@ class HelloWorld(hass.Hass):
         self.log("Retrieved global state for the application. state: %s", hassState, level="INFO")
 
         eventData = {
-            "eventType" : "TECHNICAL",
+            "eventType" : "HELLO",
             "systemCode": systemCode,
-            "platform"  : "HASSIO_EVENT",
             "message"   : "HELLO",
             "technicalMessage": hassState
         }
        
-        self.fire_event("HAKAFKA_PRODUCER_PRODUCE", topic="HASSIO", message=eventData)
+        self.fire_event("HAKAFKA_PRODUCER_PRODUCE", topic="TECHNICAL", message=eventData)
+        self.fire_event("AD_SETTINGS_RESTORE")
         

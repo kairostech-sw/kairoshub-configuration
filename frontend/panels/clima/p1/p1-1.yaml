@@ -5,7 +5,7 @@ cards:
   - type: horizontal-stack
     cards:
       - type: 'custom:button-card'
-        entity: input_boolean.thermostat_monday
+        entity: input_boolean.thermostat_monday_program1
         template: header_page_text
         icon: 'mdi:calendar-check'
         name: |
@@ -21,7 +21,7 @@ cards:
         cards:
           - type: 'custom:button-card'
             template: header_button_menu
-            entity: input_boolean.thermostat_monday
+            entity: input_boolean.thermostat_monday_program1
             icon: 'mdi:power'
             show_name: false
             styles:
@@ -38,7 +38,7 @@ cards:
               action: call-service
               service: input_boolean.toggle
               service_data:
-                entity_id: input_boolean.thermostat_monday
+                entity_id: input_boolean.thermostat_monday_program1
 
           - type: 'custom:button-card'
             template: row_space_10

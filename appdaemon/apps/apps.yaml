@@ -4,3 +4,18 @@ hello_world:
 heating_manager:
   module: heatingManager
   class: HeatingManager
+system_metrics:
+  module: systemMetrics
+  class: SystemMetrics
+kairoshub_event:
+  module: kairoshubEvent
+  class: KairoshubEvent
+kairoshub_settings:
+  module: kairoshubSettings
+  class: KairoshubSettings
+async_mqtt_helper:
+  module: asyncMQTTHelper
+  class: AsyncMQTTHelper
+notification:
+  module: notification
+  class: Notification

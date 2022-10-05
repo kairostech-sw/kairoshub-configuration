@@ -1,0 +1,47 @@
+type: vertical-stack
+cards:
+  - type: 'custom:button-card'
+    template: row_space_10
+  - type: horizontal-stack
+    cards:
+    - type: 'custom:button-card'
+      template:
+        - header_page_text
+      name: 'IMPOSTAZIONI'
+      icon: 'mdi:cog'
+  - type: vertical-stack
+    cards:
+      - type: horizontal-stack
+        cards:
+          - type: 'custom:button-card'
+            template: button_hold
+            icon: 'mdi:window-shutter'
+            label: Tapparelle
+            color: auto
+            show_label: true
+            tap_action:
+              action: navigate
+              navigation_path: /lovelace-kairoshub/impostazioni-tapparelle
+          - type: 'custom:button-card'
+            template: button_hold
+            icon: 'mdi:thermometer'
+            label: Temperatura
+            color: auto
+            show_label: true
+            tap_action:
+              action: navigate
+              navigation_path: /lovelace-kairoshub/impostazioni-riscaldamento
+          - type: 'custom:button-card'
+            template: row_space_10
+          - type: 'custom:button-card'
+            template: row_space_10
+      - type: horizontal-stack
+        cards:
+          - type: 'custom:button-card'
+            template: row_space_10
+          - type: 'custom:button-card'
+            template: row_space_10
+          - type: 'custom:button-card'
+            template: row_space_10
+          - type: 'custom:button-card'
+            template: row_space_10

@@ -1,0 +1,24 @@
+type: vertical-stack
+cards:
+  - type: 'custom:button-card'
+    template: row_space_10
+  - type: horizontal-stack
+    cards:
+    - type: 'custom:button-card'
+      label: "Impostazioni /"
+      template:
+        - header_page_text
+      name: 'TEMPERATURA'
+    - type: 'custom:button-card'
+      template: row_space_10
+    - type: 'custom:button-card'
+      template: button_return_to_settings
+          
+  - type: vertical-stack
+    cards:
+      - type: entities  
+        entities:
+          - input_number.manual_heating_temp
+        tap_action:
+          action: none
+      

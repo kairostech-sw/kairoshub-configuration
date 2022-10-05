@@ -34,12 +34,12 @@
     - event: HA_SCRIPT_EVENT
       event_data:
         payload: "{{ trigger.payload }}"
-- alias: RUN System metrics collect
+- alias: SYSTEM METRICS
   trigger:
     platform: time_pattern
-    hours: "/1"
+    minutes: "/30"
   action:
-    - service: shell_command.system_metrics
+    - event: AD_SYSTEM_METRICS
 - alias: HA system metrics collection
   trigger: 
     platform: mqtt
