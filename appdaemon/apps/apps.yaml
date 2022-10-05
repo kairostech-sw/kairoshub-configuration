@@ -16,3 +16,6 @@ kairoshub_settings:
 async_mqtt_helper:
   module: asyncMQTTHelper
   class: AsyncMQTTHelper
+notification:
+  module: notification
+  class: Notification
