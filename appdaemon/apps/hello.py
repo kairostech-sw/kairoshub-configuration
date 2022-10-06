@@ -25,6 +25,9 @@ class HelloWorld(hass.Hass):
         if systemCode != systemCode.upper():
             self.log("Normalizing system code vale to UPPERCASE")
             self.set_state("input_text.system_code", state=systemCode.upper())
+
+        
+        systemCode  = self.get_state(KAIROSHUB_SYSTEM_OWNER)
             
         state           = self.get_state(KAIROSHUB_STATE_ENTITY)
         stateDetail     = self.get_state(KAIROSHUB_STATE_DETAIL_ENTITY)
