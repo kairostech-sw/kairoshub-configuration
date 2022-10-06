@@ -68,14 +68,11 @@ cards:
           - name: Caldaia
             type: 'custom:button-card'
             template: icon_state_header
-            entity: switch.sw_thermostat
+            entity: 'input_boolean.sw_thermostat_frontend'
             icon: 'mdi:radiator'
             color: auto
             tap_action:
-              action: call-service
-              service: switch.toggle
-              service_data:
-                entity_id: switch.sw_thermostat
+                action: no_action
             state:
               - value: 'on'
                 icon: mdi:radiator

@@ -638,6 +638,8 @@ empty_card:
   color_type: blank-card
 row_space_5:
   template: no_background
+  tap_action:
+    action: none
   styles:
     card:
       - height: 5px
@@ -645,6 +647,8 @@ row_space_5:
       
 row_space_10:
   template: no_background
+  tap_action:
+    action: none
   styles:
     card:
       - height: 10px
@@ -652,42 +656,56 @@ row_space_10:
       
 row_space_15:
   template: no_background
+  tap_action:
+    action: none
   styles:
     card:
       - height: 15px
       - padding: 0px
 row_space_20:
   template: no_background
+  tap_action:
+    action: none
   styles:
     card:
       - height: 20px
       - padding: 0px
 row_space_25:
   template: no_background
+  tap_action:
+    action: none
   styles:
     card:
       - height: 25px
       - padding: 0px
 row_space_30:
   template: no_background
+  tap_action:
+    action: none
   styles:
     card:
       - height: 30px
       - padding: 0px
 row_space_35:
   template: no_background
+  tap_action:
+    action: none
   styles:
     card:
       - height: 35px
       - padding: 0px
 row_space_40:
   template: no_background
+  tap_action:
+    action: none
   styles:
     card:
       - height: 40px
       - padding: 0px
 row_space_80:
   template: no_background
+  tap_action:
+    action: none
   styles:
     card:
       - height: 80px
@@ -1102,6 +1120,38 @@ button_return_to_program1:
   tap_action:
     action: navigate
     navigation_path: /lovelace-kairoshub/clima-p1
+
+button_return_to_program2:
+  type: 'custom:button-card'
+  template: header_button_menu
+  name: Indietro
+  tap_action:
+    action: navigate
+    navigation_path: /lovelace-kairoshub/clima-p2
+
+button_return_to_program3:
+  type: 'custom:button-card'
+  template: header_button_menu
+  name: Indietro
+  tap_action:
+    action: navigate
+    navigation_path: /lovelace-kairoshub/clima-p3
+
+button_return_to_program4:
+  type: 'custom:button-card'
+  template: header_button_menu
+  name: Indietro
+  tap_action:
+    action: navigate
+    navigation_path: /lovelace-kairoshub/clima-p4
+
+button_return_to_settings:
+  type: 'custom:button-card'
+  template: header_button_menu
+  name: Indietro
+  tap_action:
+    action: navigate
+    navigation_path: /lovelace-kairoshub/impostazioni
     
 ####################
 # CLIMA

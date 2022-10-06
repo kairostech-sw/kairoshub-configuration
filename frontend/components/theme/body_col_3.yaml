@@ -53,7 +53,7 @@ cards:
             name: 'Fuori Casa'
         
       - type: custom:button-card
-        entity: 'switch.sw_thermostat'
+        entity: 'input_boolean.sw_thermostat_frontend'
         template: button_hold
         show_icon: true
         show_name: true
@@ -63,9 +63,9 @@ cards:
           action: none
         hold_action:
           action: call-service
-          service: switch.toggle
+          service: automation.trigger
           service_data:
-            entity_id: switch.sw_thermostat
+            entity_id: automation.riscaldamento
         state:
           - value: 'on'
             icon: mdi:radiator

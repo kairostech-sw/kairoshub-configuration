@@ -1,0 +1,111 @@
+type: vertical-stack
+cards:
+  - type: 'custom:button-card'
+    template: row_space_10
+  - type: horizontal-stack
+    cards:
+      - type: 'custom:button-card'
+        entity: input_boolean.thermostat_tuesday_program1
+        template: header_page_text
+        icon: 'mdi:calendar-check'
+        name: |
+          [[[ 
+              if (entity.state == 'on') { 
+                return 'Martedì  (ON)'; 
+              } else { 
+                return 'Martedì  (OFF)'; 
+              } 
+          ]]]
+        label: 'Clima / Programma 1 / Martedì'
+      - type: horizontal-stack
+        cards:
+          - type: 'custom:button-card'
+            template: header_button_menu
+            entity: input_boolean.thermostat_tuesday_program1
+            icon: 'mdi:power'
+            show_name: false
+            styles:
+              card:
+                - background-color: |
+                    [[[
+                        if( entity.state == 'on' ) {
+                          return 'var(--paper-item-icon-active-color)';
+                        } else {
+                          return 'rgb(208, 208, 208)';
+                        }
+                    ]]]
+            tap_action:
+              action: call-service
+              service: input_boolean.toggle
+              service_data:
+                entity_id: input_boolean.thermostat_tuesday_program1
+
+          - type: 'custom:button-card'
+            template: row_space_10
+          
+          - type: 'custom:button-card'
+            template: header_button_menu
+            icon: 'mdi:trash-can-outline'
+            styles:
+              card: 
+                - background-color: var(--label-badge-red)
+            hold_action:
+              confirmation: 'Sei sicuro di voler cancellare la programmazione?'
+              action: nothing
+              multi_calls: |
+                [[[
+                  hass.callService(
+                    "input_datetime",
+                    "set_datetime",
+                    { entity_id: "input_datetime.thermostat_tuesday_on_period1", time: "00:00:00" }
+                  );
+                  hass.callService(
+                    "input_datetime",
+                    "set_datetime",
+                    { entity_id: "input_datetime.thermostat_tuesday_off_period1", time: "00:00:00" }
+                  );
+                ]]]
+          
+      - type: 'custom:button-card'
+        template: button_return_to_program1
+        
+  - type: horizontal-stack
+    cards:
+      - type: 'custom:button-card'
+        template: row_space_10
+  - type: horizontal-stack
+    cards:
+      - type: 'custom:button-card'
+        template: row_space_10
+      - type: 'custom:time-picker-card'
+        entity: input_datetime.thermostat_tuesday_on_period1
+        template: clima_time_picker
+        hour_mode: 24
+        embedded: true
+        hide:
+          name: false
+        style: |
+          ha-card > .time-picker-header {
+            padding: 5px
+          }
+
+          ha-card > .time-picker-row {
+            padding: 0px !important
+          }
+      - type: 'custom:time-picker-card'
+        entity: input_datetime.thermostat_tuesday_off_period1
+        template: clima_time_picker
+        hour_mode: 24
+        embedded: true
+        hide:
+          name: false
+        style: |
+          ha-card > .time-picker-header {
+            padding: 5px
+          }
+
+          ha-card > .time-picker-row {
+            padding: 0px !important
+          }        
+      - type: 'custom:button-card'
+        template: row_space_10
