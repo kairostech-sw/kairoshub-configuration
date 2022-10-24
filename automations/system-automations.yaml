@@ -3,22 +3,21 @@
     - event: start
       platform: homeassistant
   action:
-    - delay: 00:00:10
     - event: HA_SET_CONSUMER_TOPIC
     - delay: 00:00:30
     - event: HA_STARTUP_COMPLETE
     - event: AD_KAIROSHUB_STARTED
 - alias: KAFKA CONSUMER SET
-  trigger: 
+  trigger:
     - platform: state
       entity_id: input_text.system_code
       for: "00:15:00"
     - platform: event
       event_type: HA_SET_CONSUMER_TOPIC
-  action: 
+  action:
     - service: mqtt.publish
-      data_template: 
-        topic: 'kairostech/command'
+      data_template:
+        topic: "kairostech/command"
         payload: "SET_CONSUMER_TOPIC_{{ states('input_text.system_code') }}"
 - alias: RUN Entity metrics collect
   trigger:
@@ -27,10 +26,10 @@
   action:
     - service: shell_command.entity_metrics
 - alias: HA entity metrics collection
-  trigger: 
+  trigger:
     platform: mqtt
     topic: "metrics/entities"
-  action: 
+  action:
     - event: HA_SCRIPT_EVENT
       event_data:
         payload: "{{ trigger.payload }}"
@@ -41,10 +40,10 @@
   action:
     - event: AD_SYSTEM_METRICS
 - alias: HA system metrics collection
-  trigger: 
+  trigger:
     platform: mqtt
     topic: "metrics/system"
-  action: 
+  action:
     - event: HA_SCRIPT_EVENT
       event_data:
         payload: "{{ trigger.payload }}"

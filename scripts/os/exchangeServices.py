@@ -1,6 +1,8 @@
 import os, time
 import paho.mqtt.client as paho
 import logging
+import json
+import socket
 from subprocess import check_output
 from subprocess import CalledProcessError
 
@@ -10,11 +12,17 @@ TOPIC_STATE                 = "kairostech/state"
 TOPIC_STATE_DETAIL          = "kairostech/state/detail"
 TOPIC_VPN_PROCESS           = "kairostech/state/vpn_process"
 
+TOPIC_HUB_OSVERSION             = "kairostech/os_version"
+TOPIC_HUB_HOSTNAME              = "kairostech/hostname"
+TOPIC_HUB_OWNER                 = "kairostech/owner"
+TOPIC_HUB_SYSTEM_CODE           = "kairostech/system_code"
+
 ASSISTANCE_START_COMMAND    = "ASSISTANCE_START"
 ASSISTANCE_STOP_COMMAND     = "ASSISTANCE_STOP"
 KAIROSHUB_RELEASE_COMMAND   = "KAIROSHUB_RELEASE_CHECK"
 
 KAIROSHUB_ES_LOG_FILE       = "/home/pi/workspace/logs/exchange-services.log"
+KAIROSHUB_INIT_FILE         = "/boot/kairoshub.json"
 
 logging.basicConfig(filename=KAIROSHUB_ES_LOG_FILE, level=logging.INFO, format="%(asctime)s %(message)s")
 
@@ -101,14 +109,65 @@ def on_publish(client, userdata, mid):
     logging.debug("message id: %s",str(mid))
 
 def on_connect(client, userdata, flags, rc):
-    logging.info("CONNACK received with code %d.", (rc))
-    #print("CONNACK received with code %d." % (rc))
+    logging.info("Connected on broker. Received CONNACK code %d.", (rc))
+
+    logging.info("Trying to read kairoshub init file")
+    data = None
+    try:
+        f = open(KAIROSHUB_INIT_FILE)
+
+        data = json.load(f)
+        logging.info("Kairoshub init file loaded. content:  %s.", (data))
+
+    except FileNotFoundError as e:
+        logging.warning("kairoshub init file not found. Maybe due a old version of kairoshub OS. Skipping autoconfiguration..")
+
+    if data:
+        try:
+            logging.info("Kairoshub autoconfiguration started.")
+
+            try:
+                logging.info("checking hostaname name.. ")
+                currentHostname = socket.gethostname()
+                logging.info("current hostname: %s, provided hostname: %s", currentHostname, data["hostname"])
+                if currentHostname != data["hostname"]:
+                    logging.info("Trying to change the hostname value")
+                    os.system("sudo hostnamectl set-hostname "+data['hostname'])
+                    currentHostname = socket.gethostname()
+                    logging.info("new hostname value: %s. Attempt to HUB reboot..", currentHostname)
+                    client.publish(TOPIC_HUB_HOSTNAME, currentHostname, qos=1, retain=True)
+                    os.system("sudo reboot")
+                else: 
+                    logging.info("Hostname already set. Skipping..")
+
+            except Exception as e: 
+                logging.warning("Setting hostname failed. [%s]", (e))
+
+            logging.info("Setting OS Version")
+            client.publish(TOPIC_HUB_OSVERSION, data["osVersion"], qos=1, retain=True)
+            
+            logging.info("Setting Owner")
+            client.publish(TOPIC_HUB_OWNER, data["owner"], qos=1, retain=True)
+
+            logging.info("Setting System Code")
+            client.publish(TOPIC_HUB_SYSTEM_CODE, data["systemCode"], qos=1, retain=True)
+
+            logging.info("Kairoshub autoconfiguration endend.")
+        except Exception as e: 
+            logging.warning("kairoshub autoconfiguration failed. [%s]", (e))
+        
+
+
+def on_disconnect(client, userdata, rc):
+    if rc != 0:
+        logging.warning("Unexpected MQTT disconnection. Will auto-reconnect")
 
 client = paho.Client()
 client.username_pw_set("mqtt_kairos", "kairos!")
 client.on_message = on_message
 client.on_connect = on_connect
 client.on_publish = on_publish
+client.on_disconnect = on_disconnect
 client.connect("localhost",1884)
 
 client.subscribe(TOPIC_COMMAND)
