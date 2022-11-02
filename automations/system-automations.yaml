@@ -39,6 +39,12 @@
     minutes: "/30"
   action:
     - event: AD_SYSTEM_METRICS
+- alias: ENTITY METRICS
+  trigger:
+    platform: time_pattern
+    minutes: /15
+  action:
+    event: "AD_ENTITY_METRICS"
 - alias: HA system metrics collection
   trigger:
     platform: mqtt
