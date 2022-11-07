@@ -1,4 +1,5 @@
 import hassapi as hass
+import os, time
 
 KAIROSHUB_STATE_ENTITY              = "sensor.system_state"
 KAIROSHUB_STATE_DETAIL_ENTITY       = "sensor.system_state_detail"
@@ -7,35 +8,49 @@ KAIROSHUB_SW_LAST_CHECK             = "sensor.kairoshub_sw_last_check"
 KAIROSHUB_CONFIGURATION_SW_VERSION   = "sensor.hakairos_configuration_sw_version"
 KAIROSHUB_CONFIGURATION_SW_LAST_CHECK= "sensor.hakairos_configuration_sw_last_check"
 KAIROSHUB_SYSTEM_OWNER               = "input_text.system_name"
+KAIROSHUB_SYSTEM_CODE               = "input_text.system_code"
 
 class HelloWorld(hass.Hass):
     def initialize(self):
         self.listen_event(self.ha_event, "AD_KAIROSHUB_STARTED")
 
     def ha_event(self, event_name, data, kwargs):    
-        self.log("Hello from AppDaemon")
-        self.log("You are now ready to run Apps!")
+        self.log("Hello from kairosHUB!")
 
-        self.log("Retrieving data from software manifest")
+        self.log("Retrieving data from software manifest..")
 
         hassState       = {}
 
-        systemCode      = self.get_state(KAIROSHUB_SYSTEM_OWNER)
+        mqttSystemCode = self.get_state("sensor.kairoshub_system_code")
+        mqttSystemOwner = self.get_state("sensor.kairoshub_owner")
 
-        if systemCode != systemCode.upper():
-            self.log("Normalizing system code vale to UPPERCASE")
-            self.set_state("input_text.system_code", state=systemCode.upper())
+        currentSystemCode = self.get_state(KAIROSHUB_SYSTEM_CODE)
+        currentSystemOwner = self.get_state(KAIROSHUB_SYSTEM_OWNER)
 
+        if not currentSystemCode.startswith("H") and (mqttSystemCode == "" or mqttSystemCode == "unknown" or mqttSystemCode == "undefined") :
+            self.log("ERROR, system code not valid!!", level="error")
+            os.system("sudo service kairoshub-assistance restart")
+            time.sleep(5)
+            self.fire_event("systemAssistanceOnCommand")
+            return
         
-        systemCode  = self.get_state(KAIROSHUB_SYSTEM_OWNER)
+        if currentSystemCode != mqttSystemCode:
+            self.log("Setting new system code value")
+            self.set_state(KAIROSHUB_SYSTEM_CODE, state=mqttSystemCode.upper())
             
+        if currentSystemOwner != mqttSystemOwner:
+            self.log("Setting new system owner value")
+            self.set_state(KAIROSHUB_SYSTEM_OWNER, state=mqttSystemOwner)
+
+        systemCode	= self.get_state(KAIROSHUB_SYSTEM_CODE)
+        systemOwner	= self.get_state(KAIROSHUB_SYSTEM_OWNER)
+
         state           = self.get_state(KAIROSHUB_STATE_ENTITY)
         stateDetail     = self.get_state(KAIROSHUB_STATE_DETAIL_ENTITY)
         khSwVersion     = self.get_state(KAIROSHUB_SW_VERSION)
         khSwLastCheck   = self.get_state(KAIROSHUB_SW_LAST_CHECK)
         khConfSwLastCheck   = self.get_state(KAIROSHUB_CONFIGURATION_SW_LAST_CHECK)
         khConfSwVersion     = self.get_state(KAIROSHUB_CONFIGURATION_SW_VERSION)
-        systemOwner         = self.get_state(KAIROSHUB_SYSTEM_OWNER)
         assistanceAttributes = self.get_state("input_boolean.assistance_request",attribute="all").get("attributes",{})
 
         hassState["state"] = state
@@ -60,7 +75,7 @@ class HelloWorld(hass.Hass):
         eventData = {
             "eventType" : "HELLO",
             "systemCode": systemCode,
-            "message"   : "HELLO",
+            "message"   : "HELLO!",
             "technicalMessage": hassState
         }
        

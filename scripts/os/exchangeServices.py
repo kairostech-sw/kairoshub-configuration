@@ -131,7 +131,7 @@ def on_connect(client, userdata, flags, rc):
                 currentHostname = socket.gethostname()
                 logging.info("current hostname: %s, provided hostname: %s", currentHostname, data["hostname"])
                 if currentHostname != data["hostname"]:
-                    logging.info("Trying to change the hostname value")
+                    logging.info("Trying to change the hostname value into [%s]", data['hostname'])
                     os.system("sudo hostnamectl set-hostname "+data['hostname'])
                     currentHostname = socket.gethostname()
                     logging.info("new hostname value: %s. Attempt to HUB reboot..", currentHostname)
@@ -143,13 +143,13 @@ def on_connect(client, userdata, flags, rc):
             except Exception as e: 
                 logging.warning("Setting hostname failed. [%s]", (e))
 
-            logging.info("Setting OS Version")
+            logging.info("Setting OS Version [%s]", data["osVersion"])
             client.publish(TOPIC_HUB_OSVERSION, data["osVersion"], qos=1, retain=True)
             
-            logging.info("Setting Owner")
+            logging.info("Setting Owner [%s]", data["owner"])
             client.publish(TOPIC_HUB_OWNER, data["owner"], qos=1, retain=True)
 
-            logging.info("Setting System Code")
+            logging.info("Setting System Code [%s]", data["systemCode"])
             client.publish(TOPIC_HUB_SYSTEM_CODE, data["systemCode"], qos=1, retain=True)
 
             logging.info("Kairoshub autoconfiguration endend.")

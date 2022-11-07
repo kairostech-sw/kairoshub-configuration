@@ -3,9 +3,11 @@
     - event: start
       platform: homeassistant
   action:
+    - delay: 00:00:15
     - event: HA_SET_CONSUMER_TOPIC
-    - delay: 00:00:30
+    - delay: 00:00:15
     - event: HA_STARTUP_COMPLETE
+    - delay: 00:00:30
     - event: AD_KAIROSHUB_STARTED
 - alias: KAFKA CONSUMER SET
   trigger:
