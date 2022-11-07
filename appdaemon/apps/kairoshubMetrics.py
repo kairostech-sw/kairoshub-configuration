@@ -1,13 +1,14 @@
 import hassapi as hass
 
-class SystemMetrics(hass.Hass):
+class KairoshubMetrics(hass.Hass):
 
     def initialize(self):
-        self.listen_event(self.ha_event,"AD_SYSTEM_METRICS")
+        self.listen_event(self.systemMetrics,"AD_SYSTEM_METRICS")
+        self.listen_event(self.entityMetrics, "AD_ENTITY_METRICS")
 
-    def ha_event(self, event_name, data, kwargs):
+    def systemMetrics(self, event_name, data, kwargs):
         
-        self.log("Retrieving System Metrics")
+        self.log("Retrieving System Metrics", level="INFO")
 
         statMessage = {}
 
@@ -30,3 +31,25 @@ class SystemMetrics(hass.Hass):
 
         self.fire_event("HAKAFKA_PRODUCER_PRODUCE", topic="TECHNICAL", message=eventData)
 
+    def entityMetrics(self, event_name, data, kwargs):
+
+        self.log("Retrieving Entity Metrics", level="INFO")
+
+        entityMessage = {}
+
+        systemCode                  = self.get_state("input_text.system_code")
+        entityMessage["thermostat"] = self.get_state("sensor.temperatura")
+        entityMessage["rollers"]    = self.get_state("group.rolershutters")
+        entityMessage["heating"]    = self.get_state("switch.sw_thermostat")
+        entityMessage["power"]      = self.get_state("sensor.em_assorbimento")
+
+        self.log("Entity Metrics: %s", entityMessage, level="INFO")
+
+        eventData = {
+            "eventType" : "ENTITY_PUSH",
+            "systemCode": systemCode,
+            "message" : "ENTITY_PUSH",
+            "technicalMessage": entityMessage
+        }
+
+        self.fire_event("HAKAFKA_PRODUCER_PRODUCE", topic="TECHNICAL", message=eventData)
