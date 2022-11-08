@@ -1,4 +1,3 @@
-from email import message
 import hassapi as hass
 
 
@@ -9,15 +8,28 @@ class KairoshubEvent(hass.Hass):
 
     def ha_event(self, event_name, data, kwargs):    
 
-        event = None
+        self.log(data, level="DEBUG")
+        eventType = None
         try:
-            event = data["eventType"]
+            eventType = data["eventType"]
+            sender = data["sender"]
 
-            if "SETTINGS" in event: 
-                self.fire_event("AD_"+ event, data=data)
+            event = {
+                "eventType": eventType,
+                "sender": sender
+            }
+
+            if "SETTINGS" in eventType: 
+                self.fire_event("AD_"+ eventType, data=data)
            
+            if "HEATING_COMMAND_OFF" in eventType:
+                self.fire_event("AD_PROGRAM_OFF", data={"event": event})
+
+            if "HEATING_COMMAND_ON" in eventType: 
+                self.fire_event("AD_HEATING", data={"program": "prog0", "event": event})
+
         except Exception as e:
             self.log(e, level="ERROR")
         finally:
-            self.log("Event name: %s, event data: %s", event, data)
+            self.log("Event name: %s, event data: %s", eventType, data)
         

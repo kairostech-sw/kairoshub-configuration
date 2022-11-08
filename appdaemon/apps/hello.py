@@ -28,7 +28,7 @@ class HelloWorld(hass.Hass):
         currentSystemOwner = self.get_state(KAIROSHUB_SYSTEM_OWNER)
 
         if not currentSystemCode.startswith("H") and (mqttSystemCode == "" or mqttSystemCode == "unknown" or mqttSystemCode == "undefined") :
-            self.log("ERROR, system code not valid!!", level="error")
+            self.log("ERROR, system code not valid!!",level="ERROR")
             os.system("sudo service kairoshub-assistance restart")
             time.sleep(5)
             self.fire_event("systemAssistanceOnCommand")
