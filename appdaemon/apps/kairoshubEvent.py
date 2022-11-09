@@ -1,5 +1,5 @@
+import os
 import hassapi as hass
-
 
 class KairoshubEvent(hass.Hass):
 
@@ -12,7 +12,7 @@ class KairoshubEvent(hass.Hass):
         eventType = None
         try:
             eventType = data["eventType"]
-            sender = data["sender"]
+            sender = data["sender"] if "sender" in data else ""
 
             event = {
                 "eventType": eventType,
@@ -27,6 +27,16 @@ class KairoshubEvent(hass.Hass):
 
             if "HEATING_COMMAND_ON" in eventType: 
                 self.fire_event("AD_HEATING", data={"program": "prog0", "event": event})
+
+            if "ASSISTANCE_COMMAND_ON" in eventType:
+                self.fire_event("HA_ASSSISTANCE_ON")
+
+            if "ASSISTANCE_COMMAND_OFF" in eventType:
+                self.fire_event("HA_ASSSISTANCE_OFF")
+
+            if "SERVICE_EXCHANGE_RESTART_REQUEST" in eventType:
+                os.system("sudo service kairoshub-assistance restart")
+                self.log("Received exchange service restart request", level="WARN")
 
         except Exception as e:
             self.log(e, level="ERROR")

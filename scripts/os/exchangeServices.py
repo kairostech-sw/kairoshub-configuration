@@ -21,6 +21,8 @@ ASSISTANCE_START_COMMAND    = "ASSISTANCE_START"
 ASSISTANCE_STOP_COMMAND     = "ASSISTANCE_STOP"
 KAIROSHUB_RELEASE_COMMAND   = "KAIROSHUB_RELEASE_CHECK"
 
+TOPIC_EXCHANGE_SERVICE_STATE= "kairostech/system/exchange_service"
+TOPIC_EXCHANGE_SERVICE_CHECK= "kairostech/system/exchange_service/lastcheck" 
 KAIROSHUB_ES_LOG_FILE       = "/home/pi/workspace/logs/exchange-services.log"
 KAIROSHUB_INIT_FILE         = "/boot/kairoshub.json"
 
@@ -72,11 +74,13 @@ def on_message(client, userdata, msg):
                 client.publish(TOPIC_STATE_DETAIL, msg, qos=1, retain=True)
                 os.system("sh /home/pi/workspace/scripts/release_hakairos-configuration.sh")
                 time.sleep(30)
+                os.system("sudo chown -R pi:pi /home/pi/workspace/hakairos-configuration")
                 msg = "CHECKING FOR A NEW RELEASE OF KAIROSHUB"
                 logging.info(msg)
                 client.publish(TOPIC_STATE_DETAIL, msg, qos=1, retain=True)
                 os.system("sh /home/pi/workspace/scripts/release_kairoshub.sh")
                 time.sleep(30)
+                os.system("sudo chown -R pi:pi /home/pi/workspace/kairoshub")
                 msg = "CHECKING FOR A NEW SOFTWARE RELEASE COMPLETE"
                 logging.info(msg)
                 client.publish(TOPIC_STATE_DETAIL, msg , qos=1, retain=True)
@@ -104,6 +108,8 @@ def on_message(client, userdata, msg):
                         file.write(newFileData)
                         os.system("docker restart kairoshub")
 
+        if "KAIROSHUB_SYSTEM_EXCHANGE_CHECK" in payload: 
+            client.publish(TOPIC_EXCHANGE_SERVICE_STATE, "ONLINE" , qos=1, retain=True)
 
 def on_publish(client, userdata, mid):
     logging.debug("message id: %s",str(mid))
@@ -155,6 +161,11 @@ def on_connect(client, userdata, flags, rc):
             logging.info("Kairoshub autoconfiguration endend.")
         except Exception as e: 
             logging.warning("kairoshub autoconfiguration failed. [%s]", (e))
+
+    logging.info("Setting state service in ONLINE.")
+    client.publish(TOPIC_HUB_SYSTEM_CODE, data["systemCode"], qos=1, retain=True)
+
+    
         
 
 

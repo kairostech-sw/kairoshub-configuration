@@ -31,7 +31,7 @@ class HelloWorld(hass.Hass):
             self.log("ERROR, system code not valid!!",level="ERROR")
             os.system("sudo service kairoshub-assistance restart")
             time.sleep(5)
-            self.fire_event("systemAssistanceOnCommand")
+            self.fire_event("HA_ASSSISTANCE_ON")
             return
         
         if currentSystemCode != mqttSystemCode:
