@@ -8,7 +8,6 @@ class KairoshubEvent(hass.Hass):
 
     def ha_event(self, event_name, data, kwargs):    
 
-        self.log(data, level="DEBUG")
         eventType = None
         try:
             eventType = data["eventType"]
@@ -33,10 +32,6 @@ class KairoshubEvent(hass.Hass):
 
             if "ASSISTANCE_COMMAND_OFF" in eventType:
                 self.fire_event("HA_ASSSISTANCE_OFF")
-
-            if "SERVICE_EXCHANGE_RESTART_REQUEST" in eventType:
-                os.system("sudo service kairoshub-assistance restart")
-                self.log("Received exchange service restart request", level="WARN")
 
         except Exception as e:
             self.log(e, level="ERROR")

@@ -23,6 +23,7 @@ KAIROSHUB_RELEASE_COMMAND   = "KAIROSHUB_RELEASE_CHECK"
 
 TOPIC_EXCHANGE_SERVICE_STATE= "kairostech/system/exchange_service"
 TOPIC_EXCHANGE_SERVICE_CHECK= "kairostech/system/exchange_service/lastcheck" 
+
 KAIROSHUB_ES_LOG_FILE       = "/home/pi/workspace/logs/exchange-services.log"
 KAIROSHUB_INIT_FILE         = "/boot/kairoshub.json"
 
@@ -108,8 +109,8 @@ def on_message(client, userdata, msg):
                         file.write(newFileData)
                         os.system("docker restart kairoshub")
 
-        if "KAIROSHUB_SYSTEM_EXCHANGE_CHECK" in payload: 
-            client.publish(TOPIC_EXCHANGE_SERVICE_STATE, "ONLINE" , qos=1, retain=True)
+        if payload == "KAIROSHUB_SYSTEM_EXCHANGE_CHECK": 
+            client.publish(TOPIC_EXCHANGE_SERVICE_CHECK, time.time() , qos=1, retain=True)
 
 def on_publish(client, userdata, mid):
     logging.debug("message id: %s",str(mid))
@@ -163,7 +164,7 @@ def on_connect(client, userdata, flags, rc):
             logging.warning("kairoshub autoconfiguration failed. [%s]", (e))
 
     logging.info("Setting state service in ONLINE.")
-    client.publish(TOPIC_HUB_SYSTEM_CODE, data["systemCode"], qos=1, retain=True)
+    client.publish(TOPIC_EXCHANGE_SERVICE_STATE, "ONLINE" , qos=1, retain=True)
 
     
         
@@ -171,7 +172,8 @@ def on_connect(client, userdata, flags, rc):
 
 def on_disconnect(client, userdata, rc):
     if rc != 0:
-        logging.warning("Unexpected MQTT disconnection. Will auto-reconnect")
+        logging.warning("Unexpected MQTT disconnection. Will restart the service")
+        os.system("sudo service kairoshub-assistance restart")
 
 client = paho.Client()
 client.username_pw_set("mqtt_kairos", "kairos!")
