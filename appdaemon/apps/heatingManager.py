@@ -90,7 +90,8 @@ class HeatingManager(hass.Hass):
             
     def turnHeatingOn(self,data):
         program=data["program"]
-        currentEvent=data["event"]
+        eventData = self.extractEventData(data)
+
         trvList=[]
         temperatureSensor=[]
         temperatureSensorGroup     = self.get_state("group.sensor_temperatures", attribute="entity_id")
@@ -124,18 +125,17 @@ class HeatingManager(hass.Hass):
             if program!="prog0":
                 self.__setProgramSchedule__(program[-1], data, status="running")
            
-            self.fire_event("AD_KAIROSHUB_NOTIFICATION",sender=currentEvent["sender"], ncode="HEATING_ON", type="NOTICE")
+            self.fire_event("AD_KAIROSHUB_NOTIFICATION",sender=eventData["sender"], ncode="HEATING_ON", type="NOTICE")
         else:
             if program!="prog0":
                 self.turn_off("input_boolean.heater_program{}_on".format(program[-1]))
             self.turn_off("input_boolean.sw_thermostat_frontend")
 
-            self.fire_event("AD_KAIROSHUB_NOTIFICATION",sender=currentEvent["sender"], ncode="HEATING_ERROR_ON", type="NOTICE")
+            self.fire_event("AD_KAIROSHUB_NOTIFICATION",sender=eventData["sender"], ncode="HEATING_ERROR_ON", type="NOTICE")
 
 
     def turnHeatingOff(self, data):
         program=data["program"]
-        eventData = self.extractEventData(data)
 
         self.log("Turning off heating", level="INFO")
 
@@ -161,8 +161,14 @@ class HeatingManager(hass.Hass):
     def turnProgramOff(self, event_name, data, kwargs):
         
         self.log("turningProgram OFF")
-        self.log(data)
-        self.turnHeatingOff(data={"program":"prog{}".format(self.isHeatingProgramOn())})
+        self.log(data, level="DEBUG")
+        eventData = self.extractEventData(data["data"])
+        programData = {"program":"prog{}".format(self.isHeatingProgramOn())}
+
+        programOffData = {**programData, **eventData}
+
+        self.log(programOffData, level="DEBUG")
+        self.turnHeatingOff(data=programOffData)
 
     def programSchedule(self, data):
         now=datetime.strptime(self.get_state("sensor.date_time_iso"),"%Y-%m-%dT%H:%M:%S")
@@ -344,11 +350,20 @@ class HeatingManager(hass.Hass):
 
         return trvList
 
-    def extractEventData(self, event):
-         sender=  event["sender"] if "sender" in event else None
-         eventType= event["eventType"] if "eventType" in event else None
+    def extractEventData(self, eventData):
 
-         return {
-            "sender": sender,
-            "eventType": eventType
-         }
+        if "event" in eventData:
+            event = eventData["event"]
+            sender=  event["sender"] if "sender" in event else None
+            eventType= event["eventType"] if "eventType" in event else None
+
+            return {
+                "sender": sender,
+                "eventType": eventType
+            }
+        else:
+            return {
+                "sender": "",
+                "eventType": ""
+            }
+         

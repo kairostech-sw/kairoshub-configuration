@@ -27,16 +27,25 @@ class HelloWorld(hass.Hass):
         currentSystemCode = self.get_state(KAIROSHUB_SYSTEM_CODE)
         currentSystemOwner = self.get_state(KAIROSHUB_SYSTEM_OWNER)
 
+        # HOTFIX recupero impianti installati
         if not currentSystemCode.startswith("H") and (mqttSystemCode == "" or mqttSystemCode == "unknown" or mqttSystemCode == "undefined") :
             self.log("ERROR, system code not valid!! falling back into mainteneance mode",level="ERROR")
             self.fire_event("HA_ASSSISTANCE_ON")
             return
         
-        if currentSystemCode != mqttSystemCode:
+        if "unknown" == mqttSystemCode and currentSystemCode != "" and currentSystemCode.startswith("H"):
+            self.log("Setting system code value on mqtt")
+            self.fire_event("AD_MQTT_PUBLISH",topic="kairostech/system_code",payload=currentSystemCode)
+            
+        if "unknown" != mqttSystemCode and currentSystemCode != mqttSystemCode:
             self.log("Setting new system code value")
             self.set_state(KAIROSHUB_SYSTEM_CODE, state=mqttSystemCode.upper())
             
-        if currentSystemOwner != mqttSystemOwner:
+        if "unknown" == mqttSystemOwner and currentSystemOwner != "":
+            self.log("Setting system owner value on mqtt")
+            self.fire_event("AD_MQTT_PUBLISH",topic="kairostech/owner",payload=currentSystemOwner)
+
+        if "unknown" != mqttSystemOwner and currentSystemOwner != mqttSystemOwner:
             self.log("Setting new system owner value")
             self.set_state(KAIROSHUB_SYSTEM_OWNER, state=mqttSystemOwner)
 
@@ -63,7 +72,7 @@ class HelloWorld(hass.Hass):
         if state=="MAINTENEANCE":
             self.set_state("input_boolean.assistance_request",state='on', attributes=assistanceAttributes)
             self.log("Restoring Assistance Button state. state: on",level="INFO")
-            self.fire_event("systemAssistanceOnCommand")
+            self.fire_event("HA_ASSSISTANCE_ON")
         else:
             self.set_state("input_boolean.assistance_request",state='off', attributes=assistanceAttributes)
             self.log("Restoring Assistance Button state. state: off",level="INFO")

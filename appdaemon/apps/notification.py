@@ -14,8 +14,6 @@ class Notification(hass.Hass):
 
     def notification(self, event_name, data, kwargs):
 
-        self.log(data)
-        # entity=data["entity"]
         ncode=data["ncode"]
         sender = data["sender"] if "sender" in data and "" != data["sender"] else "HUB"
         notification_type=data["type"]
@@ -23,11 +21,6 @@ class Notification(hass.Hass):
         notificationToSend = self.buildNotification(type=notification_type, sender=sender, code=ncode)
 
         self.dispatchNotification(notificationToSend)
-
-        # self.log("Sending the notification", level="INFO")
-        # entity=entity.split(".")[1].split("_")[0].upper()
-        # self.notify("{} battery is low".format(entity), name="persistent_notification")
-
 
 
     def buildNotification(self, type, sender, code):
