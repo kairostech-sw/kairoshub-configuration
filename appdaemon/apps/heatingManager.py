@@ -17,13 +17,10 @@ class HeatingManager(hass.Hass):
 
 
     def handleManualHeating(self, event_name, data, kwargs):
-        # self.log("manual heating")
-        # self.log(data)
         if self.get_state("switch.sw_thermostat") =="off":
-            self.turn_on("input_boolean.sw_thermostat_frontend")
             self.turnHeatingOn(data['data'])
         else: 
-            self.turnHeatingOff(data['data'])
+            self.turnProgramOff(event_name, data['data'], kwargs)
 
     def handleHeatingProgram(self, event_name, data, kwargs):
         data=data['data']
@@ -96,8 +93,6 @@ class HeatingManager(hass.Hass):
         temperatureSensor=[]
         temperatureSensorGroup     = self.get_state("group.sensor_temperatures", attribute="entity_id")
 
-        self.turn_on("input_boolean.sw_thermostat_frontend")
-
         trvNum=self.get_state("sensor.temperatura",attribute="count_sensors")-len(temperatureSensorGroup)
         sensor_temperatura=self.get_state("sensor.temperatura")
 
@@ -119,9 +114,9 @@ class HeatingManager(hass.Hass):
 
         self.log("Setting temperature", level="INFO")
         self.setTargetTempFromProgram(trvList, program)
+        self.turn_on("switch.sw_thermostat")
+        self.log("Thermostat turned on", level="INFO")
         if asyncio.run(self.isValveOpen({"trvList":trvList,"counter":1})):
-            self.turn_on("switch.sw_thermostat")
-            self.log("Thermostat turned on", level="INFO")
             if program!="prog0":
                 self.__setProgramSchedule__(program[-1], data, status="running")
            
@@ -129,9 +124,8 @@ class HeatingManager(hass.Hass):
         else:
             if program!="prog0":
                 self.turn_off("input_boolean.heater_program{}_on".format(program[-1]))
-            self.turn_off("input_boolean.sw_thermostat_frontend")
 
-            self.fire_event("AD_KAIROSHUB_NOTIFICATION",sender=eventData["sender"], ncode="HEATING_ERROR_ON", type="NOTICE")
+            self.fire_event("AD_KAIROSHUB_NOTIFICATION",sender=eventData["sender"], ncode="HEATING_VALVES_CLOSED", type="NOTICE")
 
 
     def turnHeatingOff(self, data):
@@ -152,17 +146,17 @@ class HeatingManager(hass.Hass):
                 self.turn_off("input_boolean.heater_program{}_on".format(activeProgram))
         
         self.turn_off("switch.sw_thermostat")
-        self.turn_off("input_boolean.sw_thermostat_frontend")
+
         if asyncio.run(self.isHeaterOff({"counter":1})):
-            self.fire_event("AD_KAIROSHUB_NOTIFICATION",sender=eventData["sender"], ncode="HEATING_OFF", type="NOTICE")
+            self.fire_event("AD_KAIROSHUB_NOTIFICATION",sender=data["sender"], ncode="HEATING_OFF", type="NOTICE")
         else:
-            self.fire_event("AD_KAIROSHUB_NOTIFICATION",sender=eventData["sender"], ncode="HEATING_OFF_ERROR", type="ALERT")
+            self.fire_event("AD_KAIROSHUB_NOTIFICATION",sender=data["sender"], ncode="HEATING_OFF_ERROR", type="ALERT")
 
     def turnProgramOff(self, event_name, data, kwargs):
         
         self.log("turningProgram OFF")
         self.log(data, level="DEBUG")
-        eventData = self.extractEventData(data["data"])
+        eventData = self.extractEventData(data)
         programData = {"program":"prog{}".format(self.isHeatingProgramOn())}
 
         programOffData = {**programData, **eventData}
@@ -257,7 +251,6 @@ class HeatingManager(hass.Hass):
                 
         else:
             self.log("The heater didn't turn off", level="INFO")
-            self.turn_on("input_boolean.sw_thermostat_frontend")
             return False
     
     async def isValveOpen(self, kwargs):

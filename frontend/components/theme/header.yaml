@@ -68,7 +68,7 @@ cards:
           - name: Caldaia
             type: 'custom:button-card'
             template: icon_state_header
-            entity: 'input_boolean.sw_thermostat_frontend'
+            entity: 'switch.sw_thermostat'
             icon: 'mdi:radiator'
             color: auto
             tap_action:
