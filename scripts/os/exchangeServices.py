@@ -8,6 +8,9 @@ from subprocess import CalledProcessError
 
 
 TOPIC_COMMAND               = "kairostech/command"
+TOPIC_KAIROSHUB_SW_BRANCH   = "kairostech/kairoshub/branch"
+TOPIC_KAIROSHUB_CONF_SW_BRANCH   = "kairostech/hakairos-configuration/branch"
+
 TOPIC_STATE                 = "kairostech/state"
 TOPIC_STATE_DETAIL          = "kairostech/state/detail"
 TOPIC_VPN_PROCESS           = "kairostech/state/vpn_process"
@@ -30,6 +33,10 @@ KAIROSHUB_INIT_FILE         = "/boot/kairoshub.json"
 logging.basicConfig(filename=KAIROSHUB_ES_LOG_FILE, level=logging.INFO, format="%(asctime)s %(message)s")
 
 global vpn_pid
+
+global kairoshubSwBranchRef
+
+global kairoshubConfigurationSwBranchRef
 
 def on_message(client, userdata, msg):
     logging.info("Incoming message on topic %s, with payload %s", msg.topic, str(msg.payload))
@@ -63,8 +70,9 @@ def on_message(client, userdata, msg):
                 client.publish(TOPIC_STATE, "NORMAL", qos=1, retain=True)
                 client.publish(TOPIC_VPN_PROCESS, "", qos=1, retain=True)
             except CalledProcessError:
-                logging.error("Error on killing VPN service. No process found.")
-
+                logging.error("Error on killing VPN service. No process found, maybe killed yet.")
+                client.publish(TOPIC_STATE, "NORMAL", qos=1, retain=True)
+                client.publish(TOPIC_VPN_PROCESS, "", qos=1, retain=True)
             return 
         
         #RELEASE CHECK COMMAND
@@ -73,15 +81,23 @@ def on_message(client, userdata, msg):
                 msg = "CHECKING FOR A NEW RELEASE OF HAKAIROS CONFIGURATION"
                 logging.info(msg)
                 client.publish(TOPIC_STATE_DETAIL, msg, qos=1, retain=True)
-                os.system("sh /home/pi/workspace/scripts/release_hakairos-configuration.sh")
-                time.sleep(30)
-                os.system("sudo chown -R pi:pi /home/pi/workspace/hakairos-configuration")
+                if None != kairoshubConfigurationSwBranchRef and "" != kairoshubConfigurationSwBranchRef:
+                    os.system("sh /home/pi/workspace/scripts/release_hakairos-configuration.sh "+kairoshubConfigurationSwBranchRef)
+                    time.sleep(30)
+                    os.system("sudo chown -R pi:pi /home/pi/workspace/hakairos-configuration")
+                else: 
+                    logging.error("Software branch ref, for kairoshub-configuration not found. Skipping..")
+
                 msg = "CHECKING FOR A NEW RELEASE OF KAIROSHUB"
                 logging.info(msg)
                 client.publish(TOPIC_STATE_DETAIL, msg, qos=1, retain=True)
-                os.system("sh /home/pi/workspace/scripts/release_kairoshub.sh")
-                time.sleep(30)
-                os.system("sudo chown -R pi:pi /home/pi/workspace/kairoshub")
+                if None != kairoshubSwBranchRef and "" != kairoshubSwBranchRef:
+                    os.system("sh /home/pi/workspace/scripts/release_kairoshub.sh")
+                    time.sleep(30)
+                    os.system("sudo chown -R pi:pi /home/pi/workspace/kairoshub")
+                else:
+                    logging.error("Software branch ref, for kairoshub not found. Skipping..")
+
                 msg = "CHECKING FOR A NEW SOFTWARE RELEASE COMPLETE"
                 logging.info(msg)
                 client.publish(TOPIC_STATE_DETAIL, msg , qos=1, retain=True)
@@ -111,9 +127,20 @@ def on_message(client, userdata, msg):
 
         if payload == "KAIROSHUB_SYSTEM_EXCHANGE_CHECK": 
             client.publish(TOPIC_EXCHANGE_SERVICE_CHECK, time.time() , qos=1, retain=True)
+    else:
+        if msg.topic == TOPIC_KAIROSHUB_CONF_SW_BRANCH:
+            logging.info("Getting kairoshub configuration sw branch info")
+            kairoshubConfigurationSwBranchRef = payload
+
+        elif msg.topic == TOPIC_KAIROSHUB_SW_BRANCH:
+            logging.info("Getting kairoshub sw branch")
+            kairoshubSwBranchRef = payload
+
+
 
 def on_publish(client, userdata, mid):
     logging.debug("message id: %s",str(mid))
+
 
 def on_connect(client, userdata, flags, rc):
     logging.info("Connected on broker. Received CONNACK code %d.", (rc))
@@ -167,13 +194,11 @@ def on_connect(client, userdata, flags, rc):
     client.publish(TOPIC_EXCHANGE_SERVICE_STATE, "ONLINE" , qos=1, retain=True)
 
     
-        
-
-
 def on_disconnect(client, userdata, rc):
     if rc != 0:
         logging.warning("Unexpected MQTT disconnection. Will restart the service")
         os.system("sudo service kairoshub-assistance restart")
+
 
 client = paho.Client()
 client.username_pw_set("mqtt_kairos", "kairos!")
@@ -184,5 +209,7 @@ client.on_disconnect = on_disconnect
 client.connect("localhost",1884)
 
 client.subscribe(TOPIC_COMMAND)
+client.subscribe(TOPIC_KAIROSHUB_SW_BRANCH)
+client.subscribe(TOPIC_KAIROSHUB_CONF_SW_BRANCH)
 
 client.loop_forever()

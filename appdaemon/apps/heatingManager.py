@@ -121,11 +121,13 @@ class HeatingManager(hass.Hass):
                 self.__setProgramSchedule__(program[-1], data, status="running")
            
             self.fire_event("AD_KAIROSHUB_NOTIFICATION",sender=eventData["sender"], ncode="HEATING_ON", type="NOTICE")
+            self.fire_event("HA_ENTITY_METRICS") #entity metrics request update
         else:
             if program!="prog0":
                 self.turn_off("input_boolean.heater_program{}_on".format(program[-1]))
 
             self.fire_event("AD_KAIROSHUB_NOTIFICATION",sender=eventData["sender"], ncode="HEATING_VALVES_CLOSED", type="NOTICE")
+            self.fire_event("HA_ENTITY_METRICS") #entity metrics request update
 
 
     def turnHeatingOff(self, data):
@@ -147,16 +149,19 @@ class HeatingManager(hass.Hass):
         
         self.turn_off("switch.sw_thermostat")
 
+
         if asyncio.run(self.isHeaterOff({"counter":1})):
             self.fire_event("AD_KAIROSHUB_NOTIFICATION",sender=data["sender"], ncode="HEATING_OFF", type="NOTICE")
         else:
             self.fire_event("AD_KAIROSHUB_NOTIFICATION",sender=data["sender"], ncode="HEATING_OFF_ERROR", type="ALERT")
+        
+        self.fire_event("HA_ENTITY_METRICS") #entity metrics request update
 
     def turnProgramOff(self, event_name, data, kwargs):
         
         self.log("turningProgram OFF")
         self.log(data, level="DEBUG")
-        eventData = self.extractEventData(data)
+        eventData = self.extractEventData(data['data'])
         programData = {"program":"prog{}".format(self.isHeatingProgramOn())}
 
         programOffData = {**programData, **eventData}

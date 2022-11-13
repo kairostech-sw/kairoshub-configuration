@@ -21,20 +21,20 @@
       data_template:
         topic: "kairostech/command"
         payload: "SET_CONSUMER_TOPIC_{{ states('input_text.system_code') }}"
-- alias: RUN Entity metrics collect
-  trigger:
-    platform: time_pattern
-    hours: "/1"
-  action:
-    - service: shell_command.entity_metrics
-- alias: HA entity metrics collection
-  trigger:
-    platform: mqtt
-    topic: "metrics/entities"
-  action:
-    - event: HA_SCRIPT_EVENT
-      event_data:
-        payload: "{{ trigger.payload }}"
+# - alias: RUN Entity metrics collect
+#   trigger:
+#     platform: time_pattern
+#     hours: "/1"
+#   action:
+#     - service: shell_command.entity_metrics
+# - alias: HA entity metrics collection
+#   trigger:
+#     platform: mqtt
+#     topic: "metrics/entities"
+#   action:
+#     - event: HA_SCRIPT_EVENT
+#       event_data:
+#         payload: "{{ trigger.payload }}"
 - alias: SYSTEM METRICS
   trigger:
     platform: time_pattern
@@ -43,8 +43,10 @@
     - event: AD_SYSTEM_METRICS
 - alias: ENTITY METRICS
   trigger:
-    platform: time_pattern
-    minutes: /15
+    - platform: time_pattern
+      minutes: /15
+    - platform: event
+      event_type: HA_ENTITY_METRICS
   action:
     event: "AD_ENTITY_METRICS"
 - alias: HA system metrics collection
