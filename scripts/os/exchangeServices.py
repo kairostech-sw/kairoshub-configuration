@@ -34,9 +34,8 @@ logging.basicConfig(filename=KAIROSHUB_ES_LOG_FILE, level=logging.INFO, format="
 
 global vpn_pid
 
-global kairoshubSwBranchRef
-
-global kairoshubConfigurationSwBranchRef
+kairoshubConfigurationSwBranchRef = ""
+kairoshubSwBranchRef = ""
 
 def on_message(client, userdata, msg):
     logging.info("Incoming message on topic %s, with payload %s", msg.topic, str(msg.payload))
@@ -81,8 +80,11 @@ def on_message(client, userdata, msg):
                 msg = "CHECKING FOR A NEW RELEASE OF HAKAIROS CONFIGURATION"
                 logging.info(msg)
                 client.publish(TOPIC_STATE_DETAIL, msg, qos=1, retain=True)
+                global kairoshubConfigurationSwBranchRef
                 if None != kairoshubConfigurationSwBranchRef and "" != kairoshubConfigurationSwBranchRef:
-                    os.system("sh /home/pi/workspace/scripts/release_hakairos-configuration.sh "+kairoshubConfigurationSwBranchRef)
+                    shcommand = "sh /home/pi/workspace/scripts/release_hakairos-configuration.sh "+kairoshubConfigurationSwBranchRef
+                    logging.info("running command: "+shcommand)
+                    os.system(shcommand)
                     time.sleep(30)
                     os.system("sudo chown -R pi:pi /home/pi/workspace/hakairos-configuration")
                 else: 
@@ -91,8 +93,11 @@ def on_message(client, userdata, msg):
                 msg = "CHECKING FOR A NEW RELEASE OF KAIROSHUB"
                 logging.info(msg)
                 client.publish(TOPIC_STATE_DETAIL, msg, qos=1, retain=True)
+                global kairoshubSwBranchRef
                 if None != kairoshubSwBranchRef and "" != kairoshubSwBranchRef:
-                    os.system("sh /home/pi/workspace/scripts/release_kairoshub.sh")
+                    shcommand = "sh /home/pi/workspace/scripts/release_kairoshub.sh "+kairoshubSwBranchRef
+                    logging.info("running command: "+shcommand)
+                    os.system(shcommand)
                     time.sleep(30)
                     os.system("sudo chown -R pi:pi /home/pi/workspace/kairoshub")
                 else:
@@ -133,7 +138,7 @@ def on_message(client, userdata, msg):
             kairoshubConfigurationSwBranchRef = payload
 
         elif msg.topic == TOPIC_KAIROSHUB_SW_BRANCH:
-            logging.info("Getting kairoshub sw branch")
+            logging.info("Getting kairoshub sw branch info")
             kairoshubSwBranchRef = payload
 
 
