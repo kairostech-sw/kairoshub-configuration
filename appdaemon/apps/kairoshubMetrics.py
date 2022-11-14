@@ -33,8 +33,6 @@ class KairoshubMetrics(hass.Hass):
 
     def entityMetrics(self, event_name, data, kwargs):
 
-        self.log("Retrieving Entity Metrics", level="INFO")
-
         entityMessage = {}
 
         systemCode                  = self.get_state("input_text.system_code")
@@ -42,6 +40,7 @@ class KairoshubMetrics(hass.Hass):
         entityMessage["rollers"]    = self.get_state("group.rolershutters")
         entityMessage["heating"]    = self.get_state("switch.sw_thermostat")
         entityMessage["power"]      = self.get_state("sensor.em_assorbimento")
+        entityMessage["state"]        = self.get_state("sensor.system_state")
 
         self.log("Entity Metrics: %s", entityMessage, level="INFO")
 
