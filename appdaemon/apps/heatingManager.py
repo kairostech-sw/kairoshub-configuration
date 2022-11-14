@@ -8,20 +8,22 @@ file="./kairoshubHeating.json"
 
 class HeatingManager(hass.Hass):
 
+    maxRetry = 5
+    
     def initialize(self):
         self.listen_event(self.handleHeatingProgram,"HA_MANAGE_HEATER")
         self.listen_event(self.handleManualHeating, "AD_HEATING")
         self.listen_event(self.turnProgramOff,"AD_PROGRAM_OFF")
 
+
     def handleManualHeating(self, event_name, data, kwargs):
         if self.get_state("switch.sw_thermostat") =="off":
-            self.turn_on("input_boolean.sw_thermostat_frontend")
-            self.turnHeatingOn(data)
+            self.turnHeatingOn(data['data'])
         else: 
-            self.turnHeatingOff(data)
+            self.turnProgramOff(event_name, data['data'], kwargs)
 
     def handleHeatingProgram(self, event_name, data, kwargs):
-
+        data=data['data']
         progID = data["program"][-1]
         activeProgram= self.isHeatingProgramOn()
         now=datetime.strptime(self.get_state("sensor.date_time_iso"),"%Y-%m-%dT%H:%M:%S")
@@ -57,7 +59,7 @@ class HeatingManager(hass.Hass):
                     self.log("The comfort temperature was reached", level="INFO")
                     if self.get_state("input_boolean.heater_program{}_on".format(progID))=="on":    
                         self.log("The program is now ending", level="INFO")
-                        self.turnHeatingOff(data)
+                        self.turnProgramOff(event_name, data, kwargs)
                     return
                 if self.get_state("input_boolean.heater_program{}_on".format(progID))=="off":
                     self.log("The heating program {} is now starting".format(progID), level="INFO")
@@ -73,23 +75,22 @@ class HeatingManager(hass.Hass):
             if float(self.get_state("input_number.temperature_period{}".format(progID)))<=float(data["temperature"]):
                         self.log("The comfort temperature was reached", level="INFO")
                         self.log("The program is now ending", level="INFO")
-                        self.turnHeatingOff(data)
+                        self.turnProgramOff(event_name, data, kwargs)
                         return
             if off_time<=now:
                 self.log("The heating program {} is now ending".format(progID), level="INFO")
-                self.turn_off("input_boolean.heater_program{}_on".format(progID))
-                self.turnHeatingOff(data)
+                self.turnProgramOff(event_name, data, kwargs)
                 return
             else:
                 self.log("This program is already active", level="INFO")
             
     def turnHeatingOn(self,data):
         program=data["program"]
+        eventData = self.extractEventData(data)
+
         trvList=[]
         temperatureSensor=[]
         temperatureSensorGroup     = self.get_state("group.sensor_temperatures", attribute="entity_id")
-
-        self.turn_on("input_boolean.sw_thermostat_frontend")
 
         trvNum=self.get_state("sensor.temperatura",attribute="count_sensors")-len(temperatureSensorGroup)
         sensor_temperatura=self.get_state("sensor.temperatura")
@@ -112,21 +113,22 @@ class HeatingManager(hass.Hass):
 
         self.log("Setting temperature", level="INFO")
         self.setTargetTempFromProgram(trvList, program)
+        self.turn_on("switch.sw_thermostat")
+        self.log("Thermostat turned on", level="INFO")
+        if program!="prog0":
+            self.__setProgramSchedule__(program[-1], data, status="running")
         if asyncio.run(self.isValveOpen({"trvList":trvList,"counter":1})):
-            self.turn_on("switch.sw_thermostat")
-            self.log("Thermostat turned on", level="INFO")
-            if program!="prog0":
-                self.__setProgramSchedule__(program[-1], data, status="running")
-        else:
-            if program!="prog0":
-                self.turn_off("input_boolean.heater_program{}_on".format(program[-1]))
-            self.turn_off("input_boolean.sw_thermostat_frontend")
-        #self.notify()  
+            self.fire_event("AD_KAIROSHUB_NOTIFICATION",sender=eventData["sender"], ncode="HEATING_ON", type="NOTICE")
+            self.fire_event("HA_ENTITY_METRICS") #entity metrics request update
+        else:            
+
+            self.fire_event("AD_KAIROSHUB_NOTIFICATION",sender=eventData["sender"], ncode="HEATING_VALVES_CLOSED", type="NOTICE")
+            self.fire_event("HA_ENTITY_METRICS") #entity metrics request update
+
 
     def turnHeatingOff(self, data):
         program=data["program"]
         self.log("Turning off heating", level="INFO")
-
         if program!="prog0":
             input_bool="input_boolean.heater_program{}_on".format(program[-1])
             if self.get_state(input_bool)=="on":
@@ -140,11 +142,25 @@ class HeatingManager(hass.Hass):
                 self.turn_off("input_boolean.heater_program{}_on".format(activeProgram))
         
         self.turn_off("switch.sw_thermostat")
-        self.turn_off("input_boolean.sw_thermostat_frontend")
-        asyncio.run(self.isHeaterOff({"counter":1}))
+
+
+        if asyncio.run(self.isHeaterOff({"counter":1})):
+            self.fire_event("AD_KAIROSHUB_NOTIFICATION",sender=data["sender"], ncode="HEATING_OFF", type="NOTICE")
+        else:
+            self.fire_event("AD_KAIROSHUB_NOTIFICATION",sender=data["sender"], ncode="HEATING_OFF_ERROR", type="ALERT")
+        
+        self.fire_event("HA_ENTITY_METRICS") #entity metrics request update
 
     def turnProgramOff(self, event_name, data, kwargs):
-        self.turnHeatingOff(data={"program":"prog{}".format(self.isHeatingProgramOn())})
+        
+        self.log("turningProgram OFF")
+        self.log(data, level="DEBUG")
+        eventData = self.extractEventData(data) 
+        programData ={"program": data["program"]}
+        programOffData = {**programData, **eventData}
+
+        self.log(programOffData, level="DEBUG")
+        self.turnHeatingOff(data=programOffData)
 
     def programSchedule(self, data):
         now=datetime.strptime(self.get_state("sensor.date_time_iso"),"%Y-%m-%dT%H:%M:%S")
@@ -185,7 +201,7 @@ class HeatingManager(hass.Hass):
         schedule={}
         f_on_time=datetime.strptime(program_data["prog{}".format(progID)]["on_time"],"%Y-%m-%dT%H:%M:%S")
         f_off_time=datetime.strptime(program_data["prog{}".format(progID)]["off_time"],"%Y-%m-%dT%H:%M:%S")
-        
+
         if program_data["prog{}".format(progID)]["status"]=="manual_off" or status=="manual_off":
             if f_off_time<=now:
                 status="not running"
@@ -219,14 +235,13 @@ class HeatingManager(hass.Hass):
         return 0
     
     async def isHeaterOff(self, kwargs):
-        self.log("Checking if the heater was turned off. Try: %s", kwargs["counter"], level="INFO")
+        self.log("Checking if the heater was turned off. Try: %s of %s", kwargs["counter"], self.maxRetry, level="INFO")
 
         counter=kwargs["counter"]
         if await self.get_state("switch.sw_thermostat")=="off":
             self.log("The heater turned off", level="INFO")
-            #self.notify("Heater turned off")
             return True
-        if counter <5:
+        if counter < self.maxRetry:
             await asyncio.sleep(30)
             counter=counter+1
             kwargs={"counter":counter}
@@ -234,31 +249,28 @@ class HeatingManager(hass.Hass):
                 
         else:
             self.log("The heater didn't turn off", level="INFO")
-            self.turn_on("input_boolean.sw_thermostat_frontend")
-            #self.notify("ERROR: The heater didn't turn off")
             return False
     
     async def isValveOpen(self, kwargs):
 
-            self.log("Checking if valves are open. Try: %s", kwargs["counter"], level="INFO")
+            self.log("Checking if valves are open. Try: %s of %s", kwargs["counter"], self.maxRetry, level="INFO")
             trvList=kwargs["trvList"]
             counter=kwargs["counter"]
             trvList=await  self.getTRVListAwait(len(trvList))
             for trv in trvList:
                 sensor=trv["sensorName"]
-                if trv[sensor+"pos"]!="unknown" and float(trv[sensor+"pos"])>0 :
+                if trv[sensor+"pos"]!="unknown" and trv[sensor+"pos"]!="unavailable" and float(trv[sensor+"pos"])>0 :
                     self.log("Valve %s is open", sensor, level="INFO")
                     return True
 
-            if counter <5:
+            if counter < self.maxRetry:
                 await asyncio.sleep(30)
                 counter=counter+1
                 kwargs={"trvList":trvList,"counter":counter}
                 return await self.isValveOpen( kwargs)
                 
             else:
-                self.log("No valves are open", level="INFO")
-                #self.notify()
+                self.log("No valves are open", level="ERROR")
                 return False
             
     def setTargetTempFromProgram(self, trvList, program):
@@ -328,3 +340,21 @@ class HeatingManager(hass.Hass):
             trvList.append(attributes)
 
         return trvList
+
+    def extractEventData(self, eventData):
+
+        if "event" in eventData:
+            event = eventData["event"]
+            sender=  event["sender"] if "sender" in event else None
+            eventType= event["eventType"] if "eventType" in event else None
+
+            return {
+                "sender": sender,
+                "eventType": eventType
+            }
+        else:
+            return {
+                "sender": "",
+                "eventType": ""
+            }
+         
