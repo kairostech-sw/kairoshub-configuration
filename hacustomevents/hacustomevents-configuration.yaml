@@ -51,17 +51,17 @@ events:
         data:
           - event: automationEventOnCommand
           - event: automationEventOffCommand
-  - event: systemAssistanceOnCommand
+  - event: HA_ASSSISTANCE_ON
     platform: HASSIO_EVENT
     type: dispatcher
     label: "System Assistance on command"
-  - event: systemAssistanceOffCommand
+  - event: HA_ASSSISTANCE_OFF
     platform: HASSIO_EVENT
     type: dispatcher
     label: "System Assistance off command"
 targets:
   - target: scripts.ececution
-    events: 
+    events:
       - event: ENTITY_METRICS_COLLECTION
         callback:
           - event: HAKAFKA_PRODUCER_PRODUCE
