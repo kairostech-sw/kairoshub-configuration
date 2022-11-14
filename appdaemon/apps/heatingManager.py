@@ -59,7 +59,7 @@ class HeatingManager(hass.Hass):
                     self.log("The comfort temperature was reached", level="INFO")
                     if self.get_state("input_boolean.heater_program{}_on".format(progID))=="on":    
                         self.log("The program is now ending", level="INFO")
-                        self.turnHeatingOff(data)
+                        self.turnProgramOff(event_name, data, kwargs)
                     return
                 if self.get_state("input_boolean.heater_program{}_on".format(progID))=="off":
                     self.log("The heating program {} is now starting".format(progID), level="INFO")
@@ -75,12 +75,11 @@ class HeatingManager(hass.Hass):
             if float(self.get_state("input_number.temperature_period{}".format(progID)))<=float(data["temperature"]):
                         self.log("The comfort temperature was reached", level="INFO")
                         self.log("The program is now ending", level="INFO")
-                        self.turnHeatingOff(data)
+                        self.turnProgramOff(event_name, data, kwargs)
                         return
             if off_time<=now:
                 self.log("The heating program {} is now ending".format(progID), level="INFO")
-                self.turn_off("input_boolean.heater_program{}_on".format(progID))
-                self.turnHeatingOff(data)
+                self.turnProgramOff(event_name, data, kwargs)
                 return
             else:
                 self.log("This program is already active", level="INFO")
@@ -116,15 +115,12 @@ class HeatingManager(hass.Hass):
         self.setTargetTempFromProgram(trvList, program)
         self.turn_on("switch.sw_thermostat")
         self.log("Thermostat turned on", level="INFO")
+        if program!="prog0":
+            self.__setProgramSchedule__(program[-1], data, status="running")
         if asyncio.run(self.isValveOpen({"trvList":trvList,"counter":1})):
-            if program!="prog0":
-                self.__setProgramSchedule__(program[-1], data, status="running")
-           
             self.fire_event("AD_KAIROSHUB_NOTIFICATION",sender=eventData["sender"], ncode="HEATING_ON", type="NOTICE")
             self.fire_event("HA_ENTITY_METRICS") #entity metrics request update
-        else:
-            if program!="prog0":
-                self.turn_off("input_boolean.heater_program{}_on".format(program[-1]))
+        else:            
 
             self.fire_event("AD_KAIROSHUB_NOTIFICATION",sender=eventData["sender"], ncode="HEATING_VALVES_CLOSED", type="NOTICE")
             self.fire_event("HA_ENTITY_METRICS") #entity metrics request update
@@ -132,9 +128,7 @@ class HeatingManager(hass.Hass):
 
     def turnHeatingOff(self, data):
         program=data["program"]
-
         self.log("Turning off heating", level="INFO")
-
         if program!="prog0":
             input_bool="input_boolean.heater_program{}_on".format(program[-1])
             if self.get_state(input_bool)=="on":
@@ -161,9 +155,8 @@ class HeatingManager(hass.Hass):
         
         self.log("turningProgram OFF")
         self.log(data, level="DEBUG")
-        eventData = self.extractEventData(data['data'])
-        programData = {"program":"prog{}".format(self.isHeatingProgramOn())}
-
+        eventData = self.extractEventData(data) 
+        programData ={"program": data["program"]}
         programOffData = {**programData, **eventData}
 
         self.log(programOffData, level="DEBUG")
@@ -208,7 +201,7 @@ class HeatingManager(hass.Hass):
         schedule={}
         f_on_time=datetime.strptime(program_data["prog{}".format(progID)]["on_time"],"%Y-%m-%dT%H:%M:%S")
         f_off_time=datetime.strptime(program_data["prog{}".format(progID)]["off_time"],"%Y-%m-%dT%H:%M:%S")
-        
+
         if program_data["prog{}".format(progID)]["status"]=="manual_off" or status=="manual_off":
             if f_off_time<=now:
                 status="not running"

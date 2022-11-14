@@ -22,7 +22,7 @@ class KairoshubEvent(hass.Hass):
                 self.fire_event("AD_"+ eventType, data=data)
            
             if "HEATING_COMMAND_OFF" in eventType:
-                self.fire_event("AD_PROGRAM_OFF", data={"event": event})
+                self.fire_event("AD_HEATING", data={"program": "prog0", "event": event})
 
             if "HEATING_COMMAND_ON" in eventType: 
                 self.fire_event("AD_HEATING", data={"program": "prog0", "event": event})
