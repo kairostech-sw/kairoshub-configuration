@@ -37,7 +37,7 @@ class KairoshubMetrics(hass.Hass):
 
         systemCode                  = self.get_state("input_text.system_code")
         entityMessage["thermostat"] = self.get_state("sensor.temperatura")
-        entityMessage["rollers"]    = self.get_state("group.rolershutters")
+        entityMessage["rollers"]    = self.get_state("sensor.cover_mean_pos")
         entityMessage["heating"]    = self.get_state("switch.sw_thermostat")
         entityMessage["power"]      = self.get_state("sensor.em_assorbimento")
         entityMessage["state"]        = self.get_state("sensor.system_state")
