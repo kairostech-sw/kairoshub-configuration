@@ -1,0 +1,10 @@
+heating_valves:
+  name: Valvole Riscaldamento
+  entities:
+    - sensor.tv01_temp
+    - sensor.tv02_temp
+    - sensor.tv03_temp
+    - sensor.tv04_temp
+    - sensor.tv05_temp
+    - sensor.tv06_temp
+    - sensor.tv07_temp

@@ -1,0 +1,46 @@
+metrics_frequency:
+  name: Frequenza aggiornamento
+  initial: 6
+  min: 1
+  max: 24
+  step: 1
+temperature_period1:
+  min: 18
+  max: 30
+  step: 0.5
+temperature_period2:
+  min: 18
+  max: 30
+  step: 0.5
+temperature_period3:
+  min: 18
+  max: 30
+  step: 0.5
+temperature_period4:
+  min: 18
+  max: 30
+  step: 0.5
+rollershutter_athome_position:
+  min: 0
+  max: 100
+  step: 5
+  initial: 100
+  mode: slider
+  name: "Posizione In Casa"
+  icon: "mdi:window-shutter"
+rollershutter_notathome_position:
+  min: 0
+  max: 100
+  step: 5
+  initial: 0
+  mode: slider
+  name: "Posizione Fuori Casa"
+  icon: "mdi:window-shutter"
+manual_heating_temp:
+  min: 18
+  max: 31
+  step: 0.5
+  initial: 31
+  mode: slider
+  name: "Temperatura Per Riscaldamento Manuale"
+  icon: "mdi:thermometer"

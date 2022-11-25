@@ -1,0 +1,10 @@
+platform: mqtt
+name: sw_thermostat
+unique_id: sw_thermostat
+state_topic: "shellies/TH02/relay/0"
+command_topic: "shellies/TH02/relay/0/command"
+qos: 0
+payload_on: "on"
+payload_off: "off"
+optimistic: false
+retain: false

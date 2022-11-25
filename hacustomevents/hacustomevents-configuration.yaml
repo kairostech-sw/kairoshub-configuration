@@ -27,30 +27,9 @@ events:
   - event: HAKAFKA_PRODUCER_STOP
     platform: HAKAFKA
     type: dispatcher
-  # - event: INBOUND_EVENT
-  #   platform: HASSIO_EVENT
-  #   type: listener
-  #   callback:
-  #     - event: HAKAFKA_PRODUCER_PRODUCE
-  #       topic: "HASSIO"
   - event: HAKAFKA_PRODUCER_PRODUCE
     platform: HAKAFKA
     type: dispatcher
-  - event: HA_SYSTEM_ENTITIES_ALIGN
-    platform: HASSIO_STATE
-    type: listener
-    callback:
-      - event: HAKAFKA_PRODUCER_PRODUCE
-        topic: "HASSIO_ENTITY_ALIGN"
-  - event: HA_SYSTEM_COMMAND_ALING
-    platform: HASSIO_EVENT
-    type: listener
-    callback:
-      - event: HAKAFKA_PRODUCER_PRODUCE
-        topic: "HASSIO_ENTITY_ALIGN"
-        data:
-          - event: automationEventOnCommand
-          - event: automationEventOffCommand
   - event: HA_ASSSISTANCE_ON
     platform: HASSIO_EVENT
     type: dispatcher

@@ -1,0 +1,38 @@
+- alias: OPEN ROLLERS
+  trigger:
+    - platform: event
+      event_type: HA_ROLLERS_ATHOME_POSITION
+  action:
+    - service: cover.set_cover_position
+      target:
+        entity_id: group.rolershutters
+      data: 
+        position: "{{states('input_number.rollershutter_athome_position')}}"
+    - delay: "00:01:00"
+    - condition: state
+      entity_id: sensor.cover_mean_pos
+      state: input_number.rollershutter_athome_position
+    - event: AD_KAIROSHUB_NOTIFICATION
+      event_data:
+        type: NOTICE
+        ncode: ROLLERS_OPENED
+        sender: "*"
+- alias: CLOSE ROLLERS
+  trigger:
+    - platform: event
+      event_type: HA_ROLLERS_NOTATHOME_POSITION
+  action:
+    - service: cover.set_cover_position
+      target:
+        entity_id: group.rolershutters
+      data: 
+        position: "{{states('input_number.rollershutter_notathome_position')}}"
+    - delay: "00:01:00"
+    - condition: state
+      entity_id: sensor.cover_mean_pos
+      state: input_number.rollershutter_notathome_position
+    - event: AD_KAIROSHUB_NOTIFICATION
+      event_data:
+        type: NOTICE
+        ncode: ROLLERS_CLOSED
+        sender: "*"

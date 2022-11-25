@@ -1,0 +1,9 @@
+rolershutters:
+  name: Tapparelle
+  entities:
+    - cover.rs01
+    - cover.rs02
+    - cover.rs03
+    - cover.rs04
+    - cover.rs05
+    - cover.rs06

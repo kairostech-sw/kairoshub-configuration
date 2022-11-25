@@ -1,0 +1,248 @@
+
+#TV1011
+- name: TV1011_temp
+  platform: mqtt
+  state_topic: "shellies/TV1011/info"
+  unit_of_measurement: "°C"
+  value_template: "{{ value_json.thermostats[0].tmp.value }}"
+  payload_not_available: "offline"
+- name: TV1011_pos
+  platform: mqtt
+  state_topic: "shellies/TV1011/info"
+  unit_of_measurement: "%"
+  value_template: "{{ value_json.thermostats[0].pos }}"
+  payload_not_available: "offline"
+- name: TV1011_target_temp
+  platform: mqtt
+  state_topic: "shellies/TV1011/info"
+  unit_of_measurement: "°C"
+  value_template: "{{ value_json.thermostats[0].target_t.value }}"
+  payload_not_available: "offline"
+- name: TV1011_battery
+  platform: mqtt
+  state_topic: "shellies/TV1011/info"
+  unit_of_measurement: "%"
+  value_template: "{{ value_json.bat.value }}"
+  payload_not_available: "offline"
+- name: TV1011_lastupdate
+  platform: mqtt
+  state_topic: "shellies/TV1011/info"
+  value_template: "{{ states.sensor.time.state }}"
+  payload_not_available: "offline"
+
+#TV1012
+- name: TV1012_temp
+  platform: mqtt
+  state_topic: "shellies/TV1012/info"
+  unit_of_measurement: "°C"
+  value_template: "{{ value_json.thermostats[0].tmp.value }}"
+  payload_not_available: "offline"
+- name: TV1012_pos
+  platform: mqtt
+  state_topic: "shellies/TV1012/info"
+  unit_of_measurement: "%"
+  value_template: "{{ value_json.thermostats[0].pos }}"
+  payload_not_available: "offline"
+- name: TV1012_target_temp
+  platform: mqtt
+  state_topic: "shellies/TV1012/info"
+  unit_of_measurement: "°C"
+  value_template: "{{ value_json.thermostats[0].target_t.value }}"
+  payload_not_available: "offline"
+- name: TV1012_battery
+  platform: mqtt
+  state_topic: "shellies/TV1012/info"
+  unit_of_measurement: "%"
+  value_template: "{{ value_json.bat.value }}"
+  payload_not_available: "offline"
+- name: TV1012_lastupdate
+  platform: mqtt
+  state_topic: "shellies/TV1012/info"
+  value_template: "{{ states.sensor.time.state }}"
+  payload_not_available: "offline"
+
+#TV1021
+- name: TV1021_temp
+  platform: mqtt
+  state_topic: "shellies/TV1021/info"
+  unit_of_measurement: "°C"
+  value_template: "{{ value_json.thermostats[0].tmp.value }}"
+  payload_not_available: "offline"
+- name: TV1021_pos
+  platform: mqtt
+  state_topic: "shellies/TV1021/info"
+  unit_of_measurement: "%"
+  value_template: "{{ value_json.thermostats[0].pos }}"
+  payload_not_available: "offline"
+- name: TV1021_target_temp
+  platform: mqtt
+  state_topic: "shellies/TV1021/info"
+  unit_of_measurement: "°C"
+  value_template: "{{ value_json.thermostats[0].target_t.value }}"
+  payload_not_available: "offline"
+- name: TV1021_battery
+  platform: mqtt
+  state_topic: "shellies/TV1021/info"
+  unit_of_measurement: "%"
+  value_template: "{{ value_json.bat.value }}"
+  payload_not_available: "offline"
+- name: TV1021_lastupdate
+  platform: mqtt
+  state_topic: "shellies/TV1021/info"
+  value_template: "{{ states.sensor.time.state }}"
+  payload_not_available: "offline"
+
+#TV1022
+- name: TV1022_temp
+  platform: mqtt
+  state_topic: "shellies/TV1022/info"
+  unit_of_measurement: "°C"
+  value_template: "{{ value_json.thermostats[0].tmp.value }}"
+  payload_not_available: "offline"
+- name: TV1022_pos
+  platform: mqtt
+  state_topic: "shellies/TV1022/info"
+  unit_of_measurement: "%"
+  value_template: "{{ value_json.thermostats[0].pos }}"
+  payload_not_available: "offline"
+- name: TV1022_target_temp
+  platform: mqtt
+  state_topic: "shellies/TV1022/info"
+  unit_of_measurement: "°C"
+  value_template: "{{ value_json.thermostats[0].target_t.value }}"
+  payload_not_available: "offline"
+- name: TV1022_battery
+  platform: mqtt
+  state_topic: "shellies/TV1022/info"
+  unit_of_measurement: "%"
+  value_template: "{{ value_json.bat.value }}"
+  payload_not_available: "offline"
+- name: TV1022_lastupdate
+  platform: mqtt
+  state_topic: "shellies/TV1022/info"
+  value_template: "{{ states.sensor.time.state }}"
+  payload_not_available: "offline"
+
+#TV1031
+- name: TV1031_temp
+  platform: mqtt
+  state_topic: "shellies/TV1031/info"
+  unit_of_measurement: "°C"
+  value_template: "{{ value_json.thermostats[0].tmp.value }}"
+  payload_not_available: "offline"
+- name: TV1031_pos
+  platform: mqtt
+  state_topic: "shellies/TV1031/info"
+  unit_of_measurement: "%"
+  value_template: "{{ value_json.thermostats[0].pos }}"
+  payload_not_available: "offline"
+- name: TV1031_target_temp
+  platform: mqtt
+  state_topic: "shellies/TV1031/info"
+  unit_of_measurement: "°C"
+  value_template: "{{ value_json.thermostats[0].target_t.value }}"
+  payload_not_available: "offline"
+- name: TV1031_battery
+  platform: mqtt
+  state_topic: "shellies/TV1031/info"
+  unit_of_measurement: "%"
+  value_template: "{{ value_json.bat.value }}"
+  payload_not_available: "offline"
+- name: TV1031_lastupdate
+  platform: mqtt
+  state_topic: "shellies/TV1031/info"
+  value_template: "{{ states.sensor.time.state }}"
+  payload_not_available: "offline"
+
+#TV1032
+- name: TV1032_temp
+  platform: mqtt
+  state_topic: "shellies/TV1032/info"
+  unit_of_measurement: "°C"
+  value_template: "{{ value_json.thermostats[0].tmp.value }}"
+  payload_not_available: "offline"
+- name: TV1032_pos
+  platform: mqtt
+  state_topic: "shellies/TV1032/info"
+  unit_of_measurement: "%"
+  value_template: "{{ value_json.thermostats[0].pos }}"
+  payload_not_available: "offline"
+- name: TV1032_target_temp
+  platform: mqtt
+  state_topic: "shellies/TV1032/info"
+  unit_of_measurement: "°C"
+  value_template: "{{ value_json.thermostats[0].target_t.value }}"
+  payload_not_available: "offline"
+- name: TV1032_battery
+  platform: mqtt
+  state_topic: "shellies/TV1032/info"
+  unit_of_measurement: "%"
+  value_template: "{{ value_json.bat.value }}"
+  payload_not_available: "offline"
+- name: TV1032_lastupdate
+  platform: mqtt
+  state_topic: "shellies/TV1032/info"
+  value_template: "{{ states.sensor.time.state }}"
+  payload_not_available: "offline"
+
+#TV1041
+- name: TV1041_temp
+  platform: mqtt
+  state_topic: "shellies/TV1041/info"
+  unit_of_measurement: "°C"
+  value_template: "{{ value_json.thermostats[0].tmp.value }}"
+  payload_not_available: "offline"
+- name: TV1041_pos
+  platform: mqtt
+  state_topic: "shellies/TV1041/info"
+  unit_of_measurement: "%"
+  value_template: "{{ value_json.thermostats[0].pos }}"
+  payload_not_available: "offline"
+- name: TV1041_target_temp
+  platform: mqtt
+  state_topic: "shellies/TV1041/info"
+  unit_of_measurement: "°C"
+  value_template: "{{ value_json.thermostats[0].target_t.value }}"
+  payload_not_available: "offline"
+- name: TV1041_battery
+  platform: mqtt
+  state_topic: "shellies/TV1041/info"
+  unit_of_measurement: "%"
+  value_template: "{{ value_json.bat.value }}"
+  payload_not_available: "offline"
+- name: TV1041_lastupdate
+  platform: mqtt
+  state_topic: "shellies/TV1041/info"
+  value_template: "{{ states.sensor.time.state }}"
+  payload_not_available: "offline"
+
+#TV1042
+- name: TV1042_temp
+  platform: mqtt
+  state_topic: "shellies/TV1042/info"
+  unit_of_measurement: "°C"
+  value_template: "{{ value_json.thermostats[0].tmp.value }}"
+  payload_not_available: "offline"
+- name: TV1042_pos
+  platform: mqtt
+  state_topic: "shellies/TV1042/info"
+  unit_of_measurement: "%"
+  value_template: "{{ value_json.thermostats[0].pos }}"
+  payload_not_available: "offline"
+- name: TV1042_target_temp
+  platform: mqtt
+  state_topic: "shellies/TV1042/info"
+  unit_of_measurement: "°C"
+  value_template: "{{ value_json.thermostats[0].target_t.value }}"
+  payload_not_available: "offline"
+- name: TV1042_battery
+  platform: mqtt
+  state_topic: "shellies/TV1042/info"
+  unit_of_measurement: "%"
+  value_template: "{{ value_json.bat.value }}"
+  payload_not_available: "offline"
+- name: TV1042_lastupdate
+  platform: mqtt
+  state_topic: "shellies/TV1042/info"
+  value_template: "{{ states.sensor.time.state }}"
+  payload_not_available: "offline"

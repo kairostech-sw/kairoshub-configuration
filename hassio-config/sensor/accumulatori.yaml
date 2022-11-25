@@ -1,0 +1,10 @@
+- platform: integration
+  source: sensor.em_ch1
+  name: "EM Consumo ch1"
+  unit_prefix: k
+  round: 2
+- platform: integration
+  source: sensor.em_ch2
+  name: "EM Consumo ch2"
+  unit_prefix: k
+  round: 2

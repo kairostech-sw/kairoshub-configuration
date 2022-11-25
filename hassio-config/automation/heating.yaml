@@ -1,0 +1,268 @@
+- alias: Prog riscaldamento 1
+  trigger:
+    - platform: time_pattern
+      minutes: /5
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: input_boolean.heater_program1
+        state: "on"
+      - condition: state
+        entity_id: input_boolean.heater_program2_on
+        state: "off"
+      - condition: state
+        entity_id: input_boolean.heater_program3_on
+        state: "off"
+      - condition: state
+        entity_id: input_boolean.heater_program4_on
+        state: "off"
+  action:
+    - event: HA_MANAGE_HEATER
+      event_data:
+        data:
+          event:
+            eventType: HA_MANAGE_HEATER
+            sender: HUB
+          program: prog1
+          temperature: "{{states('sensor.temperatura')}}"
+          on_off_heater: "{{states('switch.sw_thermostat')}}"
+          target_temp: "{{states('input_number.temperature_period1')}}"
+          on_off_time_monday:
+            on_time: "{{states('input_datetime.thermostat_monday_on_period1')}}"
+            off_time: "{{states('input_datetime.thermostat_monday_off_period1')}}"
+          on_off_time_tuesday:
+            on_time: "{{states('input_datetime.thermostat_tuesday_on_period1')}}"
+            off_time: "{{states('input_datetime.thermostat_tuesday_off_period1')}}"
+          on_off_time_wednesday:
+            on_time: "{{states('input_datetime.thermostat_wednesday_on_period1')}}"
+            off_time: "{{states('input_datetime.thermostat_wednesday_off_period1')}}"
+          on_off_time_thursday:
+            on_time: "{{states('input_datetime.thermostat_thursday_on_period1')}}"
+            off_time: "{{states('input_datetime.thermostat_thursday_off_period1')}}"
+          on_off_time_friday:
+            on_time: "{{states('input_datetime.thermostat_friday_on_period1')}}"
+            off_time: "{{states('input_datetime.thermostat_friday_off_period1')}}"
+          on_off_time_saturday:
+            on_time: "{{states('input_datetime.thermostat_saturday_on_period1')}}"
+            off_time: "{{states('input_datetime.thermostat_saturday_off_period1')}}"
+          on_off_time_sunday:
+            on_time: "{{states('input_datetime.thermostat_sunday_on_period1')}}"
+            off_time: "{{states('input_datetime.thermostat_sunday_off_period1')}}"
+
+- alias: Prog riscaldamento 2
+  trigger:
+    - platform: time_pattern
+      minutes: /5
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: input_boolean.heater_program2
+        state: "on"
+      - condition: state
+        entity_id: input_boolean.heater_program1_on
+        state: "off"
+      - condition: state
+        entity_id: input_boolean.heater_program3_on
+        state: "off"
+      - condition: state
+        entity_id: input_boolean.heater_program4_on
+        state: "off"
+  action:
+    - delay: "00:00:10"
+    - event: HA_MANAGE_HEATER
+      event_data:
+        data:
+          event:
+            eventType: HA_MANAGE_HEATER
+            sender: HUB
+          program: prog2
+          temperature: "{{states('sensor.temperatura')}}"
+          on_off_heater: "{{states('switch.sw_thermostat')}}"
+          target_temp: "{{states('input_number.temperature_period2')}}"
+          on_off_time_monday:
+            on_time: "{{states('input_datetime.thermostat_monday_on_period2')}}"
+            off_time: "{{states('input_datetime.thermostat_monday_off_period2')}}"
+          on_off_time_tuesday:
+            on_time: "{{states('input_datetime.thermostat_tuesday_on_period2')}}"
+            off_time: "{{states('input_datetime.thermostat_tuesday_off_period2')}}"
+          on_off_time_wednesday:
+            on_time: "{{states('input_datetime.thermostat_wednesday_on_period2')}}"
+            off_time: "{{states('input_datetime.thermostat_wednesday_off_period2')}}"
+          on_off_time_thursday:
+            on_time: "{{states('input_datetime.thermostat_thursday_on_period2')}}"
+            off_time: "{{states('input_datetime.thermostat_thursday_off_period2')}}"
+          on_off_time_friday:
+            on_time: "{{states('input_datetime.thermostat_friday_on_period2')}}"
+            off_time: "{{states('input_datetime.thermostat_friday_off_period2')}}"
+          on_off_time_saturday:
+            on_time: "{{states('input_datetime.thermostat_saturday_on_period2')}}"
+            off_time: "{{states('input_datetime.thermostat_saturday_off_period2')}}"
+          on_off_time_sunday:
+            on_time: "{{states('input_datetime.thermostat_sunday_on_period2')}}"
+            off_time: "{{states('input_datetime.thermostat_sunday_off_period2')}}"
+
+- alias: Prog riscaldamento 3
+  trigger:
+    - platform: time_pattern
+      minutes: /5
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: input_boolean.heater_program3
+        state: "on"
+      - condition: state
+        entity_id: input_boolean.heater_program1_on
+        state: "off"
+      - condition: state
+        entity_id: input_boolean.heater_program2_on
+        state: "off"
+      - condition: state
+        entity_id: input_boolean.heater_program4_on
+        state: "off"
+  action:
+    - delay: "00:00:20"
+    - event: HA_MANAGE_HEATER
+      event_data:
+        data:
+          event:
+            eventType: HA_MANAGE_HEATER
+            sender: HUB
+          program: prog3
+          temperature: "{{states('sensor.temperatura')}}"
+          on_off_heater: "{{states('switch.sw_thermostat')}}"
+          target_temp: "{{states('input_number.temperature_period3')}}"
+          on_off_time_monday:
+            on_time: "{{states('input_datetime.thermostat_monday_on_period3')}}"
+            off_time: "{{states('input_datetime.thermostat_monday_off_period3')}}"
+          on_off_time_tuesday:
+            on_time: "{{states('input_datetime.thermostat_tuesday_on_period3')}}"
+            off_time: "{{states('input_datetime.thermostat_tuesday_off_period3')}}"
+          on_off_time_wednesday:
+            on_time: "{{states('input_datetime.thermostat_wednesday_on_period3')}}"
+            off_time: "{{states('input_datetime.thermostat_wednesday_off_period3')}}"
+          on_off_time_thursday:
+            on_time: "{{states('input_datetime.thermostat_thursday_on_period3')}}"
+            off_time: "{{states('input_datetime.thermostat_thursday_off_period3')}}"
+          on_off_time_friday:
+            on_time: "{{states('input_datetime.thermostat_friday_on_period3')}}"
+            off_time: "{{states('input_datetime.thermostat_friday_off_period3')}}"
+          on_off_time_saturday:
+            on_time: "{{states('input_datetime.thermostat_saturday_on_period3')}}"
+            off_time: "{{states('input_datetime.thermostat_saturday_off_period3')}}"
+          on_off_time_sunday:
+            on_time: "{{states('input_datetime.thermostat_sunday_on_period3')}}"
+            off_time: "{{states('input_datetime.thermostat_sunday_off_period3')}}"
+
+- alias: Prog riscaldamento 4
+  trigger:
+    - platform: time_pattern
+      minutes: /5
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: input_boolean.heater_program4
+        state: "on"
+      - condition: state
+        entity_id: input_boolean.heater_program1_on
+        state: "off"
+      - condition: state
+        entity_id: input_boolean.heater_program2_on
+        state: "off"
+      - condition: state
+        entity_id: input_boolean.heater_program3_on
+        state: "off"
+  action:
+    - delay: "00:00:30"
+    - event: HA_MANAGE_HEATER
+      event_data:
+        data:
+          event:
+            eventType: HA_MANAGE_HEATER
+            sender: HUB
+          program: prog4
+          temperature: "{{states('sensor.temperatura')}}"
+          on_off_heater: "{{states('switch.sw_thermostat')}}"
+          target_temp: "{{states('input_number.temperature_period4')}}"
+          on_off_time_monday:
+            on_time: "{{states('input_datetime.thermostat_monday_on_period4')}}"
+            off_time: "{{states('input_datetime.thermostat_monday_off_period4')}}"
+          on_off_time_tuesday:
+            on_time: "{{states('input_datetime.thermostat_tuesday_on_period4')}}"
+            off_time: "{{states('input_datetime.thermostat_tuesday_off_period4')}}"
+          on_off_time_wednesday:
+            on_time: "{{states('input_datetime.thermostat_wednesday_on_period4')}}"
+            off_time: "{{states('input_datetime.thermostat_wednesday_off_period4')}}"
+          on_off_time_thursday:
+            on_time: "{{states('input_datetime.thermostat_thursday_on_period4')}}"
+            off_time: "{{states('input_datetime.thermostat_thursday_off_period4')}}"
+          on_off_time_friday:
+            on_time: "{{states('input_datetime.thermostat_friday_on_period4')}}"
+            off_time: "{{states('input_datetime.thermostat_friday_off_period4')}}"
+          on_off_time_saturday:
+            on_time: "{{states('input_datetime.thermostat_saturday_on_period4')}}"
+            off_time: "{{states('input_datetime.thermostat_saturday_off_period4')}}"
+          on_off_time_sunday:
+            on_time: "{{states('input_datetime.thermostat_sunday_on_period4')}}"
+            off_time: "{{states('input_datetime.thermostat_sunday_off_period4')}}"
+
+- alias: Spegnimento Programma
+  trigger:
+    - platform: state
+      entity_id: input_boolean.heater_program1
+      to: "off"
+    - platform: state
+      entity_id: input_boolean.heater_program2
+      to: "off"
+    - platform: state
+      entity_id: input_boolean.heater_program3
+      to: "off"
+    - platform: state
+      entity_id: input_boolean.heater_program4
+      to: "off"
+  action:
+    - event: AD_PROGRAM_OFF
+      event_data:
+        program: "{{ trigger.entity_id }}"
+
+- alias: RISCALDAMENTO MANUALE
+  trigger:
+  action:
+    - event: AD_HEATING
+      event_data:
+        data:
+          program: prog0
+          event:
+            eventType: AD_HEATING
+            sender: HUB
+
+- alias: SPEGNIMENTO RISCALDAMENTO MANUALE
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.temperatura
+      above: input_number.manual_heating_temp
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: switch.sw_thermostat
+        state: "on"
+      - condition: state
+        entity_id: input_boolean.heater_program1_on
+        state: "off"
+      - condition: state
+        entity_id: input_boolean.heater_program2_on
+        state: "off"
+      - condition: state
+        entity_id: input_boolean.heater_program3_on
+        state: "off"
+      - condition: state
+        entity_id: input_boolean.heater_program4_on
+        state: "off"
+  action:
+    - event: AD_PROGRAM_OFF
+      event_data:
+        program: prog0

@@ -1,0 +1,51 @@
+- platform: template
+  sensors:
+    tv01_state:
+      value_template: >-
+        {% if (now() - states.sensor.TV01_lastupdate.last_changed).total_seconds() | round(0) > 3600 %}
+          offline
+        {% else %}
+          online
+        {% endif %}
+    tv02_state:
+      value_template: >-
+        {% if (now() - states.sensor.TV02_lastupdate.last_changed).total_seconds() | round(0) > 3600 %}
+          offline
+        {% else %}
+          online
+        {% endif %}
+    tv03_state:
+      value_template: >-
+        {% if (now() - states.sensor.TV03_lastupdate.last_changed).total_seconds() | round(0) > 3600 %}
+          offline
+        {% else %}
+          online
+        {% endif %}
+    tv04_state:
+      value_template: >-
+        {% if (now() - states.sensor.TV04_lastupdate.last_changed).total_seconds() | round(0) > 3600 %}
+          offline
+        {% else %}
+          online
+        {% endif %}
+    tv05_state:
+      value_template: >-
+        {% if (now() - states.sensor.TV05_lastupdate.last_changed).total_seconds() | round(0) > 3600 %}
+          offline
+        {% else %}
+          online
+        {% endif %}
+    tv06_state:
+      value_template: >-
+        {% if (now() - states.sensor.TV06_lastupdate.last_changed).total_seconds() | round(0) > 3600 %}
+          offline
+        {% else %}
+          online
+        {% endif %}
+    tv07_state:
+      value_template: >-
+        {% if (now() - states.sensor.TV07_lastupdate.last_changed).total_seconds() | round(0) > 3600 %}
+          offline
+        {% else %}
+          online
+        {% endif %}
