@@ -1,4 +1,3 @@
-
 #TV2011
 - name: TV2011_temp
   platform: mqtt

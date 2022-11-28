@@ -1,0 +1,36 @@
+#Media Temperatura Letto 1
+- platform: min_max
+  name: TZ101
+  type: mean
+  round_digits: 1
+  entity_ids:
+    - sensor.TH1011_temp
+    - sensor.TV1011_temp
+    - sensor.TV1012_temp
+#Media Temperatura Letto 2
+- platform: min_max
+  name: TZ102
+  type: mean
+  round_digits: 1
+  entity_ids:
+    - sensor.TH1021_temp
+    - sensor.TV1021_temp
+    - sensor.TV1022_temp
+#Media Temperatura Letto 3
+- platform: min_max
+  name: TZ103
+  type: mean
+  round_digits: 1
+  entity_ids:
+    - sensor.TH1031_temp
+    - sensor.TV1031_temp
+    - sensor.TV1032_temp
+#Media Temperatura Bagno 1
+- platform: min_max
+  name: TZ104
+  type: mean
+  round_digits: 1
+  entity_ids:
+    - sensor.TH1041_temp
+    - sensor.TV1041_temp
+    - sensor.TV1042_temp

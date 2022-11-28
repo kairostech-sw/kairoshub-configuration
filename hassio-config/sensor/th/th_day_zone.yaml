@@ -1,3 +1,19 @@
+#TH2000
+- name: TH2000_battery
+  platform: mqtt
+  state_topic: "shellies/TH2000/status/devicepower:0"
+  unit_of_measurement: "%"
+  value_template: "{{ value_json.battery.percent.value }}"
+- name: TH2000_temp
+  platform: mqtt
+  state_topic: "shellies/TH2000/status/temperature:0"
+  unit_of_measurement: "°C"
+  value_template: "{{ value_json.tC.value }}"
+- name: TH2000_humidity
+  platform: mqtt
+  state_topic: "shellies/TH2000/status/humidity:0"
+  unit_of_measurement: "%"
+  value_template: "{{ value_json.rh.value }}"
 #TH2011
 - name: TH2011_battery
   platform: mqtt

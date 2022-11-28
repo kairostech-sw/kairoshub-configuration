@@ -1,0 +1,51 @@
+#Temperatura Media Valvole
+- platform: min_max
+  name: Temperatura
+  type: mean
+  round_digits: 1
+  entity_ids:
+    - sensor.temperatura_tv
+    - sensor.TM100
+    - sensor.TM200
+#Temperatura Media Valvole legacy
+- platform: min_max
+  name: Temperatura TV
+  type: mean
+  round_digits: 1
+  entity_ids:
+    - sensor.dayzone_temperature_0
+    - sensor.TV01_temp
+    - sensor.TV02_temp
+    - sensor.TV03_temp
+    - sensor.TV04_temp
+    - sensor.TV05_temp
+    - sensor.TV06_temp
+    - sensor.TV07_temp
+#Media Temperatura Zona Notte
+- platform: min_max
+  name: TM100
+  type: mean
+  round_digits: 1
+  entity_ids:
+    - sensor.TV01_temp
+    - sensor.TV02_temp
+    - sensor.TV03_temp
+    - sensor.TH1000_temp
+    - sensor.TZ101
+    - sensor.TZ102
+    - sensor.TZ103
+    - sensor.TZ104
+#Media Temperatura Zona Giorno
+- platform: min_max
+  name: TM200
+  type: mean
+  round_digits: 1
+  entity_ids:
+    - sensor.TV04_temp
+    - sensor.TV05_temp
+    - sensor.TV06_temp
+    - sensor.TV07_temp
+    - sensor.TH2000_temp
+    - sensor.TZ201
+    - sensor.TZ202
+    - sensor.TZ203

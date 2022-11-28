@@ -1,0 +1,28 @@
+#Media Posizione Tapparelle Letto 1
+- platform: min_max
+  name: RP101
+  type: mean
+  entity_ids:
+    - cover.RS1011
+    - cover.RS1012
+#Media Posizione Tapparelle Letto 2
+- platform: min_max
+  name: RP102
+  type: mean
+  entity_ids:
+    - cover.RS1021
+    - cover.RS1022
+#Media Posizione Tapparelle Letto 3
+- platform: min_max
+  name: RP103
+  type: mean
+  entity_ids:
+    - cover.RS1031
+    - cover.RS1032
+#Media Posizione Tapparelle Bagno 1
+- platform: min_max
+  name: RP104
+  type: mean
+  entity_ids:
+    - cover.RS1041
+    - cover.RS1042
