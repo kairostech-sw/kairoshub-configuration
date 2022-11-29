@@ -65,7 +65,7 @@ cards:
           action: call-service
           service: automation.trigger
           service_data:
-            entity_id: automation.riscaldamento
+            entity_id: automation.riscaldamento_manuale
         state:
           - value: 'on'
             icon: mdi:radiator

@@ -36,13 +36,13 @@ cards:
           - type: horizontal-stack
             cards:
               - type: 'custom:button-card'
-                entity: 'sensor.dayzone_temperature_0' 
+                entity: 'sensor.temperatura' 
                 template: 'clima_sensor_detail'
                 name: Ambiente 
                 variables: 
-                  temperature: sensor.dayzone_temperature_0
+                  temperature: sensor.temperatura
                   identifier: TH01
-                  lastupdate: sensor.dayzone_temperature_0
+                  lastupdate: sensor.temperatura
                   state: sensor.th01_state
               - type: 'custom:button-card'
                 entity: 'sensor.tv01_lastupdate' 

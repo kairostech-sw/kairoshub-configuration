@@ -1,4 +1,0 @@
-sensor_temperatures:
-  name: Sensori Ambiente
-  entities:
-    - sensor.dayzone_temperature_0
