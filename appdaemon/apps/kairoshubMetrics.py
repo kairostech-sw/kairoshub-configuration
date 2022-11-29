@@ -1,4 +1,5 @@
 import hassapi as hass
+import heatingManager
 
 class KairoshubMetrics(hass.Hass):
 
@@ -37,10 +38,52 @@ class KairoshubMetrics(hass.Hass):
 
         systemCode                  = self.get_state("input_text.system_code")
         entityMessage["thermostat"] = self.get_state("sensor.temperatura")
-        entityMessage["rollers"]    = self.get_state("sensor.cover_mean_pos")
-        entityMessage["heating"]    = self.get_state("switch.sw_thermostat")
+        entityMessage["roller"]    = self.get_state("sensor.tapparelle")
         entityMessage["power"]      = self.get_state("sensor.em_assorbimento")
-        entityMessage["state"]        = self.get_state("sensor.system_state")
+        entityMessage["hub"] = {}
+        entityMessage["hub"]["state"] = self.get_state("sensor.system_state")
+
+        thermostats=[]
+        rollers=[]
+        rooms=[]
+        for group in self.get_state("group.zones", attribute="entity_id"):
+            zone = self.get_state(group, attribute="entity_id")
+            for room in zone:
+                thermostats_state = {}
+                rollers_state = {}
+                rooms_state = {}
+                room_name = self.get_state(room)
+                room_id = room.split("zn")[1]
+                
+                thermostats_state["sensor_name"] = room_name
+                thermostats_state["state"] = self.get_state("sensor.tz"+room_id)
+                thermostats_state["last_update"] = self.get_state("sensor.tz"+room_id, attribute="last_updated")
+
+                rollers_state["sensor_name"] = room_name
+                rollers_state["state"] = self.get_state("sensor.rp"+room_id)
+                rollers_state["last_update"] = self.get_state("sensor.rp"+room_id, attribute="last_updated")
+
+                rooms_state["entity"] = "input_text.zn{}".format(room_id)
+                rooms_state["name"] = room_name
+
+                thermostats.append(thermostats_state)
+                rollers.append(rollers_state)
+                rooms.append(rooms_state)
+
+        entityMessage["thermostats"]= thermostats
+        entityMessage["rollers"]= rollers
+        entityMessage["hub"]["zones"] = rooms
+
+        entityMessage["heating"] = {}
+        entityMessage["heating"]["state"] = 1 if self.get_state("switch.sw_thermostat") == "on" else 0
+        
+        active_program = heatingManager.HeatingManager.isHeatingProgramOn(self)
+        if active_program > 0:
+            entityMessage["heating"]["program"] = "program {}".format(active_program)
+            entityMessage["heating"]["target"] = self.get_state("input_number.temperature_period{}".format(active_program))
+        else :
+            entityMessage["heating"]["program"] = "manual"
+            entityMessage["heating"]["target"] = self.get_state("input_number.manual_heating_temp")
 
         self.log("Entity Metrics: %s", entityMessage, level="INFO")
 

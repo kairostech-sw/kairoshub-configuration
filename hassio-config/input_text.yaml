@@ -5,13 +5,13 @@ system_name:
 #Stanze Zona Notte
 zn101:
   name: ZN101
-  initial: Letto 1
+  initial: Camera da Letto 1
 zn102:
   name: ZN102
-  initial: Letto 2
+  initial: Camera da Letto 2
 zn103:
   name: ZN103
-  initial: Letto 3
+  initial: Camera da Letto 3
 zn104:
   name: ZN104
   initial: Bagno 1
