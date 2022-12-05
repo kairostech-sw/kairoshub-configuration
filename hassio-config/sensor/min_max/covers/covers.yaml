@@ -20,7 +20,7 @@
     - cover.RS06
 #Media Posizione Tapparelle Zona Notte
 - platform: min_max
-  name: RM100
+  name: RP100
   type: mean
   entity_ids:
     - sensor.RS01
@@ -32,7 +32,7 @@
     - sensor.RP104
 #Media Posizione Tapparelle Zona Giorno
 - platform: min_max
-  name: RM200
+  name: RP200
   type: mean
   entity_ids:
     - sensor.RS04

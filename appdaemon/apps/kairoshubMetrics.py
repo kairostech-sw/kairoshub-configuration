@@ -53,17 +53,17 @@ class KairoshubMetrics(hass.Hass):
                 rollers_state = {}
                 rooms_state = {}
                 room_name = self.get_state(room)
-                room_id = room.split("zn")[1]
+                room_id = room.split(".")[1]
                 
-                thermostats_state["sensor_name"] = room_name
-                thermostats_state["state"] = self.get_state("sensor.tz"+room_id)
-                thermostats_state["last_update"] = self.get_state("sensor.tz"+room_id, attribute="last_updated")
+                thermostats_state["zone"] = room_id
+                thermostats_state["state"] = self.get_state("sensor.tz"+room_id[2:])
+                thermostats_state["last_update"] = self.get_state("sensor.tz"+room_id[2:], attribute="last_updated")
 
-                rollers_state["sensor_name"] = room_name
-                rollers_state["state"] = self.get_state("sensor.rp"+room_id)
-                rollers_state["last_update"] = self.get_state("sensor.rp"+room_id, attribute="last_updated")
+                rollers_state["zone"] = room_id
+                rollers_state["state"] = self.get_state("sensor.rp"+room_id[2:])
+                rollers_state["last_update"] = self.get_state("sensor.rp"+room_id[2:], attribute="last_updated")
 
-                rooms_state["entity"] = "input_text.zn{}".format(room_id)
+                rooms_state["id"] = room_id
                 rooms_state["name"] = room_name
 
                 thermostats.append(thermostats_state)
@@ -87,11 +87,13 @@ class KairoshubMetrics(hass.Hass):
 
         self.log("Entity Metrics: %s", entityMessage, level="INFO")
 
+        timestamp = self.get_state("sensor.date_time_iso")
         eventData = {
             "eventType" : "ENTITY_PUSH",
             "systemCode": systemCode,
             "message" : "ENTITY_PUSH",
-            "technicalMessage": entityMessage
+            "technicalMessage": entityMessage,
+            "timestamp": timestamp
         }
 
         self.fire_event("HAKAFKA_PRODUCER_PRODUCE", topic="TECHNICAL", message=eventData)
