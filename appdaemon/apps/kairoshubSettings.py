@@ -1,3 +1,4 @@
+from datetime import datetime, timedelta
 import hassapi as hass
 import json
 
@@ -13,31 +14,41 @@ class KairoshubSettings(hass.Hass):
     def syncSettings(self, event_name, data, kwargs):
         self.log("Retrieving user settings")
         
-        userSettings={}
+        userSettings={"hub_zones":{}, "rollers":{},"heating":{}}
         functionSettings={}
-        attributes={}
 
         systemCode           = self.get_state("input_text.system_code")
         userSettingsList     = self.get_state("group.kairoshub_settings", attribute="entity_id")
         functionSettingsList = self.get_state("group.kairoshub_functionalities",attribute="entity_id")
+        zonesGroup = self.get_state("group.zones", attribute="entity_id")
+
+        domain = "hub_zones"
+        for group in zonesGroup:
+            zones = self.get_state(group, attribute="entity_id")
+            for entity in zones:
+                userSettings[domain][entity.split(".")[1]] = self.get_state(entity)
 
         for entity in userSettingsList:
-            attributes=self.get_state(entity,attribute="all").get("attributes",{})
-            attributes["state"]=self.get_state(entity)
-            userSettings[entity]=attributes
-        
+            if "rollers" in entity:
+                domain = "rollers"
+            elif "heating" in entity:
+                domain = "heating"
+
+            userSettings[domain][entity.split(".")[1]] = self.get_state(entity)
+
         for entity in functionSettingsList:
-            # attributes=self.get_stafileCheck]=attributes
-            functionSettings[entity]=self.get_state(entity)
+            functionSettings[entity.split(".")[1]]=self.get_state(entity)
 
         self.log("User settings: %s", userSettings, level="DEBUG")
         self.log("Functionalities: %s", functionSettings, level="DEBUG")
-        
+
+        timestamp = datetime.strptime(self.get_state("sensor.date_time_iso"),"%Y-%m-%dT%H:%M:%S")
 
         with open(file,"w") as f:
             jsonData={}
             jsonData["userSettings"]=userSettings
             jsonData["functionSettings"]=functionSettings
+            jsonData["lifetime"] = (timestamp+timedelta(days=1)).strftime("%Y-%m-%dT%H:%M:%S")
             json.dump(jsonData,f)
 
         self.log("User settings synced", level="INFO")
@@ -45,7 +56,8 @@ class KairoshubSettings(hass.Hass):
             "eventType" : "SETTINGS_SYNC",
             "sender"    : systemCode,
             "message"   : "SETTINGS SYNC",
-            "technicalMessage": jsonData
+            "technicalMessage": jsonData,
+            "timestamp": timestamp
         }
 
         self.fire_event("HAKAFKA_PRODUCER_PRODUCE", topic="TECHNICAL", message=eventData)
@@ -59,12 +71,14 @@ class KairoshubSettings(hass.Hass):
         self.log("Retrieving user settings", level="INFO")
 
         try:
+            timestamp = self.get_state("sensor.date_time_iso")
             with open(file) as f:
                 jsonData=json.load(f)
                 userSettings=jsonData["userSettings"] if "userSettings" in jsonData else ""
                 functionSettings=jsonData["functionSettings"] if "functionSettings" in jsonData else ""
-                
-                self.__writeToFile__(userSettings, functionSettings)
+                if jsonData["lifetime"] < timestamp:
+                    raise FileNotFoundError
+                self.__updateSensors__(userSettings, functionSettings)
                 self.log("User settings restored by filesystem",level="INFO")
 
         except FileNotFoundError:
@@ -92,7 +106,7 @@ class KairoshubSettings(hass.Hass):
                 json.dump(jsonData,f)
                 userSettings=jsonData["userSettings"] if "userSettings" in jsonData else ""
                 functionSettings=jsonData["functionSettings"] if "functionSettings" in jsonData else ""
-                self.__writeToFile__(userSettings, functionSettings)
+                self.__updateSensors__(userSettings, functionSettings)
         except Exception:
             raise
 
@@ -101,18 +115,36 @@ class KairoshubSettings(hass.Hass):
     def fileCheck(self, event_name, data, kwargs):
         self.log("Checking file content. file: %s", file)
         try:
+            timestamp = self.get_state("sensor.date_time_iso")
             with open(file) as f:
                 jsonData=json.load(f)
-                
+                if jsonData["lifetime"] < timestamp:
+                    self.fire_event("AD_SETTINGS_RESTORE")
                 self.log("File settings content: %s", jsonData,level="INFO")
 
         except FileNotFoundError:
             self.log("File settings not found", level="WARNING")
 
-    def __writeToFile__(self, userSettings, functionSettings):
+    def __updateSensors__(self, userSettings, functionSettings):
 
-        for entity in userSettings:
-            self.set_state(entity,state=userSettings[entity].pop("state"),attributes=userSettings[entity])
+        rollersAttributes = {"min":"0", "max":"100","step":"5", "mode":"slider", "icon":"mdi:window-shutter"}
+        heatingAttributes = {"min":"18", "max":"31", "step":"0.5", "mode":"slider", "name": "Temperatura Per Riscaldamento Manuale", "icon": "mdi:thermometer"}
+        for key in userSettings:
+            for entity in userSettings[key]:
+                if "rollers" in entity:
+                    domain = "input_number."
+                    if "not" in entity:
+                        rollersAttributes["name"] = "Posizione Fuori Casa"
+                    else:
+                        rollersAttributes["name"] = "Posizione In Casa"
+                    attributes = rollersAttributes
+                elif "heating" in entity :
+                    domain = "input_number."
+                    attributes = heatingAttributes
+                elif "zn" in entity:
+                    domain ="input_text."
+                    attributes = {"friendly_name": entity.upper()}
+                self.set_state(domain+entity, state = userSettings[key][entity], attributes = attributes)
     
         for entity in functionSettings:
-            self.set_state(entity,state=functionSettings[entity])
+            self.set_state("input_boolean."+entity,state=functionSettings[entity])

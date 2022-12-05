@@ -3,6 +3,9 @@ system_code:
 system_name:
   name: Casa
 #Stanze Zona Notte
+zn100:
+  name: ZN100
+  initial: Zona Notte
 zn101:
   name: ZN101
   initial: Camera da Letto 1
@@ -16,6 +19,9 @@ zn104:
   name: ZN104
   initial: Bagno 1
 #Stanze Zona Giorno
+zn200:
+  name: ZN200
+  initial: Zona Giorno
 zn201:
   name: ZN201
   initial: Soggiorno

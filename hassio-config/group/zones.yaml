@@ -6,6 +6,7 @@ zones:
 night_zone:
   name: Zona Notte
   entities:
+    - input_text.ZN100
     - input_text.ZN101
     - input_text.ZN102
     - input_text.ZN103
@@ -13,6 +14,7 @@ night_zone:
 day_zone:
   name: Zona Giorno
   entities:
+    - input_text.ZN200
     - input_text.ZN201
     - input_text.ZN202
     - input_text.ZN203
