@@ -72,7 +72,7 @@ class KairoshubMetrics(hass.Hass):
 
         entityMessage["thermostats"]= thermostats
         entityMessage["rollers"]= rollers
-        entityMessage["hub"]["zones"] = rooms
+        #entityMessage["hub"]["zones"] = rooms
 
         entityMessage["heating"] = {}
         entityMessage["heating"]["state"] = 1 if self.get_state("switch.sw_thermostat") == "on" else 0

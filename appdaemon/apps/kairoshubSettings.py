@@ -44,14 +44,15 @@ class KairoshubSettings(hass.Hass):
 
         timestamp = datetime.strptime(self.get_state("sensor.date_time_iso"),"%Y-%m-%dT%H:%M:%S")
 
+        jsonData={}
         with open(file,"w") as f:
-            jsonData={}
             jsonData["userSettings"]=userSettings
             jsonData["functionSettings"]=functionSettings
             jsonData["lifetime"] = (timestamp+timedelta(days=1)).strftime("%Y-%m-%dT%H:%M:%S")
             json.dump(jsonData,f)
 
         self.log("User settings synced", level="INFO")
+        jsonData.pop("lifetime", None)
         eventData= {
             "eventType" : "SETTINGS_SYNC",
             "sender"    : systemCode,

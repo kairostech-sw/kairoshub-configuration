@@ -58,6 +58,9 @@ class Notification(hass.Hass):
             self.log("Producing notification message on topic: %s message: %s", self.cloudTopic, notificationToSend)
             self.fire_event("HAKAFKA_PRODUCER_PRODUCE", topic=self.cloudTopic, message=notificationToSend)
 
+            #TODO: valutare se spostare nella funzione principale al fine di inviare sempre un aggiornamento
+            self.fire_event("AD_ENTITY_METRICS")
+
     def getMessage(self, code, entityRef):
         
         message = noty_message[code]
