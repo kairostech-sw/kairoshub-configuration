@@ -12,7 +12,7 @@ auth_data["password"]   = "kairos!"
 now     = datetime.now()
 sw      = sys.argv[1]
 version = sys.argv[2]
-repobranch = sys.argv[3]
+repobranch = sys.argv[3] if len(sys.argv) == 4 else "not provided"
 
 softwareCheck = now.isoformat("T", "seconds")
 
