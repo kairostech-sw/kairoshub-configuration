@@ -30,7 +30,7 @@
     - sensor.TV01_temp
     - sensor.TV02_temp
     - sensor.TV03_temp
-    - sensor.TH1000_temp
+    - sensor.TH1001_temp
     - sensor.TZ101
     - sensor.TZ102
     - sensor.TZ103
@@ -45,7 +45,7 @@
     - sensor.TV05_temp
     - sensor.TV06_temp
     - sensor.TV07_temp
-    - sensor.TH2000_temp
+    - sensor.TH2001_temp
     - sensor.TZ201
     - sensor.TZ202
     - sensor.TZ203

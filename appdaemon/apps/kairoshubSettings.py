@@ -10,10 +10,10 @@ class KairoshubSettings(hass.Hass):
         self.listen_event(self.restoreSettings, "AD_SETTINGS_RESTORE")
         self.listen_event(self.pushSettings, "AD_SETTINGS_PUSH")
         self.listen_event(self.fileCheck, "AD_SETTINGS_FILE_CHECK")
-    
+
     def syncSettings(self, event_name, data, kwargs):
         self.log("Retrieving user settings")
-        
+
         userSettings={"hub_zones":{}, "rollers":{},"heating":{}}
         functionSettings={}
 
@@ -62,7 +62,7 @@ class KairoshubSettings(hass.Hass):
         }
 
         self.fire_event("HAKAFKA_PRODUCER_PRODUCE", topic="TECHNICAL", message=eventData)
-            
+
     def restoreSettings(self, event_name, data, kwargs):
 
         userSettings={}
@@ -90,7 +90,7 @@ class KairoshubSettings(hass.Hass):
                 "eventType" : "SETTINGS_RESTORE_REQ",
                 "sender" : systemCode,
                 "message" : "SETTINGS RESTORE REQUEST"
-            } 
+            }
 
             self.fire_event("HAKAFKA_PRODUCER_PRODUCE", topic="TECHNICAL", message=eventData)
 
@@ -98,11 +98,11 @@ class KairoshubSettings(hass.Hass):
             raise
 
     def pushSettings(self, event_name, data, kwargs):
-       
+
         self.log("Pushing settings to file. Settings provided: %s", data, level="INFO")
 
         jsonData=data["data"]["technicalMessage"]
-        try:        
+        try:
             with open(file,"w") as f:
                 json.dump(jsonData,f)
                 userSettings=jsonData["userSettings"] if "userSettings" in jsonData else ""
@@ -128,24 +128,17 @@ class KairoshubSettings(hass.Hass):
 
     def __updateSensors__(self, userSettings, functionSettings):
 
-        rollersAttributes = {"min":"0", "max":"100","step":"5", "mode":"slider", "icon":"mdi:window-shutter"}
-        heatingAttributes = {"min":"18", "max":"31", "step":"0.5", "mode":"slider", "name": "Temperatura Per Riscaldamento Manuale", "icon": "mdi:thermometer"}
         for key in userSettings:
             for entity in userSettings[key]:
                 if "rollers" in entity:
                     domain = "input_number."
-                    if "not" in entity:
-                        rollersAttributes["name"] = "Posizione Fuori Casa"
-                    else:
-                        rollersAttributes["name"] = "Posizione In Casa"
-                    attributes = rollersAttributes
-                elif "heating" in entity :
+                elif "heating" in entity:
                     domain = "input_number."
-                    attributes = heatingAttributes
                 elif "zn" in entity:
                     domain ="input_text."
-                    attributes = {"friendly_name": entity.upper()}
+
+                attributes = self.get_state(domain+entity, attribute="all").get("attributes", {})
                 self.set_state(domain+entity, state = userSettings[key][entity], attributes = attributes)
-    
+
         for entity in functionSettings:
-            self.set_state("input_boolean."+entity,state=functionSettings[entity])
+            self.set_state("input_boolean."+entity, state = functionSettings[entity])
