@@ -3,62 +3,62 @@
   platform: mqtt
   state_topic: "shellies/TH2001/status/devicepower:0"
   unit_of_measurement: "%"
-  value_template: "{{ value_json.battery.percent.value }}"
+  value_template: "{{ value_json.battery.percent }}"
 - name: TH2001_temp
   platform: mqtt
   state_topic: "shellies/TH2001/status/temperature:0"
   unit_of_measurement: "°C"
-  value_template: "{{ value_json.tC.value }}"
+  value_template: "{{ value_json.tC }}"
 - name: TH2001_humidity
   platform: mqtt
   state_topic: "shellies/TH2001/status/humidity:0"
   unit_of_measurement: "%"
-  value_template: "{{ value_json.rh.value }}"
+  value_template: "{{ value_json.rh }}"
 #TH2011
 - name: TH2011_battery
   platform: mqtt
   state_topic: "shellies/TH2011/status/devicepower:0"
   unit_of_measurement: "%"
-  value_template: "{{ value_json.battery.percent.value }}"
+  value_template: "{{ value_json.battery.percent }}"
 - name: TH2011_temp
   platform: mqtt
   state_topic: "shellies/TH2011/status/temperature:0"
   unit_of_measurement: "°C"
-  value_template: "{{ value_json.tC.value }}"
+  value_template: "{{ value_json.tC }}"
 - name: TH2011_humidity
   platform: mqtt
   state_topic: "shellies/TH2011/status/humidity:0"
   unit_of_measurement: "%"
-  value_template: "{{ value_json.rh.value }}"
+  value_template: "{{ value_json.rh }}"
 #TH2021
 - name: TH2021_battery
   platform: mqtt
   state_topic: "shellies/TH2021/status/devicepower:0"
   unit_of_measurement: "%"
-  value_template: "{{ value_json.battery.percent.value }}"
+  value_template: "{{ value_json.battery.percent }}"
 - name: TH2021_temp
   platform: mqtt
   state_topic: "shellies/TH2021/status/temperature:0"
   unit_of_measurement: "°C"
-  value_template: "{{ value_json.tC.value }}"
+  value_template: "{{ value_json.tC }}"
 - name: TH2021_humidity
   platform: mqtt
   state_topic: "shellies/TH2021/status/humidity:0"
   unit_of_measurement: "%"
-  value_template: "{{ value_json.rh.value }}"
+  value_template: "{{ value_json.rh }}"
 #TH2031
 - name: TH2031_battery
   platform: mqtt
   state_topic: "shellies/TH2031/status/devicepower:0"
   unit_of_measurement: "%"
-  value_template: "{{ value_json.battery.percent.value }}"
+  value_template: "{{ value_json.battery.percent }}"
 - name: TH2031_temp
   platform: mqtt
   state_topic: "shellies/TH2031/status/temperature:0"
   unit_of_measurement: "°C"
-  value_template: "{{ value_json.tC.value }}"
+  value_template: "{{ value_json.tC }}"
 - name: TH2031_humidity
   platform: mqtt
   state_topic: "shellies/TH2031/status/humidity:0"
   unit_of_measurement: "%"
-  value_template: "{{ value_json.rh.value }}"
+  value_template: "{{ value_json.rh }}"
