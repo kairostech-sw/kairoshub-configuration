@@ -5,8 +5,8 @@
   round_digits: 1
   entity_ids:
     - sensor.temperatura_tv
-    - sensor.TM100
-    - sensor.TM200
+    - sensor.TZ100
+    - sensor.TZ200
 #Temperatura Media Valvole legacy
 - platform: min_max
   name: Temperatura TV

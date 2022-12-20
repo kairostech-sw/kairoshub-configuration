@@ -77,7 +77,7 @@ class KairoshubSettings(hass.Hass):
                 jsonData=json.load(f)
                 userSettings=jsonData["userSettings"] if "userSettings" in jsonData else ""
                 functionSettings=jsonData["functionSettings"] if "functionSettings" in jsonData else ""
-                if jsonData["lifetime"] < timestamp:
+                if "lifetime" not in jsonData or jsonData["lifetime"] < timestamp:
                     raise FileNotFoundError
                 self.__updateSensors__(userSettings, functionSettings)
                 self.log("User settings restored by filesystem",level="INFO")
