@@ -5,8 +5,8 @@
   action:
     - service: cover.set_cover_position
       target:
-        entity_id: group.rolershutters
-      data: 
+        entity_id: all
+      data:
         position: "{{states('input_number.rollershutter_athome_position')}}"
     - delay: "00:01:00"
     - condition: state
@@ -24,8 +24,8 @@
   action:
     - service: cover.set_cover_position
       target:
-        entity_id: group.rolershutters
-      data: 
+        entity_id: all
+      data:
         position: "{{states('input_number.rollershutter_notathome_position')}}"
     - delay: "00:01:00"
     - condition: state
