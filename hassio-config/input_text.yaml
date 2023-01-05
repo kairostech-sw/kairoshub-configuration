@@ -8,13 +8,13 @@ zn100:
   initial: Zona Notte
 zn101:
   name: ZN101
-  initial: Camera da Letto 1
+  initial: Letto 1
 zn102:
   name: ZN102
-  initial: Camera da Letto 2
+  initial: Letto 2
 zn103:
   name: ZN103
-  initial: Camera da Letto 3
+  initial: Letto 3
 zn104:
   name: ZN104
   initial: Bagno 1

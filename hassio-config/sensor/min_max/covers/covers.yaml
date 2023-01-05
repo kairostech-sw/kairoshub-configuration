@@ -5,8 +5,8 @@
   round_digits: 1
   entity_ids:
     - sensor.posizione_rs
-    - sensor.RM100
-    - sensor.RM200
+    - sensor.RS100
+    - sensor.RS200
 #Media Posizione Tapparelle legacy
 - platform: min_max
   name: Posizione RS
@@ -20,7 +20,7 @@
     - cover.RS06
 #Media Posizione Tapparelle Zona Notte
 - platform: min_max
-  name: RP100
+  name: RS100
   type: mean
   entity_ids:
     - sensor.RS01
@@ -32,7 +32,7 @@
     - sensor.RP104
 #Media Posizione Tapparelle Zona Giorno
 - platform: min_max
-  name: RP200
+  name: RS200
   type: mean
   entity_ids:
     - sensor.RS04
