@@ -8,7 +8,7 @@ class KairoshubMetrics(hass.Hass):
         self.listen_event(self.entityMetrics, "AD_ENTITY_METRICS")
 
     def systemMetrics(self, event_name, data, kwargs):
-        
+
         self.log("Retrieving System Metrics", level="INFO")
 
         statMessage = {}
@@ -39,44 +39,46 @@ class KairoshubMetrics(hass.Hass):
         systemCode                  = self.get_state("input_text.system_code")
         entityMessage["thermostat"] = self.get_state("sensor.temperatura")
         entityMessage["roller"]    = self.get_state("sensor.tapparelle")
+        entityMessage["humidity"] = self.get_state("sensor.umidita")
         entityMessage["power"]      = self.get_state("sensor.em_assorbimento")
         entityMessage["hub"] = {}
         entityMessage["hub"]["state"] = self.get_state("sensor.system_state")
 
         thermostats=[]
         rollers=[]
-        rooms=[]
+        humidity=[]
         for group in self.get_state("group.zones", attribute="entity_id"):
             zone = self.get_state(group, attribute="entity_id")
             for room in zone:
                 thermostats_state = {}
                 rollers_state = {}
-                rooms_state = {}
-                room_name = self.get_state(room)
-                room_id = room.split(".")[1]
-                
-                thermostats_state["zone"] = room_id
-                thermostats_state["state"] = self.get_state("sensor.tz"+room_id[2:])
-                thermostats_state["last_update"] = self.get_state("sensor.tz"+room_id[2:], attribute="last_updated")
+                humidity_state = {}
+                room_name = room.split(".")[1]
+                room_id = room_name.split("zn")[1]
 
-                rollers_state["zone"] = room_id
-                rollers_state["state"] = self.get_state("sensor.rp"+room_id[2:])
-                rollers_state["last_update"] = self.get_state("sensor.rp"+room_id[2:], attribute="last_updated")
+                thermostats_state["zone"] = room_name
+                thermostats_state["state"] = self.get_state("sensor.tz"+room_id)
+                thermostats_state["last_update"] = self.get_state("sensor.tz"+room_id, attribute="last_updated")
 
-                rooms_state["id"] = room_id
-                rooms_state["name"] = room_name
+                rollers_state["zone"] = room_name
+                rollers_state["state"] = self.get_state("sensor.rz"+room_id)
+                rollers_state["last_update"] = self.get_state("sensor.rz"+room_id, attribute="last_updated")
+
+                humidity_state["zone"] = room_name
+                humidity_state["state"] = self.get_state("sensor.hz"+room_id)
+                humidity_state["last_update"] = self.get_state("sensor.hz"+room_id)
 
                 thermostats.append(thermostats_state)
                 rollers.append(rollers_state)
-                rooms.append(rooms_state)
+                humidity.append(humidity_state)
 
         entityMessage["thermostats"]= thermostats
         entityMessage["rollers"]= rollers
-        #entityMessage["hub"]["zones"] = rooms
+        entityMessage["humidities"]= humidity
 
         entityMessage["heating"] = {}
         entityMessage["heating"]["state"] = 1 if self.get_state("switch.sw_thermostat") == "on" else 0
-        
+
         active_program = heatingManager.HeatingManager.isHeatingProgramOn(self)
         if active_program > 0:
             entityMessage["heating"]["program"] = "program {}".format(active_program)
