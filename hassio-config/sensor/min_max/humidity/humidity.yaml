@@ -4,26 +4,26 @@
   type: mean
   round_digits: 1
   entity_ids:
-    - sensor.TH100
-    - sensor.TH200
+    - sensor.HZ100
+    - sensor.HZ200
 #Media Umidità Zona Notte
 - platform: min_max
-  name: TH100
+  name: HZ100
   type: mean
   round_digits: 1
   entity_ids:
     - sensor.TH1001_humidity
-    - sensor.TH1011_humidity
-    - sensor.TH1021_humidity
-    - sensor.TH1031_humidity
-    - sensor.TH1041_humidity
+    - sensor.HZ101
+    - sensor.HZ102
+    - sensor.HZ103
+    - sensor.HZ104
 #Media Umidità Zona Giorno
 - platform: min_max
-  name: TH200
+  name: HZ200
   type: mean
   round_digits: 1
   entity_ids:
     - sensor.TH2001_humidity
-    - sensor.TH2011_humidity
-    - sensor.TH2021_humidity
-    - sensor.TH2031_humidity
+    - sensor.HZ201
+    - sensor.HZ202
+    - sensor.HZ203
