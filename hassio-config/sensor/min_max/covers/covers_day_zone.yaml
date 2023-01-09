@@ -1,20 +1,23 @@
 #Media Posizione Tapparelle Soggiorno
 - platform: min_max
-  name: RP201
+  name: RZ201
   type: mean
   entity_ids:
+    - cover.RS04
+    - cover.RS05
     - cover.RS2011
     - cover.RS2012
 #Media Posizione Tapparelle Cucina
 - platform: min_max
-  name: RP202
+  name: RZ202
   type: mean
   entity_ids:
+    - cover.RS06
     - cover.RS2021
     - cover.RS2022
 #Media Posizione Tapparelle Bagno 2
 - platform: min_max
-  name: RP203
+  name: RZ203
   type: mean
   entity_ids:
     - cover.RS2031
