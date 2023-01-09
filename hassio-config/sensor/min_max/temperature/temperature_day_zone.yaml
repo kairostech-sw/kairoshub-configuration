@@ -4,6 +4,8 @@
   type: mean
   round_digits: 1
   entity_ids:
+    - sensor.TV04_temp
+    - sensor.TV05_temp
     - sensor.TH2011_temp
     - sensor.TV2011_temp
     - sensor.TV2012_temp
@@ -13,6 +15,7 @@
   type: mean
   round_digits: 1
   entity_ids:
+    - sensor.TV06_temp
     - sensor.TH2021_temp
     - sensor.TV2021_temp
     - sensor.TV2022_temp
