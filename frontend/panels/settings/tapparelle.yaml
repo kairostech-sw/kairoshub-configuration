@@ -5,22 +5,23 @@ cards:
   - type: horizontal-stack
     cards:
     - type: 'custom:button-card'
-      label: "Impostazioni /"
+      label: "Impostazioni / Tapparelle"
       template:
         - header_page_text
-      name: 'TAPPARELLE'
+      name: 'IMPOSTAZIONI'
+      icon: 'mdi:cog'
     - type: 'custom:button-card'
       template: row_space_10
     - type: 'custom:button-card'
-      template: button_return_to_settings
+      template: button_go_back
   - type: vertical-stack
     cards:
-      - type: entities  
+      - type: entities
         entities:
           - input_number.rollershutter_athome_position
         tap_action:
           action: none
-      - type: entities  
+      - type: entities
         entities:
           - input_number.rollershutter_notathome_position
         tap_action:

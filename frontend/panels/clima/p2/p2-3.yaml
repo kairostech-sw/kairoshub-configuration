@@ -67,7 +67,7 @@ cards:
                 ]]]
           
       - type: 'custom:button-card'
-        template: button_return_to_program2
+        template: button_go_back
         
   - type: horizontal-stack
     cards:

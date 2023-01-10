@@ -58,7 +58,7 @@ cards:
               service_data:
                 entity_id: input_number.temperature_period3
       - type: 'custom:button-card'
-        template: button_return_to_clima
+        template: button_go_back
           
   - type: horizontal-stack
     cards:

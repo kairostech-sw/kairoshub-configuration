@@ -72,7 +72,7 @@ cards:
             icon: 'mdi:radiator'
             color: auto
             tap_action:
-                action: no_action
+                action: none
             state:
               - value: 'on'
                 icon: mdi:radiator
