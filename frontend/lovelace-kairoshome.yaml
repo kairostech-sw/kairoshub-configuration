@@ -313,6 +313,13 @@ views:
       - type: vertical-stack
         cards:
           - !include hakairos-configuration/frontend/panels/settings/zones.yaml
+  - path: impostazioni-alexa
+    panel: true
+    visible: false
+    cards:
+      - type: vertical-stack
+        cards:
+          - !include hakairos-configuration/frontend/panels/settings/alexa.yaml
   - path: dayzone
     panel: true
     visible: false

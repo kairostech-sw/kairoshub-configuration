@@ -43,14 +43,11 @@ cards:
           action: navigate
           navigation_path: /lovelace-kairoshub/impostazioni-zone
           - type: 'custom:button-card'
-            template: row_space_10
-      - type: horizontal-stack
-        cards:
-          - type: 'custom:button-card'
-            template: row_space_10
-          - type: 'custom:button-card'
-            template: row_space_10
-          - type: 'custom:button-card'
-            template: row_space_10
-          - type: 'custom:button-card'
-            template: row_space_10
+        template: button_hold
+        icon: 'mdi:amazon-alexa'
+        label: Alexa
+        color: auto
+        show_label: true
+        tap_action:
+          action: navigate
+          navigation_path: /lovelace-kairoshub/impostazioni-alexa
