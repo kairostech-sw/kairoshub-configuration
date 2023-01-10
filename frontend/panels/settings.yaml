@@ -2,16 +2,18 @@ type: vertical-stack
 cards:
   - type: 'custom:button-card'
     template: row_space_10
-  - type: horizontal-stack
-    cards:
+  # - type: horizontal-stack
+  #   cards:
     - type: 'custom:button-card'
       template:
         - header_page_text
       name: 'IMPOSTAZIONI'
+    label: "Impostazioni /"
       icon: 'mdi:cog'
-  - type: vertical-stack
-    cards:
-      - type: horizontal-stack
+  # - type: vertical-stack
+  #   cards:
+  - type: grid
+    columns: 4
         cards:
           - type: 'custom:button-card'
             template: button_hold
@@ -32,7 +34,14 @@ cards:
               action: navigate
               navigation_path: /lovelace-kairoshub/impostazioni-riscaldamento
           - type: 'custom:button-card'
-            template: row_space_10
+        template: button_hold
+        icon: 'mdi:dots-grid'
+        label: Zone
+        color: auto
+        show_label: true
+        tap_action:
+          action: navigate
+          navigation_path: /lovelace-kairoshub/impostazioni-zone
           - type: 'custom:button-card'
             template: row_space_10
       - type: horizontal-stack

@@ -1,0 +1,62 @@
+type: vertical-stack
+cards:
+  - type: 'custom:button-card'
+    template:
+      - zone_table
+    custom_fields:
+      header:
+        card:
+          type: 'custom:button-card'
+          entity: binary_sensor.heater_auto
+          layout: vertical
+          template:
+            - header_page_text
+          name: 'IMPOSTAZIONI'
+          icon: 'mdi:cog'
+          label: "Impostazioni / Zone"
+      backbutton:
+        card:
+          type: 'custom:button-card'
+          template: button_go_back
+      warning:
+        card:
+          type: 'custom:button-card'
+          template: no_background
+          name: >
+            [[[
+              return `
+              <ha-alert alert-type="warning" title="Attenzione">
+                I valori in questa pagina sono in sola lettura. Utilizzare l'assistente remoto per modificarli
+              </ha-alert>`;
+            ]]]
+          tap_action:
+            action: none
+      list1:
+        card:
+          type: vertical-stack
+          cards:
+            - type: 'custom:button-card'
+              template: zone_name
+              name: '[[[ return "ZN101".bold()+": "+states["input_text.zn101"].state]]]'
+            - type: 'custom:button-card'
+              template: zone_name
+              name: '[[[ return "ZN102".bold()+": "+states["input_text.zn102"].state]]]'
+            - type: 'custom:button-card'
+              template: zone_name
+              name: '[[[ return "ZN103".bold()+": "+states["input_text.zn103"].state]]]'
+            - type: 'custom:button-card'
+              template: zone_name
+              name: '[[[ return "ZN104".bold()+": "+states["input_text.zn104"].state]]]'
+      list2:
+        card:
+          type: vertical-stack
+          cards:
+            - type: 'custom:button-card'
+              template: zone_name
+              name: '[[[ return "ZN201".bold()+": "+states["input_text.zn201"].state]]]'
+            - type: 'custom:button-card'
+              template: zone_name
+              name: '[[[ return `<div style="text-align: left;"><strong>ZN202</strong>: ${states["input_text.zn202"].state}</div>`]]]'
+            - type: 'custom:button-card'
+              template: zone_name
+              name: '[[[ return "ZN203".bold()+": "+states["input_text.zn203"].state]]]'

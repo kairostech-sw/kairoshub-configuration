@@ -1,0 +1,112 @@
+type: vertical-stack
+cards:
+  - type: 'custom:button-card'
+    template: clima_zone_grid
+    custom_fields:
+      header:
+        card:
+          type: 'custom:button-card'
+          entity: binary_sensor.heater_auto
+          layout: vertical
+          template:
+            - header_page_text
+          icon: 'mdi:thermometer'
+          name: 'CLIMA'
+          label: '[[[return "Clima / "+states["input_text.zn200"].state]]]'
+      backbutton:
+        card:
+          type: 'custom:button-card'
+          template: button_go_back
+      zone1:
+        card:
+            type: 'custom:button-card'
+            # entity: 'sensor.tz200'
+            template: 'clima_tv_detail'
+            styles:
+              card:
+                - box-shadow: none
+            name: >
+              [[[
+                return states["input_text.zn201"].state;
+              ]]]
+            variables:
+              temperature: >
+                [[[
+                  return states["sensor.tz201"].state;
+                ]]]
+              humidity: >
+                [[[
+                  return states["sensor.th2011_humidity"].state != "unavailable"? states["sensor.th2011_humidity"].state : "";
+                ]]]
+              # visibility: input_boolean.zn_200
+              # state: >
+              #   [[[
+              #     return states["sensor.tv2011_state"].state;
+              #   ]]]
+              lastupdate: >
+                [[[
+                  var time =  states["sensor.tz201"].last_changed.split("T")[1].split(":");
+                  return (+time[0]+1)+":"+time[1];
+                ]]]
+      zone2:
+        card:
+            type: 'custom:button-card'
+            # entity: 'sensor.tz200'
+            template: 'clima_tv_detail'
+            styles:
+              card:
+                - box-shadow: none
+            name: >
+              [[[
+                return states["input_text.zn202"].state;
+              ]]]
+            variables:
+              temperature: >
+                [[[
+                  return states["sensor.tz202"].state;
+                ]]]
+              humidity: >
+                [[[
+                  return states["sensor.th2021_humidity"].state != "unavailable"? states["sensor.th2021_humidity"].state : "";
+                ]]]
+              # visibility: input_boolean.zn_200
+              # state: >
+              #   [[[
+              #     return states["sensor.tv2021_state"].state;
+              #   ]]]
+              lastupdate: >
+                [[[
+                  var time =  states["sensor.tz202"].last_changed.split("T")[1].split(":");
+                  return (+time[0]+1)+":"+time[1];
+                ]]]
+      zone3:
+        card:
+            type: 'custom:button-card'
+            # entity: 'sensor.tz200'
+            template: 'clima_tv_detail'
+            styles:
+              card:
+                - box-shadow: none
+            name: >
+              [[[
+                return states["input_text.zn203"].state;
+              ]]]
+            variables:
+              temperature: >
+                [[[
+                  return states["sensor.tz203"].state;
+                ]]]
+              humidity: >
+                [[[
+                  return states["sensor.th2031_humidity"].state != "unavailable"? states["sensor.th2031_humidity"].state : "";
+                ]]]
+              # visibility: input_boolean.zn_200
+              # state: >
+              #   [[[
+              #     return states["sensor.tv2031_state"].state;
+              #   ]]]
+              lastupdate: >
+                [[[
+                  var time =  states["sensor.tz203"].last_changed.split("T")[1].split(":");
+                  return (+time[0]+1)+":"+time[1];
+                ]]]
