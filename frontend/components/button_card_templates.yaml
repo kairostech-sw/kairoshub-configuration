@@ -1503,9 +1503,9 @@ clima_zone_grid:
   template: grid_style
   styles:
     grid:
-      - grid-template-areas: '"header backbutton" "zone1 zone2" "zone3 zone4"'
+      - grid-template-areas: '"header backbutton" "zones zones"'
       - grid-template-columns: 1fr 1fr
-      - grid-template-rows: 1fr min-content min-content
+      - grid-auto-rows: auto
       - row-gap: 3px
       - column-gap: 10px
       - margin-left: 10px
