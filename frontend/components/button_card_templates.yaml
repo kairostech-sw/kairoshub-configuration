@@ -1475,6 +1475,92 @@ button_grid_settings:
       header:
         - justify-self: start
 
+assistance_grid:
+  template: grid_style
+  styles:
+    grid:
+      - grid-template-areas: '"header header" "system_data assistance" "system_data kairos_info"'
+      - grid-template-columns: 1fr 55%
+      - grid-template-rows: 50px min-content 145px
+      - justify-items: start
+      - align-items: start
+      - column-gap: 10px
+      - row-gap: 10px
+      - margin-right: 10px
+      - margin-left: 10px
+    custom_fields:
+      system_data:
+        - justify-self: stretch
+      assistance:
+        - display: grid
+        - justify-self: stretch
+      kairos_info:
+        - text-align: start
+
+assistance_info:
+  styles:
+    card:
+      - color: var(--primary-text-color)
+      #- font-size: 10px
+      - text-transform: capitalize
+      - padding: 12px 16px 16px
+    grid:
+      - grid-template-areas: '"i header" "content content"'
+      - grid-template-columns: 30px 1fr
+      - grid-template-rows: min-content 1fr
+    name:
+      - place-self: start
+      - grid-area: header
+      - line-height: 48px
+      - font-size: 20px
+      - font-weight: 500
+      - color: var(--ha-card-header-color)
+      - padding-left: 5px
+    img_cell:
+      - justify-content: start
+      - align-items: start
+      - margin: none
+      - grid-area: i
+    icon:
+      - color: var(--ha-card-header-color)
+      - width: 80%
+    content:
+      - font-weight: bold
+  custom_fields:
+    content: >
+      [[[
+        return `
+          <div class="assistance_content" style="text-align: left; font-size: 12px">
+
+            <div style="padding-bottom: 5px; padding-top: 5px">
+              <ha-icon icon="mdi:identifier" style="width: 24px; padding:5px; color: var(--ha-card-header-color);"></ha-icon>
+              <label style="font-weight: bold; ">Identificativo impianto:</label>
+              <span > ${ states[ variables.systemCode ].state} </span>
+            </div>
+
+            <div >
+              <ha-icon icon="mdi:account" style="width: 24px; padding:5px; color: var(--ha-card-header-color);"></ha-icon>
+              <label style="font-weight: bold ">Intestatario impianto:</label>
+              <span > ${ states[ variables.systemOwner ].state} </span>
+            </div>
+            <br />
+
+            <div >
+              <ha-icon icon="mdi:home-assistant" style="width: 24px; padding:5px; color: var(--ha-card-header-color);"></ha-icon>
+              <label style="font-weight: bold ">Stato impianto:</label>
+              <span > ${ states[ variables.systemState ].state} </span>
+            </div>
+
+            <div>
+              <ha-icon icon="mdi:cellphone-arrow-down" style="width: 24px; padding:5px; color: var(--ha-card-header-color);"></ha-icon>
+              <label style="font-weight: bold ">Versione software:</label>
+              <span > ${ states[ variables.kairoshubSwVersion ].state} </span>
+            </div>
+
+          </div>
+        `
+      ]]]
+
 grid_style:
   styles:
     card:
