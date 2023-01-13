@@ -1,27 +1,28 @@
-type: vertical-stack
-cards:  
-  - type: 'custom:button-card'
-    template: row_space_10
-  - type: horizontal-stack
-    cards:
-    - type: 'custom:button-card'
+type: 'custom:button-card'
+template: zone_table
+custom_fields:
+  header:
+    card:
+      type: 'custom:button-card'
       label: "Impostazioni / Alexa"
       template:
         - header_page_text
       name: 'IMPOSTAZIONI'
       icon: 'mdi:cog'
-    - type: 'custom:button-card'
-      template: row_space_10
-    - type: 'custom:button-card'
+  backbutton:
+    card:
+      type: 'custom:button-card'
       template: button_go_back
-  - type: 'custom:button-card'
-    template: no_background
-    name: >
-      [[[
-        return `
-        <ha-alert alert-type="warning" style="justify-self: center;">
-          Funzione in sviluppo </br>
-        </ha-alert>`;
-      ]]]
-    tap_action:
-      action: none
+  warning:
+    card:
+      type: 'custom:button-card'
+      template: no_background
+      name: >
+        [[[
+          return `
+          <ha-alert alert-type="warning" style="justify-self: center;">
+            Funzione in sviluppo </br>
+          </ha-alert>`;
+        ]]]
+      tap_action:
+        action: none

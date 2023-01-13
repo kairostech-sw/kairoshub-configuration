@@ -1254,7 +1254,7 @@ clima_tv_detail:
     grid:
       - grid-template-areas: '"i header temp" "content content humidity"'
       - grid-template-columns: 30px 2fr 1fr
-      - grid-template-rows: auto auto
+      - grid-template-rows: auto
     name:
       - font-weight: bold
       - font-size: 16px
@@ -1425,10 +1425,11 @@ icon_header:
 button_grid_4:
   styles:
     grid:
-      - grid-template-areas: '"i n n n" ". . . .""b1 b2 b3 b4"'
+      - grid-template-areas: '"i n n n" "b1 b2 b3 b4"'
       - grid-template-columns: 1fr 1fr 1fr 1fr
-      - grid-template-rows: min-content 10px min-content
+      - grid-template-rows: min-content min-content
       - justify-items: center
+      - row-gap: 10px
     name:
       - font-weight: bold
       - font-size: 16px
@@ -1443,10 +1444,11 @@ button_grid_4:
 button_grid_2:
   styles:
     grid:
-      - grid-template-areas: '"i n n n" ". . . .""b1 b1 b2 b2"'
+      - grid-template-areas: '"i n n n" "b1 b1 b2 b2"'
       - grid-template-columns: 1fr 1fr 1fr 1fr
-      - grid-template-rows: min-content 10px min-content
+      - grid-template-rows: min-content min-content
       - justify-items: center
+      - row-gap: 10px
     name:
       - font-weight: bold
       - font-size: 16px
@@ -1458,32 +1460,73 @@ button_grid_2:
     icon:
       - color: var(--paper-item-icon-color)
 
-clima_zone_grid:
+button_grid_settings:
+  template: grid_style
+  styles:
+    grid:
+      - grid-template-areas: '"header header header header" "b1 b2 b3 b4" "b5 b6 b7 b8"'
+      - grid-template-columns: auto
+      - grid-template-rows: min-content min-content min-content
+      - justify-items: center
+      - align-items: start
+      - column-gap: 0px
+      - row-gap: 10px
+    custom_fields:
+      header:
+        - justify-self: start
+
+grid_style:
   styles:
     card:
       - background: none
-      - padding-left: 7px
       - padding-top: 15px
-      - padding-right: 7px
+
+entities_grid:
+  template: grid_style
+  styles:
     grid:
-      - grid-template-areas: '"header header backbutton" ". . ." "zone1 . zone2" "zone3 . zone4"'
-      - grid-template-columns: 1fr 1% 1fr
-      - grid-template-rows: 1fr 5px min-content min-content
+      - grid-template-areas: '"header backbutton" "entities entities" '
+      - grid-template-columns: auto
+      - grid-template-row: min-content min-content
+      - align-items: start
+      - column-gap: 0px
+      - row-gap: 10px
     custom_fields:
+      header:
+        - justify-self: start
       backbutton:
         - justify-self: end
+      entities:
+        - text-align: start
+
+clima_zone_grid:
+  template: grid_style
+  styles:
+    grid:
+      - grid-template-areas: '"header backbutton" "zone1 zone2" "zone3 zone4"'
+      - grid-template-columns: 1fr 1fr
+      - grid-template-rows: 1fr min-content min-content
+      - row-gap: 3px
+      - column-gap: 10px
+      - margin-left: 10px
+      - margin-right: 10px
+    custom_fields:
+      header:
+        - margin-bottom: 2px
+        - margin-left: -10px
+      backbutton:
+        - justify-self: end
+        - margin-right: -10px
 
 zone_table:
+  template: grid_style
   styles:
-    card:
-      - background: none
-      - padding-top: 18px
-      - padding-right: 7px
     grid:
-      - grid-template-areas: '"header header backbutton" ". . ." "warning warning warning" "list1  list2 ."'
-      - grid-template-columns: auto auto auto
-      - grid-template-rows: 1fr 5px min-content
+      - grid-template-areas: '"header header backbutton" "warning warning warning" "list1  list2 ."'
+      - grid-template-columns: auto
+      - grid-template-rows: 1fr min-content
       - align-items: start
+      - row-gap: 5px
     custom_fields:
       backbutton:
         - justify-self: end
@@ -1514,3 +1557,11 @@ graph:
       - grid-template-areas: '"n" "graph"'
       - grid-template-columns: 1fr
       - grid-template-rows: auto auto
+
+settings_card:
+  template: button_hold
+  styles:
+    card:
+      - width: 165px
+      - height: 115px
+      - box-shadow: 1px 5px 8px rgba(0, 0, 0, 0.3)

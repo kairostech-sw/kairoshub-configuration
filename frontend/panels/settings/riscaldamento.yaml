@@ -1,24 +1,24 @@
-type: vertical-stack
-cards:
-  - type: 'custom:button-card'
-    template: row_space_10
-  - type: horizontal-stack
-    cards:
-    - type: 'custom:button-card'
+type: 'custom:button-card'
+template: entities_grid
+custom_fields:
+  header:
+    card:
+      type: 'custom:button-card'
       label: "Impostazioni / Riscaldamento"
       template:
         - header_page_text
       name: 'IMPOSTAZIONI'
       icon: 'mdi:cog'
-    - type: 'custom:button-card'
-      template: row_space_10
-    - type: 'custom:button-card'
+  backbutton:
+    card:
+      type: 'custom:button-card'
       template: button_go_back
-
-  - type: vertical-stack
-    cards:
-      - type: entities
-        entities:
-          - input_number.manual_heating_temp
-        tap_action:
-          action: none
+  entities:
+    card:
+      type: vertical-stack
+      cards:
+        - type: entities
+          entities:
+            - entity: input_number.manual_heating_temp
+              tap_action:
+                action: none
