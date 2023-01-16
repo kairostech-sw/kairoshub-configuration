@@ -294,7 +294,8 @@ const LitElement = Object.getPrototypeOf(
     }
   
     _handleClick() {
-      fireEvent(this, "hass-more-info", { entityId: this._config.entity });
+      console.log("noinfo");
+      //fireEvent(this, "hass-more-info", { entityId: this._config.entity });
     }
   
     getCardSize() {
