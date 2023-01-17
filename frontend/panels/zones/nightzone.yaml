@@ -36,7 +36,7 @@ custom_fields:
               [[[
                 return `
                 <ha-alert alert-type="warning" style="justify-self: center;">
-                  Non ci sono zone configurate </br>
+                  Non ci sono zone attive </br>
                 </ha-alert>`;
               ]]]
             tap_action:

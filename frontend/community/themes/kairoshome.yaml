@@ -64,6 +64,9 @@ kairoshome - light:
   paper-toggle-button-checked-bar-color: "#4284F4"
   paper-toggle-button-unchecked-button-color: "#4284F4"
   paper-toggle-button-unchecked-bar-color: "#c1c1c1"
+  ### Graph Colors ###
+  primary-graph-line-color: '#FF0000'
+  secondary-graph-line-color: '#2E86C1'
 
   ### Dialog ###
   paper-dialog-background-color: "#ffffff"

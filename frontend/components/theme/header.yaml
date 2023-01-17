@@ -47,6 +47,8 @@ cards:
           #       label: In Casa
           #     - value: 'off'
           #       label: Fuori Casa
+          - type: 'custom:button-card'
+            template: row_space_10
           - name: Notte
             template: icon_state_header
             entity: input_boolean.night
@@ -65,23 +67,26 @@ cards:
               service_data:
                 entity_id: input_boolean.night
             type: 'custom:button-card'
-          - name: Caldaia
-            type: 'custom:button-card'
-            template: icon_state_header
-            entity: 'switch.sw_thermostat'
-            icon: 'mdi:radiator'
-            color: auto
-            tap_action:
-                action: none
-            state:
-              - value: 'on'
-                icon: mdi:radiator
-                label: 'ON'
-              - value: 'off'
-                icon: mdi:radiator-off
-                label: 'OFF'
+          # - name: Caldaia
+          #   type: 'custom:button-card'
+          #   template: icon_state_header
+          #   entity: 'switch.sw_thermostat'
+          #   icon: 'mdi:radiator'
+          #   color: auto
+          #   tap_action:
+          #       action: none
+          #   state:
+          #     - value: 'on'
+          #       icon: mdi:radiator
+          #       label: 'ON'
+          #     - value: 'off'
+          #       icon: mdi:radiator-off
+          #       label: 'OFF'
           - type: 'custom:button-card'
             template: header_icon_clima
+            tap_action:
+              action: navigate
+              navigation_path: /lovelace-kairoshub/clima
           - name: Tapparelle aperte
             type: 'custom:button-card'
             template: icon_state_header
