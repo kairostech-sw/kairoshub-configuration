@@ -17,144 +17,303 @@ custom_fields:
       template: button_go_back
   zones:
     card:
-      type: grid
-      columns: 2
-      square: false
+      type: vertical-stack
       cards:
         - type: conditional
           conditions:
             - entity: sensor.tz101
-              state_not: "unknown"
-          card:
-            type: 'custom:button-card'
-            # entity: 'sensor.tz100'
-            template: 'clima_tv_detail'
-            styles:
-              card:
-                - box-shadow: none
-                - height: 100px
-            name: >
-              [[[
-                return states["input_text.zn101"].state;
-              ]]]
-            variables:
-              temperature: >
-                [[[
-                  return states["sensor.tz101"].state;
-                ]]]
-              humidity: >
-                [[[
-                  return states["sensor.th1011_humidity"].state != "unavailable"? states["sensor.th1011_humidity"].state : "";
-                ]]]
-              # visibility: input_boolean.zn_100
-              # state: >
-              #   [[[
-              #     return states["sensor.tv1011_state"].state;
-              #   ]]]
-              lastupdate: >
-                [[[
-                  var time =  states["sensor.tz101"].last_changed.split("T")[1].split(":");
-                  return (+time[0]+1)+":"+time[1];
-                ]]]
-        - type: conditional
-          conditions:
+              state: unknown
             - entity: sensor.tz102
-              state_not: "unknown"
-          card:
-            type: 'custom:button-card'
-            # entity: 'sensor.tz100'
-            template: 'clima_tv_detail'
-            styles:
-              card:
-                - box-shadow: none
-            name: >
-              [[[
-                return states["input_text.zn102"].state;
-              ]]]
-            variables:
-              temperature: >
-                [[[
-                  return states["sensor.tz102"].state;
-                ]]]
-              humidity: >
-                [[[
-                  return states["sensor.th1021_humidity"].state != "unavailable"? states["sensor.th1021_humidity"].state : "";
-                ]]]
-              # visibility: input_boolean.zn_100
-              # state: >
-              #   [[[
-              #     return states["sensor.tv1021_state"].state;
-              #   ]]]
-              lastupdate: >
-                [[[
-                  var time =  states["sensor.tz102"].last_changed.split("T")[1].split(":");
-                  return (+time[0]+1)+":"+time[1];
-                ]]]
-        - type: conditional
-          conditions:
+              state: unknown
             - entity: sensor.tz103
-              state_not: "unknown"
-          card:
-            type: 'custom:button-card'
-            # entity: 'sensor.tz100'
-            template: 'clima_tv_detail'
-            styles:
-              card:
-                - box-shadow: none
-            name: >
-              [[[
-                return states["input_text.zn103"].state;
-              ]]]
-            variables:
-              temperature: >
-                [[[
-                  return states["sensor.tz103"].state;
-                ]]]
-              humidity: >
-                [[[
-                  return states["sensor.th1031_humidity"].state != "unavailable"? states["sensor.th1031_humidity"].state : "";
-                ]]]
-              # visibility: input_boolean.zn_100
-              # state: >
-              #   [[[
-              #     return states["sensor.tv1031_state"].state;
-              #   ]]]
-              lastupdate: >
-                [[[
-                  var time =  states["sensor.tz103"].last_changed.split("T")[1].split(":");
-                  return (+time[0]+1)+":"+time[1];
-                ]]]
-        - type: conditional
-          conditions:
+              state: unknown
             - entity: sensor.tz104
-              state_not: "unknown"
+              state: unknown
           card:
             type: 'custom:button-card'
-            # entity: 'sensor.tz100'
-            template: 'clima_tv_detail'
-            styles:
-              card:
-                - box-shadow: none
+            template: no_background
             name: >
               [[[
-                return states["input_text.zn104"].state;
+                return `
+                <ha-alert alert-type="warning" style="justify-self: center;">
+                  Non ci sono zone configurate </br>
+                </ha-alert>`;
               ]]]
-            variables:
-              temperature: >
-                [[[
-                  return states["sensor.tz104"].state;
-                ]]]
-              humidity: >
-                [[[
-                  return states["sensor.th1041_humidity"].state != "unavailable"? states["sensor.th1041_humidity"].state : "";
-                ]]]
-              # visibility: input_boolean.zn_100
-              # state: >
-              #   [[[
-              #     return states["sensor.tv1041_state"].state;
-              #   ]]]
-              lastupdate: >
-                [[[
-                  var time =  states["sensor.tz104"].last_changed.split("T")[1].split(":");
-                  return (+time[0]+1)+":"+time[1];
-                ]]]
+            tap_action:
+                action: none
+        - type: grid
+          columns: 2
+          square: false
+          cards:
+            - type: conditional
+              conditions:
+                - entity: sensor.tz101
+                  state_not: "unknown"
+              card:
+                type: 'custom:button-card'
+                # entity: 'sensor.tz100'
+                template: 'clima_tv_detail'
+                styles:
+                  card:
+                    - box-shadow: none
+                name: >
+                  [[[
+                    return states["input_text.zn101"].state;
+                  ]]]
+                variables:
+                  temperature: >
+                    [[[
+                      return states["sensor.tz101"].state;
+                    ]]]
+                  humidity: >
+                    [[[
+                      return states["sensor.th1011_humidity"].state;
+                    ]]]
+                  # visibility: input_boolean.zn_100
+                  # state: >
+                  #   [[[
+                  #     return states["sensor.tv1011_state"].state;
+                  #   ]]]
+                  lastupdate: >
+                    [[[
+                      var datetime =  states["sensor.tz101"].last_changed.split("T");
+                      return new Date(datetime).toLocaleString().replace(","," ");
+                    ]]]
+                custom_fields:
+                  graph:
+                    card:
+                      type: sensor
+                      entity: sensor.tz101
+                      graph: line
+                      detail: 1
+                      style: |
+                        .header {
+                          display: none !important;
+                        }
+                        .info {
+                          display: none;
+                        }
+                        {% if (states(config.entity)> states("input_number.temperature_period1") and is_state("input_boolean.heater_program1_on","on")) or
+                        (states(config.entity)> states("input_number.temperature_period2") and is_state("input_boolean.heater_program2_on","on")) or
+                        (states(config.entity)> states("input_number.temperature_period3") and is_state("input_boolean.heater_program3_on","on")) or
+                        (states(config.entity)> states("input_number.temperature_period4") and is_state("input_boolean.heater_program4_on","on")) or
+                        states(config.entity) > states("input_number.manual_heating_temp")
+                        %}
+                        ha-card {
+                          --accent-color: var(--primary-graph-line-color);
+                        }
+                        .header .icon {
+                          color: var(--primary-graph-line-color);
+                        }
+                        {% else %}
+                        ha-card {
+                          --accent-color: var(--secondary-graph-line-color);
+                        }
+                        .header .icon {
+                          color: var(--secondary-graph-line-color);
+                        }
+                        {% endif %}
+            - type: conditional
+              conditions:
+                - entity: sensor.tz102
+                  state_not: "unknown"
+              card:
+                type: 'custom:button-card'
+                # entity: 'sensor.tz100'
+                template: 'clima_tv_detail'
+                styles:
+                  card:
+                    - box-shadow: none
+                name: >
+                  [[[
+                    return states["input_text.zn102"].state;
+                  ]]]
+                variables:
+                  temperature: >
+                    [[[
+                      return states["sensor.tz102"].state;
+                    ]]]
+                  humidity: >
+                    [[[
+                      return states["sensor.th1021_humidity"].state;
+                    ]]]
+                  # visibility: input_boolean.zn_100
+                  # state: >
+                  #   [[[
+                  #     return states["sensor.tv1021_state"].state;
+                  #   ]]]
+                  lastupdate: >
+                    [[[
+                      var datetime =  states["sensor.tz102"].last_changed.split("T");
+                      return new Date(datetime).toLocaleString().replace(","," ");
+                    ]]]
+                custom_fields:
+                  graph:
+                    card:
+                      type: sensor
+                      entity: sensor.tz102
+                      graph: line
+                      detail: 1
+                      style: |
+                        .header {
+                          display: none !important;
+                        }
+                        .info {
+                          display: none;
+                        }
+                        {% if (states(config.entity)> states("input_number.temperature_period1") and is_state("input_boolean.heater_program1_on","on")) or
+                        (states(config.entity)> states("input_number.temperature_period2") and is_state("input_boolean.heater_program2_on","on")) or
+                        (states(config.entity)> states("input_number.temperature_period3") and is_state("input_boolean.heater_program3_on","on")) or
+                        (states(config.entity)> states("input_number.temperature_period4") and is_state("input_boolean.heater_program4_on","on")) or
+                        states(config.entity) > states("input_number.manual_heating_temp")
+                        %}
+                        ha-card {
+                          --accent-color: var(--primary-graph-line-color);
+                        }
+                        .header .icon {
+                          color: var(--primary-graph-line-color);
+                        }
+                        {% else %}
+                        ha-card {
+                          --accent-color: var(--secondary-graph-line-color);
+                        }
+                        .header .icon {
+                          color: var(--secondary-graph-line-color);
+                        }
+                        {% endif %}
+            - type: conditional
+              conditions:
+                - entity: sensor.tz103
+                  state_not: "unknown"
+              card:
+                type: 'custom:button-card'
+                # entity: 'sensor.tz100'
+                template: 'clima_tv_detail'
+                styles:
+                  card:
+                    - box-shadow: none
+                name: >
+                  [[[
+                    return states["input_text.zn103"].state;
+                  ]]]
+                variables:
+                  temperature: >
+                    [[[
+                      return states["sensor.tz103"].state;
+                    ]]]
+                  humidity: >
+                    [[[
+                      return states["sensor.th1031_humidity"].state;
+                    ]]]
+                  # visibility: input_boolean.zn_100
+                  # state: >
+                  #   [[[
+                  #     return states["sensor.tv1031_state"].state;
+                  #   ]]]
+                  lastupdate: >
+                    [[[
+                      var datetime =  states["sensor.tz103"].last_changed.split("T");
+                      return new Date(datetime).toLocaleString().replace(","," ");
+                    ]]]
+                custom_fields:
+                  graph:
+                    card:
+                      type: sensor
+                      entity: sensor.tz103
+                      graph: line
+                      detail: 1
+                      style: |
+                        .header {
+                          display: none !important;
+                        }
+                        .info {
+                          display: none;
+                        }
+                        {% if (states(config.entity)> states("input_number.temperature_period1") and is_state("input_boolean.heater_program1_on","on")) or
+                        (states(config.entity)> states("input_number.temperature_period2") and is_state("input_boolean.heater_program2_on","on")) or
+                        (states(config.entity)> states("input_number.temperature_period3") and is_state("input_boolean.heater_program3_on","on")) or
+                        (states(config.entity)> states("input_number.temperature_period4") and is_state("input_boolean.heater_program4_on","on")) or
+                        states(config.entity) > states("input_number.manual_heating_temp")
+                        %}
+                        ha-card {
+                          --accent-color: var(--primary-graph-line-color);
+                        }
+                        .header .icon {
+                          color: var(--primary-graph-line-color);
+                        }
+                        {% else %}
+                        ha-card {
+                          --accent-color: var(--secondary-graph-line-color);
+                        }
+                        .header .icon {
+                          color: var(--secondary-graph-line-color);
+                        }
+                        {% endif %}
+            - type: conditional
+              conditions:
+                - entity: sensor.tz104
+                  state_not: "unknown"
+              card:
+                type: 'custom:button-card'
+                # entity: 'sensor.tz100'
+                template: 'clima_tv_detail'
+                styles:
+                  card:
+                    - box-shadow: none
+                name: >
+                  [[[
+                    return states["input_text.zn104"].state;
+                  ]]]
+                variables:
+                  temperature: >
+                    [[[
+                      return states["sensor.tz104"].state;
+                    ]]]
+                  humidity: >
+                    [[[
+                      return states["sensor.th1041_humidity"].state;
+                    ]]]
+                  # visibility: input_boolean.zn_100
+                  # state: >
+                  #   [[[
+                  #     return states["sensor.tv1041_state"].state;
+                  #   ]]]
+                  lastupdate: >
+                    [[[
+                      var datetime =  states["sensor.tz104"].last_changed.split("T");
+                      return new Date(datetime).toLocaleString().replace(","," ");
+                    ]]]
+                custom_fields:
+                  graph:
+                    card:
+                      type: sensor
+                      entity: sensor.tz104
+                      graph: line
+                      detail: 1
+                      style: |
+                        .header {
+                          display: none !important;
+                        }
+                        .info {
+                          display: none;
+                        }
+                        {% if (states(config.entity)> states("input_number.temperature_period1") and is_state("input_boolean.heater_program1_on","on")) or
+                        (states(config.entity)> states("input_number.temperature_period2") and is_state("input_boolean.heater_program2_on","on")) or
+                        (states(config.entity)> states("input_number.temperature_period3") and is_state("input_boolean.heater_program3_on","on")) or
+                        (states(config.entity)> states("input_number.temperature_period4") and is_state("input_boolean.heater_program4_on","on")) or
+                        states(config.entity) > states("input_number.manual_heating_temp")
+                        %}
+                        ha-card {
+                          --accent-color: var(--primary-graph-line-color);
+                        }
+                        .header .icon {
+                          color: var(--primary-graph-line-color);
+                        }
+                        {% else %}
+                        ha-card {
+                          --accent-color: var(--secondary-graph-line-color);
+                        }
+                        .header .icon {
+                          color: var(--secondary-graph-line-color);
+                        }
+                        {% endif %}

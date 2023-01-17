@@ -45,7 +45,7 @@ custom_fields:
           cards:
           - type: 'custom:button-card'
             # entity: 'sensor.tz100'
-            template: 'clima_tv_detail'
+            template: 'clima_zones_detail'
             name: >
               [[[
                 return states["input_text.zn100"].state;
@@ -67,20 +67,14 @@ custom_fields:
               lastupdate: >
                 [[[
                   var datetime =  states["sensor.tz100"].last_changed.split("T");
-                  var localtime = states["sensor.time"].state.split(":")[0];
-                  var date = datetime[0].split("-");
-                  date = date[2]+"/"+date[1]+"/"+date[0];
-                  var time = datetime[1].split(":");
-                  time[0] = +time[0]+(localtime-time[0]);
-                  time = time[0]+":"+time[1];
-                  return date+" "+time;
+                  return new Date(datetime).toLocaleString().replace(","," ");
                 ]]]
             tap_action:
               action: navigate
               navigation_path: /lovelace-kairoshub/nightzone
           - type: 'custom:button-card'
             # entity: 'sensor.tv01_lastupdate'
-            template: 'clima_tv_detail'
+            template: 'clima_zones_detail'
             name: >
               [[[
                 return states["input_text.zn200"].state;
@@ -102,13 +96,7 @@ custom_fields:
               lastupdate: >
                 [[[
                   var datetime =  states["sensor.tz200"].last_changed.split("T");
-                  var localtime = states["sensor.time"].state.split(":")[0];
-                  var date = datetime[0].split("-");
-                  date = date[2]+"/"+date[1]+"/"+date[0];
-                  var time = datetime[1].split(":");
-                  time[0] = +time[0]+(localtime-time[0]);
-                  time = time[0]+":"+time[1];
-                  return date+" "+time;
+                  return new Date(datetime).toLocaleString().replace(","," ");
                 ]]]
             tap_action:
               action: navigate

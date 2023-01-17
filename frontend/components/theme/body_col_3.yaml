@@ -22,10 +22,27 @@ cards:
           graph: line
           icon: 'mdi:thermometer'
           detail: 1
-        style: |
-          ha-card {
-            box-shadow: none;
-          }
+          style: |
+            {% if (states(config.entity)> states("input_number.temperature_period1") and is_state("input_boolean.heater_program1_on","on")) or
+            (states(config.entity)> states("input_number.temperature_period2") and is_state("input_boolean.heater_program2_on","on")) or
+            (states(config.entity)> states("input_number.temperature_period3") and is_state("input_boolean.heater_program3_on","on")) or
+            (states(config.entity)> states("input_number.temperature_period4") and is_state("input_boolean.heater_program4_on","on")) or
+            states(config.entity) > states("input_number.manual_heating_temp")
+            %}
+            ha-card {
+              --accent-color: var(--primary-graph-line-color);
+            }
+            .header .icon {
+              color: var(--primary-graph-line-color);
+            }
+            {% else %}
+            ha-card {
+              --accent-color: var(--secondary-graph-line-color);
+            }
+            .header .icon {
+              color: var(--secondary-graph-line-color);
+            }
+            {% endif %}
   # - type: sensor
   #   entity: sensor.temperatura
   #   graph: line
@@ -49,10 +66,14 @@ cards:
           graph: line
           icon: 'mdi:lightning-bolt'
           detail: 1
-        style: |
-          ha-card {
-            box-shadow: none;
-          }
+          style: |
+            ha-card {
+              --accent-color: #FFD700;
+            }
+            .header .icon {
+              color: #FFD700;
+            }
+
     style: |
       ha-card {
         height: 120px !important;

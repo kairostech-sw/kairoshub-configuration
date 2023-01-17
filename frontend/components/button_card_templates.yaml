@@ -398,7 +398,8 @@ header_button_menu:
     - feedback_click
   styles:
     card:
-      - background: 'rgb(208,208,208)'
+      - background: "#DCDCDC"
+      - box-shadow: 1px 5px 8px rgba(0, 0, 0, 0.3)
     name:
       - color: var(--primary-text-color)
       - font-weight: bold
@@ -1155,8 +1156,7 @@ button_go_to_program:
 
 button_return_to_program:
   type: 'custom:button-card'
-  template: header_button_menu
-  name: Indietro
+  template: button_go_back
   tap_action:
     action: navigate
     navigation_path: '[[[window.history.back()]]]'
@@ -1195,8 +1195,7 @@ button_return_to_program:
 
 button_return_to_settings:
   type: 'custom:button-card'
-  template: header_button_menu
-  name: Indietro
+  template: button_go_back
   tap_action:
     action: navigate
     navigation_path: '[[[window.history.back()]]]'
@@ -1210,7 +1209,6 @@ button_go_back:
   styles:
     card:
       - width: 261px
-
 button_go_to_zone:
   type: 'custom:button-card'
   show_label: true
@@ -1228,6 +1226,8 @@ button_go_to_zone:
 clima_tv_detail:
   type: 'custom:button-card'
   icon: 'mdi:texture-box'
+  tap_action:
+    action: none
   styles:
     card:
       # - display: >
@@ -1243,7 +1243,7 @@ clima_tv_detail:
       - box-shadow: 1px 5px 8px rgba(0, 0, 0, 0.3)
       - margin-bottom: 5px
       - margin-right: 3px
-      - height: 100px
+      - height: 140px
       # - border-width: 2px
       # - border-style: double
       # - border-color: >
@@ -1252,9 +1252,9 @@ clima_tv_detail:
       #         return 'var(--active-color)';
       #     ]]]
     grid:
-      - grid-template-areas: '"i header temp" "content content humidity"'
+      - grid-template-areas: '"i header temp" "content content humidity" "graph graph graph"'
       - grid-template-columns: 30px 2fr 1fr
-      - grid-template-rows: auto
+      - grid-template-rows: 45px 25px min-content
     name:
       - font-weight: bold
       - font-size: 16px
@@ -1286,6 +1286,8 @@ clima_tv_detail:
       content:
         - justify-self: start
         - align-self: middle
+      graph:
+        - margin-top: 0px
   custom_fields:
       temp: >
         [[[
@@ -1296,7 +1298,7 @@ clima_tv_detail:
         ]]]
       humidity: >
         [[[
-          if (variables.humidity != "")
+          if (variables.humidity != "unknown" && variables.humidity != "unavailable")
             {return `<span style="font-size: 18px; font-weight: 600; color: var(--active-color);">${ variables.humidity }%</span>`;}
           else return;
         ]]]
@@ -1331,6 +1333,16 @@ clima_tv_detail:
       #   `
       # ]]]
 
+clima_zones_detail:
+  type: 'custom:button-card'
+  template: clima_tv_detail
+  styles:
+    card:
+      - height: 100px
+    grid:
+      - grid-template-areas: '"i header temp" "content content humidity"'
+      - grid-template-columns: 30px 2fr 1fr
+      - grid-template-rows: auto
 # clima_sensor_detail:
 #   type: 'custom:button-card'
 #   icon: 'mdi:thermometer'
@@ -1639,6 +1651,7 @@ graph:
         - overflow: unset
     card:
       - overflow: unset
+      - padding-top: 0px
     grid:
       - grid-template-areas: '"n" "graph"'
       - grid-template-columns: 1fr

@@ -86,15 +86,17 @@ cards:
             type: 'custom:button-card'
             template: icon_state_header
             label: 'Aperte'
-            entity: group.rolershutters
-            icon: 'mdi:window-shutter-open'
-            color: auto
+            entity: group.rollershutters
+            color: var(--state-icon-color)
             tap_action:
               action: call-service
               service: cover.toggle
               service_data:
-                entity_id: group.rolershutters
+                entity_id: group.rollershutters
             state:
+              - value: 'open'
+                icon: mdi:window-shutter-open
+                label: Aperte
               - value: 'closed'
                 icon: mdi:window-shutter
                 label: Chiuse
