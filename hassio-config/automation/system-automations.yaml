@@ -104,8 +104,8 @@
         topic: "kairostech/command"
         payload: "KAIROSHUB_SYSTEM_EXCHANGE_CHECK"
     - delay: "00:00:30"
-    - condition:
-      alias: "checking last update timestamp of a sensor"
+    # - condition:
+    - alias: "checking last update timestamp of a sensor"
       condition: template
       value_template: "{{ (as_timestamp(now())-states.sensor.system_exchange_services_last_check.state|float()) > 2400 }}"
     - service: mqtt.publish

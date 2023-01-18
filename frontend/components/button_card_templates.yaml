@@ -1632,7 +1632,7 @@ zone_table:
         - justify-self: stretch
         - text-align-last: start
       list1:
-        - justify-self: right
+        - margin-left: 40px
 
 zone_name:
   styles:

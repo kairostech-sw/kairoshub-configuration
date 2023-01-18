@@ -97,7 +97,7 @@ cards:
               action: call-service
               service: cover.toggle
               service_data:
-                entity_id: group.rollershutters
+                entity_id: all
             state:
               - value: 'open'
                 icon: mdi:window-shutter-open

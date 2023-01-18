@@ -4,6 +4,7 @@
   type: mean
   round_digits: 1
   entity_ids:
+    - sensor.dayzone_temperature_0
     - sensor.TV04_temp
     - sensor.TV05_temp
     - sensor.TH2011_temp
