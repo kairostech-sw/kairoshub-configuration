@@ -1310,7 +1310,7 @@ clima_tv_detail:
         ]]]
       content: >
         [[[
-          return `<span style="font-size: 14px;">${ variables.lastupdate }</span>`
+          return `<span style="font-size: 12px;">${ variables.lastupdate }</span>`
         ]]]
       # [[[
       #   return `

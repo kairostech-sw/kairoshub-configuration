@@ -69,7 +69,8 @@ cards:
                   lastupdate: >
                     [[[
                       var datetime =  states["sensor.tz100"].last_changed.split("T");
-                      return new Date(datetime).toLocaleString().replace(","," ");
+                      datetime = new Date(datetime).toLocaleString().replace(","," ");
+                      return datetime.substring(0,datetime.length-3);
                     ]]]
                 tap_action:
                   action: navigate
@@ -98,7 +99,8 @@ cards:
                   lastupdate: >
                     [[[
                       var datetime =  states["sensor.tz200"].last_changed.split("T");
-                      return new Date(datetime).toLocaleString().replace(","," ");
+                      datetime = new Date(datetime).toLocaleString().replace(","," ");
+                      return datetime.substring(0,datetime.length-3);
                     ]]]
                 tap_action:
                   action: navigate

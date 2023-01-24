@@ -75,7 +75,8 @@ custom_fields:
                   lastupdate: >
                     [[[
                       var datetime =  states["sensor.tz201"].last_changed.split("T");
-                      return new Date(datetime).toLocaleString().replace(","," ");
+                      datetime = new Date(datetime).toLocaleString().replace(","," ");
+                      return datetime.substring(0,datetime.length-3);
                     ]]]
                 custom_fields:
                   graph:
@@ -143,7 +144,8 @@ custom_fields:
                   lastupdate: >
                     [[[
                       var datetime =  states["sensor.tz202"].last_changed.split("T");
-                      return new Date(datetime).toLocaleString().replace(","," ");
+                      datetime = new Date(datetime).toLocaleString().replace(","," ");
+                      return datetime.substring(0,datetime.length-3);
                     ]]]
                 custom_fields:
                   graph:
@@ -213,7 +215,8 @@ custom_fields:
                   lastupdate: >
                     [[[
                       var datetime =  states["sensor.tz203"].last_changed.split("T");
-                      return new Date(datetime).toLocaleString().replace(","," ");
+                      datetime = new Date(datetime).toLocaleString().replace(","," ");
+                      return datetime.substring(0,datetime.length-3);
                     ]]]
                 custom_fields:
                   graph:

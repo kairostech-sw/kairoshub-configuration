@@ -77,7 +77,8 @@ custom_fields:
                   lastupdate: >
                     [[[
                       var datetime =  states["sensor.tz101"].last_changed.split("T");
-                      return new Date(datetime).toLocaleString().replace(","," ");
+                      datetime = new Date(datetime).toLocaleString().replace(","," ");
+                      return datetime.substring(0,datetime.length-3);
                     ]]]
                 custom_fields:
                   graph:
@@ -145,7 +146,8 @@ custom_fields:
                   lastupdate: >
                     [[[
                       var datetime =  states["sensor.tz102"].last_changed.split("T");
-                      return new Date(datetime).toLocaleString().replace(","," ");
+                      datetime = new Date(datetime).toLocaleString().replace(","," ");
+                      return datetime.substring(0,datetime.length-3);
                     ]]]
                 custom_fields:
                   graph:
@@ -213,7 +215,8 @@ custom_fields:
                   lastupdate: >
                     [[[
                       var datetime =  states["sensor.tz103"].last_changed.split("T");
-                      return new Date(datetime).toLocaleString().replace(","," ");
+                      datetime = new Date(datetime).toLocaleString().replace(","," ");
+                      return datetime.substring(0,datetime.length-3);
                     ]]]
                 custom_fields:
                   graph:
@@ -281,9 +284,9 @@ custom_fields:
                   lastupdate: >
                     [[[
                       var datetime =  states["sensor.tz104"].last_changed.split("T");
-                      return new Date(datetime).toLocaleString().replace(","," ");
+                      datetime = new Date(datetime).toLocaleString().replace(","," ");
+                      return datetime.substring(0,datetime.length-3);
                     ]]]
-                custom_fields:
                   graph:
                     card:
                       type: sensor
