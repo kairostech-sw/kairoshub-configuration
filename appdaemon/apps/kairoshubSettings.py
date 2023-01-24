@@ -13,7 +13,7 @@ class KairoshubSettings(hass.Hass):
         self.listen_event(self.copyPrograms, "AD_COPY_PROGRAMS")
 
     def syncSettings(self, event_name, data, kwargs):
-        self.log("Retrieving user settings")
+        self.log("Retrieving stored user settings")
 
         userSettings={"hub_zones":{}, "rollers":{},"heating":{}}
         functionSettings={}
@@ -52,7 +52,8 @@ class KairoshubSettings(hass.Hass):
             jsonData["lifetime"] = (timestamp+timedelta(days=1)).strftime("%Y-%m-%dT%H:%M:%S")
             json.dump(jsonData,f)
 
-        self.log("User settings synced", level="INFO")
+        self.log("User settings stored on filesystem.", level="INFO")
+       
         jsonData.pop("lifetime", None)
         eventData= {
             "eventType" : "SETTINGS_SYNC",
@@ -62,6 +63,7 @@ class KairoshubSettings(hass.Hass):
             "timestamp": timestamp
         }
 
+        self.log("Storing user settings on cloud..", level="INFO")
         self.fire_event("HAKAFKA_PRODUCER_PRODUCE", topic="TECHNICAL", message=eventData)
 
     def restoreSettings(self, event_name, data, kwargs):
@@ -79,6 +81,7 @@ class KairoshubSettings(hass.Hass):
                 userSettings=jsonData["userSettings"] if "userSettings" in jsonData else ""
                 functionSettings=jsonData["functionSettings"] if "functionSettings" in jsonData else ""
                 if "lifetime" not in jsonData or jsonData["lifetime"] < timestamp:
+                    self.log("User settings expired.", level="INFO")
                     raise FileNotFoundError
                 self.__updateSensors__(userSettings, functionSettings)
                 self.log("User settings restored by filesystem",level="INFO")

@@ -56,21 +56,26 @@ class KairoshubMetrics(hass.Hass):
                 room_name = room.split(".")[1]
                 room_id = room_name.split("zn")[1]
 
-                thermostats_state["zone"] = room_name
-                thermostats_state["state"] = self.get_state("sensor.tz"+room_id)
-                thermostats_state["last_update"] = self.get_state("sensor.tz"+room_id, attribute="last_updated")
+                entity_state = self.get_state("sensor.tz"+room_id)
+                if entity_state != "unknown":
+                    thermostats_state["zone"] = room_name
+                    thermostats_state["state"] = entity_state
+                    thermostats_state["last_update"] = self.get_state("sensor.tz"+room_id, attribute="last_updated")
+                    thermostats.append(thermostats_state)
 
-                rollers_state["zone"] = room_name
-                rollers_state["state"] = self.get_state("sensor.rz"+room_id)
-                rollers_state["last_update"] = self.get_state("sensor.rz"+room_id, attribute="last_updated")
+                entity_state = self.get_state("sensor.rz"+room_id)
+                if entity_state != "unknown":
+                    rollers_state["zone"] = room_name
+                    rollers_state["state"] = entity_state
+                    rollers_state["last_update"] = self.get_state("sensor.rz"+room_id, attribute="last_updated")
+                    rollers.append(rollers_state)
 
-                humidity_state["zone"] = room_name
-                humidity_state["state"] = self.get_state("sensor.hz"+room_id)
-                humidity_state["last_update"] = self.get_state("sensor.hz"+room_id, attribute="last_updated")
-
-                thermostats.append(thermostats_state)
-                rollers.append(rollers_state)
-                humidity.append(humidity_state)
+                entity_state = self.get_state("sensor.hz"+room_id)
+                if entity_state != "unknown":
+                    humidity_state["zone"] = room_name
+                    humidity_state["state"] = entity_state
+                    humidity_state["last_update"] = self.get_state("sensor.hz"+room_id, attribute="last_updated")
+                    humidity.append(humidity_state)
 
         entityMessage["thermostats"]= thermostats
         entityMessage["rollers"]= rollers
