@@ -802,16 +802,13 @@ program_day_overview_theme:
       icon: 'mdi:calendar-remove'
   styles:
     card:
-      - background: rgb(245,245,245)
-      - border-style:
-      - border-radius: 10%
       - padding: 4%
       - color: var(--primary-text-color)
       - font-size: 10px
       - text-transform: capitalize
       - border-width: |
           [[[
-          if (entity.state != 'on') return '1px';
+          if (entity.state != 'on') return '0px';
           return '2px';
           ]]]
       - border-style: double
@@ -820,6 +817,7 @@ program_day_overview_theme:
             if (entity.state != 'on') return 'var(--paper-item-icon-color)';
             return 'var(--active-color)';
           ]]]
+      - box-shadow: 1px 5px 8px rgba(0, 0, 0, 0.3)
     grid:
       - grid-template-areas: '"i onoff" "n n" "start start" "stop stop"'
       - grid-template-columns: 1fr 1fr
@@ -850,10 +848,14 @@ program_day_overview_theme:
         - align-self: start
         - justify-self: end
         - text-transform: uppercase
-        - font-size: 16px
+        - font-size: 20px
         - font-weight: bold
         - padding-right: 5px
-        - color: var(--primary-color)
+        - color: >
+            [[[
+              if (entity.state != 'on') return 'var(--paper-item-icon-color)';
+                return 'var(--active-color)'
+            ]]]
       start:
         - padding-bottom: 2px
         - padding-right: 5px
@@ -879,14 +881,14 @@ program_day_overview_theme:
               return `<ha-icon
                 icon="mdi:clock"
                 style="width: 14px; height: 14px; color: var(--primary-color);">
-                </ha-icon><span>ON:&nbsp;&nbsp;<span style="color: var(--text-color-sensor);">${states[ variables.thermostat_period_on ].state}</span></span>`
+                </ha-icon><span> Accensione :&nbsp;&nbsp;<span style="color: var(--text-color-sensor);">${states[ variables.thermostat_period_on ].state}</span></span>`
             ]]]
     stop: >
             [[[
               return `<ha-icon
                 icon="mdi:clock"
                 style="width: 14px; height: 14px; color: var(--primary-color);">
-                </ha-icon><span>OFF:&nbsp;<span style="color: var(--text-color-sensor);">${states[ variables.thermostat_period_off ].state}</span></span>`
+                </ha-icon><span> Spegnimento :&nbsp;<span style="color: var(--text-color-sensor);">${states[ variables.thermostat_period_off ].state}</span></span>`
             ]]]
   tap_action:
     action: navigate
@@ -984,7 +986,7 @@ icon_state_header:
     label:
       - font-size: 80%
       - font-weight: bold
-      - color: var(--paper-item-icon-active-color)
+      - color: '#f4f4f4'
       - grid-area: b
     img_cell:
       - grid-area: a
@@ -1036,9 +1038,11 @@ icon_clima:
     - value: 'on'
       icon: mdi:calendar-check
       label: 'ON'
+      color: var(--command-state-active-color)
     - value: 'off'
       icon: mdi:calendar-remove
       label: 'OFF'
+      color: var(--command-state-color)
 
 header_icon_clima:
   name: Programma caldo
@@ -1074,17 +1078,19 @@ button_go_to_program:
   type: 'custom:button-card'
   template: icon_state_header
   icon: '[[[ return "mdi:numeric-" + variables.progId + "-box-outline"]]]'
-  label: '[[[ return "Prog " + variables.progId]]]'
-  color: auto
+  # label: '[[[ return "Prog " + variables.progId]]]'
+  # color: auto
   tap_action:
     action: navigate
     navigation_path: '[[[ return "/lovelace-kairoshub/clima-p" + variables.progId]]]'
   styles:
     card:
-      - box-shadow: 1px 5px 8px rgba(0, 0, 0, 0.3)
-      - padding: 5px
+      # - box-shadow: 1px 5px 8px rgba(0, 0, 0, 0.3)
+      # - padding: 5px
       - width: 63px
-      - background: rgb(255, 255, 255)
+      # - border-right: solid 3px
+      # - border-color: var(--primary-background-color)
+      - background: none
 
 # button_go_to_prog1:
 #   type: 'custom:button-card'
@@ -1208,7 +1214,7 @@ button_go_back:
     navigation_path: '[[[window.history.back()]]]'
   styles:
     card:
-      - width: 261px
+      - width: 150px
 button_go_to_zone:
   type: 'custom:button-card'
   show_label: true
@@ -1434,24 +1440,26 @@ icon_header:
     icon:
       - color: var(--paper-item-icon-color)
 
-button_grid_4:
+program_page_grid:
   styles:
     grid:
-      - grid-template-areas: '"i n n n" "b1 b2 b3 b4"'
-      - grid-template-columns: 1fr 1fr 1fr 1fr
-      - grid-template-rows: min-content min-content
+      - grid-template-areas: '"header" "days" "commands"'
+      - grid-template-columns: 1fr 
+      - grid-template-rows: min-content min-content min-content
       - justify-items: center
       - row-gap: 10px
     name:
       - font-weight: bold
       - font-size: 16px
-    img_cell:
-      - justify-content: start
-      - align-items: start
-      - margin: none
-      - grid-area: i
-    icon:
-      - color: var(--paper-item-icon-color)
+    custom_fields:
+      header:
+        - justify-self: start
+      commands:
+        - width: 100%
+        - align-self: middle
+      days:
+        - margin-left: 3px
+        - margin-right: 3px
 
 button_grid_2:
   styles:
@@ -1664,3 +1672,21 @@ settings_card:
       - width: 165px
       - height: 115px
       - box-shadow: 1px 5px 8px rgba(0, 0, 0, 0.3)
+
+command_bar:
+  styles:
+    grid:
+      - grid-template-areas: '"commands"'
+    card:
+      - margin-top: 0.5px
+      - margin-bottom: 0px
+      # - justify-content: space-evenly
+      - box-shadow: 1px -1px 8px rgba(0, 0, 0, 0.3)
+      - background: '#333333'
+      - text-color: white
+      # - border-top: solid 1px #3377b5
+      # - border-style: rgb(210,210,210)
+    custom_fields:
+      commands:
+        - margin-top: 3px
+        - height: 60px

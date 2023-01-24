@@ -113,3 +113,25 @@
         topic: "kairostech/system/exchange_service"
         payload: "OFFLINE"
         retain: true
+- alias: COPY PROGRAM TIMERS
+  trigger:
+    - platform: state
+      entity_id: input_boolean.copy_program1
+      from: 'off'
+      to: 'on'
+    - platform: state
+      entity_id: input_boolean.copy_program2
+      from: 'off'
+      to: 'on'
+    - platform: state
+      entity_id: input_boolean.copy_program3
+      from: 'off'
+      to: 'on'
+    - platform: state
+      entity_id: input_boolean.copy_program4
+      from: 'off'
+      to: 'on'
+  action:
+    event: "AD_COPY_PROGRAMS"
+    event_data:
+      program: "{{trigger.entity_id}}"

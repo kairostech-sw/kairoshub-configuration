@@ -10,6 +10,7 @@ class KairoshubSettings(hass.Hass):
         self.listen_event(self.restoreSettings, "AD_SETTINGS_RESTORE")
         self.listen_event(self.pushSettings, "AD_SETTINGS_PUSH")
         self.listen_event(self.fileCheck, "AD_SETTINGS_FILE_CHECK")
+        self.listen_event(self.copyPrograms, "AD_COPY_PROGRAMS")
 
     def syncSettings(self, event_name, data, kwargs):
         self.log("Retrieving stored user settings")
@@ -145,3 +146,43 @@ class KairoshubSettings(hass.Hass):
 
         for entity in functionSettings:
             self.set_state("input_boolean."+entity, state = functionSettings[entity])
+
+    def copyPrograms(self, event_name, data, kwargs):
+
+        progId = data["program"][-1]
+        last_change = ["",datetime.min]
+        days = ["monday","tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
+        self.turn_off("input_boolean.copy_program{}".format(progId))
+
+        self.log("Copying program %s schedule", progId, level="INFO")
+
+        for day in days:
+            ont,offset = self.get_state("input_datetime.thermostat_{}_on_period{}".format(day, progId), attribute="last_changed").split("+")
+            ont=ont.split(".")[0]
+            offset = int(offset[:2])
+            ont = datetime.strptime(ont,"%Y-%m-%dT%H:%M:%S") - timedelta(hours=offset)
+
+            offt,offset = self.get_state("input_datetime.thermostat_{}_off_period{}".format(day, progId), attribute="last_changed").split("+")
+            offt = offt.split(".")[0]
+            offset = int(offset[:2])
+            offt = datetime.strptime(offt,"%Y-%m-%dT%H:%M:%S") - timedelta(hours=offset)
+
+            if ont > last_change[1]:
+                last_change[1]=ont
+                last_change[0] = day
+            if offt > last_change[1]:
+                last_change[1]=offt
+                last_change[0] = day
+
+        on_time = self.get_state("input_datetime.thermostat_{}_on_period{}".format(last_change[0], progId), attribute="all")
+        on_time_state = on_time.pop("state")
+        off_time = self.get_state("input_datetime.thermostat_{}_off_period{}".format(last_change[0], progId), attribute="all")
+        off_time_state = off_time.pop("state")
+
+        self.log("Setting all program as %s's schedule", last_change[0], level="INFO")
+        self.log("Setting all program timers to:\nStart: %s\nEnd: %s", on_time_state, off_time_state, level="INFO")
+
+        for day in days:
+            self.set_state("input_datetime.thermostat_{}_on_period{}".format(day, progId), state=on_time_state, attributes=on_time["attributes"])
+            self.set_state("input_datetime.thermostat_{}_off_period{}".format(day, progId), state=off_time_state, attributes=off_time["attributes"])
+
