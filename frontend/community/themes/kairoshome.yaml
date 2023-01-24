@@ -67,6 +67,9 @@ kairoshome - light:
   ### Graph Colors ###
   primary-graph-line-color: '#FF0000'
   secondary-graph-line-color: '#2E86C1'
+  ### Command Bar ###
+  command-state-color: '#FFFFFF'
+  command-state-active-color: '#DCA200'
 
   ### Dialog ###
   paper-dialog-background-color: "#ffffff"

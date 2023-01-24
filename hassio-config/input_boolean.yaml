@@ -25,6 +25,14 @@ heater_program3_on:
   name: Programma 3 Attivo
 heater_program4_on:
   name: Programma 4 Attivo
+copy_program1:
+  name: Copia Orari Programma 1
+copy_program2:
+  name: Copia Orari Programma 2
+copy_program3:
+  name: Copia Orari Programma 3
+copy_program4:
+  name: Copia Orari Programma 4
 thermostat_monday_program1:
   name: Lunedì
 thermostat_monday_program2:
