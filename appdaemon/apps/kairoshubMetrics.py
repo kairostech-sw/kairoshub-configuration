@@ -66,7 +66,7 @@ class KairoshubMetrics(hass.Hass):
 
                 humidity_state["zone"] = room_name
                 humidity_state["state"] = self.get_state("sensor.hz"+room_id)
-                humidity_state["last_update"] = self.get_state("sensor.hz"+room_id)
+                humidity_state["last_update"] = self.get_state("sensor.hz"+room_id, attribute="last_updated")
 
                 thermostats.append(thermostats_state)
                 rollers.append(rollers_state)
@@ -87,7 +87,7 @@ class KairoshubMetrics(hass.Hass):
             entityMessage["heating"]["program"] = "manual"
             entityMessage["heating"]["target"] = self.get_state("input_number.manual_heating_temp")
 
-        self.log("Entity Metrics: %s", entityMessage, level="INFO")
+        self.log("Entity Metrics: %s", entityMessage["humidities"], level="INFO")
 
         timestamp = self.get_state("sensor.date_time_iso")
         eventData = {
