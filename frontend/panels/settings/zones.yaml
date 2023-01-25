@@ -61,15 +61,35 @@ cards:
             - type: 'custom:button-card'
               template: zone_name
               name: '[[[ return "ZN101".bold()+": "+states["input_text.zn101"].state]]]'
+              style: 
+                div: |
+                  div#name {
+                    justify-self: left;
+                  }
             - type: 'custom:button-card'
               template: zone_name
               name: '[[[ return "ZN102".bold()+": "+states["input_text.zn102"].state]]]'
+              style: 
+                div: |
+                  div#name {
+                    justify-self: left;
+                  }
             - type: 'custom:button-card'
               template: zone_name
               name: '[[[ return "ZN103".bold()+": "+states["input_text.zn103"].state]]]'
+              style: 
+                div: |
+                  div#name {
+                    justify-self: left;
+                  }
             - type: 'custom:button-card'
               template: zone_name
               name: '[[[ return "ZN104".bold()+": "+states["input_text.zn104"].state]]]'
+              style: 
+                div: |
+                  div#name {
+                    justify-self: left;
+                  }
       list2:
         card:
           type: vertical-stack
@@ -77,9 +97,24 @@ cards:
             - type: 'custom:button-card'
               template: zone_name
               name: '[[[ return "ZN201".bold()+": "+states["input_text.zn201"].state]]]'
+              style: 
+                div: |
+                  div#name {
+                    justify-self: left;
+                  }
             - type: 'custom:button-card'
               template: zone_name
               name: '[[[ return `<div style="text-align: left;"><strong>ZN202</strong>: ${states["input_text.zn202"].state}</div>`]]]'
+              style: 
+                div: |
+                  div#name {
+                    justify-self: left;
+                  }
             - type: 'custom:button-card'
               template: zone_name
               name: '[[[ return "ZN203".bold()+": "+states["input_text.zn203"].state]]]'
+              style: 
+                div: |
+                  div#name {
+                    justify-self: left;
+                  }

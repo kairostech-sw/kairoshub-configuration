@@ -1657,7 +1657,7 @@ zone_name:
       - background: none
       - padding: 3px
       - margin-left: 5px
-      - width: auto
+      - width: 250px
   tap_action:
     action: none
 
