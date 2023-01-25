@@ -30,17 +30,17 @@ cards:
             states(config.entity) > states("input_number.manual_heating_temp")
             %}
             ha-card {
-              --accent-color: var(--primary-graph-line-color);
+              --accent-color: var(--temperature-primary-color);
             }
             .header .icon {
-              color: var(--primary-graph-line-color);
+              color: var(--temperature-primary-color);
             }
             {% else %}
             ha-card {
-              --accent-color: var(--secondary-graph-line-color);
+              --accent-color: var(--temperature-secondary-color);
             }
             .header .icon {
-              color: var(--secondary-graph-line-color);
+              color: var(--temperature-secondary-color);
             }
             {% endif %}
   # - type: sensor
@@ -68,10 +68,10 @@ cards:
           detail: 1
           style: |
             ha-card {
-              --accent-color: #FFD700;
+              --accent-color: var(--energy-consume-primary-color);
             }
             .header .icon {
-              color: #FFD700;
+              color: var(--energy-consume-primary-color);
             }
     style: |
       ha-card {
@@ -97,10 +97,10 @@ cards:
             detail: 1
             style: |
               ha-card {
-                --accent-color:  #7FB03F;
+                --accent-color:  var(--humidity-primary-color);
               }
               .header .icon {
-                color:  #7FB03F;
+                color:  var(--humidity-primary-color);
               }
       style: |
         ha-card {

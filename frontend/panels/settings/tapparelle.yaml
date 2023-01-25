@@ -9,10 +9,31 @@ custom_fields:
         - header_page_text
       name: 'IMPOSTAZIONI'
       icon: 'mdi:cog'
-  backbutton:
+  commandbar:
     card:
       type: 'custom:button-card'
-      template: button_go_back
+      template: command_bar
+      style: |
+        ha-card.button-card-main {
+          padding: 0px !important
+        }
+        div#container {
+          justify-items: right;
+        }
+      styles:
+        card:
+          - margin-top: 2px
+      custom_fields:
+        commands:
+          card:
+            type: horizontal-stack
+            cards:
+              - type: 'custom:button-card'
+                template: button_go_back
+                style: |
+                  :host {
+                    align-self: center;
+                  }
   entities:
     card:
       type: vertical-stack

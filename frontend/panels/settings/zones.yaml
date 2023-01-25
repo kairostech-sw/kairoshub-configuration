@@ -1,8 +1,7 @@
 type: vertical-stack
 cards:
   - type: 'custom:button-card'
-    template:
-      - zone_table
+    template: zone_table
     custom_fields:
       header:
         card:
@@ -14,10 +13,31 @@ cards:
           name: 'IMPOSTAZIONI'
           icon: 'mdi:cog'
           label: "Impostazioni / Zone"
-      backbutton:
+      commandbar:
         card:
           type: 'custom:button-card'
-          template: button_go_back
+          template: command_bar
+          style: |
+            ha-card.button-card-main {
+              padding: 0px !important
+            }
+            div#container {
+              justify-items: right;
+            }
+          styles:
+            card:
+              - width: 800px
+          custom_fields:
+            commands:
+              card:
+                type: horizontal-stack
+                cards:
+                  - type: 'custom:button-card'
+                    template: button_go_back
+                    style: |
+                      :host {
+                        align-self: center;
+                      }
       warning:
         card:
           type: 'custom:button-card'
@@ -29,6 +49,9 @@ cards:
                 I valori in questa pagina sono in sola lettura. Utilizzare l'assistente remoto per modificarli
               </ha-alert>`;
             ]]]
+          styles:
+            card:
+              - padding: 0px
           tap_action:
             action: none
       list1:

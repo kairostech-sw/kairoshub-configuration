@@ -11,10 +11,32 @@ custom_fields:
       icon: 'mdi:thermometer'
       name: 'CLIMA'
       label: '[[[return "Clima / "+states["input_text.zn200"].state]]]'
-  backbutton:
+  commandbar:
     card:
       type: 'custom:button-card'
-      template: button_go_back
+      template: command_bar
+      style: |
+        ha-card.button-card-main {
+          padding: 0px !important
+        }
+        div#container {
+          justify-items: right;
+        }
+      styles:
+        card:
+          - width: 800px
+          - margin-left: -10px
+      custom_fields:
+        commands:
+          card:
+            type: horizontal-stack
+            cards:
+              - type: 'custom:button-card'
+                template: button_go_back
+                style: |
+                  :host {
+                    align-self: center;
+                  }
   zones:
     card:
       type: vertical-stack
@@ -63,6 +85,23 @@ custom_fields:
                     [[[
                       return states["sensor.tz201"].state;
                     ]]]
+                  temp_color: >
+                    [[[
+                      var zoneTemperature = states['sensor.tz201'].state;
+                      if (
+                        (zoneTemperature > states["input_number.temperature_period1"].state 
+                        && states["input_boolean.heater_program1_on"].state ==="on") ||
+                        (zoneTemperature > states["input_number.temperature_period2"].state 
+                        && states["input_boolean.heater_program2_on"].state ==="on") ||
+                        (zoneTemperature > states["input_number.temperature_period3"].state 
+                        && states["input_boolean.heater_program3_on"].state ==="on") ||
+                        (zoneTemperature > states["input_number.temperature_period4"].state 
+                        && states["input_boolean.heater_program4_on"].state ==="on") ||
+                        zoneTemperature > states['input_number.manual_heating_temp'].state)
+                        return 'var(--temperature-primary-color)';
+                      else
+                        return 'var(--temperature-secondary-color)';
+                    ]]]
                   humidity: >
                     [[[
                       return states["sensor.th2011_humidity"].state;
@@ -99,19 +138,56 @@ custom_fields:
                         states(config.entity) > states("input_number.manual_heating_temp")
                         %}
                         ha-card {
-                          --accent-color: var(--primary-graph-line-color);
+                          --accent-color: var(--temperature-primary-color);
                         }
                         .header .icon {
-                          color: var(--primary-graph-line-color);
+                          color: var(--temperature-primary-color);
                         }
                         {% else %}
                         ha-card {
-                          --accent-color: var(--secondary-graph-line-color);
+                          --accent-color: var(--temperature-secondary-color);
                         }
                         .header .icon {
-                          color: var(--secondary-graph-line-color);
+                          color: var(--temperature-secondary-color);
                         }
                         {% endif %}
+                  icon1:
+                    card:
+                      type: custom:button-card
+                      icon: mdi:thermometer
+                      styles:
+                        icon:
+                          - width: 80%
+                          - color: >
+                              [[[
+                                var zoneTemperature = states['sensor.tz201'].state;
+                                if (
+                                  (zoneTemperature > states["input_number.temperature_period1"].state 
+                                  && states["input_boolean.heater_program1_on"].state ==="on") ||
+                                  (zoneTemperature > states["input_number.temperature_period2"].state 
+                                  && states["input_boolean.heater_program2_on"].state ==="on") ||
+                                  (zoneTemperature > states["input_number.temperature_period3"].state 
+                                  && states["input_boolean.heater_program3_on"].state ==="on") ||
+                                  (zoneTemperature > states["input_number.temperature_period4"].state 
+                                  && states["input_boolean.heater_program4_on"].state ==="on") ||
+                                  zoneTemperature > states['input_number.manual_heating_temp'].state)
+                                  return 'var(--temperature-primary-color)';
+                                else
+                                  return 'var(--temperature-secondary-color)';
+                              ]]]
+                  icon2:
+                    card:
+                      type: conditional
+                      conditions:
+                          - entity: sensor.hz201
+                            state_not: unknown
+                      card:
+                        type: custom:button-card
+                        icon: mdi:water-percent
+                        styles:
+                          icon:
+                            - width: 80%
+                            - color: var(--humidity-primary-color)
             - type: conditional
               conditions:
                 - entity: sensor.tz202
@@ -131,6 +207,23 @@ custom_fields:
                   temperature: >
                     [[[
                       return states["sensor.tz202"].state;
+                    ]]]
+                  temp_color: >
+                    [[[
+                      var zoneTemperature = states['sensor.tz202'].state;
+                      if (
+                        (zoneTemperature > states["input_number.temperature_period1"].state 
+                        && states["input_boolean.heater_program1_on"].state ==="on") ||
+                        (zoneTemperature > states["input_number.temperature_period2"].state 
+                        && states["input_boolean.heater_program2_on"].state ==="on") ||
+                        (zoneTemperature > states["input_number.temperature_period3"].state 
+                        && states["input_boolean.heater_program3_on"].state ==="on") ||
+                        (zoneTemperature > states["input_number.temperature_period4"].state 
+                        && states["input_boolean.heater_program4_on"].state ==="on") ||
+                        zoneTemperature > states['input_number.manual_heating_temp'].state)
+                        return 'var(--temperature-primary-color)';
+                      else
+                        return 'var(--temperature-secondary-color)';
                     ]]]
                   humidity: >
                     [[[
@@ -168,19 +261,56 @@ custom_fields:
                         states(config.entity) > states("input_number.manual_heating_temp")
                         %}
                         ha-card {
-                          --accent-color: var(--primary-graph-line-color);
+                          --accent-color: var(--temperature-primary-color);
                         }
                         .header .icon {
-                          color: var(--primary-graph-line-color);
+                          color: var(--temperature-primary-color);
                         }
                         {% else %}
                         ha-card {
-                          --accent-color: var(--secondary-graph-line-color);
+                          --accent-color: var(--temperature-secondary-color);
                         }
                         .header .icon {
-                          color: var(--secondary-graph-line-color);
+                          color: var(--temperature-secondary-color);
                         }
                         {% endif %}
+                  icon1:
+                    card:
+                      type: custom:button-card
+                      icon: mdi:thermometer
+                      styles:
+                        icon:
+                          - width: 80%
+                          - color: >
+                              [[[
+                                var zoneTemperature = states['sensor.tz202'].state;
+                                if (
+                                  (zoneTemperature > states["input_number.temperature_period1"].state 
+                                  && states["input_boolean.heater_program1_on"].state ==="on") ||
+                                  (zoneTemperature > states["input_number.temperature_period2"].state 
+                                  && states["input_boolean.heater_program2_on"].state ==="on") ||
+                                  (zoneTemperature > states["input_number.temperature_period3"].state 
+                                  && states["input_boolean.heater_program3_on"].state ==="on") ||
+                                  (zoneTemperature > states["input_number.temperature_period4"].state 
+                                  && states["input_boolean.heater_program4_on"].state ==="on") ||
+                                  zoneTemperature > states['input_number.manual_heating_temp'].state)
+                                  return 'var(--temperature-primary-color)';
+                                else
+                                  return 'var(--temperature-secondary-color)';
+                              ]]]
+                  icon2:
+                    card:
+                      type: conditional
+                      conditions:
+                          - entity: sensor.hz202
+                            state_not: unknown
+                      card:
+                        type: custom:button-card
+                        icon: mdi:water-percent
+                        styles:
+                          icon:
+                            - width: 80%
+                            - color: var(--humidity-primary-color)
                 tap_action:
                   action: none
             - type: conditional
@@ -202,6 +332,23 @@ custom_fields:
                   temperature: >
                     [[[
                       return states["sensor.tz203"].state;
+                    ]]]
+                  temp_color: >
+                    [[[
+                      var zoneTemperature = states['sensor.tz203'].state;
+                      if (
+                        (zoneTemperature > states["input_number.temperature_period1"].state 
+                        && states["input_boolean.heater_program1_on"].state ==="on") ||
+                        (zoneTemperature > states["input_number.temperature_period2"].state 
+                        && states["input_boolean.heater_program2_on"].state ==="on") ||
+                        (zoneTemperature > states["input_number.temperature_period3"].state 
+                        && states["input_boolean.heater_program3_on"].state ==="on") ||
+                        (zoneTemperature > states["input_number.temperature_period4"].state 
+                        && states["input_boolean.heater_program4_on"].state ==="on") ||
+                        zoneTemperature > states['input_number.manual_heating_temp'].state)
+                        return 'var(--temperature-primary-color)';
+                      else
+                        return 'var(--temperature-secondary-color)';
                     ]]]
                   humidity: >
                     [[[
@@ -239,18 +386,55 @@ custom_fields:
                         states(config.entity) > states("input_number.manual_heating_temp")
                         %}
                         ha-card {
-                          --accent-color: var(--primary-graph-line-color);
+                          --accent-color: var(--temperature-primary-color);
                         }
                         .header .icon {
-                          color: var(--primary-graph-line-color);
+                          color: var(--temperature-primary-color);
                         }
                         {% else %}
                         ha-card {
-                          --accent-color: var(--secondary-graph-line-color);
+                          --accent-color: var(--temperature-secondary-color);
                         }
                         .header .icon {
-                          color: var(--secondary-graph-line-color);
+                          color: var(--temperature-secondary-color);
                         }
                         {% endif %}
+                  icon1:
+                    card:
+                      type: custom:button-card
+                      icon: mdi:thermometer
+                      styles:
+                        icon:
+                          - width: 80%
+                          - color: >
+                              [[[
+                                var zoneTemperature = states['sensor.tz203'].state;
+                                if (
+                                  (zoneTemperature > states["input_number.temperature_period1"].state 
+                                  && states["input_boolean.heater_program1_on"].state ==="on") ||
+                                  (zoneTemperature > states["input_number.temperature_period2"].state 
+                                  && states["input_boolean.heater_program2_on"].state ==="on") ||
+                                  (zoneTemperature > states["input_number.temperature_period3"].state 
+                                  && states["input_boolean.heater_program3_on"].state ==="on") ||
+                                  (zoneTemperature > states["input_number.temperature_period4"].state 
+                                  && states["input_boolean.heater_program4_on"].state ==="on") ||
+                                  zoneTemperature > states['input_number.manual_heating_temp'].state)
+                                  return 'var(--temperature-primary-color)';
+                                else
+                                  return 'var(--temperature-secondary-color)';
+                              ]]]
+                  icon2:
+                    card:
+                      type: conditional
+                      conditions:
+                          - entity: sensor.hz203
+                            state_not: unknown
+                      card:
+                        type: custom:button-card
+                        icon: mdi:water-percent
+                        styles:
+                          icon:
+                            - width: 80%
+                            - color: var(--humidity-primary-color)
                 tap_action:
                   action: none

@@ -175,7 +175,7 @@ custom_fields:
                     - left: 60px
                     - bottom: -5px
                   icon:
-                    - color: var(--secondary-graph-line-color)
+                    - color: var(--temperature-secondary-color)
                 tap_action:
                   action: call-service
                   service: input_number.decrement
@@ -195,7 +195,7 @@ custom_fields:
                     operator: <=
                     styles:
                       card:
-                        - color: var(--secondary-graph-line-color)
+                        - color: var(--temperature-secondary-color)
                   - value: '24.0'
                     operator: <
                     styles:
@@ -205,7 +205,7 @@ custom_fields:
                     operator: '>='
                     styles:
                       card:
-                        - color: var(--primary-graph-line-color)
+                        - color: var(--temperature-primary-color)
                 tap_action:
                   action: none
                 styles:
@@ -235,16 +235,16 @@ custom_fields:
                     - left: -60px
                     - bottom: -5px
                   icon:
-                    - color: var(--primary-graph-line-color)
+                    - color: var(--temperature-primary-color)
                     - filter: opacity(0.75)
               - type: 'custom:button-card'
                 template: button_go_back
-                styles:
-                  card:
-                    - background: none
-                    - box-shadow: none
-                  name:
-                    - color: '#f4f4f4'
+                # styles:
+                #   card:
+                #     - background: none
+                #     - box-shadow: none
+                #   name:
+                #     - color: '#f4f4f4'
                 style: |
                   :host {
                     align-self: center;

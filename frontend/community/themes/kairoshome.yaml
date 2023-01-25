@@ -65,8 +65,10 @@ kairoshome - light:
   paper-toggle-button-unchecked-button-color: "#4284F4"
   paper-toggle-button-unchecked-bar-color: "#c1c1c1"
   ### Graph Colors ###
-  primary-graph-line-color: '#FF0000'
-  secondary-graph-line-color: '#2E86C1'
+  temperature-primary-color: '#FF0000'
+  temperature-secondary-color: '#2E86C1'
+  humidity-primary-color: '#7FB03F'
+  energy-consume-primary-color: '#FFD700'
   ### Command Bar ###
   command-state-color: '#FFFFFF'
   command-state-active-color: '#DCA200'

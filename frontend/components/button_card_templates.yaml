@@ -1215,6 +1215,10 @@ button_go_back:
   styles:
     card:
       - width: 150px
+      - background: none
+      - box-shadow: none
+    name:
+      - color: '#f4f4f4'
 button_go_to_zone:
   type: 'custom:button-card'
   show_label: true
@@ -1258,8 +1262,8 @@ clima_tv_detail:
       #         return 'var(--active-color)';
       #     ]]]
     grid:
-      - grid-template-areas: '"i header temp" "content content humidity" "graph graph graph"'
-      - grid-template-columns: 30px 2fr 1fr
+      - grid-template-areas: '"i header temp icon1" "content content humidity icon2 " "graph graph graph graph"'
+      - grid-template-columns: 30px 2fr 1fr 30px
       - grid-template-rows: 45px 25px min-content
     name:
       - font-weight: bold
@@ -1284,28 +1288,31 @@ clima_tv_detail:
       - width: 80%
     custom_fields:
       temp:
-        - justify-self: middle
+        - justify-self: end
         - align-self: middle
       humidity:
-        - justify-self: middle
+        - justify-self: end
         - align-self: middle
       content:
         - justify-self: start
         - align-self: middle
       graph:
-        - margin-top: 0px
+        - margin-top: 2px
   custom_fields:
       temp: >
         [[[
-          return `
-            <span style="font-size: 18px; font-weight: 600; color: var(--active-color);">${ variables.temperature }°C</span>
+          return `<div style="align-items: center; display: flex;">
+            <span style="font-size: 18px; font-weight: 600; color: ${variables.temp_color};">${ variables.temperature }°C</span>
             <br />
+            </div>
           `
         ]]]
       humidity: >
         [[[
           if (variables.humidity != "unknown" && variables.humidity != "unavailable")
-            {return `<span style="font-size: 18px; font-weight: 600; color: var(--active-color);">${ variables.humidity }%</span>`;}
+            {return `<div style="align-items: center; display: flex;"><span style="font-size: 18px; font-weight: 600; color: var(--humidity-primary-color);">${ variables.humidity }%</span>
+            <br />
+            </div>`;}
           else return;
         ]]]
       content: >
@@ -1346,9 +1353,14 @@ clima_zones_detail:
     card:
       - height: 100px
     grid:
-      - grid-template-areas: '"i header temp" "content content humidity"'
-      - grid-template-columns: 30px 2fr 1fr
+      - grid-template-areas: '"i header temp icon1" "content content humidity icon2"'
+      - grid-template-columns: 30px 2fr 1fr 30px
       - grid-template-rows: auto
+    custom_fields:
+      temp:
+        - justify-self: end
+      humidity:
+        - justify-self: end
 # clima_sensor_detail:
 #   type: 'custom:button-card'
 #   icon: 'mdi:thermometer'
@@ -1591,25 +1603,24 @@ entities_grid:
   template: grid_style
   styles:
     grid:
-      - grid-template-areas: '"header backbutton" "entities entities" '
+      - grid-template-areas: '"header" "entities" "commandbar'
       - grid-template-columns: auto
-      - grid-template-row: min-content min-content
+      - grid-template-row: auto
       - align-items: start
       - column-gap: 0px
       - row-gap: 10px
     custom_fields:
       header:
         - justify-self: start
-      backbutton:
-        - justify-self: end
       entities:
         - text-align: start
+        - height: 290px
 
 clima_zone_grid:
   template: grid_style
   styles:
     grid:
-      - grid-template-areas: '"header backbutton" "zones zones"'
+      - grid-template-areas: '"header header" "zones zones" "commandbar commandbar"'
       - grid-template-columns: 1fr 1fr
       - grid-auto-rows: auto
       - row-gap: 3px
@@ -1620,22 +1631,20 @@ clima_zone_grid:
       header:
         - margin-bottom: 2px
         - margin-left: -10px
-      backbutton:
-        - justify-self: end
-        - margin-right: -10px
+        - height: 46px
+      zones:
+        - height: 307px
 
 zone_table:
   template: grid_style
   styles:
     grid:
-      - grid-template-areas: '"header header backbutton" "warning warning warning" "list1  list2 ."'
+      - grid-template-areas: '"header header header" "warning warning warning" "list1  list2 ." "commandbar commandbar commandbar"'
       - grid-template-columns: auto
-      - grid-template-rows: 1fr min-content
+      - grid-template-rows: 1fr 80px 192px min-content
       - align-items: start
       - row-gap: 5px
     custom_fields:
-      backbutton:
-        - justify-self: end
       warning:
         - justify-self: stretch
         - text-align-last: start

@@ -57,6 +57,23 @@ cards:
                     [[[
                       return states["sensor.tz100"].state;
                     ]]]
+                  temp_color: >
+                    [[[
+                      var zoneTemperature = states['sensor.tz100'].state;
+                      if (
+                        (zoneTemperature > states["input_number.temperature_period1"].state 
+                        && states["input_boolean.heater_program1_on"].state ==="on") ||
+                        (zoneTemperature > states["input_number.temperature_period2"].state 
+                        && states["input_boolean.heater_program2_on"].state ==="on") ||
+                        (zoneTemperature > states["input_number.temperature_period3"].state 
+                        && states["input_boolean.heater_program3_on"].state ==="on") ||
+                        (zoneTemperature > states["input_number.temperature_period4"].state 
+                        && states["input_boolean.heater_program4_on"].state ==="on") ||
+                        zoneTemperature > states['input_number.manual_heating_temp'].state)
+                        return 'var(--temperature-primary-color)';
+                      else
+                        return 'var(--temperature-secondary-color)';
+                    ]]]
                   humidity: >
                     [[[
                       return states["sensor.hz100"].state;
@@ -75,6 +92,44 @@ cards:
                 tap_action:
                   action: navigate
                   navigation_path: /lovelace-kairoshub/nightzone
+                custom_fields:
+                  icon1:
+                    card:
+                      type: custom:button-card
+                      icon: mdi:thermometer
+                      styles:
+                        icon:
+                          - width: 80%
+                          - color: >
+                              [[[
+                                var zoneTemperature = states['sensor.tz100'].state;
+                                if (
+                                  (zoneTemperature > states["input_number.temperature_period1"].state 
+                                  && states["input_boolean.heater_program1_on"].state ==="on") ||
+                                  (zoneTemperature > states["input_number.temperature_period2"].state 
+                                  && states["input_boolean.heater_program2_on"].state ==="on") ||
+                                  (zoneTemperature > states["input_number.temperature_period3"].state 
+                                  && states["input_boolean.heater_program3_on"].state ==="on") ||
+                                  (zoneTemperature > states["input_number.temperature_period4"].state 
+                                  && states["input_boolean.heater_program4_on"].state ==="on") ||
+                                  zoneTemperature > states['input_number.manual_heating_temp'].state)
+                                  return 'var(--temperature-primary-color)';
+                                else
+                                  return 'var(--temperature-secondary-color)';
+                              ]]]
+                  icon2:
+                    card:
+                      type: conditional
+                      conditions:
+                          - entity: sensor.hz100
+                            state_not: unknown
+                      card:
+                        type: custom:button-card
+                        icon: mdi:water-percent
+                        styles:
+                          icon:
+                            - width: 80%
+                            - color: var(--humidity-primary-color)
               - type: 'custom:button-card'
                 # entity: 'sensor.tv01_lastupdate'
                 template: 'clima_zones_detail'
@@ -86,6 +141,23 @@ cards:
                   temperature: >
                     [[[
                       return states["sensor.tz200"].state;
+                    ]]]
+                  temp_color: >
+                    [[[
+                      var zoneTemperature = states['sensor.tz200'].state;
+                      if (
+                        (zoneTemperature > states["input_number.temperature_period1"].state 
+                        && states["input_boolean.heater_program1_on"].state ==="on") ||
+                        (zoneTemperature > states["input_number.temperature_period2"].state 
+                        && states["input_boolean.heater_program2_on"].state ==="on") ||
+                        (zoneTemperature > states["input_number.temperature_period3"].state 
+                        && states["input_boolean.heater_program3_on"].state ==="on") ||
+                        (zoneTemperature > states["input_number.temperature_period4"].state 
+                        && states["input_boolean.heater_program4_on"].state ==="on") ||
+                        zoneTemperature > states['input_number.manual_heating_temp'].state)
+                        return 'var(--temperature-primary-color)';
+                      else
+                        return 'var(--temperature-secondary-color)';
                     ]]]
                   humidity: >
                     [[[
@@ -105,6 +177,44 @@ cards:
                 tap_action:
                   action: navigate
                   navigation_path: /lovelace-kairoshub/dayzone
+                custom_fields:
+                  icon1:
+                    card:
+                      type: custom:button-card
+                      icon: mdi:thermometer
+                      styles:
+                        icon:
+                          - width: 80%
+                          - color: >
+                              [[[
+                                var zoneTemperature = states['sensor.tz200'].state;
+                                if (
+                                  (zoneTemperature > states["input_number.temperature_period1"].state 
+                                  && states["input_boolean.heater_program1_on"].state ==="on") ||
+                                  (zoneTemperature > states["input_number.temperature_period2"].state 
+                                  && states["input_boolean.heater_program2_on"].state ==="on") ||
+                                  (zoneTemperature > states["input_number.temperature_period3"].state 
+                                  && states["input_boolean.heater_program3_on"].state ==="on") ||
+                                  (zoneTemperature > states["input_number.temperature_period4"].state 
+                                  && states["input_boolean.heater_program4_on"].state ==="on") ||
+                                  zoneTemperature > states['input_number.manual_heating_temp'].state)
+                                  return 'var(--temperature-primary-color)';
+                                else
+                                  return 'var(--temperature-secondary-color)';
+                              ]]]
+                  icon2:
+                    card:
+                      type: conditional
+                      conditions:
+                          - entity: sensor.hz200
+                            state_not: unknown
+                      card:
+                        type: custom:button-card
+                        icon: mdi:water-percent
+                        styles:
+                          icon:
+                            - width: 80%
+                            - color: var(--humidity-primary-color)
       # contentdx:
       #   card:
       #     type: vertical-stack
