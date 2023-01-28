@@ -1,0 +1,340 @@
+kiosk_mode:
+  hide_header: false
+  hide_sidebar: true
+  hide_menubutton: true
+  hide_overflow: true
+  user_settings:
+    - users:
+        - kairoshub
+        - utente
+        - user
+      hide_header: false
+      hide_sidebar: true
+      hide_menubutton: true
+      hide_overflow: true
+
+button_card_templates: !include hakairos-configuration/frontend/components/button_card_templates.yaml
+
+views:
+  - title: HOME
+    path: home
+    panel: true
+    show_name: true
+    style: |
+          #view {
+            padding-left: 1% !important;
+            padding-right: 1% !important;
+          }
+    cards:
+      - type: vertical-stack
+        cards:
+          - !include hakairos-configuration/frontend/components/theme/header.yaml
+          - type: horizontal-stack
+            cards:
+              - !include hakairos-configuration/frontend/components/theme/body_col_1.yaml
+              - !include hakairos-configuration/frontend/components/theme/body_col_3.yaml
+          - type: 'custom:button-card'
+            color_type: blank-card
+            styles:
+              card:
+                - margin-bottom: 20px
+          - !include hakairos-configuration/frontend/components/theme/footer.yaml
+  - title: CLIMA
+    path: clima
+    panel: true
+    cards:
+      - type: vertical-stack
+        cards:
+          - !include hakairos-configuration/frontend/panels/clima.yaml
+  - title: IMPOSTAZIONI
+    path: impostazioni
+    panel: true
+    cards:
+      - type: vertical-stack
+        cards:
+          - !include hakairos-configuration/frontend/panels/settings.yaml
+  - title: ASSISTENZA
+    icon:
+    path: assistenza
+    panel: true
+    cards:
+      - type: vertical-stack
+        cards:
+          - !include hakairos-configuration/frontend/panels/assistance.yaml
+  - title: Programma 1
+    path: clima-p1
+    panel: true
+    visible: false
+    cards:
+      - type: vertical-stack
+        cards:
+          - !include hakairos-configuration/frontend/panels/clima/p1.yaml
+  - title: Programma 2
+    path: clima-p2
+    panel: true
+    visible: false
+    cards:
+      - type: vertical-stack
+        cards:
+          - !include hakairos-configuration/frontend/panels/clima/p2.yaml
+  - title: Programma 3
+    path: clima-p3
+    panel: true
+    visible: false
+    cards:
+      - type: vertical-stack
+        cards:
+          - !include hakairos-configuration/frontend/panels/clima/p3.yaml
+  - title: Programma 4
+    path: clima-p4
+    panel: true
+    visible: false
+    cards:
+      - type: vertical-stack
+        cards:
+          - !include hakairos-configuration/frontend/panels/clima/p4.yaml
+  - path: clima-p1-1
+    panel: true
+    visible: false
+    cards:
+      - type: vertical-stack
+        cards:
+          - !include hakairos-configuration/frontend/panels/clima/p1/p1-1.yaml
+  - path: clima-p1-2
+    panel: true
+    visible: false
+    cards:
+      - type: vertical-stack
+        cards:
+          - !include hakairos-configuration/frontend/panels/clima/p1/p1-2.yaml
+  - path: clima-p1-3
+    panel: true
+    visible: false
+    cards:
+      - type: vertical-stack
+        cards:
+          - !include hakairos-configuration/frontend/panels/clima/p1/p1-3.yaml
+  - path: clima-p1-4
+    panel: true
+    visible: false
+    cards:
+      - type: vertical-stack
+        cards:
+          - !include hakairos-configuration/frontend/panels/clima/p1/p1-4.yaml
+  - path: clima-p1-5
+    panel: true
+    visible: false
+    cards:
+      - type: vertical-stack
+        cards:
+          - !include hakairos-configuration/frontend/panels/clima/p1/p1-5.yaml
+  - path: clima-p1-6
+    panel: true
+    visible: false
+    cards:
+      - type: vertical-stack
+        cards:
+          - !include hakairos-configuration/frontend/panels/clima/p1/p1-6.yaml
+  - path: clima-p1-7
+    panel: true
+    visible: false
+    cards:
+      - type: vertical-stack
+        cards:
+          - !include hakairos-configuration/frontend/panels/clima/p1/p1-7.yaml
+  - path: clima-p2-1
+    panel: true
+    visible: false
+    cards:
+      - type: vertical-stack
+        cards:
+          - !include hakairos-configuration/frontend/panels/clima/p2/p2-1.yaml
+  - path: clima-p2-2
+    panel: true
+    visible: false
+    cards:
+      - type: vertical-stack
+        cards:
+          - !include hakairos-configuration/frontend/panels/clima/p2/p2-2.yaml
+  - path: clima-p2-3
+    panel: true
+    visible: false
+    cards:
+      - type: vertical-stack
+        cards:
+          - !include hakairos-configuration/frontend/panels/clima/p2/p2-3.yaml
+  - path: clima-p2-4
+    panel: true
+    visible: false
+    cards:
+      - type: vertical-stack
+        cards:
+          - !include hakairos-configuration/frontend/panels/clima/p2/p2-4.yaml
+  - path: clima-p2-5
+    panel: true
+    visible: false
+    cards:
+      - type: vertical-stack
+        cards:
+          - !include hakairos-configuration/frontend/panels/clima/p2/p2-5.yaml
+  - path: clima-p2-6
+    panel: true
+    visible: false
+    cards:
+      - type: vertical-stack
+        cards:
+          - !include hakairos-configuration/frontend/panels/clima/p2/p2-6.yaml
+  - path: clima-p2-7
+    panel: true
+    visible: false
+    cards:
+      - type: vertical-stack
+        cards:
+          - !include hakairos-configuration/frontend/panels/clima/p2/p2-7.yaml
+  - path: clima-p3-1
+    panel: true
+    visible: false
+    cards:
+      - type: vertical-stack
+        cards:
+          - !include hakairos-configuration/frontend/panels/clima/p3/p3-1.yaml
+  - path: clima-p3-2
+    panel: true
+    visible: false
+    cards:
+      - type: vertical-stack
+        cards:
+          - !include hakairos-configuration/frontend/panels/clima/p3/p3-2.yaml
+  - path: clima-p3-3
+    panel: true
+    visible: false
+    cards:
+      - type: vertical-stack
+        cards:
+          - !include hakairos-configuration/frontend/panels/clima/p3/p3-3.yaml
+  - path: clima-p3-4
+    panel: true
+    visible: false
+    cards:
+      - type: vertical-stack
+        cards:
+          - !include hakairos-configuration/frontend/panels/clima/p3/p3-4.yaml
+  - path: clima-p3-5
+    panel: true
+    visible: false
+    cards:
+      - type: vertical-stack
+        cards:
+          - !include hakairos-configuration/frontend/panels/clima/p3/p3-5.yaml
+  - path: clima-p3-6
+    panel: true
+    visible: false
+    cards:
+      - type: vertical-stack
+        cards:
+          - !include hakairos-configuration/frontend/panels/clima/p3/p3-6.yaml
+  - path: clima-p3-7
+    panel: true
+    visible: false
+    cards:
+      - type: vertical-stack
+        cards:
+          - !include hakairos-configuration/frontend/panels/clima/p3/p3-7.yaml
+  - path: clima-p4-1
+    panel: true
+    visible: false
+    cards:
+      - type: vertical-stack
+        cards:
+          - !include hakairos-configuration/frontend/panels/clima/p4/p4-1.yaml
+  - path: clima-p4-2
+    panel: true
+    visible: false
+    cards:
+      - type: vertical-stack
+        cards:
+          - !include hakairos-configuration/frontend/panels/clima/p4/p4-2.yaml
+  - path: clima-p4-3
+    panel: true
+    visible: false
+    cards:
+      - type: vertical-stack
+        cards:
+          - !include hakairos-configuration/frontend/panels/clima/p4/p4-3.yaml
+  - path: clima-p4-4
+    panel: true
+    visible: false
+    cards:
+      - type: vertical-stack
+        cards:
+          - !include hakairos-configuration/frontend/panels/clima/p4/p4-4.yaml
+  - path: clima-p4-5
+    panel: true
+    visible: false
+    cards:
+      - type: vertical-stack
+        cards:
+          - !include hakairos-configuration/frontend/panels/clima/p4/p4-5.yaml
+  - path: clima-p4-6
+    panel: true
+    visible: false
+    cards:
+      - type: vertical-stack
+        cards:
+          - !include hakairos-configuration/frontend/panels/clima/p4/p4-6.yaml
+  - path: clima-p4-7
+    panel: true
+    visible: false
+    cards:
+      - type: vertical-stack
+        cards:
+          - !include hakairos-configuration/frontend/panels/clima/p4/p4-7.yaml
+  - path: notification
+    panel: true
+    visible: false
+    cards:
+      - type: vertical-stack
+        cards:
+          - !include hakairos-configuration/frontend/panels/notification.yaml
+  - path: impostazioni-tapparelle
+    panel: true
+    visible: false
+    cards:
+      - type: vertical-stack
+        cards:
+          - !include hakairos-configuration/frontend/panels/settings/tapparelle.yaml
+  - path: impostazioni-riscaldamento
+    panel: true
+    visible: false
+    cards:
+      - type: vertical-stack
+        cards:
+          - !include hakairos-configuration/frontend/panels/settings/riscaldamento.yaml
+  - path: impostazioni-zone
+    panel: true
+    visible: false
+    cards:
+      - type: vertical-stack
+        cards:
+          - !include hakairos-configuration/frontend/panels/settings/zones.yaml
+  - path: impostazioni-alexa
+    panel: true
+    visible: false
+    cards:
+      - type: vertical-stack
+        cards:
+          - !include hakairos-configuration/frontend/panels/settings/alexa.yaml
+  - path: dayzone
+    panel: true
+    visible: false
+    cards:
+      - type: vertical-stack
+        cards:
+          - !include hakairos-configuration/frontend/panels/zones/dayzone.yaml
+  - path: nightzone
+    panel: true
+    visible: false
+    cards:
+      - type: vertical-stack
+        cards:
+          - !include hakairos-configuration/frontend/panels/zones/nightzone.yaml

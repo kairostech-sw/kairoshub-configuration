@@ -1,0 +1,252 @@
+type: custom:button-card
+template: program_page_grid
+styles:
+  card:
+    - background: none
+    - padding-top: 15px
+    - padding-bottom: 0px
+custom_fields:
+  header:
+    card:
+      type: 'custom:button-card'
+      entity: input_boolean.heater_program2
+      layout: vertical
+      template: 
+        - header_page_text
+        - icon_clima
+      name: 'Programma 2'
+      label: 'Clima / Programma 2'
+  days:
+    card:
+      type: grid
+      columns: 4
+      square: false
+      styles:
+        card:
+          - margin-left: 30px
+      cards:
+        - type: custom:button-card
+          entity: 'input_boolean.thermostat_monday_program2'
+          template: program_day_overview_theme
+          triggers_update:
+            - input_datetime.thermostat_monday_on_period2
+            - input_datetime.thermostat_monday_off_period2
+          name: Lunedì
+          variables: 
+            navigation_path: clima-p2-1
+            thermostat_period_on: input_datetime.thermostat_monday_on_period2
+            thermostat_period_off: input_datetime.thermostat_monday_off_period2
+        - type: custom:button-card
+          entity: 'input_boolean.thermostat_tuesday_program2'
+          template: program_day_overview_theme
+          triggers_update:
+            - input_datetime.thermostat_tuesday_on_period2
+            - input_datetime.thermostat_tuesday_off_period2
+          name: Martedì
+          variables: 
+            navigation_path: clima-p2-2
+            thermostat_period_on: input_datetime.thermostat_tuesday_on_period2
+            thermostat_period_off: input_datetime.thermostat_tuesday_off_period2
+        - type: custom:button-card
+          entity: 'input_boolean.thermostat_wednesday_program2'
+          template: program_day_overview_theme
+          triggers_update:
+            - input_datetime.thermostat_wednesday_on_period2
+            - input_datetime.thermostat_wednesday_off_period2
+          name: Mercoledì
+          variables: 
+            navigation_path: clima-p2-3
+            thermostat_period_on: input_datetime.thermostat_wednesday_on_period2
+            thermostat_period_off: input_datetime.thermostat_wednesday_off_period2
+        - type: custom:button-card
+          template: program_day_overview_theme
+          triggers_update:
+            - input_datetime.thermostat_thursday_on_period2
+            - input_datetime.thermostat_thursday_off_period2
+          entity: 'input_boolean.thermostat_thursday_program2'
+          name: Giovedì
+          variables:  
+            entityRef: 'input_boolean.thermostat_thursday_program2'
+            navigation_path: clima-p2-4
+            thermostat_period_on: input_datetime.thermostat_thursday_on_period2
+            thermostat_period_off: input_datetime.thermostat_thursday_off_period2
+        - type: custom:button-card
+          entity: 'input_boolean.thermostat_friday_program2'
+          template: program_day_overview_theme
+          triggers_update:
+            - input_datetime.thermostat_friday_on_period2
+            - input_datetime.thermostat_friday_off_period2
+          name: Venerdì
+          variables: 
+            navigation_path: clima-p2-5
+            thermostat_period_on: input_datetime.thermostat_friday_on_period2
+            thermostat_period_off: input_datetime.thermostat_friday_off_period2
+        - type: custom:button-card
+          entity: 'input_boolean.thermostat_saturday_program2'
+          template: program_day_overview_theme
+          triggers_update:
+            - input_datetime.thermostat_saturday_on_period2
+            - input_datetime.thermostat_saturday_off_period2
+          name: Sabato
+          variables: 
+            navigation_path: clima-p2-6
+            thermostat_period_on: input_datetime.thermostat_saturday_on_period2
+            thermostat_period_off: input_datetime.thermostat_saturday_off_period2
+        - type: custom:button-card
+          entity: 'input_boolean.thermostat_sunday_program2'
+          template: program_day_overview_theme
+          triggers_update:
+            - input_datetime.thermostat_sunday_on_period2
+            - input_datetime.thermostat_sunday_off_period2
+          name: Domenica
+          variables: 
+            navigation_path: clima-p2-7
+            thermostat_period_on: input_datetime.thermostat_sunday_on_period2
+            thermostat_period_off: input_datetime.thermostat_sunday_off_period2
+  commands:
+    card:
+      type: 'custom:button-card'
+      template: command_bar
+      style: |
+        ha-card.button-card-main {
+          padding: 0px !important
+        }
+      styles:
+        card:
+          - margin-top: 65px
+      custom_fields:
+        commands:
+          card:
+            type: horizontal-stack
+            cards:
+              - type: 'custom:button-card'
+                template: icon_state_header
+                entity: input_boolean.heater_program2
+                icon: mdi:power 
+                # show_state: true
+                # styles:
+                #   card: 
+                #     - padding-top: 20px      
+                # label: Prog 2
+                state:
+                  - value: 'on'
+                    label: 'Acceso'
+                    color: var(--command-state-active-color)
+                  - value: 'off'
+                    label: 'Spento'
+                    color: var(--command-state-color)
+                hold_action:
+                  confirmation:
+                    text: >
+                      [[[
+                        if (states['input_boolean.heater_program2'].state === 'on')
+                          return "Sei sicuro di voler disattivare tutte le programmazioni?";
+                        else
+                          return "Sei sicuro di voler attivare tutte le programmazioni?";
+                      ]]]         
+                  action: call-service
+                  service: >
+                    [[[
+                      if (states['input_boolean.heater_program2'].state === 'on')
+                        return 'input_boolean.turn_off';
+                      else
+                        return 'input_boolean.turn_on';
+                    ]]]
+                  service_data:
+                    entity_id:
+                      - input_boolean.heater_program2
+                      - input_boolean.thermostat_monday_program2
+                      - input_boolean.thermostat_tuesday_program2
+                      - input_boolean.thermostat_wednesday_program2
+                      - input_boolean.thermostat_thursday_program2
+                      - input_boolean.thermostat_friday_program2
+                      - input_boolean.thermostat_saturday_program2
+                      - input_boolean.thermostat_sunday_program2
+              - type: 'custom:button-card'
+                template: header_button_menu
+                icon: 'mdi:thermometer-minus'
+                size: 30%
+                styles:
+                  card:
+                    - align-self: center
+                    - background: none
+                    - box-shadow: none
+                    - padding-top: 4px
+                    - left: 60px
+                    - bottom: -5px
+                  icon:
+                    - color: var(--temperature-secondary-color)
+                tap_action:
+                  action: call-service
+                  service: input_number.decrement
+                  service_data:
+                    entity_id: input_number.temperature_period2
+              - type: 'custom:button-card'
+                entity: input_number.temperature_period2
+                layout: vertical
+                template: no_background
+                name: Temp. comfort
+                show_state: yes
+                show_icon: false
+                show_name: false
+                show_label: false
+                state:
+                  - value: '20.0'
+                    operator: <=
+                    styles:
+                      card:
+                        - color: var(--temperature-secondary-color)
+                  - value: '24.0'
+                    operator: <
+                    styles:
+                      card:
+                        - color: orange
+                  - value: '24.0'
+                    operator: '>='
+                    styles:
+                      card:
+                        - color: var(--temperature-primary-color)
+                tap_action:
+                  action: none
+                styles:
+                  state:
+                    - font-size: 26px
+                    - font-weight: bold 
+                  icon:
+                    - size: 80%
+                style: |
+                  :host {
+                    align-self: center;
+                  }
+              - type: 'custom:button-card'
+                template: header_button_menu
+                icon: mdi:thermometer-plus
+                size: 30%
+                tap_action:
+                  action: call-service
+                  service: input_number.increment
+                  service_data:
+                    entity_id: input_number.temperature_period2
+                styles:
+                  card:
+                    - background: none
+                    - box-shadow: none
+                    - padding-top: 4px
+                    - left: -60px
+                    - bottom: -5px
+                  icon:
+                    - color: var(--temperature-primary-color)
+                    - filter: opacity(0.75)
+              - type: 'custom:button-card'
+                template: button_go_back
+                styles:
+                  card:
+                    - background: none
+                    - box-shadow: none
+                  name:
+                    - color: '#f4f4f4'
+                style: |
+                  :host {
+                    align-self: center;
+                  }
+                

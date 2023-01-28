@@ -1,0 +1,10 @@
+- platform: mqtt
+  name: "EM_ch1"
+  state_topic: "shellies/EM01/emeter/0/power"
+  value_template: "{{ value }}"
+  unit_of_measurement: "Watt"
+- platform: mqtt
+  name: "EM_ch2"
+  state_topic: "shellies/EM01/emeter/1/power"
+  value_template: "{{ value }}"
+  unit_of_measurement: "Watt"

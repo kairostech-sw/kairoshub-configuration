@@ -1,0 +1,135 @@
+type: vertical-stack
+cards:
+  - type: horizontal-stack
+    cards:
+      - type: 'custom:button-card'
+        entity: input_boolean.heater_auto
+        layout: vertical
+        template: no_background
+        name: Programma Settimanale
+        label: ' '
+        icon: 'mdi:hours-24'
+        show_icon: false
+        show_label: true
+        show_name: true
+        show_state: false
+        styles:
+          card:
+            - height: 100px
+          state:
+            - font-size: 120%
+            - font-weight: bold
+            - justify-self: center
+            - color: var(--paper-item-icon-active-color)
+          label:
+            - justify-self: center
+            - font-size: 120%
+            - font-weight: bold
+            - color: var(--paper-item-icon-active-color)
+          name:
+            - justify-self: center
+            - font-size: 120%
+            - font-weight: bold
+        tap_action:
+          action: none
+      - type: 'custom:button-card'
+        template: row_space_10
+      - name: Attivo
+        template: on_off_buttoncard
+        entity: input_boolean.heater_auto
+        icon: 'mdi:hours-24'
+        tap_action:
+          action: call-service
+          service: input_boolean.toggle
+          service_data:
+            entity_id: input_boolean.heater_auto
+        styles:
+          card:
+            - height: 45px
+          name: 
+            - font-size: 15px
+        type: 'custom:button-card'
+  - type: horizontal-stack
+    cards:
+      - type: 'custom:button-card'
+        template: button_horizontal
+        name: Lunedì
+        entity: input_boolean.thermostat_monday
+        icon: 'mdi:power'
+        tap_action:
+          action: call-service
+          service: input_boolean.toggle
+          service_data:
+            entity_id: input_boolean.thermostat_monday
+        styles:
+          card:
+            - height: 45px
+          name: 
+            - font-size: 15px
+      - type: 'custom:button-card'
+        template: row_space_10
+      - type: 'custom:button-card'
+        template: row_space_10
+      - type: 'custom:button-card'
+        template: row_space_10
+ 
+  - type: horizontal-stack
+    cards:
+      - type: 'custom:time-picker-card'
+        entity: input_datetime.thermostat_monday_on_period1
+        template: clima_time_picker
+        hour_mode: 24
+        embedded: true
+        hide:
+          name: false
+      - type: 'custom:time-picker-card'
+        entity: input_datetime.thermostat_monday_on_period2
+        hour_mode: 24
+        embedded: true
+        time-picker-control-padding: 0px
+        hide:
+          name: false
+      - type: 'custom:time-picker-card'
+        entity: input_datetime.thermostat_monday_on_period3
+        hour_mode: 24
+        embedded: true
+        time-picker-control-padding: 0px
+        hide:
+          name: false
+      - type: 'custom:time-picker-card'
+        entity: input_datetime.thermostat_monday_on_period4
+        hour_mode: 24
+        embedded: true
+        time-picker-control-padding: 0px
+        hide:
+          name: false
+  - type: horizontal-stack
+    cards:
+      - type: 'custom:time-picker-card'
+        entity: input_datetime.thermostat_monday_off_period1
+        hour_mode: 24
+        embedded: true
+        time-picker-control-padding: 0px
+        hide:
+          name: false
+      - type: 'custom:time-picker-card'
+        entity: input_datetime.thermostat_monday_off_period2
+        hour_mode: 24
+        embedded: true
+        time-picker-control-padding: 0px
+        hide:
+          name: false
+      - type: 'custom:time-picker-card'
+        entity: input_datetime.thermostat_monday_off_period3
+        hour_mode: 24
+        embedded: true
+        time-picker-control-padding: 0px
+        hide:
+          name: false
+      - type: 'custom:time-picker-card'
+        entity: input_datetime.thermostat_monday_off_period4
+        hour_mode: 24
+        embedded: true
+        time-picker-control-padding: 0px
+        hide:
+          name: false

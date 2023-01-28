@@ -1,0 +1,43 @@
+heating_valves:
+  name: Temperatura Valvole
+  entities:
+    - group.heating_valves_legacy
+    - group.heating_valves_day_zone
+    - group.heating_valves_night_zone
+heating_valves_legacy:
+  name: Valvole Riscaldamento
+  entities:
+    - sensor.tv01_temp
+    - sensor.tv02_temp
+    - sensor.tv03_temp
+    - sensor.tv04_temp
+    - sensor.tv05_temp
+    - sensor.tv06_temp
+    - sensor.tv07_temp
+heating_valves_day_zone:
+  name: Valvole Riscaldamento Zona
+  entities:
+    - sensor.tv04_temp
+    - sensor.tv05_temp
+    - sensor.tv06_temp
+    - sensor.tv07_temp
+    - sensor.TV2011_temp
+    - sensor.TV2012_temp
+    - sensor.TV2021_temp
+    - sensor.TV2022_temp
+    - sensor.TV2031_temp
+    - sensor.TV2032_temp
+heating_valves_night_zone:
+  name: Valvole Riscaldamento Zona
+  entities:
+    - sensor.tv01_temp
+    - sensor.tv02_temp
+    - sensor.tv03_temp
+    - sensor.TV1011_temp
+    - sensor.TV1012_temp
+    - sensor.TV1021_temp
+    - sensor.TV1022_temp
+    - sensor.TV1031_temp
+    - sensor.TV1032_temp
+    - sensor.TV1041_temp
+    - sensor.TV1042_temp

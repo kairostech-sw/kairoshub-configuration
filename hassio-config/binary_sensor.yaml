@@ -1,0 +1,10 @@
+platform: template
+sensors:
+  heater_auto:
+    friendly_name: "Programma caldo"
+    value_template: >-
+      {% if is_state('input_boolean.heater_program1', 'on') or is_state('input_boolean.heater_program2', 'on') or is_state('input_boolean.heater_program3', 'on') or is_state('input_boolean.heater_program4', 'on') %}
+        on
+      {% else %}
+        off
+      {% endif %}

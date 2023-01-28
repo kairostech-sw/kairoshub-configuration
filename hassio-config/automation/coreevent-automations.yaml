@@ -1,0 +1,18 @@
+- alias: Kafka start
+  trigger:
+    - platform: state
+      entity_id: input_boolean.kafka_integration
+      from: "off"
+      to: "on"
+  action:
+    - event: HAKAFKA_CONSUMER_START
+    - event: HAKAFKA_PRODUCER_START
+- alias: Kafka stop
+  trigger:
+    - platform: state
+      entity_id: input_boolean.kafka_integration
+      from: "on"
+      to: "off"
+      for: '00:01:00' 
+  action:
+    - event: HAKAFKA_PRODUCER_STOP

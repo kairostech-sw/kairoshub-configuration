@@ -1,0 +1,25 @@
+- name: TH03_battery
+  platform: mqtt
+  state_topic: "TH03/status/devicepower:0"
+  unit_of_measurement: "%"
+  value_template: "{{ value_json.battery.percent }}"
+- name: TH03_temp
+  platform: mqtt
+  state_topic: "TH03/status/temperature:0"
+  unit_of_measurement: "°C"
+  value_template: "{{ value_json.tC }}"
+- name: TH03_humidity
+  platform: mqtt
+  state_topic: "TH03/status/humidity:0"
+  unit_of_measurement: "%"
+  value_template: "{{ value_json.rh }}"
+
+- platform: template
+  sensors:
+    th01_state:
+      value_template: >-
+        {% if (now() - states.sensor.dayzone_temperature_0.last_changed).total_seconds() | round(0) > 3600 %}
+          offline
+        {% else %}
+          online
+        {% endif %}

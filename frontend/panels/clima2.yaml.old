@@ -1,0 +1,371 @@
+type: vertical-stack
+cards:
+  - type: horizontal-stack
+    cards:
+      - type: 'custom:button-card'
+        entity: input_boolean.heater_auto
+        layout: vertical
+        template: no_background
+        name: Programma 1
+        label: ' '
+        icon: 'mdi:hours-24'
+        show_icon: false
+        show_label: false
+        show_name: true
+        show_state: false
+        styles:
+          
+          state:
+            - font-size: 120%
+            - font-weight: bold
+            - justify-self: center
+            - color: var(--paper-item-icon-active-color)
+          label:
+            - justify-self: center
+            - font-size: 120%
+            - font-weight: bold
+            - color: var(--paper-item-icon-active-color)
+          name:
+            - justify-self: left
+            - padding-left: 24px
+            - font-size: 120%
+            - font-weight: bold
+        tap_action:
+          action: none
+      - type: entities
+        entities: 
+          - entity: input_number.temperature_period1
+            template: no_background
+            name: Temp comfort
+            show_icon: false
+            show_state: true
+  - type: horizontal-stack
+    cards:
+      - type: 'custom:button-card'
+        template: row_space_10
+  - type: horizontal-stack
+    cards:
+      - type: 'custom:button-card'
+        template: button_horizontal
+        name: Lunedì
+        entity: input_boolean.thermostat_monday
+        icon: 'mdi:power'
+        tap_action:
+          action: call-service
+          service: input_boolean.toggle
+          service_data:
+            entity_id: input_boolean.thermostat_monday
+        styles:
+          card:
+            - height: 45px
+          name: 
+            - font-size: 15px
+      - type: 'custom:button-card'
+        template: button_horizontal
+        name: Martedì
+        entity: input_boolean.thermostat_tuesday
+        icon: 'mdi:power'
+        tap_action:
+          action: call-service
+          service: input_boolean.toggle
+          service_data:
+            entity_id: input_boolean.thermostat_tuesday
+        styles:
+          card:
+            - height: 45px
+          name: 
+            - font-size: 15px
+      - type: 'custom:button-card'
+        template: button_horizontal
+        name: Mercoledì
+        entity: input_boolean.thermostat_wednesday
+        icon: 'mdi:power'
+        tap_action:
+          action: call-service
+          service: input_boolean.toggle
+          service_data:
+            entity_id: input_boolean.thermostat_wednesday
+        styles:
+          card:
+            - height: 45px
+          name: 
+            - font-size: 15px
+      - type: 'custom:button-card'
+        template: button_horizontal
+        name: Giovedì
+        entity: input_boolean.thermostat_thursday
+        icon: 'mdi:power'
+        tap_action:
+          action: call-service
+          service: input_boolean.toggle
+          service_data:
+            entity_id: input_boolean.thermostat_thursday
+        styles:
+          card:
+            - height: 45px
+          name: 
+            - font-size: 15px
+  - type: horizontal-stack
+    cards:
+      - type: 'custom:time-picker-card'
+        entity: input_datetime.thermostat_monday_on_period1
+        template: clima_time_picker
+        hour_mode: 24
+        embedded: true
+        hide:
+          name: false
+        style: |
+          ha-card > .time-picker-header {
+            padding: 5px
+          }
+
+          ha-card > .time-picker-row {
+            padding: 0px !important
+          }
+      - type: 'custom:time-picker-card'
+        entity: input_datetime.thermostat_tuesday_on_period1
+        hour_mode: 24
+        embedded: true
+        hide:
+          name: false
+        style: |
+          ha-card > .time-picker-header {
+            padding: 5px
+          }
+
+          ha-card > .time-picker-row {
+            padding: 0px !important
+          }
+      - type: 'custom:time-picker-card'
+        entity: input_datetime.thermostat_wednesday_on_period1
+        hour_mode: 24
+        embedded: true
+        hide:
+          name: false
+        style: |
+          ha-card > .time-picker-header {
+            padding: 5px
+          }
+
+          ha-card > .time-picker-row {
+            padding: 0px !important
+          }
+      - type: 'custom:time-picker-card'
+        entity: input_datetime.thermostat_thursday_on_period1
+        hour_mode: 24
+        embedded: true
+        hide:
+          name: false
+        style: |
+          ha-card > .time-picker-header {
+            padding: 5px
+          }
+
+          ha-card > .time-picker-row {
+            padding: 0px !important
+          }
+  - type: horizontal-stack
+    cards:
+      - type: 'custom:time-picker-card'
+        entity: input_datetime.thermostat_monday_off_period1
+        template: clima_time_picker
+        hour_mode: 24
+        embedded: true
+        hide:
+          name: false
+        style: |
+          ha-card > .time-picker-header {
+            padding: 5px
+          }
+
+          ha-card > .time-picker-row {
+            padding: 0px !important
+          }
+      - type: 'custom:time-picker-card'
+        entity: input_datetime.thermostat_tuesday_off_period1
+        hour_mode: 24
+        embedded: true
+        hide:
+          name: false
+        style: |
+          ha-card > .time-picker-header {
+            padding: 5px
+          }
+
+          ha-card > .time-picker-row {
+            padding: 0px !important
+          }
+      - type: 'custom:time-picker-card'
+        entity: input_datetime.thermostat_wednesday_off_period1
+        hour_mode: 24
+        embedded: true
+        hide:
+          name: false
+        style: |
+          ha-card > .time-picker-header {
+            padding: 5px
+          }
+
+          ha-card > .time-picker-row {
+            padding: 0px !important
+          }
+      - type: 'custom:time-picker-card'
+        entity: input_datetime.thermostat_thursday_off_period1
+        hour_mode: 24
+        embedded: true
+        hide:
+          name: false
+        style: |
+          ha-card > .time-picker-header {
+            padding: 5px
+          }
+
+          ha-card > .time-picker-row {
+            padding: 0px !important
+          }
+  - type: horizontal-stack
+    cards:
+      - type: 'custom:button-card'
+        template: row_space_10
+
+  - type: horizontal-stack
+    cards:
+      - type: 'custom:button-card'
+        template: button_horizontal
+        name: Venerdì
+        entity: input_boolean.thermostat_friday
+        icon: 'mdi:power'
+        tap_action:
+          action: call-service
+          service: input_boolean.toggle
+          service_data:
+            entity_id: input_boolean.thermostat_friday
+        styles:
+          card:
+            - height: 45px
+          name: 
+            - font-size: 15px
+      - type: 'custom:button-card'
+        template: button_horizontal
+        name: Sabato
+        entity: input_boolean.thermostat_saturday
+        icon: 'mdi:power'
+        tap_action:
+          action: call-service
+          service: input_boolean.toggle
+          service_data:
+            entity_id: input_boolean.thermostat_saturday
+        styles:
+          card:
+            - height: 45px
+          name: 
+            - font-size: 15px
+      - type: 'custom:button-card'
+        template: button_horizontal
+        name: Domenica
+        entity: input_boolean.thermostat_sunday
+        icon: 'mdi:power'
+        tap_action:
+          action: call-service
+          service: input_boolean.toggle
+          service_data:
+            entity_id: input_boolean.thermostat_sunday
+        styles:
+          card:
+            - height: 45px
+          name: 
+            - font-size: 15px
+      - type: 'custom:button-card'
+        template: row_space_10
+  - type: horizontal-stack
+    cards:         
+      - type: 'custom:time-picker-card'
+        entity: input_datetime.thermostat_friday_on_period1
+        hour_mode: 24
+        embedded: true
+        hide:
+          name: false
+        style: |
+          ha-card > .time-picker-header {
+            padding: 5px
+          }
+
+          ha-card > .time-picker-row {
+            padding: 0px !important
+          }
+      - type: 'custom:time-picker-card'
+        entity: input_datetime.thermostat_saturday_on_period1
+        hour_mode: 24
+        embedded: true
+        hide:
+          name: false
+        style: |
+          ha-card > .time-picker-header {
+            padding: 5px
+          }
+
+          ha-card > .time-picker-row {
+            padding: 0px !important
+          }
+      - type: 'custom:time-picker-card'
+        entity: input_datetime.thermostat_sunday_on_period1
+        hour_mode: 24
+        embedded: true
+        hide:
+          name: false
+        style: |
+          ha-card > .time-picker-header {
+            padding: 5px
+          }
+
+          ha-card > .time-picker-row {
+            padding: 0px !important
+          }
+      - type: 'custom:button-card'
+        template: row_space_10
+  - type: horizontal-stack
+    cards:
+      - type: 'custom:time-picker-card'
+        entity: input_datetime.thermostat_friday_off_period1
+        hour_mode: 24
+        embedded: true
+        hide:
+          name: false
+        style: |
+          ha-card > .time-picker-header {
+            padding: 5px
+          }
+
+          ha-card > .time-picker-row {
+            padding: 0px !important
+          }
+      - type: 'custom:time-picker-card'
+        entity: input_datetime.thermostat_saturday_off_period1
+        hour_mode: 24
+        embedded: true
+        hide:
+          name: false
+        style: |
+          ha-card > .time-picker-header {
+            padding: 5px
+          }
+
+          ha-card > .time-picker-row {
+            padding: 0px !important
+          }
+      - type: 'custom:time-picker-card'
+        entity: input_datetime.thermostat_sunday_off_period1
+        hour_mode: 24
+        embedded: true
+        hide:
+          name: false
+        style: |
+          ha-card > .time-picker-header {
+            padding: 5px
+          }
+
+          ha-card > .time-picker-row {
+            padding: 0px !important
+          }
+      - type: 'custom:button-card'
+        template: row_space_10
