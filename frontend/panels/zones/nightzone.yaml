@@ -1,0 +1,561 @@
+type: 'custom:button-card'
+template: clima_zone_grid
+custom_fields:
+  header:
+    card:
+      type: 'custom:button-card'
+      entity: binary_sensor.heater_auto
+      layout: vertical
+      template:
+        - header_page_text
+      icon: 'mdi:thermometer'
+      name: 'CLIMA'
+      label: '[[[return "Clima / "+states["input_text.zn100"].state]]]'
+  commandbar:
+    card:
+      type: 'custom:button-card'
+      template: command_bar
+      style: |
+        ha-card.button-card-main {
+          padding: 0px !important
+        }
+        div#container {
+          justify-items: right;
+        }
+      styles:
+        card:
+          - width: 800px
+          - margin-left: -10px
+      custom_fields:
+        commands:
+          card:
+            type: horizontal-stack
+            cards:
+              - type: 'custom:button-card'
+                template: button_go_back
+                style: |
+                  :host {
+                    align-self: center;
+                  }
+  zones:
+    card:
+      type: vertical-stack
+      cards:
+        - type: conditional
+          conditions:
+            - entity: sensor.tz101
+              state: unknown
+            - entity: sensor.tz102
+              state: unknown
+            - entity: sensor.tz103
+              state: unknown
+            - entity: sensor.tz104
+              state: unknown
+          card:
+            type: 'custom:button-card'
+            template: no_background
+            name: >
+              [[[
+                return `
+                <ha-alert alert-type="warning" style="justify-self: center;">
+                  Non ci sono zone attive </br>
+                </ha-alert>`;
+              ]]]
+            tap_action:
+                action: none
+        - type: grid
+          columns: 2
+          square: false
+          cards:
+            - type: conditional
+              conditions:
+                - entity: sensor.tz101
+                  state_not: "unknown"
+              card:
+                type: 'custom:button-card'
+                # entity: 'sensor.tz100'
+                template: 'clima_tv_detail'
+                styles:
+                  card:
+                    - box-shadow: none
+                name: >
+                  [[[
+                    return states["input_text.zn101"].state;
+                  ]]]
+                variables:
+                  temperature: >
+                    [[[
+                      return states["sensor.tz101"].state;
+                    ]]]
+                  temp_color: >
+                    [[[
+                      var zoneTemperature = states['sensor.tz101'].state;
+                      if (
+                        (zoneTemperature > states["input_number.temperature_period1"].state 
+                        && states["input_boolean.heater_program1_on"].state ==="on") ||
+                        (zoneTemperature > states["input_number.temperature_period2"].state 
+                        && states["input_boolean.heater_program2_on"].state ==="on") ||
+                        (zoneTemperature > states["input_number.temperature_period3"].state 
+                        && states["input_boolean.heater_program3_on"].state ==="on") ||
+                        (zoneTemperature > states["input_number.temperature_period4"].state 
+                        && states["input_boolean.heater_program4_on"].state ==="on") ||
+                        zoneTemperature > states['input_number.manual_heating_temp'].state)
+                        return 'var(--temperature-primary-color)';
+                      else
+                        return 'var(--temperature-secondary-color)';
+                    ]]]
+                  humidity: >
+                    [[[
+                      return states["sensor.th1011_humidity"].state;
+                    ]]]
+                  # visibility: input_boolean.zn_100
+                  # state: >
+                  #   [[[
+                  #     return states["sensor.tv1011_state"].state;
+                  #   ]]]
+                  lastupdate: >
+                    [[[
+                      var datetime =  states["sensor.tz101"].last_changed.split("T");
+                      datetime = new Date(datetime).toLocaleString().replace(","," ");
+                      return datetime.substring(0,datetime.length-3);
+                    ]]]
+                custom_fields:
+                  graph:
+                    card:
+                      type: sensor
+                      entity: sensor.tz101
+                      graph: line
+                      detail: 1
+                      style: |
+                        .header {
+                          display: none !important;
+                        }
+                        .info {
+                          display: none;
+                        }
+                        {% if (states(config.entity)> states("input_number.temperature_period1") and is_state("input_boolean.heater_program1_on","on")) or
+                        (states(config.entity)> states("input_number.temperature_period2") and is_state("input_boolean.heater_program2_on","on")) or
+                        (states(config.entity)> states("input_number.temperature_period3") and is_state("input_boolean.heater_program3_on","on")) or
+                        (states(config.entity)> states("input_number.temperature_period4") and is_state("input_boolean.heater_program4_on","on")) or
+                        states(config.entity) > states("input_number.manual_heating_temp")
+                        %}
+                        ha-card {
+                          --accent-color: var(--temperature-primary-color);
+                        }
+                        .header .icon {
+                          color: var(--temperature-primary-color);
+                        }
+                        {% else %}
+                        ha-card {
+                          --accent-color: var(--temperature-secondary-color);
+                        }
+                        .header .icon {
+                          color: var(--temperature-secondary-color);
+                        }
+                        {% endif %}
+                  icon1:
+                    card:
+                      type: custom:button-card
+                      icon: mdi:thermometer
+                      styles:
+                        icon:
+                          - width: 80%
+                          - color: >
+                              [[[
+                                var zoneTemperature = states['sensor.tz101'].state;
+                                if (
+                                  (zoneTemperature > states["input_number.temperature_period1"].state 
+                                  && states["input_boolean.heater_program1_on"].state ==="on") ||
+                                  (zoneTemperature > states["input_number.temperature_period2"].state 
+                                  && states["input_boolean.heater_program2_on"].state ==="on") ||
+                                  (zoneTemperature > states["input_number.temperature_period3"].state 
+                                  && states["input_boolean.heater_program3_on"].state ==="on") ||
+                                  (zoneTemperature > states["input_number.temperature_period4"].state 
+                                  && states["input_boolean.heater_program4_on"].state ==="on") ||
+                                  zoneTemperature > states['input_number.manual_heating_temp'].state)
+                                  return 'var(--temperature-primary-color)';
+                                else
+                                  return 'var(--temperature-secondary-color)';
+                              ]]]
+                  icon2:
+                    card:
+                      type: conditional
+                      conditions:
+                          - entity: sensor.hz101
+                            state_not: unknown
+                      card:
+                        type: custom:button-card
+                        icon: mdi:water-percent
+                        styles:
+                          icon:
+                            - width: 80%
+                            - color: var(--humidity-primary-color)
+            - type: conditional
+              conditions:
+                - entity: sensor.tz102
+                  state_not: "unknown"
+              card:
+                type: 'custom:button-card'
+                # entity: 'sensor.tz100'
+                template: 'clima_tv_detail'
+                styles:
+                  card:
+                    - box-shadow: none
+                name: >
+                  [[[
+                    return states["input_text.zn102"].state;
+                  ]]]
+                variables:
+                  temperature: >
+                    [[[
+                      return states["sensor.tz102"].state;
+                    ]]]
+                  temp_color: >
+                    [[[
+                      var zoneTemperature = states['sensor.tz102'].state;
+                      if (
+                        (zoneTemperature > states["input_number.temperature_period1"].state 
+                        && states["input_boolean.heater_program1_on"].state ==="on") ||
+                        (zoneTemperature > states["input_number.temperature_period2"].state 
+                        && states["input_boolean.heater_program2_on"].state ==="on") ||
+                        (zoneTemperature > states["input_number.temperature_period3"].state 
+                        && states["input_boolean.heater_program3_on"].state ==="on") ||
+                        (zoneTemperature > states["input_number.temperature_period4"].state 
+                        && states["input_boolean.heater_program4_on"].state ==="on") ||
+                        zoneTemperature > states['input_number.manual_heating_temp'].state)
+                        return 'var(--temperature-primary-color)';
+                      else
+                        return 'var(--temperature-secondary-color)';
+                    ]]]
+                  humidity: >
+                    [[[
+                      return states["sensor.th1021_humidity"].state;
+                    ]]]
+                  # visibility: input_boolean.zn_100
+                  # state: >
+                  #   [[[
+                  #     return states["sensor.tv1021_state"].state;
+                  #   ]]]
+                  lastupdate: >
+                    [[[
+                      var datetime =  states["sensor.tz102"].last_changed.split("T");
+                      datetime = new Date(datetime).toLocaleString().replace(","," ");
+                      return datetime.substring(0,datetime.length-3);
+                    ]]]
+                custom_fields:
+                  graph:
+                    card:
+                      type: sensor
+                      entity: sensor.tz102
+                      graph: line
+                      detail: 1
+                      style: |
+                        .header {
+                          display: none !important;
+                        }
+                        .info {
+                          display: none;
+                        }
+                        {% if (states(config.entity)> states("input_number.temperature_period1") and is_state("input_boolean.heater_program1_on","on")) or
+                        (states(config.entity)> states("input_number.temperature_period2") and is_state("input_boolean.heater_program2_on","on")) or
+                        (states(config.entity)> states("input_number.temperature_period3") and is_state("input_boolean.heater_program3_on","on")) or
+                        (states(config.entity)> states("input_number.temperature_period4") and is_state("input_boolean.heater_program4_on","on")) or
+                        states(config.entity) > states("input_number.manual_heating_temp")
+                        %}
+                        ha-card {
+                          --accent-color: var(--temperature-primary-color);
+                        }
+                        .header .icon {
+                          color: var(--temperature-primary-color);
+                        }
+                        {% else %}
+                        ha-card {
+                          --accent-color: var(--temperature-secondary-color);
+                        }
+                        .header .icon {
+                          color: var(--temperature-secondary-color);
+                        }
+                        {% endif %}
+                  icon1:
+                    card:
+                      type: custom:button-card
+                      icon: mdi:thermometer
+                      styles:
+                        icon:
+                          - width: 80%
+                          - color: >
+                              [[[
+                                var zoneTemperature = states['sensor.tz102'].state;
+                                if (
+                                  (zoneTemperature > states["input_number.temperature_period1"].state 
+                                  && states["input_boolean.heater_program1_on"].state ==="on") ||
+                                  (zoneTemperature > states["input_number.temperature_period2"].state 
+                                  && states["input_boolean.heater_program2_on"].state ==="on") ||
+                                  (zoneTemperature > states["input_number.temperature_period3"].state 
+                                  && states["input_boolean.heater_program3_on"].state ==="on") ||
+                                  (zoneTemperature > states["input_number.temperature_period4"].state 
+                                  && states["input_boolean.heater_program4_on"].state ==="on") ||
+                                  zoneTemperature > states['input_number.manual_heating_temp'].state)
+                                  return 'var(--temperature-primary-color)';
+                                else
+                                  return 'var(--temperature-secondary-color)';
+                              ]]]
+                  icon2:
+                    card:
+                      type: conditional
+                      conditions:
+                          - entity: sensor.hz102
+                            state_not: unknown
+                      card:
+                        type: custom:button-card
+                        icon: mdi:water-percent
+                        styles:
+                          icon:
+                            - width: 80%
+                            - color: var(--humidity-primary-color)
+            - type: conditional
+              conditions:
+                - entity: sensor.tz103
+                  state_not: "unknown"
+              card:
+                type: 'custom:button-card'
+                # entity: 'sensor.tz100'
+                template: 'clima_tv_detail'
+                styles:
+                  card:
+                    - box-shadow: none
+                name: >
+                  [[[
+                    return states["input_text.zn103"].state;
+                  ]]]
+                variables:
+                  temperature: >
+                    [[[
+                      return states["sensor.tz103"].state;
+                    ]]]
+                  temp_color: >
+                    [[[
+                      var zoneTemperature = states['sensor.tz103'].state;
+                      if (
+                        (zoneTemperature > states["input_number.temperature_period1"].state 
+                        && states["input_boolean.heater_program1_on"].state ==="on") ||
+                        (zoneTemperature > states["input_number.temperature_period2"].state 
+                        && states["input_boolean.heater_program2_on"].state ==="on") ||
+                        (zoneTemperature > states["input_number.temperature_period3"].state 
+                        && states["input_boolean.heater_program3_on"].state ==="on") ||
+                        (zoneTemperature > states["input_number.temperature_period4"].state 
+                        && states["input_boolean.heater_program4_on"].state ==="on") ||
+                        zoneTemperature > states['input_number.manual_heating_temp'].state)
+                        return 'var(--temperature-primary-color)';
+                      else
+                        return 'var(--temperature-secondary-color)';
+                    ]]]
+                  humidity: >
+                    [[[
+                      return states["sensor.th1031_humidity"].state;
+                    ]]]
+                  # visibility: input_boolean.zn_100
+                  # state: >
+                  #   [[[
+                  #     return states["sensor.tv1031_state"].state;
+                  #   ]]]
+                  lastupdate: >
+                    [[[
+                      var datetime =  states["sensor.tz103"].last_changed.split("T");
+                      datetime = new Date(datetime).toLocaleString().replace(","," ");
+                      return datetime.substring(0,datetime.length-3);
+                    ]]]
+                custom_fields:
+                  graph:
+                    card:
+                      type: sensor
+                      entity: sensor.tz103
+                      graph: line
+                      detail: 1
+                      style: |
+                        .header {
+                          display: none !important;
+                        }
+                        .info {
+                          display: none;
+                        }
+                        {% if (states(config.entity)> states("input_number.temperature_period1") and is_state("input_boolean.heater_program1_on","on")) or
+                        (states(config.entity)> states("input_number.temperature_period2") and is_state("input_boolean.heater_program2_on","on")) or
+                        (states(config.entity)> states("input_number.temperature_period3") and is_state("input_boolean.heater_program3_on","on")) or
+                        (states(config.entity)> states("input_number.temperature_period4") and is_state("input_boolean.heater_program4_on","on")) or
+                        states(config.entity) > states("input_number.manual_heating_temp")
+                        %}
+                        ha-card {
+                          --accent-color: var(--temperature-primary-color);
+                        }
+                        .header .icon {
+                          color: var(--temperature-primary-color);
+                        }
+                        {% else %}
+                        ha-card {
+                          --accent-color: var(--temperature-secondary-color);
+                        }
+                        .header .icon {
+                          color: var(--temperature-secondary-color);
+                        }
+                        {% endif %}
+                  icon1:
+                    card:
+                      type: custom:button-card
+                      icon: mdi:thermometer
+                      styles:
+                        icon:
+                          - width: 80%
+                          - color: >
+                              [[[
+                                var zoneTemperature = states['sensor.tz103'].state;
+                                if (
+                                  (zoneTemperature > states["input_number.temperature_period1"].state 
+                                  && states["input_boolean.heater_program1_on"].state ==="on") ||
+                                  (zoneTemperature > states["input_number.temperature_period2"].state 
+                                  && states["input_boolean.heater_program2_on"].state ==="on") ||
+                                  (zoneTemperature > states["input_number.temperature_period3"].state 
+                                  && states["input_boolean.heater_program3_on"].state ==="on") ||
+                                  (zoneTemperature > states["input_number.temperature_period4"].state 
+                                  && states["input_boolean.heater_program4_on"].state ==="on") ||
+                                  zoneTemperature > states['input_number.manual_heating_temp'].state)
+                                  return 'var(--temperature-primary-color)';
+                                else
+                                  return 'var(--temperature-secondary-color)';
+                              ]]]
+                  icon2:
+                    card:
+                      type: conditional
+                      conditions:
+                          - entity: sensor.hz103
+                            state_not: unknown
+                      card:
+                        type: custom:button-card
+                        icon: mdi:water-percent
+                        styles:
+                          icon:
+                            - width: 80%
+                            - color: var(--humidity-primary-color)
+            - type: conditional
+              conditions:
+                - entity: sensor.tz104
+                  state_not: "unknown"
+              card:
+                type: 'custom:button-card'
+                # entity: 'sensor.tz100'
+                template: 'clima_tv_detail'
+                styles:
+                  card:
+                    - box-shadow: none
+                name: >
+                  [[[
+                    return states["input_text.zn104"].state;
+                  ]]]
+                variables:
+                  temperature: >
+                    [[[
+                      return states["sensor.tz104"].state;
+                    ]]]
+                  temp_color: >
+                    [[[
+                      var zoneTemperature = states['sensor.tz104'].state;
+                      if (
+                        (zoneTemperature > states["input_number.temperature_period1"].state 
+                        && states["input_boolean.heater_program1_on"].state ==="on") ||
+                        (zoneTemperature > states["input_number.temperature_period2"].state 
+                        && states["input_boolean.heater_program2_on"].state ==="on") ||
+                        (zoneTemperature > states["input_number.temperature_period3"].state 
+                        && states["input_boolean.heater_program3_on"].state ==="on") ||
+                        (zoneTemperature > states["input_number.temperature_period4"].state 
+                        && states["input_boolean.heater_program4_on"].state ==="on") ||
+                        zoneTemperature > states['input_number.manual_heating_temp'].state)
+                        return 'var(--temperature-primary-color)';
+                      else
+                        return 'var(--temperature-secondary-color)';
+                    ]]]
+                  humidity: >
+                    [[[
+                      return states["sensor.th1041_humidity"].state;
+                    ]]]
+                  # visibility: input_boolean.zn_100
+                  # state: >
+                  #   [[[
+                  #     return states["sensor.tv1041_state"].state;
+                  #   ]]]
+                  lastupdate: >
+                    [[[
+                      var datetime =  states["sensor.tz104"].last_changed.split("T");
+                      datetime = new Date(datetime).toLocaleString().replace(","," ");
+                      return datetime.substring(0,datetime.length-3);
+                    ]]]
+                custom_fields:
+                  graph:
+                    card:
+                      type: sensor
+                      entity: sensor.tz104
+                      graph: line
+                      detail: 1
+                      style: |
+                        .header {
+                          display: none !important;
+                        }
+                        .info {
+                          display: none;
+                        }
+                        {% if (states(config.entity)> states("input_number.temperature_period1") and is_state("input_boolean.heater_program1_on","on")) or
+                        (states(config.entity)> states("input_number.temperature_period2") and is_state("input_boolean.heater_program2_on","on")) or
+                        (states(config.entity)> states("input_number.temperature_period3") and is_state("input_boolean.heater_program3_on","on")) or
+                        (states(config.entity)> states("input_number.temperature_period4") and is_state("input_boolean.heater_program4_on","on")) or
+                        states(config.entity) > states("input_number.manual_heating_temp")
+                        %}
+                        ha-card {
+                          --accent-color: var(--temperature-primary-color);
+                        }
+                        .header .icon {
+                          color: var(--temperature-primary-color);
+                        }
+                        {% else %}
+                        ha-card {
+                          --accent-color: var(--temperature-secondary-color);
+                        }
+                        .header .icon {
+                          color: var(--temperature-secondary-color);
+                        }
+                        {% endif %}
+                  icon1:
+                    card:
+                      type: custom:button-card
+                      icon: mdi:thermometer
+                      styles:
+                        icon:
+                          - width: 80%
+                          - color: >
+                              [[[
+                                var zoneTemperature = states['sensor.tz104'].state;
+                                if (
+                                  (zoneTemperature > states["input_number.temperature_period1"].state 
+                                  && states["input_boolean.heater_program1_on"].state ==="on") ||
+                                  (zoneTemperature > states["input_number.temperature_period2"].state 
+                                  && states["input_boolean.heater_program2_on"].state ==="on") ||
+                                  (zoneTemperature > states["input_number.temperature_period3"].state 
+                                  && states["input_boolean.heater_program3_on"].state ==="on") ||
+                                  (zoneTemperature > states["input_number.temperature_period4"].state 
+                                  && states["input_boolean.heater_program4_on"].state ==="on") ||
+                                  zoneTemperature > states['input_number.manual_heating_temp'].state)
+                                  return 'var(--temperature-primary-color)';
+                                else
+                                  return 'var(--temperature-secondary-color)';
+                              ]]]
+                  icon2:
+                    card:
+                      type: conditional
+                      conditions:
+                          - entity: sensor.hz104
+                            state_not: unknown
+                      card:
+                        type: custom:button-card
+                        icon: mdi:water-percent
+                        styles:
+                          icon:
+                            - width: 80%
+                            - color: var(--humidity-primary-color)

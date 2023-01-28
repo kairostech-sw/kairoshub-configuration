@@ -1,0 +1,63 @@
+- name: system_state
+  platform: mqtt
+  state_topic: "kairostech/state"
+
+- name: system_exchange_services_state
+  platform: mqtt
+  state_topic: "kairostech/system/exchange_service"
+
+- name: system_exchange_services_last_check
+  platform: mqtt
+  state_topic: "kairostech/system/exchange_service/lastcheck"
+
+- name: system_state_detail
+  platform: mqtt
+  state_topic: "kairostech/state/detail"
+
+- name: kairoshub_sw_version
+  platform: mqtt
+  state_topic: "kairostech/kairoshub/version"
+
+- name: kairoshub_sw_last_check
+  platform: mqtt
+  state_topic: "kairostech/kairoshub/last_software_check"
+
+- name: hakairos_configuration_sw_version
+  platform: mqtt
+  state_topic: "kairostech/hakairos-configuration/version"
+
+- name: hakairos_configuration_sw_last_check
+  platform: mqtt
+  state_topic: "kairostech/hakairos-configuration/last_software_check"
+
+- name: kairoshub_osversion
+  platform: mqtt
+  state_topic: "kairostech/os_version"
+
+- name: kairoshub_hostname
+  platform: mqtt
+  state_topic: "kairostech/hostname"
+
+- name: kairoshub_owner
+  platform: mqtt
+  state_topic: "kairostech/owner"
+
+- name: kairoshub_system_code
+  platform: mqtt
+  state_topic: "kairostech/system_code"
+
+- name: dayzone_temperature_0
+  platform: mqtt
+  state_topic: "shellies/TH01/ext_temperature/0"
+  unit_of_measurement: "°C"
+  value_template: >-
+    {% if value|int() > 100 %}
+      10
+    {% else %}
+      {{ value }}
+    {% endif %}
+
+- name: home_humidity
+  platform: mqtt
+  unit_of_measurement: "%"
+  state_topic: "kairostech/sensor/humidity/0"

@@ -3,3 +3,6 @@
     font-weight: 600;
     color: var(--active-color);
 }
+body {
+    overflow-y: hidden !important;
+}

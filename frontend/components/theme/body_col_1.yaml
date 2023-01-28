@@ -37,3 +37,7 @@ cards:
   forecast: true
   hourly_forecast: false
   number_of_forecasts: 5
+  style: |
+    :host ::slotted(.card-content) {
+      padding: 0px
+    }

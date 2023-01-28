@@ -28,13 +28,17 @@ views:
     cards:
       - type: vertical-stack
         cards:
-          - !include hakairos-configuration/frontend/components/theme/header.yaml        
-          - type: 'custom:button-card'
-            template: row_space_10
+          - !include hakairos-configuration/frontend/components/theme/header.yaml
           - type: horizontal-stack
             cards:
               - !include hakairos-configuration/frontend/components/theme/body_col_1.yaml
-              - !include hakairos-configuration/frontend/components/theme/body_col_3.yaml        
+              - !include hakairos-configuration/frontend/components/theme/body_col_3.yaml
+          - type: 'custom:button-card'
+            color_type: blank-card
+            styles:
+              card:
+                - margin-bottom: 20px
+          - !include hakairos-configuration/frontend/components/theme/footer.yaml
   - title: CLIMA
     path: clima
     panel: true
@@ -50,7 +54,7 @@ views:
         cards:
           - !include hakairos-configuration/frontend/panels/settings.yaml
   - title: ASSISTENZA
-    icon: 
+    icon:
     path: assistenza
     panel: true
     cards:
@@ -306,3 +310,31 @@ views:
       - type: vertical-stack
         cards:
           - !include hakairos-configuration/frontend/panels/settings/riscaldamento.yaml
+  - path: impostazioni-zone
+    panel: true
+    visible: false
+    cards:
+      - type: vertical-stack
+        cards:
+          - !include hakairos-configuration/frontend/panels/settings/zones.yaml
+  - path: impostazioni-alexa
+    panel: true
+    visible: false
+    cards:
+      - type: vertical-stack
+        cards:
+          - !include hakairos-configuration/frontend/panels/settings/alexa.yaml
+  - path: dayzone
+    panel: true
+    visible: false
+    cards:
+      - type: vertical-stack
+        cards:
+          - !include hakairos-configuration/frontend/panels/zones/dayzone.yaml
+  - path: nightzone
+    panel: true
+    visible: false
+    cards:
+      - type: vertical-stack
+        cards:
+          - !include hakairos-configuration/frontend/panels/zones/nightzone.yaml

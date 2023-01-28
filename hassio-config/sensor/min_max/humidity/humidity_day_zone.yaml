@@ -1,0 +1,21 @@
+#Media Temperatura Soggiorno
+- platform: min_max
+  name: HZ201
+  type: mean
+  round_digits: 1
+  entity_ids:
+    - sensor.TH2011_humidity
+#Media Temperatura Cucina
+- platform: min_max
+  name: HZ202
+  type: mean
+  round_digits: 1
+  entity_ids:
+    - sensor.TH2021_humidity
+#Media Temperatura Bagno 2
+- platform: min_max
+  name: HZ203
+  type: mean
+  round_digits: 1
+  entity_ids:
+    - sensor.TH2031_humidity

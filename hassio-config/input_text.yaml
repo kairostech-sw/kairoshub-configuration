@@ -1,0 +1,33 @@
+system_code:
+  name: Identificativo Sistema
+system_name:
+  name: Casa
+#Stanze Zona Notte
+zn100:
+  name: ZN100
+  initial: Zona Notte
+zn101:
+  name: ZN101
+  initial: Letto 1
+zn102:
+  name: ZN102
+  initial: Letto 2
+zn103:
+  name: ZN103
+  initial: Letto 3
+zn104:
+  name: ZN104
+  initial: Bagno 1
+#Stanze Zona Giorno
+zn200:
+  name: ZN200
+  initial: Zona Giorno
+zn201:
+  name: ZN201
+  initial: Soggiorno
+zn202:
+  name: ZN202
+  initial: Cucina
+zn203:
+  name: ZN203
+  initial: Bagno 2

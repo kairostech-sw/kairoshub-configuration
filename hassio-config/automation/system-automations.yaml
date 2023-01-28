@@ -1,0 +1,137 @@
+- alias: Hassio start routine
+  trigger:
+    - event: start
+      platform: homeassistant
+  action:
+    - delay: 00:00:15
+    - event: HA_SET_CONSUMER_TOPIC
+    - delay: 00:00:15
+    - event: HA_STARTUP_COMPLETE
+    - delay: 00:00:30
+    - event: AD_KAIROSHUB_STARTED
+- alias: KAFKA CONSUMER SET
+  trigger:
+    - platform: state
+      entity_id: input_text.system_code
+      for: "00:15:00"
+    - platform: event
+      event_type: HA_SET_CONSUMER_TOPIC
+  action:
+    - service: mqtt.publish
+      data_template:
+        topic: "kairostech/command"
+        payload: "SET_CONSUMER_TOPIC_{{ states('input_text.system_code') }}"
+- alias: SYSTEM METRICS
+  trigger:
+    platform: time_pattern
+    minutes: "/30"
+  action:
+    - event: AD_SYSTEM_METRICS
+- alias: ENTITY METRICS
+  trigger:
+    - platform: time_pattern
+      minutes: /15
+    - platform: event
+      event_type: HA_ENTITY_METRICS
+  action:
+    event: "AD_ENTITY_METRICS"
+- alias: Hassio shutdown routine
+  trigger:
+    event: shutdown
+    platform: homeassistant
+  action:
+    - event: HA_SHUTDOWN_REQUEST
+- alias: Richiesta assistenza
+  trigger:
+    - platform: state
+      entity_id: input_boolean.assistance_request
+      from: "off"
+      to: "on"
+      for: "00:00:10"
+    - platform: event
+      event_type: HA_ASSSISTANCE_ON
+  action:
+    - service: mqtt.publish
+      data_template:
+        topic: "kairostech/command"
+        payload: "ASSISTANCE_START"
+- alias: Richiesta assistenza FINE
+  trigger:
+    - platform: state
+      entity_id: input_boolean.assistance_request
+      from: "on"
+      to: "off"
+      for: "00:00:10"
+    - platform: event
+      event_type: HA_ASSSISTANCE_OFF
+  action:
+    - service: mqtt.publish
+      data_template:
+        topic: "kairostech/command"
+        payload: "ASSISTANCE_STOP"
+- alias: OTA UPDATE CHECK
+  trigger:
+    - platform: time_pattern
+      hours: "/23"
+  action:
+    - service: mqtt.publish
+      data_template:
+        topic: "kairostech/command"
+        payload: "KAIROSHUB_RELEASE_CHECK"
+- alias: SYNC SETTINGS
+  trigger:
+    - platform: time
+      at: "00:00:00"
+  action:
+    event: "AD_SETTINGS_SYNC"
+- alias: RESTORE SETTINGS
+  trigger:
+  action:
+    event: "AD_SETTINGS_RESTORE"
+- alias: SYNC NOTIFICATION MESSAGES
+  trigger:
+    - platform: time
+      at: "00:00:00"
+  action:
+    event: "AD_NOTIFICATION_SYNC"
+- alias: SYSTEM EXCHANGE CHECK
+  trigger:
+    - platform: time_pattern
+      minutes: "/20"
+  action:
+    - service: mqtt.publish
+      data_template:
+        topic: "kairostech/command"
+        payload: "KAIROSHUB_SYSTEM_EXCHANGE_CHECK"
+    - delay: "00:00:30"
+    # - condition:
+    - alias: "checking last update timestamp of a sensor"
+      condition: template
+      value_template: "{{ (as_timestamp(now())-states.sensor.system_exchange_services_last_check.state|float()) > 2400 }}"
+    - service: mqtt.publish
+      data_template:
+        topic: "kairostech/system/exchange_service"
+        payload: "OFFLINE"
+        retain: true
+- alias: COPY PROGRAM TIMERS
+  trigger:
+    - platform: state
+      entity_id: input_boolean.copy_program1
+      from: 'off'
+      to: 'on'
+    - platform: state
+      entity_id: input_boolean.copy_program2
+      from: 'off'
+      to: 'on'
+    - platform: state
+      entity_id: input_boolean.copy_program3
+      from: 'off'
+      to: 'on'
+    - platform: state
+      entity_id: input_boolean.copy_program4
+      from: 'off'
+      to: 'on'
+  action:
+    event: "AD_COPY_PROGRAMS"
+    event_data:
+      program: "{{trigger.entity_id}}"

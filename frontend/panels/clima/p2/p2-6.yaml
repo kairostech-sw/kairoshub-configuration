@@ -1,78 +1,27 @@
 type: vertical-stack
 cards:
   - type: 'custom:button-card'
-    template: row_space_10
-  - type: horizontal-stack
-    cards:
-      - type: 'custom:button-card'
-        entity: input_boolean.thermostat_saturday_program2
-        template: header_page_text
-        icon: 'mdi:calendar-check'
-        name: |
-          [[[ 
-              if (entity.state == 'on') { 
-                return 'Sabato  (ON)'; 
-              } else { 
-                return 'Sabato  (OFF)'; 
-              } 
-          ]]]
-        label: 'Clima / Programma 2 / Sabato'
-      - type: horizontal-stack
-        cards:
-          - type: 'custom:button-card'
-            template: header_button_menu
-            entity: input_boolean.thermostat_saturday_program2
-            icon: 'mdi:power'
-            show_name: false
-            styles:
-              card:
-                - background-color: |
-                    [[[
-                        if( entity.state == 'on' ) {
-                          return 'var(--paper-item-icon-active-color)';
-                        } else {
-                          return 'rgb(208, 208, 208)';
-                        }
-                    ]]]
-            tap_action:
-              action: call-service
-              service: input_boolean.toggle
-              service_data:
-                entity_id: input_boolean.thermostat_saturday_program2
+    entity: input_boolean.thermostat_saturday_program2
+    template: header_page_text
+    icon: 'mdi:calendar-check'
+    name: |
+      [[[ 
+          if (entity.state == 'on') { 
+            return 'Sabato  (ON)'; 
+          } else { 
+            return 'Sabato  (OFF)'; 
+          } 
+      ]]]
+    label: 'Clima / Programma 2 / Sabato'
+    styles:
+      card:
+        - padding-top: 15px
 
-          - type: 'custom:button-card'
-            template: row_space_10
-          
-          - type: 'custom:button-card'
-            template: header_button_menu
-            icon: 'mdi:trash-can-outline'
-            styles:
-              card: 
-                - background-color: var(--label-badge-red)
-            hold_action:
-              confirmation: 'Sei sicuro di voler cancellare la programmazione?'
-              action: nothing
-              multi_calls: |
-                [[[
-                  hass.callService(
-                    "input_datetime",
-                    "set_datetime",
-                    { entity_id: "input_datetime.thermostat_saturday_on_period2", time: "00:00:00" }
-                  );
-                  hass.callService(
-                    "input_datetime",
-                    "set_datetime",
-                    { entity_id: "input_datetime.thermostat_saturday_off_period2", time: "00:00:00" }
-                  );
-                ]]]
-          
-      - type: 'custom:button-card'
-        template: button_return_to_program2
-        
-  - type: horizontal-stack
-    cards:
-      - type: 'custom:button-card'
-        template: row_space_10
+  - type: 'custom:button-card'
+    template: row_space_10
+    styles:
+      card:
+        - padding-top: 12px
   - type: horizontal-stack
     cards:
       - type: 'custom:button-card'
@@ -106,6 +55,108 @@ cards:
 
           ha-card > .time-picker-row {
             padding: 0px !important
-          }        
+          }
       - type: 'custom:button-card'
         template: row_space_10
+
+  - type: 'custom:button-card'
+    template: command_bar
+    style: |
+      ha-card.button-card-main {
+        padding: 0px !important
+      }
+    styles:
+      card:
+        - top: 6.4em
+    custom_fields:
+      commands:
+        card:
+          type: horizontal-stack
+          cards:
+            - type: 'custom:button-card'
+              name: 'Copia'
+              hold_action:
+                confirmation:
+                  text: 'Vuoi copiare questa impostazione per tutti i giorni di questa programmazione?'
+                action: call-service
+                service: input_boolean.turn_on
+                service_data:
+                  entity_id: input_boolean.copy_program2
+              styles:
+                card:
+                  - background: none
+                  - color: '#f4f4f4'
+                  - box-shadow: none 
+                  - margin-left: 10px 
+                  - width: 200px
+              style: |
+                :host {
+                  align-self: center;
+                }
+            - type: 'custom:button-card'
+              template: icon_state_header
+              entity: input_boolean.thermostat_saturday_program2
+              icon: mdi:power
+              state:
+                - value: 'on'
+                  color: var(--command-state-active-color)
+                  label: 'Acceso'
+                - value: 'off'
+                  color: var(--command-state-color)
+                  label: 'Spento'
+              tap_action:
+                action: call-service
+                service: input_boolean.toggle
+                service_data:
+                  entity_id: input_boolean.thermostat_saturday_program2
+              styles:
+                card:
+                  - width: 60px
+                  - left: 100px
+                  - bottom: 2.5px
+              style: |
+                :host {
+                  align-self: center;
+                }
+
+            - type: 'custom:button-card'
+              template: icon_state_header
+              icon: 'mdi:trash-can-outline'
+              label: 'Cancella'
+              show_label: true
+              hold_action:
+                confirmation: 
+                  text: 'Sei sicuro di voler cancellare la programmazione?'
+                action: call-service
+                service:  input_datetime.set_datetime
+                service_data:
+                  time: '00:00:00'
+                  entity_id:
+                    - input_datetime.thermostat_saturday_on_period2
+                    - input_datetime.thermostat_saturday_off_period2
+              styles:
+                card:
+                  - width: 60px
+                  - bottom: 2.5px
+                  - left: 150px
+                  - background: none
+                  - box-shadow: none
+                icon:
+                  - color: var(--label-badge-red)
+              style: |
+                :host {
+                  align-self: center;
+                }
+            - type: 'custom:button-card'
+              template: button_go_back
+              styles:
+                card:
+                  - background: none
+                  - box-shadow: none
+                  - left: 297.5px
+                name:
+                  - color: '#f4f4f4'
+              style: |
+                :host {
+                  align-self: center;
+                }

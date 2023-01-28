@@ -1,0 +1,13 @@
+kafka_entity_align:
+  name: "Kafka entity group"
+  entities:
+kairoshub_settings:
+  name: Impostazioni
+  entities:
+    - input_number.rollershutter_athome_position
+    - input_number.rollershutter_notathome_position
+    - input_number.manual_heating_temp
+kairoshub_functionalities:
+  name: Funzionalità
+  entities:
+    - input_boolean.kafka_integration
