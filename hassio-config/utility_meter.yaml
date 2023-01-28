@@ -1,3 +1,0 @@
-shelly_1pm_consumo_mensile:
-  source: sensor.em_consumo
-  cycle: monthly

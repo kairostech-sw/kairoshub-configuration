@@ -2,7 +2,7 @@
 ##### HA-KAFKA Configuration
 #####
 ssl_context:
-  ssl_certpath: "/opt/ha-cert"
+  ssl_certpath: "/data/certs"
   ssl_cafile: "ca-cert"
   ssl_certfile: "cert-signed"
   ssl_keyfile: "private-key"
@@ -28,17 +28,9 @@ producers:
     port: 9093
     topic: "HASSIO_SYSTEM_METRICS"
     security: "ssl"
-  - host: quattrostagioni.linkedsolutions.it
-    port: 9093
-    topic: "HASSIO_SETTINGS"
-    security: "ssl"
-  - host: quattrostagioni.linkedsolutions.it
-    port: 9093
-    topic: "TECHNICAL"
-    security: "ssl"
 consumers:
   - host: quattrostagioni.linkedsolutions.it
     port: 9093
-    topic: KAIROS_XXXXX
+    topic: KAIROS_XXXX
     group: "hassio"
     security: "ssl"

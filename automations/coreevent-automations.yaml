@@ -1,0 +1,42 @@
+- alias: Kafka start
+  trigger:
+    - platform: state
+      entity_id: input_boolean.kafka_integration
+      from: "off"
+      to: "on"
+  action:
+    - event: HAKAFKA_CONSUMER_START
+    - event: HAKAFKA_PRODUCER_START
+- alias: Hassio kafka align entities
+  trigger:
+    - platform: time_pattern
+      hours: "/12"
+  condition:
+    - condition: state
+      entity_id: "input_boolean.kafka_integration"
+      state: "on"
+  action:
+    - event: HA_SYSTEM_ENTITIES_ALIGN
+      event_data:
+        target:
+          targetId:
+            - group.kafka_entity_align
+- alias: Hassio kafka align command
+  trigger:
+    - platform: time_pattern
+      hours: "/12"
+  condition:
+    - condition: state
+      entity_id: input_boolean.kafka_integration
+      state: "on"
+  action:
+    - event: HA_SYSTEM_COMMAND_ALING
+- alias: Kafka stop
+  trigger:
+    - platform: state
+      entity_id: input_boolean.kafka_integration
+      from: "on"
+      to: "off"
+  action:
+    - event: HAKAFKA_CONSUMER_STOP
+    - event: HAKAFKA_PRODUCER_STOP

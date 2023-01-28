@@ -1,9 +1,0 @@
-- platform: time_date
-  display_options:
-    - "date_time_iso"
-- platform: time_date
-  display_options:
-    - "date"
-- platform: time_date
-  display_options:
-    - "time"
