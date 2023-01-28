@@ -1,47 +1,51 @@
-type: vertical-stack
-cards:
-  - type: 'custom:button-card'
-    template: row_space_10
-  - type: horizontal-stack
-    cards:
-    - type: 'custom:button-card'
+type: 'custom:button-card'
+template: button_grid_settings
+custom_fields:
+  header:
+    card:
+      type: 'custom:button-card'
       template:
-        - header_page_text
+      - header_page_text
       name: 'IMPOSTAZIONI'
+      label: "Impostazioni /"
       icon: 'mdi:cog'
-  - type: vertical-stack
-    cards:
-      - type: horizontal-stack
-        cards:
-          - type: 'custom:button-card'
-            template: button_hold
-            icon: 'mdi:window-shutter'
-            label: Tapparelle
-            color: auto
-            show_label: true
-            tap_action:
-              action: navigate
-              navigation_path: /lovelace-kairoshub/impostazioni-tapparelle
-          - type: 'custom:button-card'
-            template: button_hold
-            icon: 'mdi:thermometer'
-            label: Temperatura
-            color: auto
-            show_label: true
-            tap_action:
-              action: navigate
-              navigation_path: /lovelace-kairoshub/impostazioni-riscaldamento
-          - type: 'custom:button-card'
-            template: row_space_10
-          - type: 'custom:button-card'
-            template: row_space_10
-      - type: horizontal-stack
-        cards:
-          - type: 'custom:button-card'
-            template: row_space_10
-          - type: 'custom:button-card'
-            template: row_space_10
-          - type: 'custom:button-card'
-            template: row_space_10
-          - type: 'custom:button-card'
-            template: row_space_10
+  b1:
+    card:
+      type: 'custom:button-card'
+      template:
+        - settings_card
+      icon: 'mdi:thermometer'
+      name: Riscaldamento
+      tap_action:
+        action: navigate
+        navigation_path: /lovelace-kairoshub/impostazioni-riscaldamento
+  b2:
+    card:
+      type: 'custom:button-card'
+      template:
+        - settings_card
+      icon: 'mdi:window-shutter'
+      name: Tapparelle
+      tap_action:
+        action: navigate
+        navigation_path: /lovelace-kairoshub/impostazioni-tapparelle
+  b3:
+    card:
+      type: 'custom:button-card'
+      template:
+        - settings_card
+      icon: 'mdi:dots-grid'
+      name: Zone
+      tap_action:
+        action: navigate
+        navigation_path: /lovelace-kairoshub/impostazioni-zone
+  b4:
+    card:
+      type: 'custom:button-card'
+      template:
+        - settings_card
+      icon: 'mdi:amazon-alexa'
+      name: Alexa
+      tap_action:
+        action: navigate
+        navigation_path: /lovelace-kairoshub/impostazioni-alexa

@@ -33,6 +33,12 @@ class KairoshubEvent(hass.Hass):
             if "ASSISTANCE_COMMAND_OFF" in eventType:
                 self.fire_event("HA_ASSSISTANCE_OFF")
 
+            if "ROLLERS_ATHOME_POSITION" in eventType:
+                self.fire_event("HA_ROLLERS_ATHOME_POSITION")
+
+            if "ROLLERS_NOTATHOME_POSITION" in eventType:
+                self.fire_event("HA_ROLLERS_NOTATHOME_POSITION")
+
         except Exception as e:
             self.log(e, level="ERROR")
         finally:

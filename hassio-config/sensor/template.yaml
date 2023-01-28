@@ -1,0 +1,22 @@
+- platform: template
+  sensors:
+    pretty_date:
+      friendly_name: Data di oggi
+      value_template: >-
+        {% set today = states("sensor.date") %}
+        {% set arr_week_days = ["Domenica", "Lunedì", "Martedì", "Mercoledì", "Giovedì", "Venerdì", "Sabato"] %}
+        {% set arr_months = ["Gennaio", "Febbraio", "Marzo", "Aprile", "Maggio", "Giugno", "Luglio", "Agosto", "Settembre", "Ottobre", "Novembre", "Dicembre"] %}
+        {% set week_day = as_timestamp(today) | timestamp_custom('%w') | int %}
+        {% set day = as_timestamp(today) | timestamp_custom('%d') %}
+        {% set month = as_timestamp(today) | timestamp_custom('%m') | int %}
+        {% set year = as_timestamp(today) | timestamp_custom('%Y') | int %}
+        {{ arr_week_days[week_day] }}, {{ day }} {{ arr_months[month-1] }} {{ year }}
+    em_assorbimento:
+      friendly_name: "Assorbimento"
+      value_template: '{{ (states("sensor.em_ch1")|float(default=0) + states("sensor.em_ch2")|float(default=0))|float|round(1) }}'
+      unit_of_measurement: "Watt"
+    em_consumo:
+      friendly_name: "EM Consumo"
+      value_template: '{{ (states("sensor.em_consumo_ch1")|float(default=0) + states("sensor.em_consumo_ch2")|float(default=0))|float|round(1) }}'
+      unit_of_measurement: "Watt"
+      icon_template: mdi:speedometer

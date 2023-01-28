@@ -1,0 +1,105 @@
+kafka_integration:
+  initial: true
+assistance_request:
+  name: Richiedi Assistenza
+  icon: mdi:hand-coin-outline
+notification_to_read:
+  name: Notifiche da leggere
+at_home:
+  name: In Casa
+night:
+  name: Notte
+heater_program1:
+  name: Programma 1
+heater_program2:
+  name: Programma 2
+heater_program3:
+  name: Programma 3
+heater_program4:
+  name: Programma 4
+heater_program1_on:
+  name: Programma 1 Attivo
+heater_program2_on:
+  name: Programma 2 Attivo
+heater_program3_on:
+  name: Programma 3 Attivo
+heater_program4_on:
+  name: Programma 4 Attivo
+copy_program1:
+  name: Copia Orari Programma 1
+copy_program2:
+  name: Copia Orari Programma 2
+copy_program3:
+  name: Copia Orari Programma 3
+copy_program4:
+  name: Copia Orari Programma 4
+thermostat_monday_program1:
+  name: Lunedì
+thermostat_monday_program2:
+  name: Lunedì
+thermostat_monday_program3:
+  name: Lunedì
+thermostat_monday_program4:
+  name: Lunedì
+thermostat_tuesday_program1:
+  name: Martedì
+thermostat_tuesday_program2:
+  name: Martedì
+thermostat_tuesday_program3:
+  name: Martedì
+thermostat_tuesday_program4:
+  name: Martedì
+thermostat_wednesday_program1:
+  name: Mercoledì
+thermostat_wednesday_program2:
+  name: Mercoledì
+thermostat_wednesday_program3:
+  name: Mercoledì
+thermostat_wednesday_program4:
+  name: Mercoledì
+thermostat_thursday_program1:
+  name: Giovedì
+thermostat_thursday_program2:
+  name: Giovedì
+thermostat_thursday_program3:
+  name: Giovedì
+thermostat_thursday_program4:
+  name: Giovedì
+thermostat_friday_program1:
+  name: Venerdì
+thermostat_friday_program2:
+  name: Venerdì
+thermostat_friday_program3:
+  name: Venerdì
+thermostat_friday_program4:
+  name: Venerdì
+thermostat_saturday_program1:
+  name: Sabato
+thermostat_saturday_program2:
+  name: Sabato
+thermostat_saturday_program3:
+  name: Sabato
+thermostat_saturday_program4:
+  name: Sabato
+thermostat_sunday_program1:
+  name: Domenica
+thermostat_sunday_program2:
+  name: Domenica
+thermostat_sunday_program3:
+  name: Domenica
+thermostat_sunday_program4:
+  name: Domenica
+tv_01:
+  name: Ambiente 1
+tv_02:
+  name: Ambiente 2
+tv_03:
+  name: Ambiente 3
+tv_04:
+  name: Ambiente 4
+tv_05:
+  name: Ambiente 5
+tv_06:
+  name: Ambiente 6
+tv_07:
+  name: Ambiente 7

@@ -14,6 +14,7 @@ class HeatingManager(hass.Hass):
         self.listen_event(self.handleHeatingProgram,"HA_MANAGE_HEATER")
         self.listen_event(self.handleManualHeating, "AD_HEATING")
         self.listen_event(self.turnProgramOff,"AD_PROGRAM_OFF")
+        self.listen_event(self.getTRVList, "AD_TRVS")
 
 
     def handleManualHeating(self, event_name, data, kwargs):
@@ -89,28 +90,16 @@ class HeatingManager(hass.Hass):
         eventData = self.extractEventData(data)
 
         trvList=[]
-        temperatureSensor=[]
-        temperatureSensorGroup     = self.get_state("group.sensor_temperatures", attribute="entity_id")
-
-        trvNum=self.get_state("sensor.temperatura",attribute="count_sensors")-len(temperatureSensorGroup)
-        sensor_temperatura=self.get_state("sensor.temperatura")
 
         if program=="prog0":
             self.log("Checking if another program is on", level="INFO")
             if self.isHeatingProgramOn()!=0: return
-
-        self.log("Retrieving Temperature sensors", level="INFO")
-        for entity in temperatureSensorGroup:
-            attributes={}
-            attributes[entity.split(".")[1]]=self.get_state(entity)
-            temperatureSensor.append(attributes)
         
         self.log("Retrieving TRV list", level="INFO")
 
-        trvList=self.getTRVList(trvNum)
+        trvList=self.getTRVList()
         
         self.log("Starting heating", level="INFO")
-
         self.log("Setting temperature", level="INFO")
         self.setTargetTempFromProgram(trvList, program)
         self.turn_on("switch.sw_thermostat")
@@ -121,10 +110,8 @@ class HeatingManager(hass.Hass):
             self.fire_event("AD_KAIROSHUB_NOTIFICATION",sender=eventData["sender"], ncode="HEATING_ON", type="NOTICE")
             self.fire_event("HA_ENTITY_METRICS") #entity metrics request update
         else:            
-
             self.fire_event("AD_KAIROSHUB_NOTIFICATION",sender=eventData["sender"], ncode="HEATING_VALVES_CLOSED", type="NOTICE")
             self.fire_event("HA_ENTITY_METRICS") #entity metrics request update
-
 
     def turnHeatingOff(self, data):
         program=data["program"]
@@ -256,10 +243,11 @@ class HeatingManager(hass.Hass):
             self.log("Checking if valves are open. Try: %s of %s", kwargs["counter"], self.maxRetry, level="INFO")
             trvList=kwargs["trvList"]
             counter=kwargs["counter"]
-            trvList=await  self.getTRVListAwait(len(trvList))
+            trvList= await self.getTRVListAwait()
             for trv in trvList:
                 sensor=trv["sensorName"]
-                if trv[sensor+"pos"]!="unknown" and trv[sensor+"pos"]!="unavailable" and float(trv[sensor+"pos"])>0 :
+                trv_pos=trv[sensor+"_pos"]
+                if trv_pos!="unknown" and trv_pos!="unavailable" and float(trv_pos)>0 :
                     self.log("Valve %s is open", sensor, level="INFO")
                     return True
 
@@ -296,48 +284,46 @@ class HeatingManager(hass.Hass):
 
         self.log("Target temperature for %s was set to: %s",topic, value, level="INFO")
 
-    def getTRVList(self,trvNum):
+    def getTRVList(self):
         trvList=[]
-        tv="sensor.tv"
+        trvs_group = self.get_state("group.heating_valves", attribute="entity_id")
+        
+        for group in trvs_group:
+            trvs= self.get_state(group, attribute="entity_id")
 
-        for index in range(1,trvNum+1):
-            attributes={}
-            if index<10:
-                sensor="{}0{}_".format(tv,index)
-                name="TV0{}".format(index)
-            else:
-                sensor="{}{}_".format(tv,index)
-                name="TV{}".format(index)
-            attributes["sensorName"]=sensor
-            attributes[sensor+"temp"]= self.get_state(sensor+"temp")
-            attributes[sensor+"target_temp"]= self.get_state(sensor+"target_temp")
-            attributes[sensor+"pos"]= self.get_state(sensor+"pos")            
-            attributes["state_topic"]="shellies/{}/info".format(name)
-            attributes["command_topic"]="shellies/{}/thermostat/0/command/".format(name)
-            trvList.append(attributes)
+            for trv in trvs:
+                attributes={}
+                sensor= trv[: trv.find("_")]
+                name = sensor.split(".")[1].upper()
+                
+                attributes["sensorName"]=sensor
+                attributes[sensor+"_temp"]= self.get_state(sensor+"_temp")
+                attributes[sensor+"_target_temp"]= self.get_state(sensor+"_target_temp")
+                attributes[sensor+"_pos"]= self.get_state(sensor+"_pos")            
+                attributes["state_topic"]="shellies/{}/info".format(name)
+                attributes["command_topic"]="shellies/{}/thermostat/0/command/".format(name)
+                trvList.append(attributes)
 
         return trvList
 
-    async def getTRVListAwait(self,trvNum):
+    async def getTRVListAwait(self):
         trvList=[]
-        tv="sensor.tv"
-
-        for index in range(1,trvNum+1):
-            attributes={}
-            if index<10:
-                sensor="{}0{}_".format(tv,index)
-                name="TV0{}".format(index)
-            else:
-                sensor="{}{}_".format(tv,index)
-                name="TV{}".format(index)
-            attributes["sensorName"]=sensor
-            
-            attributes[sensor+"temp"]= await self.get_state(sensor+"temp")
-            attributes[sensor+"target_temp"]= await self.get_state(sensor+"target_temp")
-            attributes[sensor+"pos"]= await self.get_state(sensor+"pos")            
-            attributes["state_topic"]="shellies/{}/info".format(name)
-            attributes["command_topic"]="shellies/{}/thermostat/0/command/".format(name)
-            trvList.append(attributes)
+        trvs_group = await self.get_state("group.heating_valves", attribute="entity_id")
+        
+        for group in trvs_group:
+            trvs= await self.get_state(group, attribute="entity_id")
+            for trv in trvs:
+                attributes={}
+                sensor= trv[: trv.find("_")]
+                name = sensor.split(".")[1].upper()
+                
+                attributes["sensorName"]=sensor
+                attributes[sensor+"_temp"]= await self.get_state(sensor+"_temp")
+                attributes[sensor+"_target_temp"]= await self.get_state(sensor+"_target_temp")
+                attributes[sensor+"_pos"]= await self.get_state(sensor+"_pos")            
+                attributes["state_topic"]="shellies/{}/info".format(name)
+                attributes["command_topic"]="shellies/{}/thermostat/0/command/".format(name)
+                trvList.append(attributes)
 
         return trvList
 

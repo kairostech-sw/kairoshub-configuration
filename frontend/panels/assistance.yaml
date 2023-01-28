@@ -1,128 +1,50 @@
-type: vertical-stack
-cards:
-  - type: 'custom:button-card'
-    template: row_space_10
-  - type: horizontal-stack
-    cards:
-      - type: 'custom:button-card'
-        layout: vertical
-        template: 
-          - header_page_text
-        name: 'ASSISTENZA'
-        label: 'Assistenza /'
-        icon: mdi:lifebuoy
-      - type: 'custom:button-card'
-        template: row_space_10
-      - type: horizontal-stack
-        cards:
-          - type: 'custom:button-card'
-            template: row_space_10
-  - type: horizontal-stack
-    cards:
-      - type: 'custom:button-card'
-        template: row_space_10
-  - type: horizontal-stack
-    cards:
-      - type: vertical-stack
-        cards:
-          - type: 'custom:button-card'
-            icon: 'mdi:information-outline'
-            name: Dati Impianto
-            entity: 'sensor.system_state' 
-            styles:
-              card: 
-                - color: var(--primary-text-color)
-                #- font-size: 10px
-                - text-transform: capitalize  
-                - padding: 12px 16px 16px
-         
-              grid:
-                - grid-template-areas: '"i header" "content content"'
-                - grid-template-columns: 30px 1fr
-                - grid-template-rows: min-content 1fr
-              name:
-                - place-self: start
-                - grid-area: header
-                - line-height: 48px
-                - font-size: 20px
-                - font-weight: 500
-                - color: var(--ha-card-header-color)
-                - padding-left: 5px
-              img_cell:
-                - justify-content: start
-                - align-items: start
-                - margin: none
-                - grid-area: i
-              icon:
-                - color: var(--ha-card-header-color)
-                - width: 80%
-              content: 
-                - font-weight: bold
-            variables: 
-              systemCode: input_text.system_code
-              systemOwner: input_text.system_name
-              systemState: sensor.system_state
-              kairoshubSwVersion: sensor.kairoshub_sw_version
-            custom_fields:
-                content: >
-                  [[[
-                    return `
-                      <div class="assistance_content" style="text-align: left; font-size: 12px">
+type: 'custom:button-card'
+template: assistance_grid
+custom_fields:
+  header:
+    card:
+      type: 'custom:button-card'
+      layout: vertical
+      template:
+        - header_page_text
+      name: 'ASSISTENZA'
+      label: 'Assistenza /'
+      icon: mdi:lifebuoy
+  system_data:
+    card:
+      type: 'custom:button-card'
+      icon: 'mdi:information-outline'
+      template: assistance_info
+      name: Dati Impianto
+      entity: 'sensor.system_state'
+      variables:
+        systemCode: input_text.system_code
+        systemOwner: input_text.system_name
+        systemState: sensor.system_state
+        kairoshubSwVersion: sensor.kairoshub_sw_version
+      tap_action:
+        action: none
+  assistance:
+    card:
+      type: entities
+      icon: 'mdi:lifebuoy'
+      state_color: true
+      entities:
+        - input_boolean.assistance_request
+      title: Assistenza Tecnica
+      style: |
+        ha-card {
+          align-items: stretch;
+          text-align: left;
+        }
+  kairos_info:
+    card:
+      type: markdown
+      content: >-
+        Impianto installato dalla ***Kairos Tech - Sistemi tecnologici connessi***
 
-                        <div style="padding-bottom: 5px; padding-top: 5px">
-                          <ha-icon icon="mdi:identifier" style="width: 24px; padding:5px; color: var(--ha-card-header-color);"></ha-icon>
-                          <label style="font-weight: bold; ">Identificativo impianto:</label>
-                          <span > ${states[ variables.systemCode ].state} </span>
-                        </div>
-
-                        <div >
-                          <ha-icon icon="mdi:account" style="width: 24px; padding:5px; color: var(--ha-card-header-color);"></ha-icon>
-                          <label style="font-weight: bold ">Intestatario impianto:</label>
-                          <span > ${states[ variables.systemOwner ].state} </span>
-                        </div>
-                        <br />
-                        
-                        <div >
-                          <ha-icon icon="mdi:home-assistant" style="width: 24px; padding:5px; color: var(--ha-card-header-color);"></ha-icon>
-                          <label style="font-weight: bold ">Stato impianto:</label>
-                          <span > ${states[ variables.systemState ].state} </span>
-                        </div>
-
-                        <div>
-                          <ha-icon icon="mdi:cellphone-arrow-down" style="width: 24px; padding:5px; color: var(--ha-card-header-color);"></ha-icon>
-                          <label style="font-weight: bold ">Versione software:</label>
-                          <span > ${states[ variables.kairoshubSwVersion ].state} </span>
-                        </div>
-
-                      </div>
-                    `
-                  ]]]
-            tap_action:
-              action: no_action
-      - type: vertical-stack
-        cards:
-          - type: entities
-            icon: 'mdi:lifebuoy'
-            entities:
-              - input_boolean.assistance_request
-            title: Assistenza Tecnica
-          - type: markdown
-            content: >-
-              Impianto installato dalla ***Kairos Tech - Sistemi tecnologici connessi***
-              
-              Per informazioni e assistenza inviare una mail a info@kairos-tech.it
-            title: Dati installatore     
-     
-                                
-               
-
-
-
-
-
-
-
-    
+        Per informazioni e assistenza inviare una mail a info@kairos-tech.it
+      title: Dati installatore
   # - type: horizontal-stack
   #   cards:
   #     - type: 'custom:button-card'
@@ -145,9 +67,9 @@ cards:
   #               icon: mdi:numeric-1-box-outline
   #               show_state: true
   #               styles:
-  #                 card: 
+  #                 card:
   #                   - height: 55px
-  #                 state: 
+  #                 state:
   #                   - font-size: 12px
   #               show_name: false
   #             - type: 'custom:button-card'
@@ -158,9 +80,9 @@ cards:
   #               show_name: false
   #               show_state: true
   #               styles:
-  #                 card: 
+  #                 card:
   #                   - height: 55px
-  #                 state: 
+  #                 state:
   #                   - font-size: 12px
   #             - type: 'custom:button-card'
   #               entity: input_boolean.heater_program3
@@ -170,9 +92,9 @@ cards:
   #               show_name: false
   #               show_state: true
   #               styles:
-  #                 card: 
+  #                 card:
   #                   - height: 55px
-  #                 state: 
+  #                 state:
   #                   - font-size: 12px
   #             - type: 'custom:button-card'
   #               entity: input_boolean.heater_program4
@@ -182,16 +104,15 @@ cards:
   #               show_name: false
   #               show_state: true
   #               styles:
-  #                 card: 
+  #                 card:
   #                   - height: 55px
-  #                 state: 
+  #                 state:
   #                   - font-size: 12px
 
   #     - type: 'custom:button-card'
   #       template: row_space_10
-  
+
   # - type: horizontal-stack
   #   cards:
   #     - type: 'custom:button-card'
   #       template: row_space_10
-          

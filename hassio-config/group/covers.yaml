@@ -1,0 +1,41 @@
+rollershutters:
+  name: Tapparelle
+  entities:
+    - group.rolershutters_legacy
+    - group.rollershutters_day_zone
+    - group.rollershutters_night_zone
+rolershutters_legacy:
+  name: Tapparelle legacy
+  entities:
+    - cover.RS01
+    - cover.RS02
+    - cover.RS03
+    - cover.RS04
+    - cover.RS05
+    - cover.RS06
+rollershutters_night_zone:
+  name: Tapparelle Zona Notte
+  entities:
+    - cover.RS01
+    - cover.RS02
+    - cover.RS03
+    - cover.RS1011
+    - cover.RS1012
+    - cover.RS1021
+    - cover.RS1022
+    - cover.RS1031
+    - cover.RS1032
+    - cover.RS1041
+    - cover.RS1042
+rollershutters_day_zone:
+  name: Tapparelle Zona Giorno
+  entities:
+    - cover.RS04
+    - cover.RS05
+    - cover.RS06
+    - cover.RS2011
+    - cover.RS2012
+    - cover.RS2021
+    - cover.RS2022
+    - cover.RS2031
+    - cover.RS2032

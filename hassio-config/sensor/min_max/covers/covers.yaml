@@ -1,0 +1,25 @@
+#Media Posizione Tapparelee
+- platform: min_max
+  name: Tapparelle
+  type: mean
+  round_digits: 1
+  entity_ids:
+    - sensor.RZ100
+    - sensor.RZ200
+#Media Posizione Tapparelle Zona Notte
+- platform: min_max
+  name: RZ100
+  type: mean
+  entity_ids:
+    - sensor.RZ101
+    - sensor.RZ102
+    - sensor.RZ103
+    - sensor.RZ104
+#Media Posizione Tapparelle Zona Giorno
+- platform: min_max
+  name: RZ200
+  type: mean
+  entity_ids:
+    - sensor.RZ201
+    - sensor.RZ202
+    - sensor.RZ203

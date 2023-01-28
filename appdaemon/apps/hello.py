@@ -58,7 +58,6 @@ class HelloWorld(hass.Hass):
         khSwLastCheck   = self.get_state(KAIROSHUB_SW_LAST_CHECK)
         khConfSwLastCheck   = self.get_state(KAIROSHUB_CONFIGURATION_SW_LAST_CHECK)
         khConfSwVersion     = self.get_state(KAIROSHUB_CONFIGURATION_SW_VERSION)
-        assistanceAttributes = self.get_state("input_boolean.assistance_request",attribute="all").get("attributes",{})
 
         hassState["state"] = state
         hassState["stateDetail"] = stateDetail
@@ -70,11 +69,11 @@ class HelloWorld(hass.Hass):
         hassState["system_id"] = systemCode   
 
         if state=="MAINTENEANCE":
-            self.set_state("input_boolean.assistance_request",state='on', attributes=assistanceAttributes)
+            self.turn_on("input_boolean.assistance_request")
             self.log("Restoring Assistance Button state. state: on",level="INFO")
             self.fire_event("HA_ASSSISTANCE_ON")
         else:
-            self.set_state("input_boolean.assistance_request",state='off', attributes=assistanceAttributes)
+            self.turn_off("input_boolean.assistance_request")
             self.log("Restoring Assistance Button state. state: off",level="INFO")
         
         self.log("Retrieved global state for the application. state: %s", hassState, level="INFO")
@@ -88,4 +87,4 @@ class HelloWorld(hass.Hass):
        
         self.fire_event("HAKAFKA_PRODUCER_PRODUCE", topic="TECHNICAL", message=eventData)
         self.fire_event("AD_SETTINGS_RESTORE")
-        
+        self.call_service("frontend/reload_themes")

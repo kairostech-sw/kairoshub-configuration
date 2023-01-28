@@ -1,0 +1,30 @@
+- alias: LOW BATTERY NOTIFICATION
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.TV01_battery
+      below: 25
+    - platform: numeric_state
+      entity_id: sensor.TV02_battery
+      below: 25
+    - platform: numeric_state
+      entity_id: sensor.TV03_battery
+      below: 25
+    - platform: numeric_state
+      entity_id: sensor.TV04_battery
+      below: 25
+    - platform: numeric_state
+      entity_id: sensor.TV05_battery
+      below: 25
+    - platform: numeric_state
+      entity_id: sensor.TV06_battery
+      below: 25
+    - platform: numeric_state
+      entity_id: sensor.TV07_battery
+      below: 25
+  action:
+    - event: AD_KAIROSHUB_NOTIFICATION
+      event_data:
+        type: ALERT
+        ncode: HEATING_SENSOR_BATTERY_LOW
+        entity: "{{ trigger.entity_id }}"
+        sender: "*"

@@ -1,49 +1,40 @@
-type: vertical-stack
-cards:
-  - type: 'custom:button-card'
-    template: row_space_10
-  - type: horizontal-stack
-    cards:
-    - type: 'custom:button-card'
-      template:
-        - header_page_text
+type: custom:button-card
+styles:
+  grid:
+    - grid-template-areas: '"header"" notifications" "commandbar"'
+    - grid-template-rows: 1fr 287px min-content
+  card:
+    - background: none
+    - padding-top: 15px
+custom_fields:
+  header:
+    card:  
+      type: 'custom:button-card'
+      template: header_page_text
       icon: 'mdi:bell'
       name: 'NOTIFICHE'
-  # - type: vertical-stack
-  #   cards:
-  #     - type: 'custom:button-card'
-  #       icon: 'mdi:bell'
-  #       layout: icon_name
-  #       color: yellow
-  #       name: "test"
-  #       label: "test2"
-  #       show_label: true
-  #       styles:
-  #         card:
-  #           - background: rgb(245,245,245)
-  #           - border-radius: 5%
-  #           - border-width: 3px
-  #           - border-color: 'var(--active-color)'
-  #           - border-style: double
-  #         grid:
-  #           - grid-template-areas: '"a b" "a c"'
-  #           - grid-template-columns: 60px 1fr
-  #           - grid-template-rows: min-content min-content
-  #         img_cell:
-  #           - grid-area: a
-  #           - justify-content: middle
-  #           - align-items: start
-  #         name:
-  #           - grid-area: b
-  #           - justify-self: start
-  #           - align-self: start
-  #           - font-size: 20px
-  #           - font-weight: bold
-  #         label:
-  #           - grid-area: c
-  #           - justify-self: start
-  #           - align-self: middle
-  #           - font-size: 20px
-  #         icon:
-  #           - width: 150px
-            
+  commandbar:
+    card:
+      type: 'custom:button-card'
+      template: command_bar
+      style: |
+        ha-card.button-card-main {
+          padding: 0px !important
+        }
+        div#container {
+          justify-items: right;
+        }
+      styles:
+        card:
+          - width: 800px
+      custom_fields:
+        commands:
+          card:
+            type: horizontal-stack
+            cards:
+              - type: 'custom:button-card'
+                template: button_go_back
+                style: |
+                  :host {
+                    align-self: center;
+                  }
