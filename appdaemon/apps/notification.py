@@ -5,7 +5,8 @@ KAIROSHUB_SYSTEM_CODE               = "input_text.system_code"
 file="./kairoshubNotification.json"
 noty_message={
     "HEATING_ON":"Impianto di riscaldamento acceso correttamente.",
-    "HEATING_VALVES_CLOSED":"Impianto riscaldamento acceso. Tuttavia sembra che le teste termostatiche dei termosifoni non siano raggiungibili dall'impianto. Verificare la carica delle teste, se cariche e il problema persiste contattare l'assistenza.",
+    "HEATING_ON_ERROR":"Si è verificato un problema nell'accensione dell'impianto di riscaldamento. Verifica l'accensione della caldaia, se il problema persiste contattare l'assistenza.",
+    "HEATING_VALVES_CLOSED":"Sembra che le teste termostatiche dei termosifoni non siano raggiungibili dall'impianto. Verificare la carica delle teste, se cariche e il problema persiste contattare l'assistenza.",
     "HEATING_OFF":"Impianto di riscaldamento spento correttamente.",
     "HEATING_OFF_ERROR":"Si è verificato un problema nello spegnimento dell'impianto di riscaldamento. Verifica l'accensione della caldaia, se il problema persiste contattare l'assistenza.",
     "HEATING_SENSOR_BATTERY_LOW": "La testa termostatica #ENTITY# si sta scaricando. Collegala ad un carica batterie oppure ad una Powerbank. \n\nPuoi ricoscere la testa termostatica dal nome applicato nella parte sottostante.",
