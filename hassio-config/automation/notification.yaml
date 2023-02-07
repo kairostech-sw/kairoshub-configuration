@@ -24,7 +24,7 @@
   action:
     - event: AD_KAIROSHUB_NOTIFICATION
       event_data:
-        type: ALERT
+        severity: ALERT
         ncode: HEATING_SENSOR_BATTERY_LOW
         entity: "{{ trigger.entity_id }}"
         sender: "*"

@@ -27,20 +27,21 @@ class Notification(hass.Hass):
 
         ncode=data["ncode"]
         sender = data["sender"] if "sender" in data and "" != data["sender"] else "HUB"
-        notification_type=data["type"]
+        severity=data["severity"]
         entity_id = data["entity"] if "entity" in data else None
 
-        notificationToSend = self.buildNotification(type=notification_type, sender=sender, code=ncode, entityRef=entity_id)
+        notificationToSend = self.buildNotification(severity=severity, sender=sender, code=ncode, entityRef=entity_id)
 
         self.dispatchNotification(notificationToSend)
 
 
-    def buildNotification(self, type, sender, code, entityRef):
+    def buildNotification(self, severity, sender, code, entityRef):
         if None == self.systemCode:
             self.systemCode	= self.get_state(KAIROSHUB_SYSTEM_CODE)
         message = self.getMessage(code, entityRef)
         noty = {
-            "eventType" : type.upper(),
+            "eventType" : code.upper(),
+            "severity"  : severity.upper(),
             "systemCode": self.systemCode,
             "sender": sender,
             "message"   : message,
@@ -56,6 +57,8 @@ class Notification(hass.Hass):
         elif notificationToSend["sender"] == "*" or notificationToSend["sender"] != "":
             self.log("hub notification placeholer") 
 
+            #removing attributes
+            notificationToSend.pop("severity", None)
             self.log("Producing notification message on topic: %s message: %s", self.cloudTopic, notificationToSend)
             self.fire_event("HAKAFKA_PRODUCER_PRODUCE", topic=self.cloudTopic, message=notificationToSend)
 

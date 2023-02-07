@@ -108,15 +108,15 @@ class HeatingManager(hass.Hass):
 
         if asyncio.run(self.checkHeaterState({"counter": 1}, "on", time=5)):
             self.log("Thermostat turned on", level="INFO")
-            self.fire_event("AD_KAIROSHUB_NOTIFICATION",sender=eventData["sender"], ncode="HEATING_ON", type="NOTICE")
+            self.fire_event("AD_KAIROSHUB_NOTIFICATION",sender=eventData["sender"], ncode="HEATING_ON", severity="NOTICE")
             self.fire_event("HA_ENTITY_METRICS") #entity metrics request update
 
             if not asyncio.run(self.isValveOpen({"trvList":trvList,"counter":1})):
-                self.fire_event("AD_KAIROSHUB_NOTIFICATION",sender=eventData["sender"], ncode="HEATING_VALVES_CLOSED", type="NOTICE")
+                self.fire_event("AD_KAIROSHUB_NOTIFICATION",sender=eventData["sender"], ncode="HEATING_VALVES_CLOSED", severity="NOTICE")
                 self.fire_event("HA_ENTITY_METRICS") #entity metrics request update
         else:
             self.log("Thermostat didn't turn on", level="INFO")
-            self.fire_event("AD_KAIROSHUB_NOTIFICATION",sender=eventData["sender"], ncode="HEATING_ON_ERROR", type="NOTICE")
+            self.fire_event("AD_KAIROSHUB_NOTIFICATION",sender=eventData["sender"], ncode="HEATING_ON_ERROR", severity="NOTICE")
             self.fire_event("HA_ENTITY_METRICS") #entity metrics request update
 
     def turnHeatingOff(self, data):
@@ -137,10 +137,10 @@ class HeatingManager(hass.Hass):
         self.turn_off("switch.sw_thermostat")
 
         if asyncio.run(self.checkHeaterState({"counter":1}, "off", time=5)):
-            self.fire_event("AD_KAIROSHUB_NOTIFICATION",sender=data["sender"], ncode="HEATING_OFF", type="NOTICE")
+            self.fire_event("AD_KAIROSHUB_NOTIFICATION",sender=data["sender"], ncode="HEATING_OFF", severity="NOTICE")
             self.log("Thermostat turned off", level="INFO")
         else:
-            self.fire_event("AD_KAIROSHUB_NOTIFICATION",sender=data["sender"], ncode="HEATING_OFF_ERROR", type="ALERT")
+            self.fire_event("AD_KAIROSHUB_NOTIFICATION",sender=data["sender"], ncode="HEATING_OFF_ERROR", severity="ALERT")
             self.log("Thermostat didn't turn off", level="INFO")
 
         self.fire_event("HA_ENTITY_METRICS") #entity metrics request update
