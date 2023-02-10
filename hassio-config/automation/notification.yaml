@@ -1,30 +1,59 @@
-- alias: LOW BATTERY NOTIFICATION
+- alias: LOW TV BATTERY NOTIFICATION
   trigger:
     - platform: numeric_state
-      entity_id: sensor.TV01_battery
-      below: 25
-    - platform: numeric_state
-      entity_id: sensor.TV02_battery
-      below: 25
-    - platform: numeric_state
-      entity_id: sensor.TV03_battery
-      below: 25
-    - platform: numeric_state
-      entity_id: sensor.TV04_battery
-      below: 25
-    - platform: numeric_state
-      entity_id: sensor.TV05_battery
-      below: 25
-    - platform: numeric_state
-      entity_id: sensor.TV06_battery
-      below: 25
-    - platform: numeric_state
-      entity_id: sensor.TV07_battery
+      entity_id: 
+        - sensor.tv01_battery
+        - sensor.tv02_battery
+        - sensor.tv03_battery
+        - sensor.tv04_battery
+        - sensor.tv05_battery
+        - sensor.tv06_battery
+        - sensor.tv07_battery
+        - sensor.TV1001_battery
+        - sensor.TV1002_battery
+        - sensor.TV1011_battery
+        - sensor.TV1012_battery
+        - sensor.TV1021_battery
+        - sensor.TV1022_battery
+        - sensor.TV1031_battery
+        - sensor.TV1032_battery
+        - sensor.TV1041_battery
+        - sensor.TV1042_battery
+        - sensor.TV2001_battery
+        - sensor.TV2002_battery
+        - sensor.TV2011_battery
+        - sensor.TV2012_battery
+        - sensor.TV2021_battery
+        - sensor.TV2022_battery
+        - sensor.TV2031_battery
+        - sensor.TV2032_battery
       below: 25
   action:
     - event: AD_KAIROSHUB_NOTIFICATION
       event_data:
         severity: ALERT
         ncode: HEATING_SENSOR_BATTERY_LOW
+        entity: "{{ trigger.entity_id }}"
+        sender: "*"
+
+- alias: LOW TH BATTERY NOTIFICATION  
+  trigger:
+    - platform: numeric_state
+      entity_id:
+        - sensor.TH1001_battery
+        - sensor.TH1011_battery
+        - sensor.TH1021_battery
+        - sensor.TH1031_battery
+        - sensor.TH1041_battery
+        - sensor.TH2001_battery
+        - sensor.TH2011_battery
+        - sensor.TH2021_battery
+        - sensor.TH2031_battery
+      below: 25
+  action:
+    - event: AD_KAIROSHUB_NOTIFICATION
+      event_data:
+        severity: ALERT
+        ncode: TH_SENSOR_BATTERY_LOW
         entity: "{{ trigger.entity_id }}"
         sender: "*"

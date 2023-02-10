@@ -1,3 +1,65 @@
+#TV2001
+- name: TV2001_temp
+  platform: mqtt
+  state_topic: "shellies/TV2001/info"
+  unit_of_measurement: "°C"
+  value_template: "{{ value_json.thermostats[0].tmp.value }}"
+  payload_not_available: "offline"
+- name: TV2001_pos
+  platform: mqtt
+  state_topic: "shellies/TV2001/info"
+  unit_of_measurement: "%"
+  value_template: "{{ value_json.thermostats[0].pos }}"
+  payload_not_available: "offline"
+- name: TV2001_target_temp
+  platform: mqtt
+  state_topic: "shellies/TV2001/info"
+  unit_of_measurement: "°C"
+  value_template: "{{ value_json.thermostats[0].target_t.value }}"
+  payload_not_available: "offline"
+- name: TV2001_battery
+  platform: mqtt
+  state_topic: "shellies/TV2001/info"
+  unit_of_measurement: "%"
+  value_template: "{{ value_json.bat.value }}"
+  payload_not_available: "offline"
+- name: TV2001_lastupdate
+  platform: mqtt
+  state_topic: "shellies/TV2001/info"
+  value_template: "{{ states.sensor.time.state }}"
+  payload_not_available: "offline"
+
+#TV2002
+- name: TV2002_temp
+  platform: mqtt
+  state_topic: "shellies/TV2002/info"
+  unit_of_measurement: "°C"
+  value_template: "{{ value_json.thermostats[0].tmp.value }}"
+  payload_not_available: "offline"
+- name: TV2002_pos
+  platform: mqtt
+  state_topic: "shellies/TV2002/info"
+  unit_of_measurement: "%"
+  value_template: "{{ value_json.thermostats[0].pos }}"
+  payload_not_available: "offline"
+- name: TV2002_target_temp
+  platform: mqtt
+  state_topic: "shellies/TV2002/info"
+  unit_of_measurement: "°C"
+  value_template: "{{ value_json.thermostats[0].target_t.value }}"
+  payload_not_available: "offline"
+- name: TV2002_battery
+  platform: mqtt
+  state_topic: "shellies/TV2002/info"
+  unit_of_measurement: "%"
+  value_template: "{{ value_json.bat.value }}"
+  payload_not_available: "offline"
+- name: TV2002_lastupdate
+  platform: mqtt
+  state_topic: "shellies/TV2002/info"
+  value_template: "{{ states.sensor.time.state }}"
+  payload_not_available: "offline"
+
 #TV2011
 - name: TV2011_temp
   platform: mqtt
