@@ -1,0 +1,112 @@
+type: 'custom:button-card'
+template: clima_zone_grid
+custom_fields:
+  header:
+    card:
+      type: 'custom:button-card'
+      entity: binary_sensor.heater_auto
+      layout: vertical
+      template:
+        - header_page_text
+      icon: 'mdi:thermometer'
+      name: 'LUCI'
+      label: >
+        [[[
+          return "Luci / "+states["input_text.zn100"].state + 
+            " / "+states["input_text.zn103"].state;
+        ]]]
+  commandbar:
+    card:
+      type: 'custom:button-card'
+      template: command_bar
+      style: |
+        ha-card.button-card-main {
+          padding: 0px !important
+        }
+        div#container {
+          justify-items: right;
+        }
+      styles:
+        card:
+          - width: 800px
+          - margin-left: -10px
+      custom_fields:
+        commands:
+          card:
+            type: horizontal-stack
+            cards:
+              - type: 'custom:button-card'
+                name: 'Copia'
+                hold_action:
+                  confirmation:
+                    text: 'Vuoi copiare questa impostazione per tutti le luci di questa zona?'
+                  action: call-service
+                  service: input_boolean.turn_on
+                  service_data:
+                    entity_id: input_boolean.copy_lights_nightzone
+                styles:
+                  card:
+                    - background: none
+                    - color: '#f4f4f4'
+                    - box-shadow: none 
+                    - width: 200px
+                    - left: -474px
+                style: |
+                  :host {
+                    align-self: center;
+                  }
+              - type: 'custom:button-card'
+                template: button_go_back
+                style: |
+                  :host {
+                    align-self: center;
+                  }
+  zones:
+    card:
+      type: horizontal-stack
+      cards: #TODO Automation Copy
+      ## Automation Turn on/off all in group LyZxxx
+        - type: conditional
+          conditions:
+            - entity: input_select.light_type
+              state: white
+          card:
+            type: custom:light-entity-card
+            entity: light.lwz103
+            header: >
+              [[[
+                return "Luci "+ states["input_text.zn103"].state;
+              ]]]
+            persist_features: true
+            show_slider_percent: true
+        - type: conditional
+          conditions:
+            - entity: input_select.light_type
+              state: color
+          card:
+            type: custom:light-entity-card
+            entity: light.lcz103
+            header: >
+              [[[
+                return "Luci "+ states["input_text.zn103"].state;
+              ]]]
+            persist_features: true
+            show_slider_percent: true
+            style: |
+              ha-color-picker {
+                max-width: 230px !important;
+                margin-top: 5px;
+              }
+        - type: conditional
+          conditions:
+            - entity: input_select.light_type
+              state: onoff
+          card:
+            type: custom:light-entity-card
+            entity: light.lz103
+            header: >
+              [[[
+                return "Luci "+ states["input_text.zn103"].state;
+              ]]]
+            persist_features: true
+            show_slider_percent: true

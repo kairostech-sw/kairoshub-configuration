@@ -1,0 +1,82 @@
+type: 'custom:button-card'
+template: entities_grid
+custom_fields:
+  header:
+    card:
+      type: 'custom:button-card'
+      label: "Impostazioni / Luci"
+      template:
+        - header_page_text
+      name: 'IMPOSTAZIONI'
+      icon: 'mdi:cog'
+  commandbar:
+    card:
+      type: 'custom:button-card'
+      template: command_bar
+      style: |
+        ha-card.button-card-main {
+          padding: 0px !important
+        }
+        div#container {
+          justify-items: right;
+        }
+      styles:
+        card:
+          - margin-top: 2px
+      custom_fields:
+        commands:
+          card:
+            type: horizontal-stack
+            cards:
+              - type: 'custom:button-card'
+                template: button_go_back
+                style: |
+                  :host {
+                    align-self: center;
+                  }
+  entities:
+    card:
+      type: custom:button-card
+      styles:
+        grid:
+          - grid-template-areas: '"warning warning warning" ". picker ."'
+          - grid-template-columns: auto
+          - grid-template-rows: auto
+          - row-gap: 10px
+        card:
+          - background: none
+          - padding: 0px
+      custom_fields:
+        warning:
+          card:
+            type: 'custom:button-card'
+            template: no_background
+            name: >
+              [[[
+                return `
+                <ha-alert alert-type="warning" title="Attenzione">
+                  I valori in questa pagina sono in sola lettura. Utilizzare l'assistente remoto per modificarli
+                </ha-alert>`;
+              ]]]
+            styles:
+              card:
+                - padding: 0px
+            tap_action:
+              action: none
+        picker:
+          card:
+            type: custom:time-picker-card
+            entity: input_datetime.offset_sunset
+            hour_mode: 24
+            embedded: true
+            styles:
+              card:
+                - width: 50%
+            style: |
+              ha-card > .time-picker-header {
+                padding: 5px
+              }
+
+              ha-card > .time-picker-row {
+                padding: 0px !important
+              }

@@ -49,3 +49,13 @@ custom_fields:
       tap_action:
         action: navigate
         navigation_path: /lovelace-kairoshub/impostazioni-alexa
+  b5:
+    card:
+      type: 'custom:button-card'
+      template:
+        - settings_card
+      icon: 'mdi:lightbulb'
+      name: Luci
+      tap_action:
+        action: navigate
+        navigation_path: /lovelace-kairoshub/impostazioni-luci
