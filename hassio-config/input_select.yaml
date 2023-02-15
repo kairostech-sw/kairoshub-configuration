@@ -1,0 +1,42 @@
+light_type:
+  name: light type
+  options:
+    - onoff
+    - white 
+    - color
+zn100:
+  name: ' '
+  options:
+    - Disattivo
+    - Programmato
+    - Automatico
+zn200:
+  name: ' '
+  options:
+    - Disattivo
+    - Programmato
+    - Automatico
+zn300:
+  name: ' '
+  options:
+    - Disattivo
+    - Programmato
+    - Automatico
+zn100_days:
+  name: ' '
+  options:
+    - Feriali
+    - Festivi
+    - Tutti
+zn200_days:
+  name: ' '
+  options:
+    - Feriali
+    - Festivi
+    - Tutti
+zn300_days:
+  name: ' '
+  options:
+    - Feriali
+    - Festivi
+    - Tutti

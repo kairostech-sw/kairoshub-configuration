@@ -1,0 +1,6 @@
+lights:
+  name: Luci
+  entities:
+    - light.group_lz100
+    - light.group_lz200
+    - light.group_lz300
