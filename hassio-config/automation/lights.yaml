@@ -125,13 +125,12 @@
       to: 'on'
       for: "{{states('input_datetime.offset_sunset')}}"
   condition:
-    condition: state
-    entity_id: sun.sun
-    state: "below_horizon"
-  condition:
-    condition: state
-    entity_id: input_select.zn100
-    state: "Automatico"
+    - condition: state
+      entity_id: sun.sun
+      state: "below_horizon"
+    - condition: state
+      entity_id: input_select.zn100
+      state: "Automatico"
   action:
     service: light.turn_off
     target:
@@ -159,13 +158,12 @@
       to: 'on'
       for: "{{states('input_datetime.offset_sunset')}}"
   condition:
-    condition: state
-    entity_id: sun.sun
-    state: "below_horizon"
-  condition:
-    condition: state
-    entity_id: input_select.zn200
-    state: "Automatico"
+    - condition: state
+      entity_id: sun.sun
+      state: "below_horizon"
+    - condition: state
+      entity_id: input_select.zn200
+      state: "Automatico"
   action:
     service: light.turn_off
     target:
@@ -193,13 +191,12 @@
       to: 'on'
       for: "{{states('input_datetime.offset_sunset')}}"
   condition:
-    condition: state
-    entity_id: sun.sun
-    state: "below_horizon"
-  condition:
-    condition: state
-    entity_id: input_select.zn300
-    state: "Automatico"
+    - condition: state
+      entity_id: sun.sun
+      state: "below_horizon"
+    - condition: state
+      entity_id: input_select.zn300
+      state: "Automatico"
   action:
     service: light.turn_off
     target:
