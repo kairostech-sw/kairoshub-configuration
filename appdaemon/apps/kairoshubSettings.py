@@ -11,6 +11,8 @@ class KairoshubSettings(hass.Hass):
         self.listen_event(self.pushSettings, "AD_SETTINGS_PUSH")
         self.listen_event(self.fileCheck, "AD_SETTINGS_FILE_CHECK")
         self.listen_event(self.copyPrograms, "AD_COPY_PROGRAMS")
+        self.liste_event(self.__systemKeySync ,"AD_SETTINGS_SYSTEM_KEY_SYNC")
+        self.liste_event(self.__systemKeyPush ,"AD_SETTING_SYSTEM_KEY_PUSH")
 
     def syncSettings(self, event_name, data, kwargs):
         self.log("Retrieving stored user settings")
@@ -53,7 +55,7 @@ class KairoshubSettings(hass.Hass):
             json.dump(jsonData,f)
 
         self.log("User settings stored on filesystem.", level="INFO")
-       
+
         jsonData.pop("lifetime", None)
         eventData= {
             "eventType" : "SETTINGS_SYNC",
@@ -83,7 +85,7 @@ class KairoshubSettings(hass.Hass):
                 if "lifetime" not in jsonData or jsonData["lifetime"] < timestamp:
                     self.log("User settings expired.", level="INFO")
                     raise FileNotFoundError
-                self.__updateSensors__(userSettings, functionSettings)
+                self.__updateSensors(userSettings, functionSettings)
                 self.log("User settings restored by filesystem",level="INFO")
 
         except FileNotFoundError:
@@ -98,7 +100,7 @@ class KairoshubSettings(hass.Hass):
 
             self.fire_event("HAKAFKA_PRODUCER_PRODUCE", topic="TECHNICAL", message=eventData)
 
-        except Exception as e:
+        except Exception:
             raise
 
     def pushSettings(self, event_name, data, kwargs):
@@ -111,7 +113,7 @@ class KairoshubSettings(hass.Hass):
                 json.dump(jsonData,f)
                 userSettings=jsonData["userSettings"] if "userSettings" in jsonData else ""
                 functionSettings=jsonData["functionSettings"] if "functionSettings" in jsonData else ""
-                self.__updateSensors__(userSettings, functionSettings)
+                self.__updateSensors(userSettings, functionSettings)
         except Exception:
             raise
 
@@ -130,7 +132,7 @@ class KairoshubSettings(hass.Hass):
         except FileNotFoundError:
             self.log("File settings not found", level="WARNING")
 
-    def __updateSensors__(self, userSettings, functionSettings):
+    def __updateSensors(self, userSettings, functionSettings):
 
         for key in userSettings:
             for entity in userSettings[key]:
@@ -186,3 +188,24 @@ class KairoshubSettings(hass.Hass):
             self.set_state("input_datetime.thermostat_{}_on_period{}".format(day, progId), state=on_time_state, attributes=on_time["attributes"])
             self.set_state("input_datetime.thermostat_{}_off_period{}".format(day, progId), state=off_time_state, attributes=off_time["attributes"])
 
+    def __systemKeySync(self, event_name, data, kwargs):
+
+        self.log("Requesting key to cloud", level="INFO")
+        systemCode = self.get_state("input_text.system_code")
+
+        eventData = {
+            "eventType" : "SYSTEM_KEY_SYNC",
+            "sender" : systemCode,
+            "message" : "SYSTEM KEY SYNC"
+        }
+
+        self.fire_event("HAKAFKA_PRODUCER_PRODUCE", topic="TECHNICAL", message=eventData)
+
+    def __systemKeyPush(self, event_name, data, kwargs):
+
+        self.log("Updating key", level="DEBUG")
+
+        key = data["data"]["technicalMessage"]["systemKey"]
+        self.set_state("input_text.system_key", state=key)
+
+        self.log("Key updated", level="DEBUG")
