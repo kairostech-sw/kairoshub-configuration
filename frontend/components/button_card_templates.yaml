@@ -1549,20 +1549,26 @@ assistance_info:
         return `
           <div class="assistance_content" style="text-align: left; font-size: 12px">
 
-            <div style="padding-bottom: 5px; padding-top: 5px">
+            <div>
+              <ha-icon icon="mdi:account" style="width: 24px; padding:5px; color: var(--ha-card-header-color);"></ha-icon>
+              <label style="font-weight: bold ">Intestatario impianto:</label>
+              <span > ${ states[ variables.systemOwner ].state} </span>
+            </div>
+
+            <div>
               <ha-icon icon="mdi:identifier" style="width: 24px; padding:5px; color: var(--ha-card-header-color);"></ha-icon>
               <label style="font-weight: bold; ">Identificativo impianto:</label>
               <span > ${ states[ variables.systemCode ].state} </span>
             </div>
 
-            <div >
-              <ha-icon icon="mdi:account" style="width: 24px; padding:5px; color: var(--ha-card-header-color);"></ha-icon>
-              <label style="font-weight: bold ">Intestatario impianto:</label>
-              <span > ${ states[ variables.systemOwner ].state} </span>
+            <div>
+              <ha-icon icon="mdi:key" style="width: 24px; padding:5px; color: var(--ha-card-header-color);"></ha-icon>
+              <label style="font-weight: bold; ">Chiave impianto:</label>
+              <span > ${ states[ variables.systemKey ].state} </span>
             </div>
             <br />
 
-            <div >
+            <div>
               <ha-icon icon="mdi:home-assistant" style="width: 24px; padding:5px; color: var(--ha-card-header-color);"></ha-icon>
               <label style="font-weight: bold ">Stato impianto:</label>
               <span > ${ states[ variables.systemState ].state} </span>

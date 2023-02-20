@@ -2,6 +2,8 @@ system_code:
   name: Identificativo Sistema
 system_name:
   name: Casa
+system_key:
+  name: Chiave Impianto
 #Stanze Zona Notte
 zn100:
   name: ZN100
