@@ -52,7 +52,7 @@ class HelloWorld(hass.Hass):
             self.set_state(KAIROSHUB_SYSTEM_OWNER, state=mqttSystemOwner)
 
         if not currentSystemKey.isnumeric() or len(currentSystemKey) != 6:
-            self.log("System key is invalid", level="ERROR")
+            self.log("System key is invalid", level="WARNING")
             self.fire_event("AD_SETTINGS_SYSTEM_KEY_SYNC")
 
         systemCode	= self.get_state(KAIROSHUB_SYSTEM_CODE)

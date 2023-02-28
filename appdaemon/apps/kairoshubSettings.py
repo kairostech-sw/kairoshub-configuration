@@ -203,9 +203,9 @@ class KairoshubSettings(hass.Hass):
 
     def __systemKeyPush(self, event_name, data, kwargs):
 
-        self.log("Updating key", level="DEBUG")
+        self.log("Updating key", level="INFO")
 
         key = data["data"]["technicalMessage"]["systemKey"]
         self.set_state("input_text.system_key", state=key)
 
-        self.log("Key updated", level="DEBUG")
+        self.log("Key updated", level="INFO")
