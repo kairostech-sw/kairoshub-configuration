@@ -1,0 +1,27 @@
+- platform: group
+  name: group_lz201
+  entities:
+    - light.lcz201
+    - light.lwz201
+    - light.lz201
+
+- platform: group
+  name: group_lz202
+  entities:
+    - light.lcz202
+    - light.lwz202
+    - light.lz202
+
+- platform: group
+  name: group_lz203
+  entities:
+    - light.lcz203
+    - light.lwz203
+    - light.lz203
+
+- platform: group
+  name: group_lz200
+  entities:
+    - light.group_lz201
+    - light.group_lz202
+    - light.group_lz203

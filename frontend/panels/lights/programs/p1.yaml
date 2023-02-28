@@ -1,0 +1,480 @@
+type: custom:button-card
+template: panel_grid
+styles:
+  custom_fields:
+    content:
+      - justify-self: center
+      - overflow: auto
+card_mod:
+  style: |
+    #content::-webkit-scrollbar {
+      display: none !important;
+    }
+custom_fields:
+  header:
+    card:
+      type: 'custom:button-card'
+      layout: vertical
+      template:
+        - header_page_text
+      icon: 'mdi:thermometer'
+      name: 'LUCI'
+      label: Luci
+  commandbar:
+    card:
+      type: 'custom:button-card'
+      template: command_bar
+      style: |
+        ha-card.button-card-main {
+          padding: 0px !important
+        }
+        div#container {
+          justify-items: right;
+        }
+      styles:
+        card:
+          - width: 800px
+          - margin-left: -10px
+      custom_fields:
+        commands:
+          card:
+            type: horizontal-stack
+            cards:
+              - type: 'custom:button-card'
+                template: button_go_back
+                style: |
+                  :host {
+                    align-self: center;
+                  }
+  content:
+    card:
+      type: vertical-stack
+      cards:
+        - type: conditional
+          conditions:
+            - entity: binary_sensor.lz100_state
+              state: "off"
+            - entity: binary_sensor.lz200_state
+              state: "off"
+            - entity: binary_sensor.lz300_state
+              state: "off"
+          card:
+            type: 'custom:button-card'
+            template: no_background
+            name: >
+              [[[
+                return `
+                <ha-alert alert-type="warning" style="justify-self: center;">
+                  Non ci sono luci attive </br>
+                </ha-alert>`;
+              ]]]
+            tap_action:
+                action: none
+        - type: conditional
+          conditions:
+            - entity: binary_sensor.lz100_state
+              state_not: "off"
+          card:
+            type: custom:button-card
+            template: light_program
+            custom_fields:
+              label:
+                card:
+                  type: custom:button-card
+                  name: '[[[return states["input_text.zn100"].state;]]]'
+                  layout: icon_name
+                  icon: mdi:lightbulb
+                  entity: light.group_lz100
+                  size: 75%
+                  state:
+                    - value: 'off'
+                      color: black
+                    - value: 'on'
+                      color: >
+                        [[[
+                          if (states["input_select.light_type"].state == "color")
+                          {
+                            if (states["light.group_lz100"].attributes.rgb_color != undefined) {
+                            var color = states["light.group_lz100"].attributes.rgb_color
+                            return "rgb("+color[0]+","+color[1]+","+color[2]+")";
+                            } 
+                          }
+                          else return "#DCA200";
+                        ]]]
+                  tap_action:
+                    action: call-service
+                    service: light.toggle
+                    service_data:
+                      entity_id: light.group_lz100
+                  # hold_action:
+                  #   action: navigate
+                  #   navigation_path: /lovelace-kairoshub/lights-program1-zone1
+              select:
+                card:
+                  type: entities
+                  entities: 
+                    - entity: input_select.zn100
+                      style: |
+                        state-badge {
+                          display: none;
+                        }
+                  style: |
+                    .card-content {
+                      padding: 0px;
+                    }
+              days:
+                card:
+                  type: entities
+                  entities: 
+                    - entity: input_select.zn100_days
+                      style: 
+                        .: |
+                          state-badge {
+                            display: none;
+                          }
+                          {% if not is_state('input_select.zn100', 'Programmato') %}
+                            ha-paper-dropdown-menu {  
+                                pointer-events: none;
+                            }
+                          {% endif %}
+                        ha-paper-dropdown-menu$:
+                          paper-menu-button div:
+                            paper-input$:
+                              paper-input-container: |
+                                {% if not is_state('input_select.zn100', 'Programmato') %}
+                                  iron-input {
+                                    color: var(--disabled-text-color);
+                                  }
+                                {% endif %}
+                  style: |
+                    .card-content {
+                      padding: 0px;
+                      margin-left: 10px;
+                      margin-right: -20px;
+                    }
+              time:
+                card:
+                  type: horizontal-stack
+                  cards:
+                    - type: custom:time-picker-card
+                      entity: input_datetime.lights_nightzone_on_program1
+                      minute_step: 15
+                      layout:
+                        embedded: true
+                        align_controls: right
+                      style: 
+                        .: |
+                          :host {
+                          {% if not is_state('input_select.zn100', 'Programmato') %}
+                            pointer-events: none;
+                          {% endif %}
+                          }
+                          state-badge {
+                            display: none;
+                          }
+                          .time-picker-row.embedded {
+                            flex-direction: column;
+                          }
+                        time-unit: 
+                          $: |
+                            .time-input {
+                              {% if not is_state('input_select.zn100', 'Programmato') %}
+                                pointer-events: none;
+                                background-color: var(--disabled-text-color) !important; 
+                              {% endif %} 
+                            }
+                    - type: custom:time-picker-card
+                      entity: input_datetime.lights_nightzone_off_program1
+                      minute_step: 15
+                      layout:
+                        embedded: true
+                        align_controls: right
+                      style: 
+                        .: |
+                          :host {
+                          {% if not is_state('input_select.zn100', 'Programmato') %}
+                            pointer-events: none;
+                          {% endif %}
+                          }
+                          state-badge {
+                            display: none;
+                          }
+                          .time-picker-row.embedded {
+                            flex-direction: column;
+                          }
+                        time-unit: 
+                          $: |
+                            .time-input {
+                              {% if not is_state('input_select.zn100', 'Programmato') %}
+                                pointer-events: none;
+                                background-color: var(--disabled-text-color) !important; 
+                              {% endif %} 
+                            }
+        - type: conditional
+          conditions:
+            - entity: binary_sensor.lz200_state
+              state_not: "off"
+          card:
+            type: custom:button-card
+            template: light_program
+            custom_fields:
+              label:
+                card:
+                  type: custom:button-card
+                  name: '[[[return states["input_text.zn200"].state;]]]'
+                  layout: icon_name
+                  icon: mdi:lightbulb
+                  entity: light.group_lz200
+                  size: 75%
+                  state:
+                    - value: 'off'
+                      color: black
+                    - value: 'on'
+                      color: >
+                        [[[
+                          if (states["input_select.light_type"].state == "color")
+                          {
+                            if (states["light.group_lz200"].attributes.rgb_color != undefined) {
+                            var color = states["light.group_lz200"].attributes.rgb_color
+                            return "rgb("+color[0]+","+color[1]+","+color[2]+")";
+                            } 
+                          }
+                          else return "#DCA200";
+                        ]]]
+                  tap_action:
+                    action: none
+              select:
+                card:
+                  type: entities
+                  entities: 
+                    - entity: input_select.zn200
+                      style: |
+                        state-badge {
+                          display: none;
+                        }
+                  style: |
+                    .card-content {
+                      padding: 0px;
+                    }
+              days:
+                card:
+                  type: entities
+                  entities: 
+                    - entity: input_select.zn200_days
+                      style: 
+                        .: |
+                          state-badge {
+                            display: none;
+                          }
+                          {% if not is_state('input_select.zn200', 'Programmato') %}
+                            ha-paper-dropdown-menu {  
+                                pointer-events: none;
+                            }
+                          {% endif %}
+                        ha-paper-dropdown-menu$:
+                          paper-menu-button div:
+                            paper-input$:
+                              paper-input-container: |
+                                {% if not is_state('input_select.zn200', 'Programmato') %}
+                                  iron-input {
+                                    color: var(--disabled-text-color);
+                                  }
+                                {% endif %}
+                  style: |
+                    .card-content {
+                      padding: 0px;
+                      margin-left: 10px;
+                      margin-right: -20px;
+                    }
+              time:
+                card:
+                  type: horizontal-stack
+                  cards:
+                    - type: custom:time-picker-card
+                      entity: input_datetime.lights_dayzone_on_program1
+                      minute_step: 15
+                      layout:
+                        embedded: true
+                        align_controls: right
+                      style: 
+                        .: |
+                          :host {
+                          {% if not is_state('input_select.zn200', 'Programmato') %}
+                            pointer-events: none;
+                          {% endif %}
+                          }
+                          state-badge {
+                            display: none;
+                          }
+                          .time-picker-row.embedded {
+                            flex-direction: column;
+                          }
+                        time-unit: 
+                          $: |
+                            .time-input {
+                              {% if not is_state('input_select.zn200', 'Programmato') %}
+                                pointer-events: none;
+                                background-color: var(--disabled-text-color) !important; 
+                              {% endif %} 
+                            }
+                    - type: custom:time-picker-card
+                      entity: input_datetime.lights_dayzone_off_program1
+                      minute_step: 15
+                      layout:
+                        embedded: true
+                        align_controls: right
+                      style: 
+                        .: |
+                          :host {
+                          {% if not is_state('input_select.zn200', 'Programmato') %}
+                            pointer-events: none;
+                          {% endif %}
+                          }
+                          state-badge {
+                            display: none;
+                          }
+                          .time-picker-row.embedded {
+                            flex-direction: column;
+                          }
+                        time-unit: 
+                          $: |
+                            .time-input {
+                              {% if not is_state('input_select.zn200', 'Programmato') %}
+                                pointer-events: none;
+                                background-color: var(--disabled-text-color) !important; 
+                              {% endif %} 
+                            }
+        - type: conditional
+          conditions:
+            - entity: binary_sensor.lz300_state
+              state_not: "off"
+          card:
+            type: custom:button-card
+            template: light_program
+            custom_fields:
+              label:
+                card:
+                  type: custom:button-card
+                  name: '[[[return states["input_text.zn300"].state;]]]'
+                  layout: icon_name
+                  icon: mdi:lightbulb
+                  entity: light.group_lz300
+                  size: 75%
+                  state:
+                    - value: 'off'
+                      color: black
+                    - value: 'on'
+                      color: >
+                        [[[
+                          if (states["input_select.light_type"].state == "color")
+                          {
+                            if (states["light.group_lz300"].attributes.rgb_color != undefined) {
+                            var color = states["light.group_lz300"].attributes.rgb_color
+                            return "rgb("+color[0]+","+color[1]+","+color[2]+")";
+                            } 
+                          }
+                          else return "#DCA200";
+                        ]]]
+                  tap_action:
+                    action: none
+              select:
+                card:
+                  type: entities
+                  entities: 
+                    - entity: input_select.zn300
+                      style: |
+                        state-badge {
+                          display: none;
+                        }
+                  style: |
+                    .card-content {
+                      padding: 0px;
+                    }
+              days:
+                card:
+                  type: entities
+                  entities: 
+                    - entity: input_select.zn300_days
+                      style: 
+                        .: |
+                          state-badge {
+                            display: none;
+                          }
+                          {% if not is_state('input_select.zn300', 'Programmato') %}
+                            ha-paper-dropdown-menu {  
+                                pointer-events: none;
+                            }
+                          {% endif %}
+                        ha-paper-dropdown-menu$:
+                          paper-menu-button div:
+                            paper-input$:
+                              paper-input-container: |
+                                {% if not is_state('input_select.zn300', 'Programmato') %}
+                                  iron-input {
+                                    color: var(--disabled-text-color);
+                                  }
+                                {% endif %}
+                  style: |
+                    .card-content {
+                      padding: 0px;
+                      margin-left: 10px;
+                      margin-right: -20px;
+                    }
+              time:
+                card:
+                  type: horizontal-stack
+                  cards:
+                    - type: custom:time-picker-card
+                      entity: input_datetime.lights_outdoor_on_program1
+                      minute_step: 15
+                      layout:
+                        embedded: true
+                        align_controls: right
+                      style: 
+                        .: |
+                          :host {
+                          {% if not is_state('input_select.zn300', 'Programmato') %}
+                            pointer-events: none;
+                          {% endif %}
+                          }
+                          state-badge {
+                            display: none;
+                          }
+                          .time-picker-row.embedded {
+                            flex-direction: column;
+                          }
+                        time-unit: 
+                          $: |
+                            .time-input {
+                              {% if not is_state('input_select.zn300', 'Programmato') %}
+                                pointer-events: none;
+                                background-color: var(--disabled-text-color) !important; 
+                              {% endif %} 
+                            }
+                    - type: custom:time-picker-card
+                      entity: input_datetime.lights_outdoor_off_program1
+                      minute_step: 15
+                      layout:
+                        embedded: true
+                        align_controls: right
+                      style: 
+                        .: |
+                          :host {
+                          {% if not is_state('input_select.zn300', 'Programmato') %}
+                            pointer-events: none;
+                          {% endif %}
+                          }
+                          state-badge {
+                            display: none;
+                          }
+                          .time-picker-row.embedded {
+                            flex-direction: column;
+                          }
+                        time-unit: 
+                          $: |
+                            .time-input {
+                              {% if not is_state('input_select.zn300', 'Programmato') %}
+                                pointer-events: none;
+                                background-color: var(--disabled-text-color) !important; 
+                              {% endif %} 
+                            }

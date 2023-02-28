@@ -1,10 +1,105 @@
-platform: mqtt
-name: sw_thermostat
-unique_id: sw_thermostat
-state_topic: "shellies/TH02/relay/0"
-command_topic: "shellies/TH02/relay/0/command"
-qos: 0
-payload_on: "on"
-payload_off: "off"
-optimistic: false
-retain: false
+# Switch Termostato
+- platform: mqtt
+  name: sw_thermostat
+  unique_id: sw_thermostat
+  state_topic: "shellies/TH02/relay/0"
+  command_topic: "shellies/TH02/relay/0/command"
+  qos: 0
+  payload_on: "on"
+  payload_off: "off"
+  optimistic: false
+  retain: false
+
+# Switch Luci Zona Notte
+- platform: mqtt
+  name: LZ101
+  unique_id: LZ101
+  state_topic: "shellies/LZ101/relay/0"
+  command_topic: "shellies/LZ101/relay/0/command"
+  payload_on: "on"
+  payload_off: "off"
+  retain: true
+- platform: mqtt
+  name: LZ102
+  unique_id: LZ102
+  state_topic: "shellies/LZ102/relay/0"
+  command_topic: "shellies/LZ102/relay/0/command"
+  payload_on: "on"
+  payload_off: "off"
+  retain: true
+- platform: mqtt
+  name: LZ103
+  unique_id: LZ103
+  state_topic: "shellies/LZ103/relay/0"
+  command_topic: "shellies/LZ103/relay/0/command"
+  payload_on: "on"
+  payload_off: "off"
+  retain: true
+- platform: mqtt
+  name: LZ104
+  unique_id: LZ104
+  state_topic: "shellies/LZ104/relay/0"
+  command_topic: "shellies/LZ104/relay/0/command"
+  payload_on: "on"
+  payload_off: "off"
+  retain: true
+
+# Switch Luci Zona Giorno
+- platform: mqtt
+  name: LZ201
+  unique_id: LZ201
+  state_topic: "shellies/LZ201/relay/0"
+  command_topic: "shellies/LZ201/relay/0/command"
+  payload_on: "on"
+  payload_off: "off"
+  retain: true
+- platform: mqtt
+  name: LZ202
+  unique_id: LZ202
+  state_topic: "shellies/LZ202/relay/0"
+  command_topic: "shellies/LZ202/relay/0/command"
+  payload_on: "on"
+  payload_off: "off"
+  retain: true
+- platform: mqtt
+  name: LZ203
+  unique_id: LZ203
+  state_topic: "shellies/LZ203/relay/0"
+  command_topic: "shellies/LZ203/relay/0/command"
+  payload_on: "on"
+  payload_off: "off"
+  retain: true
+  
+# Switch Luci Esterno
+- platform: mqtt
+  name: LZ301
+  unique_id: LZ301
+  state_topic: "shellies/LZ301/relay/0"
+  command_topic: "shellies/LZ301/relay/0/command"
+  payload_on: "on"
+  payload_off: "off"
+  retain: true
+- platform: mqtt
+  name: LZ302
+  unique_id: LZ302
+  state_topic: "shellies/LZ302/relay/0"
+  command_topic: "shellies/LZ302/relay/0/command"
+  payload_on: "on"
+  payload_off: "off"
+  retain: true
+- platform: mqtt
+  name: LZ303
+  unique_id: LZ303
+  state_topic: "shellies/LZ303/relay/0"
+  command_topic: "shellies/LZ303/relay/0/command"
+  payload_on: "on"
+  payload_off: "off"
+  retain: true
+- platform: mqtt
+  name: LZ304
+  unique_id: LZ304
+  state_topic: "shellies/LZ304/relay/0"
+  command_topic: "shellies/LZ304/relay/0/command"
+  payload_on: "on"
+  payload_off: "off"
+  retain: true

@@ -103,3 +103,27 @@ tv_06:
   name: Ambiente 6
 tv_07:
   name: Ambiente 7
+light_program1:
+  name: Programma 1
+copy_lights_zn101:
+  name: Copia Luci Zona 
+copy_lights_zn102:
+  name: Copia Luci Zona 
+copy_lights_zn103:
+  name: Copia Luci Zona 
+copy_lights_zn104:
+  name: Copia Luci Zona 
+copy_lights_zn201:
+  name: Copia Luci Zona 
+copy_lights_zn202:
+  name: Copia Luci Zona 
+copy_lights_zn203:
+  name: Copia Luci Zona 
+copy_lights_zn301:
+  name: Copia Luci Zona 
+copy_lights_zn302:
+  name: Copia Luci Zona 
+copy_lights_zn303:
+  name: Copia Luci Zona 
+copy_lights_zn304:
+  name: Copia Luci Zona 

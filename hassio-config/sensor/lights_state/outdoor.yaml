@@ -1,0 +1,98 @@
+- platform: mqtt
+  name: lcz301_state
+  unique_id: lcz301_state
+  state_topic: "shellies/LZ301/color/0/status"
+  value_template: >
+    {% if value_json.ison is defined %}
+      online
+    {% endif %}
+- platform: mqtt
+  name: lcz302_state
+  unique_id: lcz302_state
+  state_topic: "shellies/LZ302/color/0/status"
+  value_template: >
+    {% if value_json.ison is defined %}
+      online
+    {% endif %}
+- platform: mqtt
+  name: lcz303_state
+  unique_id: lcz303_state
+  state_topic: "shellies/LZ303/color/0/status"
+  value_template: >
+    {% if value_json.ison is defined %}
+      online
+    {% endif %}
+- platform: mqtt
+  name: lcz304_state
+  unique_id: lcz304_state
+  state_topic: "shellies/LZ304/color/0/status"
+  value_template: >
+    {% if value_json.ison is defined %}
+      online
+    {% endif %}
+
+- platform: mqtt
+  name: lwz301_state
+  unique_id: lwz301_state
+  state_topic: "shellies/LZ301/white/0/status"
+  value_template: >
+    {% if value_json.ison is defined %}
+      online
+    {% endif %}
+- platform: mqtt
+  name: lwz302_state
+  unique_id: lwz302_state
+  state_topic: "shellies/LZ302/white/0/status"
+  value_template: >
+    {% if value_json.ison is defined %}
+      online
+    {% endif %}
+- platform: mqtt
+  name: lwz303_state
+  unique_id: lwz303_state
+  state_topic: "shellies/LZ303/white/0/status"
+  value_template: >
+    {% if value_json.ison is defined %}
+      online
+    {% endif %}
+- platform: mqtt
+  name: lwz304_state
+  unique_id: lwz304_state
+  state_topic: "shellies/LZ304/white/0/status"
+  value_template: >
+    {% if value_json.ison is defined %}
+      online
+    {% endif %}
+
+- platform: mqtt
+  name: lz301_state
+  unique_id: lz301_state
+  state_topic: "shellies/LZ301/relay/0"
+  value_template: >
+    {% if value is defined %}
+      online
+    {% endif %}
+- platform: mqtt
+  name: lz302_state
+  unique_id: lz302_state
+  state_topic: "shellies/LZ302/relay/0"
+  value_template: >
+    {% if value is defined %}
+      online
+    {% endif %}
+- platform: mqtt
+  name: lz303_state
+  unique_id: lz303_state
+  state_topic: "shellies/LZ303/relay/0"
+  value_template: >
+    {% if value is defined %}
+      online
+    {% endif %}
+- platform: mqtt
+  name: lz304_state
+  unique_id: lz304_state
+  state_topic: "shellies/LZ304/relay/0"
+  value_template: >
+    {% if value is defined %}
+      online
+    {% endif %}

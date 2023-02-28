@@ -31,6 +31,21 @@ custom_fields:
           styles:
             card:
               - padding-top: 3px
+        - type: custom:button-card
+          template: icon_state_header
+          name: Luci
+          entity: group.lights
+          icon: mdi:lightbulb
+          state:
+            - value: 'on'
+              label: Accese
+              color: var(--command-state-active-color)
+            - value: 'off'
+              label: Spente
+              color: var(--command-state-color)
+          styles:
+            card:
+              - padding-top: 3px
         - name: Tapparelle aperte
           type: 'custom:button-card'
           template: icon_state_header

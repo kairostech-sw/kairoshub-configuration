@@ -1,0 +1,95 @@
+# LWZ301
+- platform: mqtt
+  schema: template
+  name: "LWZ301"
+  unique_id: "LWZ301"
+  command_topic: "shellies/LZ301/white/0/set"
+  state_topic: "shellies/LZ301/white/0/status"
+  command_on_template: >
+    {"turn": "on"
+    {%- if brightness is defined -%}
+    , "brightness": {{brightness | float | multiply(0.3922) | round(0)}}
+    {%- endif -%}
+    }
+  command_off_template: '{"turn":"off"}'
+  state_template:  >
+    {% if value_json.ison %}
+      on
+    {% else %}
+      off
+    {% endif %}
+  brightness_template: "{{ value_json.brightness | float | multiply(2.55) | round(0) }}"
+  qos: 0
+  retain: true
+
+# LWZ302
+- platform: mqtt
+  schema: template
+  name: "LWZ302"
+  unique_id: "LWZ302"
+  command_topic: "shellies/LZ302/white/0/set"
+  state_topic: "shellies/LZ302/white/0/status"
+  command_on_template: >
+    {"turn": "on"
+    {%- if brightness is defined -%}
+    , "brightness": {{brightness | float | multiply(0.3922) | round(0)}}
+    {%- endif -%}
+    }
+  command_off_template: '{"turn":"off"}'
+  state_template:  >
+    {% if value_json.ison %}
+      on
+    {% else %}
+      off
+    {% endif %}
+  brightness_template: "{{ value_json.brightness | float | multiply(2.55) | round(0) }}"
+  qos: 0
+  retain: true
+
+# LWZ303
+- platform: mqtt
+  schema: template
+  name: "LWZ303"
+  unique_id: "LWZ303"
+  command_topic: "shellies/LZ303/white/0/set"
+  state_topic: "shellies/LZ303/white/0/status"
+  command_on_template: >
+    {"turn": "on"
+    {%- if brightness is defined -%}
+    , "brightness": {{brightness | float | multiply(0.3922) | round(0)}}
+    {%- endif -%}
+    }
+  command_off_template: '{"turn":"off"}'
+  state_template:  >
+    {% if value_json.ison %}
+      on
+    {% else %}
+      off
+    {% endif %}
+  brightness_template: "{{ value_json.brightness | float | multiply(2.55) | round(0) }}"
+  qos: 0
+  retain: true
+
+# LWZ304
+- platform: mqtt
+  schema: template
+  name: "LWZ304"
+  unique_id: "LWZ304"
+  command_topic: "shellies/LZ304/white/0/set"
+  state_topic: "shellies/LZ304/white/0/status"
+  command_on_template: >
+    {"turn": "on"
+    {%- if brightness is defined -%}
+    , "brightness": {{brightness | float | multiply(0.3922) | round(0)}}
+    {%- endif -%}
+    }
+  command_off_template: '{"turn":"off"}'
+  state_template:  >
+    {% if value_json.ison %}
+      on
+    {% else %}
+      off
+    {% endif %}
+  brightness_template: "{{ value_json.brightness | float | multiply(2.55) | round(0) }}"
+  qos: 0
+  retain: true

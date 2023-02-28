@@ -2,6 +2,8 @@ system_code:
   name: Identificativo Sistema
 system_name:
   name: Casa
+system_key:
+  name: Chiave Impianto
 #Stanze Zona Notte
 zn100:
   name: ZN100
@@ -31,3 +33,19 @@ zn202:
 zn203:
   name: ZN203
   initial: Bagno 2
+#TODO Zona Esterno
+zn300:
+  name: ZN300
+  initial: Esterno
+zn301:
+  name: ZN301
+  initial: Fronte
+zn302:
+  name: ZN302
+  initial: Retro
+zn303:
+  name: ZN303
+  initial: Servizio
+zn304:
+  name: ZN304
+  initial: Viale

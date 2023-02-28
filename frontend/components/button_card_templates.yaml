@@ -1361,73 +1361,58 @@ clima_zones_detail:
         - justify-self: end
       humidity:
         - justify-self: end
-# clima_sensor_detail:
-#   type: 'custom:button-card'
-#   icon: 'mdi:thermometer'
-#   color: auto
-#   styles:
-#     card:
-#       - background: rgb(245,245,245)
-#       - border-style:
-#       - border-radius: 10%
-#       - padding: 5px
-#       - color: var(--primary-text-color)
-#       - font-size: 10px
-#       - text-transform: capitalize
-#       - border-width: 2px
-#       - border-style: double
-#       - border-color: >
-#           [[[
-#             if ( variables.state != 'online') return 'var(--error-color)';
-#               return 'var(--active-color)';
-#           ]]]
-#     grid:
-#       - grid-template-areas: '"i header state" "content content content"'
-#       - grid-template-columns: 30px 2fr 1fr
-#       - grid-template-rows: 30px 90px
-#     name:
-#       - font-weight: bold
-#       - font-size: 16px
-#       - align-self: middle
-#       - justify-self: start
-#       - padding-bottom: 4px
-#       - padding-right: 5px
-#       - padding-top: 5px
-#       - grid-area: header
-#     img_cell:
-#       - justify-content: start
-#       - align-items: start
-#       - margin: none
-#       - grid-area: i
-#     icon:
-#       - color: >
-#           [[[
-#             if (entity.state != '0') return 'var(--paper-item-icon-color)';
-#               return 'var(--active-color)'
-#           ]]]
-#       - width: 80%
-#   custom_fields:
-#       state: >
-#         [[[
-#           return `
-#             <span style="font-size: 14px; font-weight: 600; color: var(--active-color);">${states[ variables.temperature ].state} °C</span>
-#             <br /><span style="font-size: 9px;">${states[ variables.lastupdate ].state}</span>
-#           `
-#         ]]]
-#       content: >
-#         [[[
-#           return `
-#             <div class="tvblock_content" style="text-align: left;">
-#               <div style="padding: 2px;">
-#                 <ha-icon icon="mdi:identifier" style="width: 20px;"></ha-icon>
-#                 <label style="font-size: 12px; font-weight: 500 ">Dispositivo:<label>
-#                 <span style="font-size: 10px;">${variables.identifier}</span>
-#               </div>
-#             </div>
-#           `
-#         ]]]
-#   tap_action:
-#     action: none
+
+light_detail:
+  icon: mdi:lightbulb
+  size: 75%
+  tap_action:
+    action: none
+  styles:
+    grid:
+      - grid-template-areas: '"i n" "i n'
+      - grid-template-rows: 30px auto
+      - grid-template-columns: 55px 1fr
+    card:
+      - padding: 5px
+      - color: var(--primary-text-color)
+      - font-size: 10px
+      - text-transform: capitalize
+      - box-shadow: 1px 5px 8px rgba(0, 0, 0, 0.3)
+      - margin-bottom: 5px
+      - margin-right: 3px
+      - height: 90px
+      - width: 237px
+    name:
+      - font-weight: bold
+      - font-size: 16px
+      - align-self: middle
+      - justify-self: start
+      - padding-bottom: 4px
+      - padding-right: 5px
+      - padding-top: 5px
+    img_cell:
+      - justify-content: start
+      - margin-left: 10px
+      - width: 60px
+      - height: 50px
+
+light_program:
+  styles:
+    grid:
+      - grid-template-areas: '"label select days time"'
+      - grid-template-columns: 150px 140px 100px 1fr
+    card:
+      - height: auto
+      - width: 750px
+      - padding: 0px
+    custom_fields:
+      select:
+        - margin-bottom: 19px
+      days:
+        - margin-bottom: 19px
+      time:
+        - margin-top: 10px
+        - margin-left: 30px
 
 icon_header:
   layout: icon_name
@@ -1456,7 +1441,7 @@ program_page_grid:
   styles:
     grid:
       - grid-template-areas: '"header" "days" "commands"'
-      - grid-template-columns: 1fr 
+      - grid-template-columns: 1fr
       - grid-template-rows: min-content min-content min-content
       - justify-items: center
       - row-gap: 10px
@@ -1564,20 +1549,26 @@ assistance_info:
         return `
           <div class="assistance_content" style="text-align: left; font-size: 12px">
 
-            <div style="padding-bottom: 5px; padding-top: 5px">
+            <div>
+              <ha-icon icon="mdi:account" style="width: 24px; padding:5px; color: var(--ha-card-header-color);"></ha-icon>
+              <label style="font-weight: bold ">Intestatario impianto:</label>
+              <span > ${ states[ variables.systemOwner ].state} </span>
+            </div>
+
+            <div>
               <ha-icon icon="mdi:identifier" style="width: 24px; padding:5px; color: var(--ha-card-header-color);"></ha-icon>
               <label style="font-weight: bold; ">Identificativo impianto:</label>
               <span > ${ states[ variables.systemCode ].state} </span>
             </div>
 
-            <div >
-              <ha-icon icon="mdi:account" style="width: 24px; padding:5px; color: var(--ha-card-header-color);"></ha-icon>
-              <label style="font-weight: bold ">Intestatario impianto:</label>
-              <span > ${ states[ variables.systemOwner ].state} </span>
+            <div>
+              <ha-icon icon="mdi:key" style="width: 24px; padding:5px; color: var(--ha-card-header-color);"></ha-icon>
+              <label style="font-weight: bold; ">Chiave impianto:</label>
+              <span > ${ states[ variables.systemKey ].state} </span>
             </div>
             <br />
 
-            <div >
+            <div>
               <ha-icon icon="mdi:home-assistant" style="width: 24px; padding:5px; color: var(--ha-card-header-color);"></ha-icon>
               <label style="font-weight: bold ">Stato impianto:</label>
               <span > ${ states[ variables.systemState ].state} </span>
@@ -1634,6 +1625,29 @@ clima_zone_grid:
         - height: 46px
       zones:
         - height: 307px
+
+panel_grid:
+  template: grid_style
+  styles:
+    card:
+      - background: none
+      - padding-top: 15px
+    grid:
+      - grid-template-areas: '"header header" "content content" "commandbar commandbar"'
+      - grid-template-columns: 1fr 1fr
+      - grid-auto-rows: auto
+      - row-gap: 3px
+      - column-gap: 10px
+      - margin-left: 10px
+      - margin-right: 10px
+    custom_fields:
+      header:
+        - margin-bottom: 2px
+        - margin-left: -10px
+        - height: 46px
+      content:
+        - height: 302px
+        - margin-top: 5px
 
 zone_table:
   template: grid_style

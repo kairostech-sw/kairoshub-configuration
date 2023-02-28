@@ -19,3 +19,6 @@ async_mqtt_helper:
 notification:
   module: notification
   class: Notification
+kairoshub_lights:
+  module: kairoshubLights
+  class: KairoshubLights
