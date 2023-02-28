@@ -1,0 +1,15 @@
+- platform: switch
+  name: "LZ301"
+  entity_id: switch.lz301
+
+- platform: switch
+  name: "LZ302"
+  entity_id: switch.lz302
+
+- platform: switch
+  name: "LZ303"
+  entity_id: switch.lz303
+
+- platform: switch
+  name: "LZ304"
+  entity_id: switch.lz304

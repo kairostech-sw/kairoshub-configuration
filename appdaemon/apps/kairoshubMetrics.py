@@ -91,7 +91,7 @@ class KairoshubMetrics(hass.Hass):
             entityMessage["heating"]["program"] = "manual"
             entityMessage["heating"]["target"] = self.get_state("input_number.manual_heating_temp")
 
-        self.log("Entity Metrics: %s", entityMessage["humidities"], level="INFO")
+        self.log("Entity Metrics: %s", entityMessage, level="INFO")
 
         timestamp = self.get_state("sensor.date_time_iso")
         eventData = {

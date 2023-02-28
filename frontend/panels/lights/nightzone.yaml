@@ -1,0 +1,244 @@
+type: 'custom:button-card'
+template: panel_grid
+custom_fields:
+  header:
+    card:
+      type: 'custom:button-card'
+      entity: binary_sensor.heater_auto
+      layout: vertical
+      template:
+        - header_page_text
+      icon: 'mdi:thermometer'
+      name: 'LUCI'
+      label: '[[[return "Luci / "+states["input_text.zn100"].state]]]'
+  commandbar:
+    card:
+      type: 'custom:button-card'
+      template: command_bar
+      style: |
+        ha-card.button-card-main {
+          padding: 0px !important
+        }
+        div#container {
+          justify-items: right;
+        }
+      styles:
+        card:
+          - width: 800px
+          - margin-left: -10px
+      custom_fields:
+        commands:
+          card:
+            type: horizontal-stack
+            cards:
+              - type: 'custom:button-card'
+                template: button_go_back
+                style: |
+                  :host {
+                    align-self: center;
+                  }
+  content:
+    card:
+      type: vertical-stack
+      cards:
+        - type: conditional
+          conditions:
+            - entity: binary_sensor.lz101_state
+              state: "off"
+            - entity: binary_sensor.lz102_state
+              state: "off"
+            - entity: binary_sensor.lz103_state
+              state: "off"
+            - entity: binary_sensor.lz104_state
+              state: "off"
+          card:
+            type: 'custom:button-card'
+            template: no_background
+            name: >
+              [[[
+                return `
+                <ha-alert alert-type="warning" style="justify-self: center;">
+                  Non ci sono luci attive </br>
+                </ha-alert>`;
+              ]]]
+            tap_action:
+                action: none
+        - type: grid
+          columns: 2
+          square: false
+          cards:
+            - type: custom:mod-card
+              style: |
+                ha-card {
+                  display: inline-block;
+                }
+              card:
+                type: conditional
+                conditions:
+                  - entity: binary_sensor.lz101_state
+                    state_not: "off"
+                card:
+                  type: 'custom:button-card'
+                  template: light_detail
+                  entity: light.group_lz101
+                  name: >
+                    [[[
+                      return states["input_text.zn101"].state;
+                    ]]]
+                  state:
+                    - value: 'off'
+                      color: black
+                    - value: 'on'
+                      color: >
+                        [[[
+                          if (states["input_select.light_type"].state == "color")
+                          {
+                            if (states["light.lcz101"].state) {
+                              if (states["light.lcz101"].attributes.rgb_color != undefined) {
+                              var color = states["light.lcz101"].attributes.rgb_color
+                              return "rgb("+color[0]+","+color[1]+","+color[2]+")";
+                              }
+                            }
+                          }
+                          else return "#DCA200";
+                        ]]]
+                  tap_action:
+                    action: call-service
+                    service: light.toggle
+                    service_data:
+                      entity_id: light.group_lz101
+                  hold_action:
+                    action: navigate
+                    navigation_path: /lovelace-kairoshub/lights-nightzone-room1
+            - type: custom:mod-card
+              style: |
+                ha-card {
+                  display: inline-block;
+                }
+              card:
+                type: conditional
+                conditions:
+                  - entity: binary_sensor.lz102_state
+                    state_not: "off"
+                card:
+                  type: 'custom:button-card'
+                  template: light_detail
+                  entity: light.group_lz102
+                  name: >
+                    [[[
+                      return states["input_text.zn102"].state;
+                    ]]]
+                  state:
+                    - value: 'off'
+                      color: black
+                    - value: 'on'
+                      color: >
+                        [[[
+                          if (states["input_select.light_type"].state == "color")
+                          {
+                            if (states["light.lcz102"].state) {
+                              if (states["light.lcz102"].attributes.rgb_color != undefined) {
+                              var color = states["light.lcz102"].attributes.rgb_color
+                              return "rgb("+color[0]+","+color[1]+","+color[2]+")";
+                              }
+                            }
+                          }
+                          else return "#DCA200";
+                        ]]]
+                  tap_action:
+                    action: call-service
+                    service: light.toggle
+                    service_data:
+                      entity_id: light.group_lz102
+                  hold_action:
+                    action: navigate
+                    navigation_path: /lovelace-kairoshub/lights-nightzone-room2
+            - type: custom:mod-card
+              style: |
+                ha-card {
+                  display: inline-block;
+                }
+              card:
+                type: conditional
+                conditions:
+                  - entity: binary_sensor.lz103_state
+                    state_not: "off"
+                card:
+                  type: 'custom:button-card'
+                  template: light_detail
+                  entity: light.group_lz103
+                  name: >
+                    [[[
+                      return states["input_text.zn103"].state;
+                    ]]]
+                  state:
+                    - value: 'off'
+                      color: black
+                    - value: 'on'
+                      color: >
+                        [[[
+                          if (states["input_select.light_type"].state == "color")
+                          {
+                            if (states["light.lcz103"].state) {
+                              if (states["light.lcz103"].attributes.rgb_color != undefined) {
+                              var color = states["light.lcz103"].attributes.rgb_color
+                              return "rgb("+color[0]+","+color[1]+","+color[2]+")";
+                              }
+                            }
+                          }
+                          else return "#DCA200";
+                        ]]]
+                  tap_action:
+                    action: call-service
+                    service: light.toggle
+                    service_data:
+                      entity_id: light.group_lz103
+                  hold_action:
+                    action: navigate
+                    navigation_path: /lovelace-kairoshub/lights-nightzone-room3
+            - type: custom:mod-card
+              style: |
+                ha-card {
+                  display: inline-block;
+                }
+              card:
+                type: conditional
+                conditions:
+                  - entity: binary_sensor.lz104_state
+                    state_not: "off"
+                styles:
+                  card:
+                    - justify-self: center
+                card:
+                  type: 'custom:button-card'
+                  template: light_detail
+                  entity: light.group_lz104
+                  name: >
+                    [[[
+                      return states["input_text.zn104"].state;
+                    ]]]
+                  state:
+                    - value: 'off'
+                      color: black
+                    - value: 'on'
+                      color: >
+                        [[[
+                          if (states["input_select.light_type"].state == "color")
+                          {
+                            if (states["light.lcz104"].state) {
+                              if (states["light.lcz104"].attributes.rgb_color != undefined) {
+                              var color = states["light.lcz104"].attributes.rgb_color
+                              return "rgb("+color[0]+","+color[1]+","+color[2]+")";
+                              }
+                            }
+                          }
+                          else return "#DCA200";
+                        ]]]
+                  tap_action:
+                    action: call-service
+                    service: light.toggle
+                    service_data:
+                      entity_id: light.group_lz104
+                  hold_action:
+                    action: navigate
+                    navigation_path: /lovelace-kairoshub/lights-nightzone-room4

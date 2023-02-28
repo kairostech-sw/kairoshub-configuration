@@ -21,10 +21,10 @@ views:
     panel: true
     show_name: true
     style: |
-          #view {
-            padding-left: 1% !important;
-            padding-right: 1% !important;
-          }
+      #view {
+        padding-left: 1% !important;
+        padding-right: 1% !important;
+      }
     cards:
       - type: vertical-stack
         cards:
@@ -33,7 +33,7 @@ views:
             cards:
               - !include hakairos-configuration/frontend/components/theme/body_col_1.yaml
               - !include hakairos-configuration/frontend/components/theme/body_col_3.yaml
-          - type: 'custom:button-card'
+          - type: "custom:button-card"
             color_type: blank-card
             styles:
               card:
@@ -46,6 +46,13 @@ views:
       - type: vertical-stack
         cards:
           - !include hakairos-configuration/frontend/panels/clima.yaml
+  - title: LUCI
+    path: Luci
+    panel: true
+    cards:
+      - type: vertical-stack
+        cards:
+          - !include hakairos-configuration/frontend/panels/lights.yaml
   - title: IMPOSTAZIONI
     path: impostazioni
     panel: true

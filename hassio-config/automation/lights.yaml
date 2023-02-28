@@ -1,0 +1,203 @@
+- alias: Accensione Luci Zona
+  trigger:
+    - platform: state
+      entity_id:
+        - light.lcz101
+        - light.lwz101
+        - light.lz101
+        - light.lcz102
+        - light.lwz102
+        - light.lz102
+        - light.lcz103
+        - light.lwz103
+        - light.lz103
+        - light.lcz104
+        - light.lwz104
+        - light.lz104
+        - light.lcz201
+        - light.lwz201
+        - light.lz201
+        - light.lcz202
+        - light.lwz202
+        - light.lz202
+        - light.lcz203
+        - light.lwz203
+        - light.lz203
+        - light.lcz301
+        - light.lwz301
+        - light.lz301
+        - light.lcz302
+        - light.lwz302
+        - light.lz302
+        - light.lcz303
+        - light.lwz303
+        - light.lz303
+        - light.lcz304
+        - light.lwz304
+        - light.lz304
+  action:
+    event: "AD_LIGHT_ZONE_CONTROL"
+    event_data:
+      data:
+        light: "{{ trigger.entity_id }}"
+
+- alias: COPY LIGHT SETTINGS
+  trigger:
+    - platform: state
+      entity_id: 
+        - input_boolean.copy_lights_zn101
+        - input_boolean.copy_lights_dayzone
+        - input_boolean.copy_lights_outdoor
+      from: 'off'
+      to: 'on'
+  action:
+    event: "AD_COPY_LIGHTS"
+    event_data:
+      zone: "{{trigger.entity_id}}"
+
+- alias: LIGHTS NIGHTZONE PROGRAM 1
+  trigger:
+    - platform: time_pattern
+      minutes: /15
+  condition:
+    condition: state
+    entity_id: input_select.zn100
+    state: Programmato
+  action:
+    event: "AD_LIGHTS"
+    event_data:
+      zone: "100"
+      on_time: "{{states('input_datetime.lights_nightzone_on_program1')}}"
+      off_time: "{{states('input_datetime.lights_nightzone_off_program1')}}"
+      mode: "{{states('input_select.zn100_days')}}"
+
+- alias: LIGHTS DAYZONE PROGRAM 1
+  trigger:
+    - platform: time_pattern
+      minutes: /15
+  condition:
+    condition: state
+    entity_id: input_select.zn200
+    state: Programmato
+  action:
+    event: "AD_LIGHTS"
+    event_data:
+      zone: "200"
+      on_time: "{{states('input_datetime.lights_dayzone_on_program1')}}"
+      off_time: "{{states('input_datetime.lights_dayzone_off_program1')}}"
+      mode: "{{states('input_select.zn200_days')}}"
+
+- alias: LIGHTS OUTDOOR PROGRAM 1
+  trigger:
+    - platform: time_pattern
+      minutes: /15
+  condition:
+    condition: state
+    entity_id: input_select.zn300
+    state: Programmato
+  action:
+    event: "AD_LIGHTS"
+    event_data:
+      zone: "300"
+      on_time: "{{states('input_datetime.lights_outdoor_on_program1')}}"
+      off_time: "{{states('input_datetime.lights_outdoor_off_program1')}}"
+      mode: "{{states('input_select.zn300_days')}}"
+
+- alias: AUTOMATIC TURN ON NIGHTZONE
+  trigger:
+    - platform: numeric_state
+      entity_id: sun.sun
+      attribute: elevation
+      below: -4.0
+  condition:
+    condition: state
+    entity_id: input_select.zn100
+    state: "Automatico"
+  action:
+    service: light.turn_on
+    target:
+      entity_id: light.group_lz100
+
+- alias: AUTOMATIC TURN OFF NIGHTZONE
+  trigger:
+    - platform: state
+      entity_id: group.lights
+      to: 'on'
+      for: "{{states('input_datetime.offset_sunset')}}"
+  condition:
+    - condition: state
+      entity_id: sun.sun
+      state: "below_horizon"
+    - condition: state
+      entity_id: input_select.zn100
+      state: "Automatico"
+  action:
+    service: light.turn_off
+    target:
+      entity_id: light.group_lz100
+
+- alias: AUTOMATIC TURN ON DAYZONE
+  trigger:
+    - platform: numeric_state
+      entity_id: sun.sun
+      attribute: elevation
+      below: -4.0
+  condition:
+    condition: state
+    entity_id: input_select.zn200
+    state: "Automatico"
+  action:
+    service: light.turn_on
+    target:
+      entity_id: light.group_lz200
+
+- alias: AUTOMATIC TURN OFF DAYZONE
+  trigger:
+    - platform: state
+      entity_id: group.lights
+      to: 'on'
+      for: "{{states('input_datetime.offset_sunset')}}"
+  condition:
+    - condition: state
+      entity_id: sun.sun
+      state: "below_horizon"
+    - condition: state
+      entity_id: input_select.zn200
+      state: "Automatico"
+  action:
+    service: light.turn_off
+    target:
+      entity_id: light.group_lz200
+
+- alias: AUTOMATIC TURN ON OUTDOOR
+  trigger:
+    - platform: numeric_state
+      entity_id: sun.sun
+      attribute: elevation
+      below: -4.0
+  condition:
+    condition: state
+    entity_id: input_select.zn300
+    state: "Automatico"
+  action:
+    service: light.turn_on
+    target:
+      entity_id: light.group_lz300
+
+- alias: AUTOMATIC TURN OFF OUTDOOR
+  trigger:
+    - platform: state
+      entity_id: group.lights
+      to: 'on'
+      for: "{{states('input_datetime.offset_sunset')}}"
+  condition:
+    - condition: state
+      entity_id: sun.sun
+      state: "below_horizon"
+    - condition: state
+      entity_id: input_select.zn300
+      state: "Automatico"
+  action:
+    service: light.turn_off
+    target:
+      entity_id: light.group_lz300
