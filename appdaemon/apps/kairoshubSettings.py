@@ -58,6 +58,7 @@ class KairoshubSettings(hass.Hass):
         eventData= {
             "eventType" : "SETTINGS_SYNC",
             "sender"    : systemCode,
+            "systemCode"    : systemCode,
             "message"   : "SETTINGS SYNC",
             "technicalMessage": jsonData,
             "timestamp": timestamp
@@ -93,6 +94,7 @@ class KairoshubSettings(hass.Hass):
             eventData = {
                 "eventType" : "SETTINGS_RESTORE_REQ",
                 "sender" : systemCode,
+                "systemCode"    : systemCode,
                 "message" : "SETTINGS RESTORE REQUEST"
             }
 
