@@ -3032,7 +3032,8 @@ let pe = class extends et {
           var n;
           return null === (n = e.regexp) || void 0 === n ? void 0 : n.test(ge(t.state))
       });
-      if (console.log(i, null == i ? void 0 : i.icon, null == i ? void 0 : i.icon_color), void 0 === i || void 0 === i.icon && void 0 === i.icon_color) return null;
+      // console.log(i, null == i ? void 0 : i.icon, null == i ? void 0 : i.icon_color),
+      if ( void 0 === i || void 0 === i.icon && void 0 === i.icon_color) return null;
       return {
           icon: void 0 !== i && i.icon ? i.icon : function(t) {
               if (!t) return "hass:bookmark";
@@ -3136,7 +3137,8 @@ let pe = class extends et {
                       label: this.mapState(t),
                       start: new Date(t.last_changed),
                       attributes: this.extractAttributes(t),
-                      icon: this.mapIcon(t)
+                      icon: this.mapIcon(t),
+                      last_changed: new Date().getTime() - new Date(t.last_changed).getTime()
                   })).map((t, e, n) => e < n.length - 1 ? Object.assign(Object.assign({}, t), {
                       end: n[e + 1].start
                   }) : Object.assign(Object.assign({}, t), {
@@ -3168,6 +3170,7 @@ let pe = class extends et {
       }(this, this.hass, this.config, t.detail.action)
   }
   render() {
+    this.hass.callService("input_boolean","turn_off",{entity_id: "input_boolean.notification_to_read"})
       if (!this.config || !this.hass) return N ``;
       const t = this.config.scroll ? "card-content-scroll" : "";
       return N `
@@ -3211,7 +3214,8 @@ let pe = class extends et {
   `
   }
   renderHistoryItem(t, e) {
-      var n, i, r, o, s;
+      var n, i, r, o, s, time;
+      time = this.config.show.time_elapsed? this.getDuration(t.last_changed)+" fa" : t.duration;
       return N `
     <div class="item">
       ${this.renderIcon(t)}
@@ -3220,7 +3224,7 @@ let pe = class extends et {
               <span class="state">${t.label}</span>
             `:N``}
         ${(null===(o=null===(r=this.config)||void 0===r?void 0:r.show)||void 0===o?void 0:o.duration)?N`
-              <span class="duration">${t.duration}</span>
+              <span class="duration">${time}</span>
             `:N``}
         ${this.renderHistoryDate(t)}${null===(s=t.attributes)||void 0===s?void 0:s.map(this.renderAttributes)}
       </div>
@@ -3239,10 +3243,17 @@ let pe = class extends et {
     `
   }
   renderIcon(t) {
-      var e, n;
-      if (null === (n = null === (e = this.config) || void 0 === e ? void 0 : e.show) || void 0 === n ? void 0 : n.icon) return null !== t.icon ? N `
+      var e, n, icon, color;
+      if (t.icon) {
+        icon = t.icon.icon;
+        color = t.icon.color
+      } else {
+        icon = 'mdi:help';
+        color = 'black';
+      }
+      if (null === (n = null === (e = this.config) || void 0 === e ? void 0 : e.show) || void 0 === n ? void 0 : n.icon) return null !== icon ? N `
         <div class="item-icon">
-          <ha-icon .icon=${t.icon.icon} style=${t.icon.color?"color: "+t.icon.color:""}></ha-icon>
+          <ha-icon .icon=${icon} style=${"color: "+color}></ha-icon>
         </div>
       ` : N `
       <div class="item-icon">
@@ -3308,6 +3319,7 @@ let pe = class extends et {
     }
     .attribute {
       display: flex;
+      flex-direction: row-reverse;
       justify-content: space-between;
     }
     .expand {
