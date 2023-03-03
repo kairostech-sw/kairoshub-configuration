@@ -11,7 +11,6 @@ cards:
         - grid-template-rows: 1fr min-content
         - align-items: start
         - row-gap: 5px
-        # - column-gap: 1.5%
       custom_fields:
         headerdx:
           - margin-right: 10px
@@ -30,15 +29,6 @@ cards:
           icon: 'mdi:thermometer'
           name: 'CLIMA'
           label: 'Clima /'
-      # headerdx:
-      #   card:
-      #     type: 'custom:button-card'
-      #     template: icon_header
-      #     name: Impostazioni Clima
-      #     icon: 'mdi:cog'
-      #     tap_action:
-      #       action: navigate
-      #       navigation_path: /lovelace-kairoshub/impostazioni-riscaldamento
       contentsx:
         card:
           type: vertical-stack

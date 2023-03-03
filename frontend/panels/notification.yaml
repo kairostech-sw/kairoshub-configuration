@@ -38,3 +38,85 @@ custom_fields:
                   :host {
                     align-self: center;
                   }
+  notifications:
+    card:
+      type: custom:logbook-card
+      entity: input_text.notify
+      title: ""
+      date_format: DD/MM/YY HH:mm
+      history: 5
+      hidden_state: 
+        - ""
+      icon: mdi:warning
+      max_items: 10
+      state_map:
+        - value: "Riscaldamento Acceso*"
+          icon: mdi:radiator
+          icon_color: var(--command-state-active-color)
+        - value: "Riscaldamento*"
+          icon: mdi:radiator-off
+          icon_color: "#000000"
+        - value: "Luci Accese*"
+          icon: mdi:lightbulb
+          icon_color: var(--command-state-active-color)
+        - value: "Luci*"
+          icon: mdi:lightbulb-off
+          icon_color: "#000000"
+        - value: "Tapparelle Acceso*"
+          icon: mdi:window-shutter-open
+          icon_color: var(--command-state-active-color)
+        - value: "Tapparelle*"
+          icon: mdi:window-shutter
+          icon_color: "#000000"
+        - value: "system*"
+          label: "Sistema"
+          icon: mdi:cog
+          icon_color: "#000000"
+        - value: "Batteria*"
+          icon: mdi:battery-20
+          icon_color: "#FE0000"
+        - value: "Segnale Molto Basso"
+          icon: mdi:wifi-strength-1-alert
+          icon_color: "#FE0000"
+        - value: "Segnale Basso"
+          icon: mdi:wifi-strength-2-alert
+          icon_color: "#F47A00"
+        - value: "Segnale Buono"
+          icon: mdi:wifi-strength-3
+          icon_color: "#D5D232"
+        - value: "Segnale Alto"
+          icon: mdi:wifi-strength-4
+          icon_color: "#00D100"
+        - value: "Segnale*"
+          icon: mdi:wifi-strength-alert-outline
+          icon_color: "#FE0000"
+        - value: "Scenario Notte*"
+          icon: mdi:weather-night
+          icon_color: "#55C1E5"
+        - value: "Scenario*"
+          icon: mdi:weather-sunny
+          icon_color: "#FFB600"
+      show:
+        separator: true
+        end_date: false
+        time_elapsed: true
+      separator_style:
+        color: "#000000"
+        style: dashed
+      attributes:
+        - value: extra_info
+          label: "extra"
+      duration_labels:
+      tap_action:
+        action: none
+      style: |
+        ha-card {
+          text-align-last: start ;
+        }
+        .card-content-scroll {
+          max-height: 280px !important;
+        }
+        div::-webkit-scrollbar {
+          display: none !important;
+        }
+            
