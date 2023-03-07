@@ -1,0 +1,162 @@
+# NIGHT ZONE
+- name: TV1001_fw_ver
+  platform: mqtt
+  state_topic: "shellies/TV1001/announce"
+  value_template: "{{ value_json.fw_ver }}"
+  payload_not_available: "offline"
+- name: TV1001_fw_update
+  platform: mqtt
+  state_topic: "shellies/TV1001/announce"
+  value_template: "{{ value_json.new_fw }}"
+  payload_not_available: "offline"
+- name: TV1011_fw_ver
+  platform: mqtt
+  state_topic: "shellies/TV1011/announce"
+  value_template: "{{ value_json.fw_ver }}"
+  payload_not_available: "offline"
+- name: TV1011_fw_update
+  platform: mqtt
+  state_topic: "shellies/TV1011/announce"
+  value_template: "{{ value_json.new_fw }}"
+  payload_not_available: "offline"
+- name: TV1012_fw_ver
+  platform: mqtt
+  state_topic: "shellies/TV1012/announce"
+  value_template: "{{ value_json.fw_ver }}"
+  payload_not_available: "offline"
+- name: TV1012_fw_update
+  platform: mqtt
+  state_topic: "shellies/TV1012/announce"
+  value_template: "{{ value_json.new_fw }}"
+  payload_not_available: "offline"
+- name: TV1021_fw_ver
+  platform: mqtt
+  state_topic: "shellies/TV1021/announce"
+  value_template: "{{ value_json.fw_ver }}"
+  payload_not_available: "offline"
+- name: TV1021_fw_update
+  platform: mqtt
+  state_topic: "shellies/TV1021/announce"
+  value_template: "{{ value_json.new_fw }}"
+  payload_not_available: "offline"
+- name: TV1022_fw_ver
+  platform: mqtt
+  state_topic: "shellies/TV1022/announce"
+  value_template: "{{ value_json.fw_ver }}"
+  payload_not_available: "offline"
+- name: TV1022_fw_update
+  platform: mqtt
+  state_topic: "shellies/TV1022/announce"
+  value_template: "{{ value_json.new_fw }}"
+  payload_not_available: "offline"
+- name: TV1031_fw_ver
+  platform: mqtt
+  state_topic: "shellies/TV1031/announce"
+  value_template: "{{ value_json.fw_ver }}"
+  payload_not_available: "offline"
+- name: TV1031_fw_update
+  platform: mqtt
+  state_topic: "shellies/TV1031/announce"
+  value_template: "{{ value_json.new_fw }}"
+  payload_not_available: "offline"
+- name: TV1032_fw_ver
+  platform: mqtt
+  state_topic: "shellies/TV1032/announce"
+  value_template: "{{ value_json.fw_ver }}"
+  payload_not_available: "offline"
+- name: TV1032_fw_update
+  platform: mqtt
+  state_topic: "shellies/TV1032/announce"
+  value_template: "{{ value_json.new_fw }}"
+  payload_not_available: "offline"
+- name: TV1041_fw_ver
+  platform: mqtt
+  state_topic: "shellies/TV1041/announce"
+  value_template: "{{ value_json.fw_ver }}"
+  payload_not_available: "offline"
+- name: TV1041_fw_update
+  platform: mqtt
+  state_topic: "shellies/TV1041/announce"
+  value_template: "{{ value_json.new_fw }}"
+  payload_not_available: "offline"
+- name: TV1042_fw_ver
+  platform: mqtt
+  state_topic: "shellies/TV1042/announce"
+  value_template: "{{ value_json.fw_ver }}"
+  payload_not_available: "offline"
+- name: TV1042_fw_update
+  platform: mqtt
+  state_topic: "shellies/TV1042/announce"
+  value_template: "{{ value_json.new_fw }}"
+  payload_not_available: "offline"
+# DAY ZONE
+- name: TV2001_fw_ver
+  platform: mqtt
+  state_topic: "shellies/TV2001/announce"
+  value_template: "{{ value_json.fw_ver }}"
+  payload_not_available: "offline"
+- name: TV2001_fw_update
+  platform: mqtt
+  state_topic: "shellies/TV2001/announce"
+  value_template: "{{ value_json.new_fw }}"
+  payload_not_available: "offline"
+- name: TV2011_fw_ver
+  platform: mqtt
+  state_topic: "shellies/TV2011/announce"
+  value_template: "{{ value_json.fw_ver }}"
+  payload_not_available: "offline"
+- name: TV2011_fw_update
+  platform: mqtt
+  state_topic: "shellies/TV2011/announce"
+  value_template: "{{ value_json.new_fw }}"
+  payload_not_available: "offline"
+- name: TV2012_fw_ver
+  platform: mqtt
+  state_topic: "shellies/TV2012/announce"
+  value_template: "{{ value_json.fw_ver }}"
+  payload_not_available: "offline"
+- name: TV2012_fw_update
+  platform: mqtt
+  state_topic: "shellies/TV2012/announce"
+  value_template: "{{ value_json.new_fw }}"
+  payload_not_available: "offline"
+- name: TV2021_fw_ver
+  platform: mqtt
+  state_topic: "shellies/TV2021/announce"
+  value_template: "{{ value_json.fw_ver }}"
+  payload_not_available: "offline"
+- name: TV2021_fw_update
+  platform: mqtt
+  state_topic: "shellies/TV2021/announce"
+  value_template: "{{ value_json.new_fw }}"
+  payload_not_available: "offline"
+- name: TV2022_fw_ver
+  platform: mqtt
+  state_topic: "shellies/TV2022/announce"
+  value_template: "{{ value_json.fw_ver }}"
+  payload_not_available: "offline"
+- name: TV2022_fw_update
+  platform: mqtt
+  state_topic: "shellies/TV2022/announce"
+  value_template: "{{ value_json.new_fw }}"
+  payload_not_available: "offline"
+- name: TV2031_fw_ver
+  platform: mqtt
+  state_topic: "shellies/TV2031/announce"
+  value_template: "{{ value_json.fw_ver }}"
+  payload_not_available: "offline"
+- name: TV2031_fw_update
+  platform: mqtt
+  state_topic: "shellies/TV2031/announce"
+  value_template: "{{ value_json.new_fw }}"
+  payload_not_available: "offline"
+- name: TV2032_fw_ver
+  platform: mqtt
+  state_topic: "shellies/TV2032/announce"
+  value_template: "{{ value_json.fw_ver }}"
+  payload_not_available: "offline"
+- name: TV2032_fw_update
+  platform: mqtt
+  state_topic: "shellies/TV2032/announce"
+  value_template: "{{ value_json.new_fw }}"
+  payload_not_available: "offline"

@@ -1,0 +1,157 @@
+# NIGHT ZONE
+- name: LZ101_signal
+  platform: mqtt
+  state_topic: "shellies/LZ101/info"
+  value_template: >
+    {% set wifi = value_json.wifi_sta.rssi %}
+    {% if wifi > -50 %}
+      Alto
+    {% elif wifi > -60 %}
+      Buono
+    {% elif wifi > -70 %}
+      Basso
+    {% elif wifi > -100 %}
+      Molto Basso
+    {% endif %}
+- name: LZ102_signal
+  platform: mqtt
+  state_topic: "shellies/LZ102/info"
+  value_template: >
+    {% set wifi = value_json.wifi_sta.rssi %}
+    {% if wifi > -50 %}
+      Alto
+    {% elif wifi > -60 %}
+      Buono
+    {% elif wifi > -70 %}
+      Basso
+    {% elif wifi > -100 %}
+      Molto Basso
+    {% endif %}
+- name: LZ103_signal
+  platform: mqtt
+  state_topic: "shellies/LZ103/info"
+  value_template: >
+    {% set wifi = value_json.wifi_sta.rssi %}
+    {% if wifi > -50 %}
+      Alto
+    {% elif wifi > -60 %}
+      Buono
+    {% elif wifi > -70 %}
+      Basso
+    {% elif wifi > -100 %}
+      Molto Basso
+    {% endif %}
+- name: LZ104_signal
+  platform: mqtt
+  state_topic: "shellies/LZ104/info"
+  value_template: >
+    {% set wifi = value_json.wifi_sta.rssi %}
+    {% if wifi > -50 %}
+      Alto
+    {% elif wifi > -60 %}
+      Buono
+    {% elif wifi > -70 %}
+      Basso
+    {% elif wifi > -100 %}
+      Molto Basso
+    {% endif %}
+# DAY ZONE
+- name: LZ201_signal
+  platform: mqtt
+  state_topic: "shellies/LZ201/info"
+  value_template: >
+    {% set wifi = value_json.wifi_sta.rssi %}
+    {% if wifi > -50 %}
+      Alto
+    {% elif wifi > -60 %}
+      Buono
+    {% elif wifi > -70 %}
+      Basso
+    {% elif wifi > -100 %}
+      Molto Basso
+    {% endif %}
+- name: LZ202_signal
+  platform: mqtt
+  state_topic: "shellies/LZ202/info"
+  value_template: >
+    {% set wifi = value_json.wifi_sta.rssi %}
+    {% if wifi > -50 %}
+      Alto
+    {% elif wifi > -60 %}
+      Buono
+    {% elif wifi > -70 %}
+      Basso
+    {% elif wifi > -100 %}
+      Molto Basso
+    {% endif %}
+- name: LZ203_signal
+  platform: mqtt
+  state_topic: "shellies/LZ203/info"
+  value_template: >
+    {% set wifi = value_json.wifi_sta.rssi %}
+    {% if wifi > -50 %}
+      Alto
+    {% elif wifi > -60 %}
+      Buono
+    {% elif wifi > -70 %}
+      Basso
+    {% elif wifi > -100 %}
+      Molto Basso
+    {% endif %}
+# OUTDOOR
+- name: LZ301_signal
+  platform: mqtt
+  state_topic: "shellies/LZ301/info"
+  value_template: >
+    {% set wifi = value_json.wifi_sta.rssi %}
+    {% if wifi > -50 %}
+      Alto
+    {% elif wifi > -60 %}
+      Buono
+    {% elif wifi > -70 %}
+      Basso
+    {% elif wifi > -100 %}
+      Molto Basso
+    {% endif %}
+- name: LZ302_signal
+  platform: mqtt
+  state_topic: "shellies/LZ302/info"
+  value_template: >
+    {% set wifi = value_json.wifi_sta.rssi %}
+    {% if wifi > -50 %}
+      Alto
+    {% elif wifi > -60 %}
+      Buono
+    {% elif wifi > -70 %}
+      Basso
+    {% elif wifi > -100 %}
+      Molto Basso
+    {% endif %}
+- name: LZ303_signal
+  platform: mqtt
+  state_topic: "shellies/LZ303/info"
+  value_template: >
+    {% set wifi = value_json.wifi_sta.rssi %}
+    {% if wifi > -50 %}
+      Alto
+    {% elif wifi > -60 %}
+      Buono
+    {% elif wifi > -70 %}
+      Basso
+    {% elif wifi > -100 %}
+      Molto Basso
+    {% endif %}
+- name: LZ304_signal
+  platform: mqtt
+  state_topic: "shellies/LZ304/info"
+  value_template: >
+    {% set wifi = value_json.wifi_sta.rssi %}
+    {% if wifi > -50 %}
+      Alto
+    {% elif wifi > -60 %}
+      Buono
+    {% elif wifi > -70 %}
+      Basso
+    {% elif wifi > -100 %}
+      Molto Basso
+    {% endif %}

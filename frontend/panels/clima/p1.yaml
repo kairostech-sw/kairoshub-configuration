@@ -123,11 +123,6 @@ custom_fields:
                 template: icon_state_header
                 entity: 'input_boolean.heater_program1'
                 icon: mdi:power 
-                # show_state: true
-                # styles:
-                #   card: 
-                #     - padding-top: 20px      
-                # label: Prog 1
                 state:
                   - value: 'on'
                     label: 'Acceso'

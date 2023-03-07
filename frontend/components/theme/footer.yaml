@@ -46,6 +46,11 @@ custom_fields:
           styles:
             card:
               - padding-top: 3px
+          tap_action:
+            action: call-service
+            service: automation.trigger
+            service_data:
+              entity_id: automation.light_toggle
         - name: Tapparelle aperte
           type: 'custom:button-card'
           template: icon_state_header

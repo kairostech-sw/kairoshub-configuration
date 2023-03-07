@@ -1,0 +1,15 @@
+- name: TH01_ip
+  platform: mqtt
+  state_topic: "shellies/TH01/announce"
+  value_template: "{{ value_json.ip }}"
+  payload_not_available: "offline"
+- name: TH02_ip
+  platform: mqtt
+  state_topic: "shellies/TH02/announce"
+  value_template: "{{ value_json.ip }}"
+  payload_not_available: "offline"
+- name: EM01_ip
+  platform: mqtt
+  state_topic: "shellies/EM01/announce"
+  value_template: "{{ value_json.ip }}"
+  payload_not_available: "offline"

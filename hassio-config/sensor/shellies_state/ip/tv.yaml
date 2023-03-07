@@ -1,0 +1,82 @@
+# NIGHT ZONE
+- name: TV1001_ip
+  platform: mqtt
+  state_topic: "shellies/TV1001/announce"
+  value_template: "{{ value_json.ip }}"
+  payload_not_available: "offline"
+- name: TV1011_ip
+  platform: mqtt
+  state_topic: "shellies/TV1011/announce"
+  value_template: "{{ value_json.ip }}"
+  payload_not_available: "offline"
+- name: TV1012_ip
+  platform: mqtt
+  state_topic: "shellies/TV1012/announce"
+  value_template: "{{ value_json.ip }}"
+  payload_not_available: "offline"
+- name: TV1021_ip
+  platform: mqtt
+  state_topic: "shellies/TV1021/announce"
+  value_template: "{{ value_json.ip }}"
+  payload_not_available: "offline"
+- name: TV1022_ip
+  platform: mqtt
+  state_topic: "shellies/TV1022/announce"
+  value_template: "{{ value_json.ip }}"
+  payload_not_available: "offline"
+- name: TV1031_ip
+  platform: mqtt
+  state_topic: "shellies/TV1031/announce"
+  value_template: "{{ value_json.ip }}"
+  payload_not_available: "offline"
+- name: TV1032_ip
+  platform: mqtt
+  state_topic: "shellies/TV1032/announce"
+  value_template: "{{ value_json.ip }}"
+  payload_not_available: "offline"
+- name: TV1041_ip
+  platform: mqtt
+  state_topic: "shellies/TV1041/announce"
+  value_template: "{{ value_json.ip }}"
+  payload_not_available: "offline"
+- name: TV1042_ip
+  platform: mqtt
+  state_topic: "shellies/TV1042/announce"
+  value_template: "{{ value_json.ip }}"
+  payload_not_available: "offline"
+# DAY ZONE
+- name: TV2001_ip
+  platform: mqtt
+  state_topic: "shellies/TV2001/announce"
+  value_template: "{{ value_json.ip }}"
+  payload_not_available: "offline"
+- name: TV2011_ip
+  platform: mqtt
+  state_topic: "shellies/TV2011/announce"
+  value_template: "{{ value_json.ip }}"
+  payload_not_available: "offline"
+- name: TV2012_ip
+  platform: mqtt
+  state_topic: "shellies/TV2012/announce"
+  value_template: "{{ value_json.ip }}"
+  payload_not_available: "offline"
+- name: TV2021_ip
+  platform: mqtt
+  state_topic: "shellies/TV2021/announce"
+  value_template: "{{ value_json.ip }}"
+  payload_not_available: "offline"
+- name: TV2022_ip
+  platform: mqtt
+  state_topic: "shellies/TV2022/announce"
+  value_template: "{{ value_json.ip }}"
+  payload_not_available: "offline"
+- name: TV2031_ip
+  platform: mqtt
+  state_topic: "shellies/TV2031/announce"
+  value_template: "{{ value_json.ip }}"
+  payload_not_available: "offline"
+- name: TV2032_ip
+  platform: mqtt
+  state_topic: "shellies/TV2032/announce"
+  value_template: "{{ value_json.ip }}"
+  payload_not_available: "offline"

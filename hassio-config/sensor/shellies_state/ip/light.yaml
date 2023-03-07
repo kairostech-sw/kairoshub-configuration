@@ -1,0 +1,58 @@
+# NIGHT ZONE
+- name: LZ101_ip
+  platform: mqtt
+  state_topic: "shellies/LZ101/announce"
+  value_template: "{{ value_json.ip }}"
+  payload_not_available: "offline"
+- name: LZ102_ip
+  platform: mqtt
+  state_topic: "shellies/LZ102/announce"
+  value_template: "{{ value_json.ip }}"
+  payload_not_available: "offline"
+- name: LZ103_ip
+  platform: mqtt
+  state_topic: "shellies/LZ103/announce"
+  value_template: "{{ value_json.ip }}"
+  payload_not_available: "offline"
+- name: LZ104_ip
+  platform: mqtt
+  state_topic: "shellies/LZ104/announce"
+  value_template: "{{ value_json.ip }}"
+  payload_not_available: "offline"
+# DAY ZONE
+- name: LZ201_ip
+  platform: mqtt
+  state_topic: "shellies/LZ201/announce"
+  value_template: "{{ value_json.ip }}"
+  payload_not_available: "offline"
+- name: LZ202_ip
+  platform: mqtt
+  state_topic: "shellies/LZ202/announce"
+  value_template: "{{ value_json.ip }}"
+  payload_not_available: "offline"
+- name: LZ203_ip
+  platform: mqtt
+  state_topic: "shellies/LZ203/announce"
+  value_template: "{{ value_json.ip }}"
+  payload_not_available: "offline"
+# OUTDOOR
+- name: LZ301_ip
+  platform: mqtt
+  state_topic: "shellies/LZ301/announce"
+  value_template: "{{ value_json.ip }}"
+  payload_not_available: "offline"
+- name: LZ302_ip
+  platform: mqtt
+  state_topic: "shellies/LZ302/announce"
+  value_template: "{{ value_json.ip }}"
+  payload_not_available: "offline"
+- name: LZ303_ip
+  platform: mqtt
+  state_topic: "shellies/LZ303/announce"
+  value_template: "{{ value_json.ip }}"
+  payload_not_available: "offline"
+- name: LZ304_ip
+  platform: mqtt
+  state_topic: "shellies/LZ304/announce"
+  value_template: "{{ value_json.ip }}"
+  payload_not_available: "offline"

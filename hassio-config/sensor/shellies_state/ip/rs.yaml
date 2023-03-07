@@ -1,0 +1,72 @@
+# NIGHT ZONE
+- name: RS1011_ip
+  platform: mqtt
+  state_topic: "shellies/RS1011/announce"
+  value_template: "{{ value_json.ip }}"
+  payload_not_available: "offline"
+- name: RS1012_ip
+  platform: mqtt
+  state_topic: "shellies/RS1012/announce"
+  value_template: "{{ value_json.ip }}"
+  payload_not_available: "offline"
+- name: RS1021_ip
+  platform: mqtt
+  state_topic: "shellies/RS1021/announce"
+  value_template: "{{ value_json.ip }}"
+  payload_not_available: "offline"
+- name: RS1022_ip
+  platform: mqtt
+  state_topic: "shellies/RS1022/announce"
+  value_template: "{{ value_json.ip }}"
+  payload_not_available: "offline"
+- name: RS1031_ip
+  platform: mqtt
+  state_topic: "shellies/RS1031/announce"
+  value_template: "{{ value_json.ip }}"
+  payload_not_available: "offline"
+- name: RS1032_ip
+  platform: mqtt
+  state_topic: "shellies/RS1032/announce"
+  value_template: "{{ value_json.ip }}"
+  payload_not_available: "offline"
+- name: RS1041_ip
+  platform: mqtt
+  state_topic: "shellies/RS1041/announce"
+  value_template: "{{ value_json.ip }}"
+  payload_not_available: "offline"
+- name: RS1042_ip
+  platform: mqtt
+  state_topic: "shellies/RS1042/announce"
+  value_template: "{{ value_json.ip }}"
+  payload_not_available: "offline"
+# DAY ZONE
+- name: RS2011_ip
+  platform: mqtt
+  state_topic: "shellies/RS2011/announce"
+  value_template: "{{ value_json.ip }}"
+  payload_not_available: "offline"
+- name: RS2012_ip
+  platform: mqtt
+  state_topic: "shellies/RS2012/announce"
+  value_template: "{{ value_json.ip }}"
+  payload_not_available: "offline"
+- name: RS2021_ip
+  platform: mqtt
+  state_topic: "shellies/RS2021/announce"
+  value_template: "{{ value_json.ip }}"
+  payload_not_available: "offline"
+- name: RS2022_ip
+  platform: mqtt
+  state_topic: "shellies/RS2022/announce"
+  value_template: "{{ value_json.ip }}"
+  payload_not_available: "offline"
+- name: RS2031_ip
+  platform: mqtt
+  state_topic: "shellies/RS2031/announce"
+  value_template: "{{ value_json.ip }}"
+  payload_not_available: "offline"
+- name: RS2032_ip
+  platform: mqtt
+  state_topic: "shellies/RS2032/announce"
+  value_template: "{{ value_json.ip }}"
+  payload_not_available: "offline"

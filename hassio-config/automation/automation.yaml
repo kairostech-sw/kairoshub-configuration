@@ -58,9 +58,10 @@
     after: sunset
     before: sunrise
   action:
-    service: input_boolean.turn_on
-    target:
-      entity_id: input_boolean.night
+    - service: input_boolean.turn_on
+      target:
+        entity_id: input_boolean.night
+    - event: AD_SCENE_NIGHT_ON
 - alias: Giorno
   trigger:
   condition:
@@ -68,6 +69,7 @@
     after: sunrise
     before: sunset
   action:
-    service: input_boolean.turn_off
-    target:
-      entity_id: input_boolean.night
+    - service: input_boolean.turn_off
+      target:
+        entity_id: input_boolean.night
+    - event: AD_SCENE_DAY_ON

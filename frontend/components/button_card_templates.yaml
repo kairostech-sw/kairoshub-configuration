@@ -1009,8 +1009,8 @@ user_notification_header:
   show_entity_picture: true
   extra_styles: |
     @keyframes tilt-shaking {
-      5% { transform: rotate(5deg); }
-      15% { transform: rotate(-5deg); }
+      5% { transform: rotate(10deg); }
+      15% { transform: rotate(-10deg); }
       10%, 20%, 100% { transform: rotate(0deg); }
     }
   state:

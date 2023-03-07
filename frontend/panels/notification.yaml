@@ -68,10 +68,12 @@ custom_fields:
         - value: "Tapparelle*"
           icon: mdi:window-shutter
           icon_color: "#000000"
-        - value: "system*"
-          label: "Sistema"
+        - value: "Sistema*"
           icon: mdi:cog
           icon_color: "#000000"
+        - value: "Errore*"
+          icon: mdi:alert-circle-outline
+          icon_color: "#FE0000"
         - value: "Batteria*"
           icon: mdi:battery-20
           icon_color: "#FE0000"
@@ -105,7 +107,7 @@ custom_fields:
         style: dashed
       attributes:
         - value: extra_info
-          label: "extra"
+          label: " "
       duration_labels:
       tap_action:
         action: none
