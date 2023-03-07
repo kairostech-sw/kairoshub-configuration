@@ -81,11 +81,12 @@ class Notification(hass.Hass):
         sender = data["sender"] if "sender" in data and "" != data["sender"] else "HUB"
         severity=data["severity"]
         entity_id = data["entity"] if "entity" in data else None
+        extra_data = data["kwargs"] if "kwargs" in data else {}
+        extra_data["entity_id"] = entity_id
 
         notificationToSend = self.buildNotification(severity=severity, sender=sender, code=ncode, entityRef=entity_id)
 
-        self.dispatchNotification(notificationToSend)
-
+        self.dispatchNotification(notificationToSend, extra_data)
 
     def buildNotification(self, severity, sender, code, entityRef):
         if None == self.systemCode:
@@ -102,9 +103,9 @@ class Notification(hass.Hass):
 
         return noty
 
-    def dispatchNotification(self, notificationToSend):
+    def dispatchNotification(self, notificationToSend, kwargs):
 
-        self.sendHubNotification(notificationToSend)
+        self.sendHubNotification(notificationToSend, kwargs)
         if notificationToSend["sender"] == "*" or notificationToSend["sender"] != "" or notificationToSend["sender"] != "HUB":
 
             #removing attributes
@@ -174,11 +175,52 @@ class Notification(hass.Hass):
 
         self.log("File pushed", level="INFO")
 
-    def sendHubNotification(self, notification):
+    def sendHubNotification(self, notification, kwargs):
         self.log("Sending HUB notification")
-        self.log(notification)
         code = notification["eventType"]
         label = noty_message[code]["label"]
+        extra_info = None
 
-        self.set_state("input_text.notify", state=label)
+        if "ERROR" in code or "VALVES" in code:
+          return self.sendErrorNotification(code, label)
+        if "BATTERY" in code:
+          return self.sendBatteryNotification(code, label, kwargs["entity_id"])
+        if "HEATING" in code:
+          if "comfort_temp" in kwargs and kwargs["comfort_temp"] != None:
+            label +=  " dopo aver raggiunto la temperatura impostata"
+            extra_info = "Temperatura Impostata: {}°C".format(kwargs["comfort_temp"])
+          elif kwargs["program"] > 0:
+            label += " dal Programma {}".format(kwargs["program"])
+        if "LIGHTS" in code:
+          if kwargs["zone"] != "all":
+            zone = self.get_state("input_text.zn{}".format(kwargs["zone"]))
+            label += " nella {}".format(zone)
+            if "ON" in code: label += " secondo la modalità {}".format(kwargs["mode"])
+
+        if "SCENE_NIGHT" in code:
+          label += ""
+        if "SCENE_DAY" in code:
+          label += ""
+
+        if notification["sender"] != "HUB": label += " da Assistente Remoto"
+        if label == noty_message[code]["label"]: label +=" Manualmente"
+        self.set_state("input_text.notify", state=label, attributes={"extra_info":extra_info})
         self.turn_on("input_boolean.notification_to_read")
+
+    def sendErrorNotification(self, code, label):
+
+      extra_info = None
+      if "VALVES" in code:
+         extra_info = "Le teste termostatiche non sono state raggiunte dal sistema. Verificare che siano cariche"
+      elif "HEATING" in code:
+         extra_info = "Si è verificato un problema nell{} della caldaia.".format(("o spegnimento","'accensione")["ON" in code])
+
+      self.set_state("input_text.notify", state=label, attributes={"extra_info":extra_info})
+      self.turn_on("input_boolean.notification_to_read")
+
+    def sendBatteryNotification(self, code, label, entity):
+      entity = self.get_state(entity, attribute = 'friendly_name').replace("_battery","")
+      extra_info = None
+      if "SENSOR" in code: label = label.replace("#ENTITY#", entity)
+      self.set_state("input_text.notify", state=label, attributes={"extra_info":extra_info})
+      self.turn_on("input_boolean.notification_to_read")
