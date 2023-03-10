@@ -94,5 +94,9 @@ class HelloWorld(hass.Hass):
         self.fire_event("HAKAFKA_PRODUCER_PRODUCE", topic="TECHNICAL", message=eventData)
         self.fire_event("AD_SETTINGS_RESTORE")
         self.call_service("frontend/reload_themes")
-        self.fire_event("AD_MQTT_PUBLISH", topic="shellies/command", payload="announce")
-        self.fire_event("AD_MQTT_PUBLISH", topic="shellies/command", payload="update")
+        deviceRequest = {
+            "eventType": "DEVICE_REQ",
+            "systemCode": systemCode,
+            "message": "DEVICE REQ"
+        }
+        self.fire_event("HAKAFKA_PRODUCER_PRODUCE", topic="TECHNICAL", message=deviceRequest)

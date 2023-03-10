@@ -1,0 +1,152 @@
+- name: TV2001
+  platform: mqtt
+  state_topic: "shellies/TV2001/info"
+  value_template: "active"
+  json_attributes_topic : "shellies/TV2001/info"
+  json_attributes_template: >
+    {% set attr = {
+      "ip": value_json.wifi_sta.ip,
+      "ssid": value_json.wifi_sta.ssid,
+      "rssi": value_json.wifi_sta.rssi,
+      "temp": value_json.thermostats[0].tmp.value,
+      "pos": value_json.thermostats[0].pos,
+      "target_temp": value_json.thermostats[0].target_t.value,
+      "battery": value_json.bat.value,
+      "has_update": value_json.has_update,
+      "fw_ver": value_json.fw_info.fw,
+      "last_update": states.sensor.date_time_iso.state
+    } %}
+    {{attr | tojson}}
+- name: TV2002
+  platform: mqtt
+  state_topic: "shellies/TV2002/info"
+  value_template: "active"
+  json_attributes_topic : "shellies/TV2002/info"
+  json_attributes_template: >
+    {% set attr = {
+      "ip": value_json.wifi_sta.ip,
+      "ssid": value_json.wifi_sta.ssid,
+      "rssi": value_json.wifi_sta.rssi,
+      "temp": value_json.thermostats[0].tmp.value,
+      "pos": value_json.thermostats[0].pos,
+      "target_temp": value_json.thermostats[0].target_t.value,
+      "battery": value_json.bat.value,
+      "has_update": value_json.has_update,
+      "fw_ver": value_json.fw_info.fw,
+      "last_update": states.sensor.date_time_iso.state
+    } %}
+    {{attr | tojson}}
+- name: TV2011
+  platform: mqtt
+  state_topic: "shellies/TV2011/info"
+  value_template: "active"
+  json_attributes_topic : "shellies/TV2011/info"
+  json_attributes_template: >
+    {% set attr = {
+      "ip": value_json.wifi_sta.ip,
+      "ssid": value_json.wifi_sta.ssid,
+      "rssi": value_json.wifi_sta.rssi,
+      "temp": value_json.thermostats[0].tmp.value,
+      "pos": value_json.thermostats[0].pos,
+      "target_temp": value_json.thermostats[0].target_t.value,
+      "battery": value_json.bat.value,
+      "has_update": value_json.has_update,
+      "fw_ver": value_json.fw_info.fw,
+      "last_update": states.sensor.date_time_iso.state
+    } %}
+    {{attr | tojson}}
+- name: TV2012
+  platform: mqtt
+  state_topic: "shellies/TV2012/info"
+  value_template: "active"
+  json_attributes_topic : "shellies/TV2012/info"
+  json_attributes_template: >
+    {% set attr = {
+      "ip": value_json.wifi_sta.ip,
+      "ssid": value_json.wifi_sta.ssid,
+      "rssi": value_json.wifi_sta.rssi,
+      "temp": value_json.thermostats[0].tmp.value,
+      "pos": value_json.thermostats[0].pos,
+      "target_temp": value_json.thermostats[0].target_t.value,
+      "battery": value_json.bat.value,
+      "has_update": value_json.has_update,
+      "fw_ver": value_json.fw_info.fw,
+      "last_update": states.sensor.date_time_iso.state
+    } %}
+    {{attr | tojson}}
+- name: TV2021
+  platform: mqtt
+  state_topic: "shellies/TV2021/info"
+  value_template: "active"
+  json_attributes_topic : "shellies/TV2021/info"
+  json_attributes_template: >
+    {% set attr = {
+      "ip": value_json.wifi_sta.ip,
+      "ssid": value_json.wifi_sta.ssid,
+      "rssi": value_json.wifi_sta.rssi,
+      "temp": value_json.thermostats[0].tmp.value,
+      "pos": value_json.thermostats[0].pos,
+      "target_temp": value_json.thermostats[0].target_t.value,
+      "battery": value_json.bat.value,
+      "has_update": value_json.has_update,
+      "fw_ver": value_json.fw_info.fw,
+      "last_update": states.sensor.date_time_iso.state
+    } %}
+    {{attr | tojson}}
+- name: TV2022
+  platform: mqtt
+  state_topic: "shellies/TV2022/info"
+  value_template: "active"
+  json_attributes_topic : "shellies/TV2022/info"
+  json_attributes_template: >
+    {% set attr = {
+      "ip": value_json.wifi_sta.ip,
+      "ssid": value_json.wifi_sta.ssid,
+      "rssi": value_json.wifi_sta.rssi,
+      "temp": value_json.thermostats[0].tmp.value,
+      "pos": value_json.thermostats[0].pos,
+      "target_temp": value_json.thermostats[0].target_t.value,
+      "battery": value_json.bat.value,
+      "has_update": value_json.has_update,
+      "fw_ver": value_json.fw_info.fw,
+      "last_update": states.sensor.date_time_iso.state
+    } %}
+    {{attr | tojson}}
+- name: TV2031
+  platform: mqtt
+  state_topic: "shellies/TV2031/info"
+  value_template: "active"
+  json_attributes_topic : "shellies/TV2031/info"
+  json_attributes_template: >
+    {% set attr = {
+      "ip": value_json.wifi_sta.ip,
+      "ssid": value_json.wifi_sta.ssid,
+      "rssi": value_json.wifi_sta.rssi,
+      "temp": value_json.thermostats[0].tmp.value,
+      "pos": value_json.thermostats[0].pos,
+      "target_temp": value_json.thermostats[0].target_t.value,
+      "battery": value_json.bat.value,
+      "has_update": value_json.has_update,
+      "fw_ver": value_json.fw_info.fw,
+      "last_update": states.sensor.date_time_iso.state
+    } %}
+    {{attr | tojson}}
+- name: TV2032
+  platform: mqtt
+  state_topic: "shellies/TV2032/info"
+  value_template: "active"
+  json_attributes_topic : "shellies/TV2032/info"
+  json_attributes_template: >
+    {% set attr = {
+      "ip": value_json.wifi_sta.ip,
+      "ssid": value_json.wifi_sta.ssid,
+      "rssi": value_json.wifi_sta.rssi,
+      "temp": value_json.thermostats[0].tmp.value,
+      "pos": value_json.thermostats[0].pos,
+      "target_temp": value_json.thermostats[0].target_t.value,
+      "battery": value_json.bat.value,
+      "has_update": value_json.has_update,
+      "fw_ver": value_json.fw_info.fw,
+      "last_update": states.sensor.date_time_iso.state
+    } %}
+    {{attr | tojson}}

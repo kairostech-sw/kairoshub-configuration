@@ -1,0 +1,50 @@
+- name: TH01
+  platform: mqtt
+  state_topic: "shellies/TH01/info"
+  value_template: "active"
+  json_attributes_topic : "shellies/TH01/info"
+  json_attributes_template: >
+    {% set attr = {
+      "ip": value_json.wifi_sta.ip,
+      "ssid": value_json.wifi_sta.ssid,
+      "rssi": value_json.wifi_sta.rssi,
+      "temp": value_json.ext_temperature["0"].tC,
+      "has_update": value_json.has_update,
+      "fw_ver": value_json["update"].old_version,
+      "last_update": states.sensor.date_time_iso.state
+    } %}
+    {{attr | tojson}}
+- name: TH02
+  platform: mqtt
+  state_topic: "shellies/TH02/info"
+  value_template: "active"
+  json_attributes_topic : "shellies/TH02/info"
+  json_attributes_template: >
+    {% set attr = {
+      "ip": value_json.wifi_sta.ip,
+      "ssid": value_json.wifi_sta.ssid,
+      "rssi": value_json.wifi_sta.rssi,
+      "state": value_json.relays[0].ison,
+      "has_update": value_json.has_update,
+      "fw_ver": value_json["update"].old_version,
+      "last_update": states.sensor.date_time_iso.state
+    } %}
+    {{attr | tojson}}
+- name: EM01
+  platform: mqtt
+  state_topic: "shellies/EM01/info"
+  value_template: "active"
+  json_attributes_topic : "shellies/EM01/info"
+  json_attributes_template: >
+    {% set attr = {
+      "ip": value_json.wifi_sta.ip,
+      "ssid": value_json.wifi_sta.ssid,
+      "rssi": value_json.wifi_sta.rssi,
+      "state": value_json.relays[0].ison,
+      "power_ch1": value_json.emeters[0].power,
+      "power_ch2": value_json.emeters[1].power,
+      "has_update": value_json.has_update,
+      "fw_ver": value_json["update"].old_version,
+      "last_update": states.sensor.date_time_iso.state
+    } %}
+    {{attr | tojson}}

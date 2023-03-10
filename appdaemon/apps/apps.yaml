@@ -22,3 +22,6 @@ notification:
 kairoshub_lights:
   module: kairoshubLights
   class: KairoshubLights
+kairoshub_devices:
+  module: kairoshubDevices
+  class: KairoshubDevices

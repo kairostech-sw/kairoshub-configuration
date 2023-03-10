@@ -41,6 +41,9 @@ class KairoshubEvent(hass.Hass):
             if "SYSTEM_KEY_PUSH" in eventType:
                 self.fire_event("AD_SETTING_SYSTEM_KEY_PUSH")
 
+            if "INSTALLED_DEVICES" in eventType:
+                self.fire_event("AD_INSTALLED_DEVICES", data=data)
+
         except Exception as e:
             self.log(e, level="ERROR")
         finally:

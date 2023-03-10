@@ -1,0 +1,68 @@
+- name: TH2001
+  platform: mqtt
+  state_topic: "shellies/TH2001/status/mqtt"
+  value_template: "active"
+  json_attributes_topic : "shellies/TH2001/status/info/rpc"
+  json_attributes_template: >
+    {% set attr = {
+      "ip": value_json.result.wifi.sta_ip,
+      "rssi": value_json.result.wifi.rssi,
+      "ssid": value_json.result.wifi.ssid,
+      "battery": value_json.result['devicepower:0'].battery.percent,
+      "humidity": value_json.result['humidity:0'].rh,
+      "temp": value_json.result['temperature:0'].tC,
+      "has_update": value_json.result.sys.available_updates,
+      "last_update": states.sensor.date_time_iso.state
+    } %}
+    {{ attr | tojson}}
+- name: TH2011
+  platform: mqtt
+  state_topic: "shellies/TH2011/status/mqtt"
+  value_template: "active"
+  json_attributes_topic : "shellies/TH2011/status/info/rpc"
+  json_attributes_template: >
+    {% set attr = {
+      "ip": value_json.result.wifi.sta_ip,
+      "rssi": value_json.result.wifi.rssi,
+      "ssid": value_json.result.wifi.ssid,
+      "battery": value_json.result['devicepower:0'].battery.percent,
+      "humidity": value_json.result['humidity:0'].rh,
+      "temp": value_json.result['temperature:0'].tC,
+      "has_update": value_json.result.sys.available_updates,
+      "last_update": states.sensor.date_time_iso.state
+    } %}
+    {{ attr | tojson}}
+- name: TH2021
+  platform: mqtt
+  state_topic: "shellies/TH2021/status/mqtt"
+  value_template: "active"
+  json_attributes_topic : "shellies/TH2021/status/info/rpc"
+  json_attributes_template: >
+    {% set attr = {
+      "ip": value_json.result.wifi.sta_ip,
+      "rssi": value_json.result.wifi.rssi,
+      "ssid": value_json.result.wifi.ssid,
+      "battery": value_json.result['devicepower:0'].battery.percent,
+      "humidity": value_json.result['humidity:0'].rh,
+      "temp": value_json.result['temperature:0'].tC,
+      "has_update": value_json.result.sys.available_updates,
+      "last_update": states.sensor.date_time_iso.state
+    } %}
+    {{ attr | tojson}}
+- name: TH2031
+  platform: mqtt
+  state_topic: "shellies/TH2031/status/mqtt"
+  value_template: "active"
+  json_attributes_topic : "shellies/TH2031/status/info/rpc"
+  json_attributes_template: >
+    {% set attr = {
+      "ip": value_json.result.wifi.sta_ip,
+      "rssi": value_json.result.wifi.rssi,
+      "ssid": value_json.result.wifi.ssid,
+      "battery": value_json.result['devicepower:0'].battery.percent,
+      "humidity": value_json.result['humidity:0'].rh,
+      "temp": value_json.result['temperature:0'].tC,
+      "has_update": value_json.result.sys.available_updates,
+      "last_update": states.sensor.date_time_iso.state
+    } %}
+    {{ attr | tojson}}

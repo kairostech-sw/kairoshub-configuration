@@ -73,3 +73,26 @@
       target:
         entity_id: input_boolean.night
     - event: AD_SCENE_DAY_ON
+
+- alias: HT UPDATE STATE
+  trigger:
+    - platform: state
+      to: active
+      entity_id: 
+        - sensor.TH1001
+        - sensor.TH1011
+        - sensor.TH1021
+        - sensor.TH1031
+        - sensor.TH1041
+        - sensor.TH2001
+        - sensor.TH2011
+        - sensor.TH2021
+        - sensor.TH2031
+  action:
+    - event: AD_SHELLY_UPDATE
+      event_data:
+        entity: "{{trigger.entity_id}}"
+    - delay: "00:00:05"
+    - event: AD_SHELLY_ASLEEP
+      event_data:
+        entity: "{{trigger.entity_id}}"
