@@ -48,22 +48,14 @@ noty_message={
     "label": "Luci Spente",
     "message": "Le luci sono state spente correttamente."
   },
-  "SCENE_NIGHT_ON": {
+  "SCENE_NIGHT": {
     "label": "Scenario Notte",
     "message": "Lo scenario Notte è ora attivo."
   },
-  "SCENE_NIGHT_OFF": {
-    "label": "Scenario Notte",
-    "message": "Lo scenario Notte non è più attivo."
-  },
-  "SCENE_DAY_ON": {
+  "SCENE_DAY": {
     "label": "Scenario Giorno",
     "message": "Lo scenario Giorno è ora attivo"
   },
-  "SCENE_DAY_OFF": {
-    "label": "Scenario Giorno",
-    "message": "Lo scenario Giorno non è più attivo"
-  }
 }
 
 class Notification(hass.Hass):
@@ -180,6 +172,7 @@ class Notification(hass.Hass):
         code = notification["eventType"]
         label = noty_message[code]["label"]
         extra_info = None
+        more_info = None
 
         if "ERROR" in code or "VALVES" in code:
           return self.sendErrorNotification(code, label)
@@ -198,13 +191,36 @@ class Notification(hass.Hass):
             if "ON" in code: label += " secondo la modalità {}".format(kwargs["mode"])
 
         if "SCENE_NIGHT" in code:
-          label += ""
+          label += " "
+          zones = kwargs["zones"]
+          vowel = ("a","e")[len(zones)>1]
+          extra_info = "Luci Accese nell#?# Zon#?#: ".replace("#?#", vowel)
+          for index in range(len(zones)):
+            zone= self.get_state(f"input_text.zn{zones[index]}").removeprefix("Zona ")
+            if index < len(zones)-1: extra_info += zone + ", "
+            else:
+              extra_info = extra_info[:-2] + " e "
+              extra_info+=zone
+          pos = 100.0-float(kwargs["rollers"])
+          more_info = f"Tapparelle sono state chiuse al {pos}%"
+
         if "SCENE_DAY" in code:
-          label += ""
+          label += " "
+          zones = kwargs["zones"]
+          vowel = ("a","e")[len(zones)>1]
+          extra_info = "Luci Accese nell#?# Zon#?#: ".replace("#?#", vowel)
+          for index in range(len(zones)):
+            zone= self.get_state(f"input_text.zn{zones[index]}").removeprefix("Zona ")
+            if index < len(zones)-1: extra_info += zone + ", "
+            else:
+              extra_info = extra_info[:-2] + " e "
+              extra_info+=zone
+          pos = 100.0-float(kwargs["rollers"])
+          more_info = f"Tapparelle sono state chiuse al {pos}%"
 
         if notification["sender"] != "HUB": label += " da Assistente Remoto"
         if label == noty_message[code]["label"]: label +=" Manualmente"
-        self.set_state("input_text.notify", state=label, attributes={"extra_info":extra_info})
+        self.set_state("input_text.notify", state=label, attributes={"extra_info":extra_info, "more_info": more_info})
         self.turn_on("input_boolean.notification_to_read")
 
     def sendErrorNotification(self, code, label):

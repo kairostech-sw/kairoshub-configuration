@@ -8,7 +8,7 @@ class KairoshubLights(hass.Hass):
         self.listen_event(self.copyLights, "AD_COPY_LIGHTS")
         self.listen_event(self.lightProgram, "AD_LIGHTS_PROGRAM")
         self.listen_event(self.lightToggle, "AD_LIGHTS_TOGGLE")
-        self.listen_event(self.lightSunAutomation, "AD_AUTOMATIC_LIGHTS")
+        self.listen_event(self.lightSceneAutomation, "AD_AUTOMATIC_LIGHTS")
 
     def lightToggle(self, event_name, data, kwargs):
         action = ("ON", "OFF")[self.get_state("group.lights") == "on"]
@@ -91,6 +91,11 @@ class KairoshubLights(hass.Hass):
             self.fire_event("AD_MQTT_PUBLISH",topic=color_light_topic,payload=str(color_payload))
             self.fire_event("AD_MQTT_PUBLISH",topic=white_light_topic,payload=str(white_payload))
 
-    def lightSunAutomation(self, event_name, data, kwargs):
-      action = ("ON", "OFF")[data["action"] == "ON"]
-      self.fire_event("AD_KAIROSHUB_NOTIFICATION", sender=data["sender"], ncode="LIGHTS_{}".format(action), severity="NOTICE", kwargs={"mode":"Automatico"})
+    def lightSceneAutomation(self, event_name, data, kwargs):
+      action = data["action"]
+      service = f"light/turn_{action}"
+      lights = self.get_state("group.lights", attribute="entity_id")
+      for zone in lights:
+        zoneSetting = self.get_state(f"input_select.zn{zone[-3:]}")
+        if zoneSetting == "Automatico":
+            self.call_service(service, entity_id="group.lights")

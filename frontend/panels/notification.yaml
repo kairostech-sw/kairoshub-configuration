@@ -108,6 +108,8 @@ custom_fields:
       attributes:
         - value: extra_info
           label: " "
+        - value: more_info
+          label: " "
       duration_labels:
       tap_action:
         action: none

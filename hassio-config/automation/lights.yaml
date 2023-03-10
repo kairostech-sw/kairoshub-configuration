@@ -113,29 +113,6 @@
       mode: "{{states('input_select.zn300_days')}}"
       sender: "HUB"
 
-- alias: AUTOMATIC TURN ON NIGHTZONE
-  trigger:
-    - platform: numeric_state
-      entity_id: sun.sun
-      attribute: elevation
-      below: -4.0
-  condition:
-    condition: state
-    entity_id: input_select.zn100
-    state: "Automatico"
-  action:
-    - service: light.turn_on
-      target:
-        entity_id: light.group_lz100
-    - event: AD_KAIROSHUB_NOTIFICATION
-      event_data:
-        sender: HUB
-        ncode: LIGHTS_ON
-        severity: NOTICE
-        kwargs:
-          zone: 100
-          mode: Automatica
-
 - alias: AUTOMATIC TURN OFF NIGHTZONE
   trigger:
     - platform: state
@@ -162,29 +139,6 @@
           zone: 100
           mode: Automatica
 
-- alias: AUTOMATIC TURN ON DAYZONE
-  trigger:
-    - platform: numeric_state
-      entity_id: sun.sun
-      attribute: elevation
-      below: -4.0
-  condition:
-    condition: state
-    entity_id: input_select.zn200
-    state: "Automatico"
-  action:
-    - service: light.turn_on
-      target:
-        entity_id: light.group_lz200
-    - event: AD_KAIROSHUB_NOTIFICATION
-      event_data:
-        sender: HUB
-        ncode: LIGHTS_ON
-        severity: NOTICE
-        kwargs:
-          zone: 200
-          mode: Automatica
-
 - alias: AUTOMATIC TURN OFF DAYZONE
   trigger:
     - platform: state
@@ -209,29 +163,6 @@
         severity: NOTICE
         kwargs:
           zone: 200
-          mode: Automatica
-
-- alias: AUTOMATIC TURN ON OUTDOOR
-  trigger:
-    - platform: numeric_state
-      entity_id: sun.sun
-      attribute: elevation
-      below: -4.0
-  condition:
-    condition: state
-    entity_id: input_select.zn300
-    state: "Automatico"
-  action:
-    - service: light.turn_on
-      target:
-        entity_id: light.group_lz300
-    - event: AD_KAIROSHUB_NOTIFICATION
-      event_data:
-        sender: HUB
-        ncode: LIGHTS_ON
-        severity: NOTICE
-        kwargs:
-          zone: 300
           mode: Automatica
 
 - alias: AUTOMATIC TURN OFF OUTDOOR

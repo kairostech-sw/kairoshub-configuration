@@ -338,6 +338,13 @@ views:
       - type: vertical-stack
         cards:
           - !include hakairos-configuration/frontend/panels/settings/luci.yaml
+  - path: impostazioni-sistema
+    panel: true
+    visible: false
+    cards:
+      - type: vertical-stack
+        cards:
+          - !include hakairos-configuration/frontend/panels/settings/system.yaml
   - path: dayzone
     panel: true
     visible: false

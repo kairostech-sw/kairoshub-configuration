@@ -918,7 +918,6 @@ header_page_text:
       - font-size: 120%
       - font-weight: bold
       - justify-self: center
-      # - color: var(--paper-item-icon-active-color)
     name:
       - justify-self: left
       - font-size: 120%
@@ -1014,12 +1013,7 @@ user_notification_header:
       10%, 20%, 100% { transform: rotate(0deg); }
     }
   state:
-    # - value: "off"
-    #   icon: mdi:bell
-    #   color: var(--command-state-active-color)
     - value: "on"
-      # icon: mdi:bell-badge
-      # color: var(--command-state-active-color)
       styles:
         card:
           - animation: tilt-shaking 5s linear infinite 
@@ -1335,32 +1329,6 @@ clima_tv_detail:
         [[[
           return `<span style="font-size: 12px;">${ variables.lastupdate }</span>`
         ]]]
-      # [[[
-      #   return `
-      #     <div class="tvblock_content" style="text-align: left;">
-      #       <div style="padding: 2px;">
-      #         <ha-icon icon="mdi:identifier" style="width: 20px;"></ha-icon>
-      #         <label style="font-size: 12px; font-weight: 500 ">Dispositivo:<label>
-      #         <span style="font-size: 10px;">${variables.identifier}</span>
-      #       </div>
-      #       <div style="padding: 2px;">
-      #         <ha-icon icon="mdi:home-thermometer-outline" style="width: 18px;"></ha-icon>
-      #         <label style="font-size: 12px; font-weight: 500 ">Temp comfort:<label>
-      #         <span style="font-size: 10px;">${states[ variables.target_temp ].state} °C</span>
-      #       </div>
-      #       <div style="padding: 2px;">
-      #         <ha-icon icon="mdi:valve" style="width: 18px;"></ha-icon>
-      #         <label style="font-size: 12px; font-weight: 500 ">Apertura valvola:<label>
-      #         <span style="font-size: 10px;">${states[ variables.valve_position ].state} %</span>
-      #       </div>
-      #       <div style="padding: 2px;">
-      #         <ha-icon icon="mdi:battery" style="width: 18px;"></ha-icon>
-      #         <label style="font-size: 12px; font-weight: 500 ">Batteria:<label>
-      #         <span style="font-size: 10px;">${states[ variables.valve_battery ].state} %</span>
-      #       </div>
-      #     </div>
-      #   `
-      # ]]]
 
 clima_zones_detail:
   type: 'custom:button-card'
@@ -1429,6 +1397,23 @@ light_program:
       time:
         - margin-top: 10px
         - margin-left: 30px
+
+scenes_program:
+  styles:
+    grid:
+      - grid-template-areas: '"label select time"'
+      - grid-template-columns: 200px 160px 1fr
+    card:
+      - height: auto
+      - width: 750px
+      - padding: 0px
+    custom_fields:
+      select:
+        - margin-bottom: 19px
+        - margin-left: 10px
+      time:
+        - margin-top: 10px
+        - margin-left: 60px
 
 icon_header:
   layout: icon_name

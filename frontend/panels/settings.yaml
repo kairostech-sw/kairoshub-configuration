@@ -59,3 +59,13 @@ custom_fields:
       tap_action:
         action: navigate
         navigation_path: /lovelace-kairoshub/impostazioni-luci
+  b6:
+    card:
+      type: 'custom:button-card'
+      template:
+        - settings_card
+      icon: mdi:cog
+      name: Sistema
+      tap_action:
+        action: navigate
+        navigation_path: /lovelace-kairoshub/impostazioni-sistema

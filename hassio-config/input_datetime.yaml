@@ -276,7 +276,15 @@ lights_outdoor_off_program1:
   name: Spegnimento
   has_date: false
   has_time: true
-
 offset_sunset:
   name: Orario Spegnimento Luci Dopo Il Tramonto
+  has_time: true
+##########
+# Scenes
+##########
+scene_day_on:
+  name: Accensione
+  has_time: true
+scene_day_off:
+  name: Spegnimento
   has_time: true

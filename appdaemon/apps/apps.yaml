@@ -25,3 +25,6 @@ kairoshub_lights:
 kairoshub_devices:
   module: kairoshubDevices
   class: KairoshubDevices
+kairoshub_scenes:
+  module: kairoshubScenes
+  class: KairoshubScenes
