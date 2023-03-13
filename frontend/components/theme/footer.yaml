@@ -25,9 +25,9 @@ custom_fields:
               color: var(--command-state-color)
           tap_action:
             action: call-service
-            service: input_boolean.toggle
+            service: automation.trigger
             service_data:
-              entity_id: input_boolean.night
+              entity_id: automation.scenario_giorno_notte_manuale
           styles:
             card:
               - padding-top: 3px

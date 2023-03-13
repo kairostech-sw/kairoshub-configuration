@@ -51,6 +51,18 @@
         state: "{{states('input_boolean.night')}}"
     - event: AD_KAIROSHUB_STARTED
 
+- alias: Scenario Giorno Notte Manuale
+  trigger:
+  action:
+    - service: input_boolean.toggle
+      target:
+        entity_id: input_boolean.night
+    - event: AD_SCENES_DAY_NIGHT
+      event_data:
+        state: "{{ states('input_boolean.night') }}"
+        mode: Manuale
+        sender: HUB
+
 - alias: Scenario Notte Programmato
   trigger:
     - platform: time

@@ -98,7 +98,7 @@ class Notification(hass.Hass):
     def dispatchNotification(self, notificationToSend, kwargs):
 
         self.sendHubNotification(notificationToSend, kwargs)
-        if notificationToSend["sender"] == "*" or notificationToSend["sender"] != "" or notificationToSend["sender"] != "HUB":
+        if ( notificationToSend["sender"] == "*" or notificationToSend["sender"] != "" ) and notificationToSend["sender"] != "HUB":
 
             #removing attributes
             notificationToSend.pop("severity", None)
@@ -191,7 +191,7 @@ class Notification(hass.Hass):
             if "ON" in code: label += " secondo la modalità {}".format(kwargs["mode"])
 
         if "SCENE_NIGHT" in code:
-          label += " "
+          label += " {}".format(kwargs["mode"])
           zones = kwargs["zones"]
           vowel = ("a","e")[len(zones)>1]
           extra_info = "Luci Accese nell#?# Zon#?#: ".replace("#?#", vowel)
@@ -205,10 +205,10 @@ class Notification(hass.Hass):
           more_info = f"Tapparelle sono state chiuse al {pos}%"
 
         if "SCENE_DAY" in code:
-          label += " "
+          label += " {}".format(kwargs["mode"])
           zones = kwargs["zones"]
           vowel = ("a","e")[len(zones)>1]
-          extra_info = "Luci Accese nell#?# Zon#?#: ".replace("#?#", vowel)
+          extra_info = "Luci Spente nell#?# Zon#?#: ".replace("#?#", vowel)
           for index in range(len(zones)):
             zone= self.get_state(f"input_text.zn{zones[index]}").removeprefix("Zona ")
             if index < len(zones)-1: extra_info += zone + ", "

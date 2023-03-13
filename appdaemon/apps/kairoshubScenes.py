@@ -45,11 +45,12 @@ class KairoshubScenes(hass.Hass):
       self.fire_event("HA_ROLLERS_ATHOME_POSITION")
       self.fire_event("AD_AUTOMATIC_LIGHTS", action="off")
 
-      zones = self.get_state("group.lights", attribute="entity_id")
-      lights = []
-      for light in zones:
-        if self.get_state(f"input_select.zn{light[-3:]}") == "Automatico":
-          lights.append(light)
+      lights = self.get_state("group.lights", attribute="entity_id")
+      zones = []
+      for light in lights:
+        zoneId = light[-3:]
+        if self.get_state(f"input_select.zn{zoneId}") == "Automatico":
+          zones.append(zoneId)
 
       rollers = self.get_state("input_number.rollershutter_athome_position")
 
@@ -58,7 +59,7 @@ class KairoshubScenes(hass.Hass):
         "ncode": "SCENE_DAY",
         "severity": "NOTICE",
         "kwargs" : {
-          "lights": lights,
+          "zones": zones,
           "rollers": rollers,
           "mode": data["mode"]
         }
