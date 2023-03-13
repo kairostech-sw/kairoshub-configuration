@@ -1,0 +1,39 @@
+type: custom:auto-entities
+filter:
+  include:
+    - entity_id: "/sensor.*\\d{4}$/"
+  exclude:
+    - state: "unknown"
+card:
+  type: custom:flex-table-card
+  title: Informazioni Dispositivi
+  clickable: false
+  sort_by:
+    - last_updated+
+    - rssi+
+  columns:
+    - data: friendly_name
+      name: Nome
+    - data: state
+      name: Stato
+    - data: battery
+      name: Batteria
+    - data: ip
+      name: IP
+    - data: ssid
+      name: SSID
+    - data: rssi
+      name: Segnale
+    - data: has_update
+      name: Aggiornamento
+    - data: fw_ver
+      name: Ver. FW
+      fmt: fw
+    - data: last_updated
+      name: Ultimo Aggiornamento Dati
+      fmt: locale
+  css:
+    table+: 'padding-top: 5px; padding-left: 0px;'
+    'tbody tr:nth-child(even)': 'background-color: #a2542f6;'
+    td.left: 'padding: 10px 10px 10px 10px'
+    th.left: 'padding: 0px 0px 10px 3px'

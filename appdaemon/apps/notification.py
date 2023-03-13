@@ -56,6 +56,18 @@ noty_message={
     "label": "Scenario Giorno",
     "message": "Lo scenario Giorno è ora attivo"
   },
+  "NO_SIGNAL": {
+   "label": "Segnale Assente #ENTITY#",
+   "message": "Il sensore #ENTITY# non riceve segnale."
+  },
+  "VERY_LOW_SIGNAL": {
+   "label": "Segnale Molto Basso #ENTITY#",
+   "message": "Il sensore #ENTITY# ha poco segnale."
+  },
+  "LOW_SIGNAL": {
+   "label": "Segnale Basso #ENTITY#",
+   "message": "Il sensore #ENTITY# ha poco segnale."
+  }
 }
 
 class Notification(hass.Hass):
@@ -178,6 +190,8 @@ class Notification(hass.Hass):
           return self.sendErrorNotification(code, label)
         if "BATTERY" in code:
           return self.sendBatteryNotification(code, label, kwargs["entity_id"])
+        if "SIGNAL" in code:
+          return self.sendSignalNotification(code, label, kwargs["entity_id"])
         if "HEATING" in code:
           if "comfort_temp" in kwargs and kwargs["comfort_temp"] != None:
             label +=  " dopo aver raggiunto la temperatura impostata"
@@ -231,12 +245,21 @@ class Notification(hass.Hass):
       elif "HEATING" in code:
          extra_info = "Si è verificato un problema nell{} della caldaia.".format(("o spegnimento","'accensione")["ON" in code])
 
-      self.set_state("input_text.notify", state=label, attributes={"extra_info":extra_info})
+      self.set_state("input_text.notify", state=label, attributes={"extra_info": extra_info})
       self.turn_on("input_boolean.notification_to_read")
 
     def sendBatteryNotification(self, code, label, entity):
       entity = self.get_state(entity, attribute = 'friendly_name').replace("_battery","")
       extra_info = None
       if "SENSOR" in code: label = label.replace("#ENTITY#", entity)
-      self.set_state("input_text.notify", state=label, attributes={"extra_info":extra_info})
+      self.set_state("input_text.notify", state=label, attributes={"extra_info": extra_info})
+      self.turn_on("input_boolean.notification_to_read")
+
+    def sendSignalNotification(self, code, label, entity):
+      entity = self.get_state(entity, attribute = 'friendly_name')
+      extra_info = None
+      label = label.replace("#ENTITY#", entity)
+
+
+      self.set_state("input_text.notify", state=label, attributes={"extra_info": extra_info})
       self.turn_on("input_boolean.notification_to_read")

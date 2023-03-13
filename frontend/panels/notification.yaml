@@ -77,19 +77,19 @@ custom_fields:
         - value: "Batteria*"
           icon: mdi:battery-20
           icon_color: "#FE0000"
-        - value: "Segnale Molto Basso"
+        - value: "Segnale Molto Basso*"
           icon: mdi:wifi-strength-1-alert
           icon_color: "#FE0000"
-        - value: "Segnale Basso"
+        - value: "Segnale Basso*"
           icon: mdi:wifi-strength-2-alert
           icon_color: "#F47A00"
-        - value: "Segnale Buono"
+        - value: "Segnale Buono*"
           icon: mdi:wifi-strength-3
           icon_color: "#D5D232"
-        - value: "Segnale Alto"
+        - value: "Segnale Alto*"
           icon: mdi:wifi-strength-4
           icon_color: "#00D100"
-        - value: "Segnale*"
+        - value: "Segnale Assente*"
           icon: mdi:wifi-strength-alert-outline
           icon_color: "#FE0000"
         - value: "Scenario Notte*"

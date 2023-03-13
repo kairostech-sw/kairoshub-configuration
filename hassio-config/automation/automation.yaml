@@ -161,3 +161,10 @@
     - event: AD_SHELLY_ASLEEP
       event_data:
         entity: "{{trigger.entity_id}}"
+
+- alias: SHELLY SIGNAL CHECK
+  trigger:
+    - platform: time_pattern
+      hours: "/1"
+  action:
+    event: AD_SHELLY_SIGNAL_CHECK

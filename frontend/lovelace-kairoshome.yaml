@@ -303,6 +303,13 @@ views:
       - type: vertical-stack
         cards:
           - !include hakairos-configuration/frontend/panels/notification.yaml
+  - path: device-status
+    panel: true
+    visible: false
+    cards:
+      - type: vertical-stack
+        cards:
+          - !include hakairos-configuration/frontend/panels/settings/device_status.yaml
   - path: impostazioni-tapparelle
     panel: true
     visible: false

@@ -5,6 +5,7 @@ cards:
       card:
         - background: none
         - padding-top: 15px
+        - '--mdc-ripple-press-opacity': 0 
       grid:
         - grid-template-areas: '"headersx headerdx"  "contentsx  contentdx"'
         - grid-template-columns: 1fr 35%

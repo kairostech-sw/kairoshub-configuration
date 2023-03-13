@@ -1016,7 +1016,7 @@ user_notification_header:
     - value: "on"
       styles:
         card:
-          - animation: tilt-shaking 5s linear infinite 
+          - animation: tilt-shaking 5s linear infinite
   entity_picture: |
    [[[
      if (entity.state == 'on' ) return '/local/images/notification.png'  ;
@@ -1336,6 +1336,7 @@ clima_zones_detail:
   styles:
     card:
       - height: 100px
+      - '--mdc-ripple-press-opacity': 0.2
     grid:
       - grid-template-areas: '"i header temp icon1" "content content humidity icon2"'
       - grid-template-columns: 30px 2fr 1fr 30px
@@ -1440,6 +1441,8 @@ icon_header:
 
 program_page_grid:
   styles:
+    card:
+      - '--mdc-ripple-press-opacity': 0
     grid:
       - grid-template-areas: '"header" "days" "commands"'
       - grid-template-columns: 1fr
@@ -1458,6 +1461,7 @@ program_page_grid:
       days:
         - margin-left: 3px
         - margin-right: 3px
+        - '--mdc-ripple-press-opacity': 0.2
 
 button_grid_2:
   styles:
@@ -1589,6 +1593,7 @@ grid_style:
     card:
       - background: none
       - padding-top: 15px
+      - '--mdc-ripple-press-opacity': 0
 
 entities_grid:
   template: grid_style
