@@ -168,3 +168,4 @@
       hours: "/1"
   action:
     event: AD_SHELLY_SIGNAL_CHECK
+

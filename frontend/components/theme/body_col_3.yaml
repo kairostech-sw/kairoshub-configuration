@@ -11,7 +11,7 @@ cards:
   #       - font-weight: bold
   # - type: horizontal-stack
   #   cards:
-  - type: 'custom:button-card'
+  - type: "custom:button-card"
     template: graph
     # aspect_ratio: 2/1
     custom_fields:
@@ -20,7 +20,7 @@ cards:
           type: sensor
           entity: sensor.temperatura
           graph: line
-          icon: 'mdi:thermometer'
+          icon: "mdi:thermometer"
           detail: 1
           style: |
             {% if (states(config.entity)> states("input_number.temperature_period1") and is_state("input_boolean.heater_program1_on","on")) or
@@ -43,19 +43,19 @@ cards:
               color: var(--temperature-secondary-color);
             }
             {% endif %}
-  # - type: sensor
-  #   entity: sensor.temperatura
-  #   graph: line
-  #   detail: 1
-  #   icon: mdi:thermometer
-  #   name: Temperatura
+    # - type: sensor
+    #   entity: sensor.temperatura
+    #   graph: line
+    #   detail: 1
+    #   icon: mdi:thermometer
+    #   name: Temperatura
     style: |
       ha-card {
         height: 130px !important;
       }
     tap_action:
       action: none
-  - type: 'custom:button-card'
+  - type: "custom:button-card"
     template: graph
     # aspect_ratio: 2/1
     custom_fields:
@@ -64,7 +64,7 @@ cards:
           type: sensor
           entity: sensor.em_assorbimento
           graph: line
-          icon: 'mdi:lightning-bolt'
+          icon: "mdi:lightning-bolt"
           detail: 1
           style: |
             ha-card {
@@ -84,7 +84,7 @@ cards:
       - entity: sensor.umidita
         state_not: unknown
     card:
-      type: 'custom:button-card'
+      type: "custom:button-card"
       template: graph
       # aspect_ratio: 2/1
       custom_fields:
@@ -93,7 +93,7 @@ cards:
             type: sensor
             entity: sensor.umidita
             graph: line
-            icon: 'mdi:water-percent'
+            icon: "mdi:water-percent"
             detail: 1
             style: |
               ha-card {
@@ -108,7 +108,7 @@ cards:
         }
       tap_action:
         action: none
-       # - type: sensor
+        # - type: sensor
       #   entity: sensor.em_assorbimento
       #   graph: line
       #   detail: 1

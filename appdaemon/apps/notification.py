@@ -124,7 +124,6 @@ class Notification(hass.Hass):
             "message"   : message,
         }
         self.log("Notification : %s", noty, level="DEBUG")
-
         return noty
 
     def dispatchNotification(self, notificationToSend, kwargs):
@@ -141,8 +140,8 @@ class Notification(hass.Hass):
             self.fire_event("AD_ENTITY_METRICS")
 
     def getMessage(self, code, entityRef):
-
         message = noty_message[code]["message"]
+
 
         if not message == "":
             if "#ENTITY#" in message and entityRef != "":
@@ -177,7 +176,6 @@ class Notification(hass.Hass):
         #     raise
 
     def pushMessage(self, event_name, data, kwargs):
-
         self.log("Pushing message file", level="INFO")
 
         try:
