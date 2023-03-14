@@ -39,7 +39,7 @@ custom_fields:
       type: custom:button-card
       styles:
         grid:
-          - grid-template-areas: '"warning warning warning" ". picker ."'
+          - grid-template-areas: '"warning warning warning" "picker . ."'
           - grid-template-columns: auto
           - grid-template-rows: auto
           - row-gap: 10px
@@ -55,7 +55,7 @@ custom_fields:
               [[[
                 return `
                 <ha-alert alert-type="warning" title="Attenzione">
-                  I valori in questa pagina sono in sola lettura. Utilizzare l'assistente remoto per modificarli
+                  Questa impostazione ha effetto solo se l'illuminazione è impostata come <strong>Automatica</strong>
                 </ha-alert>`;
               ]]]
             styles:
@@ -69,14 +69,16 @@ custom_fields:
             entity: input_datetime.offset_sunset
             hour_mode: 24
             embedded: true
-            styles:
-              card:
-                - width: 50%
             style: |
+              . {
+                background: red !important;
+              }
+              ha-card {
+                margin-left: 10px;
+              }
               ha-card > .time-picker-header {
                 padding: 5px
               }
-
               ha-card > .time-picker-row {
                 padding: 0px !important
               }

@@ -40,3 +40,9 @@ zn300_days:
     - Feriali
     - Festivi
     - Tutti
+scene_day:
+  name: ' '
+  options:
+    - Disattivo
+    - Programmato
+    - Automatico

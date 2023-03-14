@@ -1,0 +1,60 @@
+- name: LZ301
+  platform: mqtt
+  state_topic: "shellies/LZ301/info"
+  value_template: "active"
+  json_attributes_topic : "shellies/LZ301/info"
+  json_attributes_template: >
+    {% set attr = {
+      "ip": value_json.wifi_sta.ip,
+      "ssid": value_json.wifi_sta.ssid,
+      "rssi": value_json.wifi_sta.rssi,
+      "has_update": value_json.has_update,
+      "fw_ver": value_json["update"].old_version,
+      "last_update": states.sensor.date_time_iso.state
+    } %}
+    {{attr | tojson}}
+- name: LZ302
+  platform: mqtt
+  state_topic: "shellies/LZ302/info"
+  value_template: "active"
+  json_attributes_topic : "shellies/LZ302/info"
+  json_attributes_template: >
+    {% set attr = {
+      "ip": value_json.wifi_sta.ip,
+      "ssid": value_json.wifi_sta.ssid,
+      "rssi": value_json.wifi_sta.rssi,
+      "has_update": value_json.has_update,
+      "fw_ver": value_json["update"].old_version,
+      "last_update": states.sensor.date_time_iso.state
+    } %}
+    {{attr | tojson}}
+- name: LZ303
+  platform: mqtt
+  state_topic: "shellies/LZ303/info"
+  value_template: "active"
+  json_attributes_topic : "shellies/LZ303/info"
+  json_attributes_template: >
+    {% set attr = {
+      "ip": value_json.wifi_sta.ip,
+      "ssid": value_json.wifi_sta.ssid,
+      "rssi": value_json.wifi_sta.rssi,
+      "has_update": value_json.has_update,
+      "fw_ver": value_json["update"].old_version,
+      "last_update": states.sensor.date_time_iso.state
+    } %}
+    {{attr | tojson}}
+- name: LZ304
+  platform: mqtt
+  state_topic: "shellies/LZ304/info"
+  value_template: "active"
+  json_attributes_topic : "shellies/LZ304/info"
+  json_attributes_template: >
+    {% set attr = {
+      "ip": value_json.wifi_sta.ip,
+      "ssid": value_json.wifi_sta.ssid,
+      "rssi": value_json.wifi_sta.rssi,
+      "has_update": value_json.has_update,
+      "fw_ver": value_json["update"].old_version,
+      "last_update": states.sensor.date_time_iso.state
+    } %}
+    {{attr | tojson}}

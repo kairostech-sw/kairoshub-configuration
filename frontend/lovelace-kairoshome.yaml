@@ -303,6 +303,13 @@ views:
       - type: vertical-stack
         cards:
           - !include hakairos-configuration/frontend/panels/notification.yaml
+  - path: device-status
+    panel: true
+    visible: false
+    cards:
+      - type: vertical-stack
+        cards:
+          - !include hakairos-configuration/frontend/panels/settings/device_status.yaml
   - path: impostazioni-tapparelle
     panel: true
     visible: false
@@ -338,6 +345,13 @@ views:
       - type: vertical-stack
         cards:
           - !include hakairos-configuration/frontend/panels/settings/luci.yaml
+  - path: impostazioni-sistema
+    panel: true
+    visible: false
+    cards:
+      - type: vertical-stack
+        cards:
+          - !include hakairos-configuration/frontend/panels/settings/system.yaml
   - path: dayzone
     panel: true
     visible: false

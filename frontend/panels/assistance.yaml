@@ -1,7 +1,5 @@
 type: 'custom:button-card'
 template: assistance_grid
-tap_action:
-  action: none
 custom_fields:
   header:
     card:
@@ -27,13 +25,18 @@ custom_fields:
         kairoshubSwVersion: sensor.kairoshub_sw_version
       tap_action:
         action: none
+      double_tap_action:
+        action: navigate
+        navigation_path: /lovelace-kairoshub/device-status
   assistance:
     card:
       type: entities
       icon: 'mdi:lifebuoy'
       state_color: true
       entities:
-        - input_boolean.assistance_request
+        - entity: input_boolean.assistance_request
+          tap_action:
+            action: none
       title: Assistenza Tecnica
       style: |
         ha-card {
@@ -46,5 +49,5 @@ custom_fields:
       content: >-
         Impianto installato dalla ***Kairos Tech - Sistemi tecnologici connessi***
 
-        Per informazioni e assistenza inviare una mail a info@kairos-tech.it
+        Per informazioni e assistenza inviare una mail a assistenza@kairos-tech.it
       title: Dati installatore

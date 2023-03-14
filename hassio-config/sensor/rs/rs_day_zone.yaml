@@ -1,0 +1,102 @@
+- name: RS2011
+  platform: mqtt
+  state_topic: "shellies/RS2011/info"
+  value_template: "active"
+  json_attributes_topic : "shellies/RS2011/info"
+  json_attributes_template: >
+    {% set attr = {
+      "ip": value_json.wifi_sta.ip,
+      "ssid": value_json.wifi_sta.ssid,
+      "rssi": value_json.wifi_sta.rssi,
+      "state": value_json.rollers[0].state,
+      "pos": value_json.rollers[0].current_pos,
+      "has_update": value_json.has_update,
+      "fw_ver": value_json["update"].old_version,
+      "last_update": states.sensor.date_time_iso.state
+    } %}
+    {{attr | tojson}}
+- name: RS2012
+  platform: mqtt
+  state_topic: "shellies/RS2012/info"
+  value_template: "active"
+  json_attributes_topic : "shellies/RS2012/info"
+  json_attributes_template: >
+    {% set attr = {
+      "ip": value_json.wifi_sta.ip,
+      "ssid": value_json.wifi_sta.ssid,
+      "rssi": value_json.wifi_sta.rssi,
+      "state": value_json.rollers[0].state,
+      "pos": value_json.rollers[0].current_pos,
+      "has_update": value_json.has_update,
+      "fw_ver": value_json["update"].old_version,
+      "last_update": states.sensor.date_time_iso.state
+    } %}
+    {{attr | tojson}}
+- name: RS2021
+  platform: mqtt
+  state_topic: "shellies/RS2021/info"
+  value_template: "active"
+  json_attributes_topic : "shellies/RS2021/info"
+  json_attributes_template: >
+    {% set attr = {
+      "ip": value_json.wifi_sta.ip,
+      "ssid": value_json.wifi_sta.ssid,
+      "rssi": value_json.wifi_sta.rssi,
+      "state": value_json.rollers[0].state,
+      "pos": value_json.rollers[0].current_pos,
+      "has_update": value_json.has_update,
+      "fw_ver": value_json["update"].old_version,
+      "last_update": states.sensor.date_time_iso.state
+    } %}
+    {{attr | tojson}}
+- name: RS2022
+  platform: mqtt
+  state_topic: "shellies/RS2022/info"
+  value_template: "active"
+  json_attributes_topic : "shellies/RS2022/info"
+  json_attributes_template: >
+    {% set attr = {
+      "ip": value_json.wifi_sta.ip,
+      "ssid": value_json.wifi_sta.ssid,
+      "rssi": value_json.wifi_sta.rssi,
+      "state": value_json.rollers[0].state,
+      "pos": value_json.rollers[0].current_pos,
+      "has_update": value_json.has_update,
+      "fw_ver": value_json["update"].old_version,
+      "last_update": states.sensor.date_time_iso.state
+    } %}
+    {{attr | tojson}}
+- name: RS2031
+  platform: mqtt
+  state_topic: "shellies/RS2031/info"
+  value_template: "active"
+  json_attributes_topic : "shellies/RS2031/info"
+  json_attributes_template: >
+    {% set attr = {
+      "ip": value_json.wifi_sta.ip,
+      "ssid": value_json.wifi_sta.ssid,
+      "rssi": value_json.wifi_sta.rssi,
+      "state": value_json.rollers[0].state,
+      "pos": value_json.rollers[0].current_pos,
+      "has_update": value_json.has_update,
+      "fw_ver": value_json["update"].old_version,
+      "last_update": states.sensor.date_time_iso.state
+    } %}
+    {{attr | tojson}}
+- name: RS2032
+  platform: mqtt
+  state_topic: "shellies/RS2032/info"
+  value_template: "active"
+  json_attributes_topic : "shellies/RS2032/info"
+  json_attributes_template: >
+    {% set attr = {
+      "ip": value_json.wifi_sta.ip,
+      "ssid": value_json.wifi_sta.ssid,
+      "rssi": value_json.wifi_sta.rssi,
+      "state": value_json.rollers[0].state,
+      "pos": value_json.rollers[0].current_pos,
+      "has_update": value_json.has_update,
+      "fw_ver": value_json["update"].old_version,
+      "last_update": states.sensor.date_time_iso.state
+    } %}
+    {{attr | tojson}}

@@ -7,7 +7,7 @@ custom_fields:
       layout: vertical
       template:
         - header_page_text
-      icon: 'mdi:thermometer'
+      icon: 'mdi:lightbulb'
       name: 'LUCI'
       label: Luci
   commandbar:
