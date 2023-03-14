@@ -11,6 +11,15 @@ card:
   sort_by:
     - last_updated+
     - rssi+
+  card_mod:
+    style: |
+      ha-card {
+        overflow: auto;
+        max-height: 500px;
+      }
+      ha-card::-webkit-scrollbar {
+        display: none !important;
+      }
   columns:
     - data: friendly_name
       name: Nome

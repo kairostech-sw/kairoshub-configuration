@@ -24,6 +24,10 @@ noty_message={
     "label": "Errore Riscaldamento",
     "message":"Si è verificato un problema nello spegnimento dell'impianto di riscaldamento. Verifica l'accensione della caldaia, se il problema persiste contattare l'assistenza."
     },
+  "HEATING_TEMP_REACHED":{
+   "label": "Riscaldamento non acceso",
+   "message": "Il riscaldamento non è stato acceso perché la temperatura è già superiore a quella impostata."
+  },
   "HEATING_SENSOR_BATTERY_LOW": {
     "label": "Batteria Quasi Scarica Testa Termostatica #ENTITY#",
     "message":"La testa termostatica #ENTITY# si sta scaricando. Collegala ad un carica batterie oppure ad una Powerbank. \n\nPuoi ricoscere la testa termostatica dal nome applicato nella parte sottostante."
@@ -36,17 +40,33 @@ noty_message={
     "label": "Tapparelle Aperte",
     "message":"Le tapparelle sono state aperte correttamente."
     },
+  "ROLLERS_OPENED_ERROR": {
+  "label": "Errore Tapparelle",
+  "message":"Si è verificato un problema nell'apertura delle tapparelle."
+  },
   "ROLLERS_CLOSED": {
     "label": "Tapparelle Chiuse",
     "message":"Le tapparelle sono state chiuse correttamente."
-    },
+  },
+  "ROLLERS_CLOSED_ERROR": {
+    "label": "Errore Tapparelle",
+    "message":"Si è verificato un problema nella chiusura delle tapparelle."
+  },
   "LIGHTS_ON": {
     "label": "Luci Accese",
     "message": "Le luci sono state accese correttamente."
   },
+  "LIGHTS_ON_ERROR": {
+    "label": "Errore Luci",
+    "message": "Si è verificato un problema nell'accensione delle luci."
+  },
   "LIGHTS_OFF": {
     "label": "Luci Spente",
     "message": "Le luci sono state spente correttamente."
+  },
+  "LIGHTS_OFF_ERROR": {
+    "label": "Errore Luci",
+    "message": "Si è verificato un problema nello spegnimento delle luci."
   },
   "SCENE_NIGHT": {
     "label": "Scenario Notte",
@@ -194,7 +214,10 @@ class Notification(hass.Hass):
           return self.sendSignalNotification(code, label, kwargs["entity_id"])
         if "HEATING" in code:
           if "comfort_temp" in kwargs and kwargs["comfort_temp"] != None:
-            label +=  " dopo aver raggiunto la temperatura impostata"
+            if "TEMP_REACHED" in code:
+              label +=" perché è già stata raggiunta la temperatura"
+            else:
+              label +=  " dopo aver raggiunto la temperatura impostata"
             extra_info = "Temperatura Impostata: {}°C".format(kwargs["comfort_temp"])
           elif kwargs["program"] > 0:
             label += " dal Programma {}".format(kwargs["program"])
@@ -207,30 +230,32 @@ class Notification(hass.Hass):
         if "SCENE_NIGHT" in code:
           label += " {}".format(kwargs["mode"])
           zones = kwargs["zones"]
-          vowel = ("a","e")[len(zones)>1]
-          extra_info = "Luci Accese nell#?# Zon#?#: ".replace("#?#", vowel)
-          for index in range(len(zones)):
-            zone= self.get_state(f"input_text.zn{zones[index]}").removeprefix("Zona ")
-            if index < len(zones)-1: extra_info += zone + ", "
-            else:
-              extra_info = extra_info[:-2] + " e "
-              extra_info+=zone
-          pos = 100.0-float(kwargs["rollers"])
+          if len(zones) > 0:
+            vowel = ("a","e")[len(zones)>1]
+            extra_info = "Luci Accese nell#?# Zon#?#: ".replace("#?#", vowel)
+            for index in range(len(zones)):
+              zone= self.get_state(f"input_text.zn{zones[index]}").removeprefix("Zona ")
+              if index < len(zones)-1: extra_info += zone + ", "
+              else:
+                extra_info = extra_info[:-2] + " e "
+                extra_info+=zone
+          pos = 100.0-int(float(kwargs["rollers"]))
           more_info = f"Tapparelle sono state chiuse al {pos}%"
 
         if "SCENE_DAY" in code:
           label += " {}".format(kwargs["mode"])
           zones = kwargs["zones"]
-          vowel = ("a","e")[len(zones)>1]
-          extra_info = "Luci Spente nell#?# Zon#?#: ".replace("#?#", vowel)
-          for index in range(len(zones)):
-            zone= self.get_state(f"input_text.zn{zones[index]}").removeprefix("Zona ")
-            if index < len(zones)-1: extra_info += zone + ", "
-            else:
-              extra_info = extra_info[:-2] + " e "
-              extra_info+=zone
-          pos = 100.0-float(kwargs["rollers"])
-          more_info = f"Tapparelle sono state chiuse al {pos}%"
+          if len(zones) > 0:
+            vowel = ("a","e")[len(zones)>1]
+            extra_info = "Luci Spente nell#?# Zon#?#: ".replace("#?#", vowel)
+            for index in range(len(zones)):
+              zone= self.get_state(f"input_text.zn{zones[index]}").removeprefix("Zona ")
+              if index < len(zones)-1: extra_info += zone + ", "
+              else:
+                extra_info = extra_info[:-2] + " e "
+                extra_info+=zone
+          pos = 100.0-int(float(kwargs["rollers"]))
+          more_info = f"Tapparelle sono state aperte al {pos}%"
 
         if notification["sender"] != "HUB": label += " da Assistente Remoto"
         if label == noty_message[code]["label"]: label +=" Manualmente"
@@ -244,6 +269,7 @@ class Notification(hass.Hass):
          extra_info = "Le teste termostatiche non sono state raggiunte dal sistema. Verificare che siano cariche"
       elif "HEATING" in code:
          extra_info = "Si è verificato un problema nell{} della caldaia.".format(("o spegnimento","'accensione")["ON" in code])
+      else: extra_info = noty_message[code]["message"]
 
       self.set_state("input_text.notify", state=label, attributes={"extra_info": extra_info})
       self.turn_on("input_boolean.notification_to_read")
@@ -259,7 +285,6 @@ class Notification(hass.Hass):
       entity = self.get_state(entity, attribute = 'friendly_name')
       extra_info = None
       label = label.replace("#ENTITY#", entity)
-
 
       self.set_state("input_text.notify", state=label, attributes={"extra_info": extra_info})
       self.turn_on("input_boolean.notification_to_read")

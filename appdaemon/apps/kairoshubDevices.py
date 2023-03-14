@@ -25,7 +25,7 @@ class KairoshubDevices(hass.Hass):
     self.log("Checking devices signal", level="INFO")
 
     for device in devices:
-      if re.search("^sensor.*\d{4}$",device) and self.get_state(device) != "unknown":
+      if re.search("^sensor.*\d{4}$",device) and self.get_state(device) != "unknown" and self.get_state(device) != "unavailable":
         signal = self.get_state(device, attribute="rssi")
         if signal == None:
           self.log("The device %s has no signal", device.split(".")[1], level="INFO")

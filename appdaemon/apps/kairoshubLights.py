@@ -12,9 +12,12 @@ class KairoshubLights(hass.Hass):
 
     def lightToggle(self, event_name, data, kwargs):
         action = ("ON", "OFF")[self.get_state("group.lights") == "on"]
-        self.toggle("group.lights")
         self.log("Turning %s lights", action, level="INFO")
-        self.fire_event("AD_KAIROSHUB_NOTIFICATION", sender=data["sender"], ncode="LIGHTS_{}".format(action), severity="NOTICE", kwargs={"zone":"all"})
+        self.toggle("group.lights")
+        if self.get_state("group.lights") == action:
+            self.fire_event("AD_KAIROSHUB_NOTIFICATION", sender=data["sender"], ncode="LIGHTS_{}".format(action), severity="NOTICE", kwargs={"zone":"all"})
+        else:
+            self.fire_event("AD_KAIROSHUB_NOTIFICATION", sender=data["sender"], ncode="LIGHTS_{}_ERROR".format(action), severity="ALERT")
 
     def lightProgram(self, event_name, data, kwargs):
         now = datetime.strptime(self.get_state("sensor.date_time_iso"),"%Y-%m-%dT%H:%M:%S")

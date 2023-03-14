@@ -9,39 +9,17 @@
   trigger:
     - platform: state
       entity_id:
-        - light.lcz101
-        - light.lwz101
-        - light.lz101
-        - light.lcz102
-        - light.lwz102
-        - light.lz102
-        - light.lcz103
-        - light.lwz103
-        - light.lz103
-        - light.lcz104
-        - light.lwz104
-        - light.lz104
-        - light.lcz201
-        - light.lwz201
-        - light.lz201
-        - light.lcz202
-        - light.lwz202
-        - light.lz202
-        - light.lcz203
-        - light.lwz203
-        - light.lz203
-        - light.lcz301
-        - light.lwz301
-        - light.lz301
-        - light.lcz302
-        - light.lwz302
-        - light.lz302
-        - light.lcz303
-        - light.lwz303
-        - light.lz303
-        - light.lcz304
-        - light.lwz304
-        - light.lz304
+        - light.group_lz101
+        - light.group_lz102
+        - light.group_lz103
+        - light.group_lz104
+        - light.group_lz201
+        - light.group_lz202
+        - light.group_lz203
+        - light.group_lz301
+        - light.group_lz302
+        - light.group_lz303
+        - light.group_lz304
   action:
     event: "AD_LIGHT_ZONE_CONTROL"
     event_data:
