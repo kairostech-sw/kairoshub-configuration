@@ -25,6 +25,7 @@
     event_data:
       data:
         light: "{{ trigger.entity_id }}"
+        sender: HUB
 
 - alias: COPY LIGHT SETTINGS
   trigger:

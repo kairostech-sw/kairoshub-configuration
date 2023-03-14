@@ -224,8 +224,10 @@ class Notification(hass.Hass):
         if "LIGHTS" in code:
           if kwargs["zone"] != "all":
             zone = self.get_state("input_text.zn{}".format(kwargs["zone"]))
+            self.log(zone.find("Zona"))
+            if zone.find("Zona") <0: zone = "Stanza "+ zone 
             label += " nella {}".format(zone)
-            if "ON" in code: label += " secondo la modalità {}".format(kwargs["mode"])
+            if "ON" in code and kwargs["mode"]: label += " secondo la modalità {}".format(kwargs["mode"])
 
         if "SCENE_NIGHT" in code:
           label += " {}".format(kwargs["mode"])

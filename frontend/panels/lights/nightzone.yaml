@@ -8,7 +8,7 @@ custom_fields:
       layout: vertical
       template:
         - header_page_text
-      icon: 'mdi:thermometer'
+      icon: 'mdi:lightbulb'
       name: 'LUCI'
       label: '[[[return "Luci / "+states["input_text.zn100"].state]]]'
   commandbar:

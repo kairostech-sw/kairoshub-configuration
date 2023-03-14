@@ -18,7 +18,7 @@ custom_fields:
       - type: custom:button-card
         layout: vertical
         template: header_page_text
-        icon: mdi:theme-light-dark
+        icon: mdi:cog
         name: Impostazioni
         label: Impostazioni / Sistema
   commandbar:
@@ -52,12 +52,19 @@ custom_fields:
       type: vertical-stack
       cards:
         - type: custom:button-card
+          color_type: label-card
+          name: Automazione Scenario Giorno / Notte
+          styles:
+            card:
+              - height: 35px
+              - padding: 0px
+        - type: custom:button-card
           template: scenes_program
           custom_fields:
             label:
               card:
                 type: custom:button-card
-                name: 'Giorno / Notte'
+                name: Scenario Giorno
                 layout: icon_name
                 icon: mdi:theme-light-dark
                 size: 55%
