@@ -266,3 +266,4 @@
     - event: AD_PROGRAM_OFF
       event_data:
         program: prog0
+        comfort_temp: "{{ states('input_number.manual_heating_temp') }}"

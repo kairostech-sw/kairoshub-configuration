@@ -243,3 +243,48 @@ thermostat_sunday_off_period4:
   name: Spegnimento
   has_date: false
   has_time: true
+####################
+# Lights Nightzone
+####################
+lights_nightzone_on_program1:
+  name: Accensione
+  has_date: false
+  has_time: true
+lights_nightzone_off_program1:
+  name: Spegnimento
+  has_date: false
+  has_time: true
+####################
+# Lights Dayzone
+####################
+lights_dayzone_on_program1:
+  name: Accensione
+  has_date: false
+  has_time: true
+lights_dayzone_off_program1:
+  name: Spegnimento
+  has_date: false
+  has_time: true
+####################
+# Lights Outdoor
+####################
+lights_outdoor_on_program1:
+  name: Accensione
+  has_date: false
+  has_time: true
+lights_outdoor_off_program1:
+  name: Spegnimento
+  has_date: false
+  has_time: true
+offset_sunset:
+  name: Orario Spegnimento Luci Dopo Il Tramonto
+  has_time: true
+##########
+# Scenes
+##########
+scene_day_on:
+  name: Accensione
+  has_time: true
+scene_day_off:
+  name: Spegnimento
+  has_time: true

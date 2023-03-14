@@ -1,0 +1,119 @@
+- name: RS01
+  platform: mqtt
+  state_topic: "shellies/RS01/info"
+  value_template: "active"
+  json_attributes_topic : "shellies/RS01/info"
+  json_attributes_template: >
+    {% set attr = {
+      "ip": value_json.wifi_sta.ip,
+      "ssid": value_json.wifi_sta.ssid,
+      "rssi": value_json.wifi_sta.rssi,
+      "state": value_json.rollers[0].state,
+      "pos": value_json.rollers[0].current_pos,
+      "has_update": value_json.has_update,
+      "fw_ver": value_json["update"].old_version,
+      "last_update": states.sensor.date_time_iso.state
+    } %}
+    {{attr | tojson}}
+- name: RS02
+  platform: mqtt
+  state_topic: "shellies/RS02/info"
+  value_template: "active"
+  json_attributes_topic : "shellies/RS02/info"
+  json_attributes_template: >
+    {% set attr = {
+      "ip": value_json.wifi_sta.ip,
+      "ssid": value_json.wifi_sta.ssid,
+      "rssi": value_json.wifi_sta.rssi,
+      "state": value_json.rollers[0].state,
+      "pos": value_json.rollers[0].current_pos,
+      "has_update": value_json.has_update,
+      "fw_ver": value_json["update"].old_version,
+      "last_update": states.sensor.date_time_iso.state
+    } %}
+    {{attr | tojson}}
+- name: RS03
+  platform: mqtt
+  state_topic: "shellies/RS03/info"
+  value_template: "active"
+  json_attributes_topic : "shellies/RS03/info"
+  json_attributes_template: >
+    {% set attr = {
+      "ip": value_json.wifi_sta.ip,
+      "ssid": value_json.wifi_sta.ssid,
+      "rssi": value_json.wifi_sta.rssi,
+      "state": value_json.rollers[0].state,
+      "pos": value_json.rollers[0].current_pos,
+      "has_update": value_json.has_update,
+      "fw_ver": value_json["update"].old_version,
+      "last_update": states.sensor.date_time_iso.state
+    } %}
+    {{attr | tojson}}
+- name: RS04
+  platform: mqtt
+  state_topic: "shellies/RS04/info"
+  value_template: "active"
+  json_attributes_topic : "shellies/RS04/info"
+  json_attributes_template: >
+    {% set attr = {
+      "ip": value_json.wifi_sta.ip,
+      "ssid": value_json.wifi_sta.ssid,
+      "rssi": value_json.wifi_sta.rssi,
+      "state": value_json.rollers[0].state,
+      "pos": value_json.rollers[0].current_pos,
+      "has_update": value_json.has_update,
+      "fw_ver": value_json["update"].old_version,
+      "last_update": states.sensor.date_time_iso.state
+    } %}
+    {{attr | tojson}}
+- name: RS05
+  platform: mqtt
+  state_topic: "shellies/RS05/info"
+  value_template: "active"
+  json_attributes_topic : "shellies/RS05/info"
+  json_attributes_template: >
+    {% set attr = {
+      "ip": value_json.wifi_sta.ip,
+      "ssid": value_json.wifi_sta.ssid,
+      "rssi": value_json.wifi_sta.rssi,
+      "state": value_json.rollers[0].state,
+      "pos": value_json.rollers[0].current_pos,
+      "has_update": value_json.has_update,
+      "fw_ver": value_json["update"].old_version,
+      "last_update": states.sensor.date_time_iso.state
+    } %}
+    {{attr | tojson}}
+- name: RS06
+  platform: mqtt
+  state_topic: "shellies/RS06/info"
+  value_template: "active"
+  json_attributes_topic : "shellies/RS06/info"
+  json_attributes_template: >
+    {% set attr = {
+      "ip": value_json.wifi_sta.ip,
+      "ssid": value_json.wifi_sta.ssid,
+      "rssi": value_json.wifi_sta.rssi,
+      "state": value_json.rollers[0].state,
+      "pos": value_json.rollers[0].current_pos,
+      "has_update": value_json.has_update,
+      "fw_ver": value_json["update"].old_version,
+      "last_update": states.sensor.date_time_iso.state
+    } %}
+    {{attr | tojson}}
+- name: RS07
+  platform: mqtt
+  state_topic: "shellies/RS07/info"
+  value_template: "active"
+  json_attributes_topic : "shellies/RS07/info"
+  json_attributes_template: >
+    {% set attr = {
+      "ip": value_json.wifi_sta.ip,
+      "ssid": value_json.wifi_sta.ssid,
+      "rssi": value_json.wifi_sta.rssi,
+      "state": value_json.rollers[0].state,
+      "pos": value_json.rollers[0].current_pos,
+      "has_update": value_json.has_update,
+      "fw_ver": value_json["update"].old_version,
+      "last_update": states.sensor.date_time_iso.state
+    } %}
+    {{attr | tojson}}

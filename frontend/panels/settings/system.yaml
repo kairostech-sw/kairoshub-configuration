@@ -1,0 +1,144 @@
+type: custom:button-card
+template: panel_grid
+styles:
+  custom_fields:
+    content:
+      - justify-self: center
+      - overflow: auto
+card_mod:
+  style: |
+    #content::-webkit-scrollbar {
+      display: none !important;
+    }
+custom_fields:
+  header:
+    card:
+      type: horizontal-stack
+      cards:
+      - type: custom:button-card
+        layout: vertical
+        template: header_page_text
+        icon: mdi:cog
+        name: Impostazioni
+        label: Impostazioni / Sistema
+  commandbar:
+    card:
+      type: 'custom:button-card'
+      template: command_bar
+      style: |
+        ha-card.button-card-main {
+          padding: 0px !important
+        }
+        div#container {
+          justify-items: right;
+        }
+      styles:
+        card:
+          - width: 800px
+          - margin-left: -10px
+      custom_fields:
+        commands:
+          card:
+            type: horizontal-stack
+            cards:
+              - type: 'custom:button-card'
+                template: button_go_back
+                style: |
+                  :host {
+                    align-self: center;
+                  }
+  content:
+    card:
+      type: vertical-stack
+      cards:
+        - type: custom:button-card
+          color_type: label-card
+          name: Automazione Scenario Giorno / Notte
+          styles:
+            card:
+              - height: 35px
+              - padding: 0px
+        - type: custom:button-card
+          template: scenes_program
+          custom_fields:
+            label:
+              card:
+                type: custom:button-card
+                name: Scenario Giorno
+                layout: icon_name
+                icon: mdi:theme-light-dark
+                size: 55%
+                styles:
+                  icon:
+                    - color: "#55C1E5"
+            select:
+              card:
+                type: entities
+                entities: 
+                  - entity: input_select.scene_day
+                    style: |
+                      state-badge {
+                        display: none;
+                      }
+                style: |
+                  .card-content {
+                    padding: 0px;
+                  }
+            time:
+              card:
+                type: horizontal-stack
+                cards:
+                  - type: custom:time-picker-card
+                    entity: input_datetime.scene_day_on
+                    minute_step: 15
+                    layout:
+                      embedded: true
+                      align_controls: right
+                    style: 
+                      .: |
+                        :host {
+                        {% if not is_state('input_select.scene_day', 'Programmato') %}
+                          pointer-events: none;
+                        {% endif %}
+                        }
+                        state-badge {
+                          display: none;
+                        }
+                        .time-picker-row.embedded {
+                          flex-direction: column;
+                        }
+                      time-unit: 
+                        $: |
+                          .time-input {
+                            {% if not is_state('input_select.scene_day', 'Programmato') %}
+                              pointer-events: none;
+                              background-color: var(--disabled-text-color) !important; 
+                            {% endif %} 
+                          }
+                  - type: custom:time-picker-card
+                    entity: input_datetime.scene_day_off
+                    minute_step: 15
+                    layout:
+                      embedded: true
+                      align_controls: right
+                    style: 
+                      .: |
+                        :host {
+                        {% if not is_state('input_select.scene_day', 'Programmato') %}
+                          pointer-events: none;
+                        {% endif %}
+                        }
+                        state-badge {
+                          display: none;
+                        }
+                        .time-picker-row.embedded {
+                          flex-direction: column;
+                        }
+                      time-unit: 
+                        $: |
+                          .time-input {
+                            {% if not is_state('input_select.scene_day', 'Programmato') %}
+                              pointer-events: none;
+                              background-color: var(--disabled-text-color) !important; 
+                            {% endif %} 
+                          }

@@ -17,6 +17,10 @@ class HeatingManager(hass.Hass):
 
 
     def handleManualHeating(self, event_name, data, kwargs):
+        comfort_temp = self.get_state("input_number.manual_heating_temp")
+        if comfort_temp <= self.get_state("sensor.temperatura"):
+            self.fire_event("AD_KAIROSHUB_NOTIFICATION",sender=data["data"]["event"]["sender"], ncode="HEATING_TEMP_REACHED", severity="NOTICE", kwargs={"program": int(data["data"]["program"][-1]), "comfort_temp": comfort_temp})
+            return
         if self.get_state("switch.sw_thermostat") =="off":
             self.turnHeatingOn(data['data'])
         else:
@@ -40,6 +44,8 @@ class HeatingManager(hass.Hass):
             self.log("Program {} is already active".format(activeProgram), level="INFO")
             return
 
+        comfort_temp = self.get_state("input_number.temperature_period{}".format(progID))
+
         if activeProgram==0:
             self.log("Checking the heating program state", level="INFO")
 
@@ -55,11 +61,11 @@ class HeatingManager(hass.Hass):
                     self.log("The program was manually interrupted", level="INFO")
                 return
             if on_time<=now<off_time:
-                if float(self.get_state("input_number.temperature_period{}".format(progID)))<=float(data["temperature"]):
+                if float(comfort_temp)<=float(data["temperature"]):
                     self.log("The comfort temperature was reached", level="INFO")
                     if self.get_state("input_boolean.heater_program{}_on".format(progID))=="on":
                         self.log("The program is now ending", level="INFO")
-                        self.turnProgramOff(event_name, data, kwargs)
+                        self.turnProgramOff(event_name, data, kwargs={**kwargs, "comfort_temp": comfort_temp})
                     return
                 if self.get_state("input_boolean.heater_program{}_on".format(progID))=="off":
                     self.log("The heating program {} is now starting".format(progID), level="INFO")
@@ -72,10 +78,10 @@ class HeatingManager(hass.Hass):
 
         else:
             off_time=self.getProgramSchedule(progID,data, "running")[1]
-            if float(self.get_state("input_number.temperature_period{}".format(progID)))<=float(data["temperature"]):
+            if float(comfort_temp)<=float(data["temperature"]):
                         self.log("The comfort temperature was reached", level="INFO")
                         self.log("The program is now ending", level="INFO")
-                        self.turnProgramOff(event_name, data, kwargs)
+                        self.turnProgramOff(event_name, data={**data,"comfort_temp": comfort_temp}, kwargs=kwargs )
                         return
             if off_time<=now:
                 self.log("The heating program {} is now ending".format(progID), level="INFO")
@@ -107,7 +113,7 @@ class HeatingManager(hass.Hass):
 
         if asyncio.run(self.checkHeaterState({"counter": 1}, "on", time=5)):
             self.log("Thermostat turned on", level="INFO")
-            self.fire_event("AD_KAIROSHUB_NOTIFICATION",sender=eventData["sender"], ncode="HEATING_ON", severity="NOTICE")
+            self.fire_event("AD_KAIROSHUB_NOTIFICATION",sender=eventData["sender"], ncode="HEATING_ON", severity="NOTICE", kwargs={"program": int(program[-1])})
             self.fire_event("HA_ENTITY_METRICS") #entity metrics request update
 
             if not asyncio.run(self.isValveOpen({"trvList":trvList,"counter":1})):
@@ -136,7 +142,7 @@ class HeatingManager(hass.Hass):
         self.turn_off("switch.sw_thermostat")
 
         if asyncio.run(self.checkHeaterState({"counter":1}, "off", time=5)):
-            self.fire_event("AD_KAIROSHUB_NOTIFICATION",sender=data["sender"], ncode="HEATING_OFF", severity="NOTICE")
+            self.fire_event("AD_KAIROSHUB_NOTIFICATION",sender=data["sender"], ncode="HEATING_OFF", severity="NOTICE", kwargs = {"program": int(program[-1]), "comfort_temp": data["comfort_temp"]})
             self.log("Thermostat turned off", level="INFO")
         else:
             self.fire_event("AD_KAIROSHUB_NOTIFICATION",sender=data["sender"], ncode="HEATING_OFF_ERROR", severity="ALERT")
@@ -149,7 +155,7 @@ class HeatingManager(hass.Hass):
         self.log("turningProgram OFF")
         self.log(data, level="DEBUG")
         eventData = self.extractEventData(data)
-        programData ={"program": data["program"]}
+        programData = {"program": data["program"], "comfort_temp": data["comfort_temp"] if "comfort_temp" in data else None}
         programOffData = {**programData, **eventData}
 
         self.log(programOffData, level="DEBUG")

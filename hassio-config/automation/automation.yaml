@@ -50,3 +50,122 @@
       event_data:
         state: "{{states('input_boolean.night')}}"
     - event: AD_KAIROSHUB_STARTED
+
+- alias: Scenario Giorno Notte Manuale
+  trigger:
+  action:
+    - service: input_boolean.toggle
+      target:
+        entity_id: input_boolean.night
+    - event: AD_SCENES_DAY_NIGHT
+      event_data:
+        state: "{{ states('input_boolean.night') }}"
+        mode: Manuale
+        sender: HUB
+
+- alias: Scenario Notte Programmato
+  trigger:
+    - platform: time
+      at: input_datetime.scene_day_off
+  condition:
+    - condition: state
+      state: Programmato
+      entity_id: input_select.scene_day
+  action:
+    - service: input_boolean.turn_on
+      target:
+        entity_id: input_boolean.night
+    - event: AD_SCENES_DAY_NIGHT
+      event_data:
+        state: "{{ states('input_boolean.night') }}"
+        mode: Programmato
+        sender: HUB
+
+- alias: Scenario Giorno Programmato
+  trigger:
+    - platform: time
+      at: input_datetime.scene_day_on
+  condition:
+    - condition: state
+      state: Programmato
+      entity_id: input_select.scene_day
+  action:
+    - service: input_boolean.turn_off
+      target:
+        entity_id: input_boolean.night
+    - event: AD_SCENES_DAY_NIGHT
+      event_data:
+        state: "{{ states('input_boolean.night') }}"
+        mode: Programmato
+        sender: HUB
+
+- alias: Scenario Notte Automatico
+  trigger:
+    - platform: numeric_state
+      entity_id: sun.sun
+      attribute: elevation
+      below: -4.0
+  condition:
+    - condition: state
+      state: Automatico
+      entity_id: input_select.scene_day
+  action:
+    - service: input_boolean.turn_on
+      target:
+        entity_id: input_boolean.night
+    - event: AD_SCENES_DAY_NIGHT
+      event_data:
+        state: "{{ states('input_boolean.night') }}"
+        mode: Automatico
+        sender: HUB
+
+- alias: Scenario Giorno Automatico
+  trigger:
+    - platform: numeric_state
+      entity_id: sun.sun
+      attribute: elevation
+      above: 0.0
+  condition:
+    - condition: state
+      state: Automatico
+      entity_id: input_select.scene_day
+  action:
+    - service: input_boolean.turn_off
+      target:
+        entity_id: input_boolean.night
+    - event: AD_SCENES_DAY_NIGHT
+      event_data:
+        state: "{{ states('input_boolean.night') }}"
+        mode: Automatico
+        sender: HUB
+
+- alias: HT UPDATE STATE
+  trigger:
+    - platform: state
+      to: active
+      entity_id: 
+        - sensor.TH1001
+        - sensor.TH1011
+        - sensor.TH1021
+        - sensor.TH1031
+        - sensor.TH1041
+        - sensor.TH2001
+        - sensor.TH2011
+        - sensor.TH2021
+        - sensor.TH2031
+  action:
+    - event: AD_SHELLY_UPDATE
+      event_data:
+        entity: "{{trigger.entity_id}}"
+    - delay: "00:00:05"
+    - event: AD_SHELLY_ASLEEP
+      event_data:
+        entity: "{{trigger.entity_id}}"
+
+- alias: SHELLY SIGNAL CHECK
+  trigger:
+    - platform: time_pattern
+      hours: "/1"
+  action:
+    event: AD_SHELLY_SIGNAL_CHECK
+

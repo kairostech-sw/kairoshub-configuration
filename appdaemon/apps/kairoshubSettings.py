@@ -11,8 +11,8 @@ class KairoshubSettings(hass.Hass):
         self.listen_event(self.pushSettings, "AD_SETTINGS_PUSH")
         self.listen_event(self.fileCheck, "AD_SETTINGS_FILE_CHECK")
         self.listen_event(self.copyPrograms, "AD_COPY_PROGRAMS")
-        self.liste_event(self.__systemKeySync ,"AD_SETTINGS_SYSTEM_KEY_SYNC")
-        self.liste_event(self.__systemKeyPush ,"AD_SETTING_SYSTEM_KEY_PUSH")
+        self.listen_event(self.__systemKeySync ,"AD_SETTINGS_SYSTEM_KEY_SYNC")
+        self.listen_event(self.__systemKeyPush ,"AD_SETTING_SYSTEM_KEY_PUSH")
 
     def syncSettings(self, event_name, data, kwargs):
         self.log("Retrieving stored user settings")
