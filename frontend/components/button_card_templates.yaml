@@ -1385,16 +1385,19 @@ light_program:
   styles:
     grid:
       - grid-template-areas: '"label select days time"'
-      - grid-template-columns: 150px 140px 100px 1fr
+      - grid-template-columns: 160px 140px 100px 1fr
+      - align-items: self-end
     card:
       - height: auto
       - width: 750px
       - padding: 0px
     custom_fields:
+      label:
+        - margin-top: 30px
       select:
-        - margin-bottom: 19px
+        - margin-bottom: 14px
       days:
-        - margin-bottom: 19px
+        - margin-bottom: 14px
       time:
         - margin-top: 10px
         - margin-left: 30px
@@ -1403,14 +1406,15 @@ scenes_program:
   styles:
     grid:
       - grid-template-areas: '"label select time"'
-      - grid-template-columns: 200px 160px 1fr
+      - grid-template-columns: 200px 200px 1fr
     card:
       - height: auto
       - width: 750px
       - padding: 0px
     custom_fields:
+      label:
+        - margin-top: 27px
       select:
-        - margin-bottom: 19px
         - margin-left: 10px
       time:
         - margin-top: 10px

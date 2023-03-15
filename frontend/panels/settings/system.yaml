@@ -73,17 +73,46 @@ custom_fields:
                     - color: "#55C1E5"
             select:
               card:
-                type: entities
-                entities: 
-                  - entity: input_select.scene_day
-                    style: |
-                      state-badge {
-                        display: none;
-                      }
-                style: |
-                  .card-content {
-                    padding: 0px;
-                  }
+                type: vertical-stack
+                cards:
+                  - type: custom:button-card
+                    icon: mdi:chevron-up
+                    size: 13%
+                    styles:
+                      card:
+                        - padding: 0px
+                    tap_action:
+                      action: call-service
+                      service: input_select.select_next
+                      service_data:
+                        entity_id: input_select.scene_day
+                  - type: 'custom:button-card'
+                    entity: input_select.scene_day
+                    tap_action:
+                      action: none
+                    show_state: true
+                    size: 15%
+                    state:
+                      - value: 'Disattivo'
+                        color: "#F32000"
+                        icon: mdi:close-circle-outline
+                      - value: 'Programmato'
+                        color: "#009213"
+                        icon: mdi:alarm
+                      - value: 'Automatico'
+                        color: "#FFB600"
+                        icon: mdi:weather-sunny
+                  - type: custom:button-card
+                    icon: mdi:chevron-down
+                    size: 13%
+                    styles:
+                      card:
+                        - padding: 0px
+                    tap_action:
+                      action: call-service
+                      service: input_select.select_previous
+                      service_data:
+                        entity_id: input_select.scene_day
             time:
               card:
                 type: horizontal-stack
@@ -94,7 +123,7 @@ custom_fields:
                     layout:
                       embedded: true
                       align_controls: right
-                    style: 
+                    style:
                       .: |
                         :host {
                         {% if not is_state('input_select.scene_day', 'Programmato') %}
@@ -107,13 +136,13 @@ custom_fields:
                         .time-picker-row.embedded {
                           flex-direction: column;
                         }
-                      time-unit: 
+                      time-unit:
                         $: |
                           .time-input {
                             {% if not is_state('input_select.scene_day', 'Programmato') %}
                               pointer-events: none;
-                              background-color: var(--disabled-text-color) !important; 
-                            {% endif %} 
+                              background-color: var(--disabled-text-color) !important;
+                            {% endif %}
                           }
                   - type: custom:time-picker-card
                     entity: input_datetime.scene_day_off
@@ -121,7 +150,7 @@ custom_fields:
                     layout:
                       embedded: true
                       align_controls: right
-                    style: 
+                    style:
                       .: |
                         :host {
                         {% if not is_state('input_select.scene_day', 'Programmato') %}
@@ -134,11 +163,11 @@ custom_fields:
                         .time-picker-row.embedded {
                           flex-direction: column;
                         }
-                      time-unit: 
+                      time-unit:
                         $: |
                           .time-input {
                             {% if not is_state('input_select.scene_day', 'Programmato') %}
                               pointer-events: none;
-                              background-color: var(--disabled-text-color) !important; 
-                            {% endif %} 
+                              background-color: var(--disabled-text-color) !important;
+                            {% endif %}
                           }
