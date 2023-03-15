@@ -1327,7 +1327,6 @@ clima_tv_detail:
           return `<span style="font-size: 12px;">${ variables.lastupdate }</span>`
         ]]]
 
-
 clima_zones_detail:
   type: "custom:button-card"
   template: clima_tv_detail
@@ -1415,15 +1414,38 @@ clima_zones_detail:
 scenes_program:
   styles:
     grid:
-      - grid-template-areas: '"label select time"'
-      - grid-template-columns: 200px 160px 1fr
+      - grid-template-areas: '"label select days time"'
+      - grid-template-columns: 160px 140px 100px 1fr
+      - align-items: self-end
+
     card:
       - height: auto
       - width: 750px
       - padding: 0px
     custom_fields:
+      label:
+        - margin-top: 30px
       select:
-        - margin-bottom: 19px
+        - margin-bottom: 14px
+      days:
+        - margin-bottom: 14px
+      time:
+        - margin-top: 10px
+        - margin-left: 60px
+
+scenes_program:
+  styles:
+    grid:
+      - grid-template-areas: '"label select time"'
+      - grid-template-columns: 200px 200px 1fr
+    card:
+      - height: auto
+      - width: 750px
+      - padding: 0px
+    custom_fields:
+      label:
+        - margin-top: 27px
+      select:
         - margin-left: 10px
       time:
         - margin-top: 10px

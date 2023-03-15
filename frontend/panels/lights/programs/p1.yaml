@@ -111,47 +111,85 @@ custom_fields:
                   #   navigation_path: /lovelace-kairoshub/lights-program1-zone1
               select:
                 card:
-                  type: entities
-                  entities: 
-                    - entity: input_select.zn100
-                      style: |
-                        state-badge {
-                          display: none;
-                        }
-                  style: |
-                    .card-content {
-                      padding: 0px;
-                    }
+                  type: vertical-stack
+                  cards:
+                    - type: custom:button-card
+                      icon: mdi:chevron-up
+                      size: 13%
+                      styles:
+                        card:
+                          - padding: 0px
+                      tap_action:
+                        action: call-service
+                        service: input_select.select_next
+                        service_data:
+                          entity_id: input_select.zn100
+                    - type: 'custom:button-card'
+                      entity: input_select.zn100
+                      tap_action:
+                        action: none
+                      show_state: true
+                      size: 17%
+                      state:
+                        - value: 'Disattivo'
+                          color: "#F32000"
+                          icon: mdi:close-circle-outline
+                        - value: 'Programmato'
+                          color: "#009213"
+                          icon: mdi:alarm
+                        - value: 'Automatico'
+                          color: "#FFB600"
+                          icon: mdi:weather-sunny
+                    - type: custom:button-card
+                      icon: mdi:chevron-down
+                      size: 13%
+                      styles:
+                        card:
+                          - padding: 0px
+                      tap_action:
+                        action: call-service
+                        service: input_select.select_previous
+                        service_data:
+                          entity_id: input_select.zn100
               days:
                 card:
-                  type: entities
-                  entities: 
-                    - entity: input_select.zn100_days
-                      style: 
-                        .: |
-                          state-badge {
-                            display: none;
-                          }
-                          {% if not is_state('input_select.zn100', 'Programmato') %}
-                            ha-paper-dropdown-menu {  
-                                pointer-events: none;
-                            }
-                          {% endif %}
-                        ha-paper-dropdown-menu$:
-                          paper-menu-button div:
-                            paper-input$:
-                              paper-input-container: |
-                                {% if not is_state('input_select.zn100', 'Programmato') %}
-                                  iron-input {
-                                    color: var(--disabled-text-color);
-                                  }
-                                {% endif %}
-                  style: |
-                    .card-content {
-                      padding: 0px;
-                      margin-left: 10px;
-                      margin-right: -20px;
-                    }
+                  type: vertical-stack
+                  cards:
+                    - type: custom:button-card
+                      icon: mdi:chevron-up
+                      size: 18%
+                      styles:
+                        card:
+                          - padding: 0px
+                      tap_action:
+                        action: call-service
+                        service: input_select.select_next
+                        service_data:
+                          entity_id: input_select.zn100_days
+                    - type: 'custom:button-card'
+                      entity: input_select.zn100_days
+                      tap_action:
+                        action: none
+                      show_state: true
+                      size: 25%
+                      icon: mdi:calendar
+                      color: >
+                        [[[
+                          if (states['input_select.zn100'].state == "Programmato")
+                            return "#009213";
+                          return "var(--disabled-text-color)";
+                        ]]]
+                    - type: custom:button-card
+                      icon: mdi:chevron-down
+                      size: 18%
+                      styles:
+                        card:
+                          - padding: 0px
+                      tap_action:
+                        action: call-service
+                        service: input_select.select_previous
+                        service_data:
+                          entity_id: input_select.zn100_days
               time:
                 card:
                   type: horizontal-stack
@@ -245,47 +283,85 @@ custom_fields:
                     action: none
               select:
                 card:
-                  type: entities
-                  entities: 
-                    - entity: input_select.zn200
-                      style: |
-                        state-badge {
-                          display: none;
-                        }
-                  style: |
-                    .card-content {
-                      padding: 0px;
-                    }
+                  type: vertical-stack
+                  cards:
+                    - type: custom:button-card
+                      icon: mdi:chevron-up
+                      size: 13%
+                      styles:
+                        card:
+                          - padding: 0px
+                      tap_action:
+                        action: call-service
+                        service: input_select.select_next
+                        service_data:
+                          entity_id: input_select.zn200
+                    - type: 'custom:button-card'
+                      entity: input_select.zn200
+                      tap_action:
+                        action: none
+                      show_state: true
+                      size: 17%
+                      state:
+                        - value: 'Disattivo'
+                          color: "#F32000"
+                          icon: mdi:close-circle-outline
+                        - value: 'Programmato'
+                          color: "#009213"
+                          icon: mdi:alarm
+                        - value: 'Automatico'
+                          color: "#FFB600"
+                          icon: mdi:weather-sunny
+                    - type: custom:button-card
+                      icon: mdi:chevron-down
+                      size: 13%
+                      styles:
+                        card:
+                          - padding: 0px
+                      tap_action:
+                        action: call-service
+                        service: input_select.select_previous
+                        service_data:
+                          entity_id: input_select.zn200
               days:
                 card:
-                  type: entities
-                  entities: 
-                    - entity: input_select.zn200_days
-                      style: 
-                        .: |
-                          state-badge {
-                            display: none;
-                          }
-                          {% if not is_state('input_select.zn200', 'Programmato') %}
-                            ha-paper-dropdown-menu {  
-                                pointer-events: none;
-                            }
-                          {% endif %}
-                        ha-paper-dropdown-menu$:
-                          paper-menu-button div:
-                            paper-input$:
-                              paper-input-container: |
-                                {% if not is_state('input_select.zn200', 'Programmato') %}
-                                  iron-input {
-                                    color: var(--disabled-text-color);
-                                  }
-                                {% endif %}
-                  style: |
-                    .card-content {
-                      padding: 0px;
-                      margin-left: 10px;
-                      margin-right: -20px;
-                    }
+                  type: vertical-stack
+                  cards:
+                    - type: custom:button-card
+                      icon: mdi:chevron-up
+                      size: 18%
+                      styles:
+                        card:
+                          - padding: 0px
+                      tap_action:
+                        action: call-service
+                        service: input_select.select_next
+                        service_data:
+                          entity_id: input_select.zn200_days
+                    - type: 'custom:button-card'
+                      entity: input_select.zn200_days
+                      tap_action:
+                        action: none
+                      show_state: true
+                      size: 25%
+                      icon: mdi:calendar
+                      color: >
+                        [[[
+                          if (states['input_select.zn200'].state == "Programmato")
+                            return "#009213";
+                          return "var(--disabled-text-color)";
+                        ]]]
+                    - type: custom:button-card
+                      icon: mdi:chevron-down
+                      size: 18%
+                      styles:
+                        card:
+                          - padding: 0px
+                      tap_action:
+                        action: call-service
+                        service: input_select.select_previous
+                        service_data:
+                          entity_id: input_select.zn200_days
               time:
                 card:
                   type: horizontal-stack
@@ -379,47 +455,99 @@ custom_fields:
                     action: none
               select:
                 card:
-                  type: entities
-                  entities: 
-                    - entity: input_select.zn300
-                      style: |
-                        state-badge {
-                          display: none;
-                        }
-                  style: |
-                    .card-content {
-                      padding: 0px;
-                    }
+                  type: vertical-stack
+                  cards:
+                    - type: custom:button-card
+                      icon: mdi:chevron-up
+                      size: 13%
+                      styles:
+                        card:
+                          - padding: 0px
+                      tap_action:
+                        action: call-service
+                        service: input_select.select_next
+                        service_data:
+                          entity_id: input_select.zn300
+                    - type: 'custom:button-card'
+                      entity: input_select.zn300
+                      tap_action:
+                        action: none
+                      show_state: true
+                      size: 17%
+                      state:
+                        - value: 'Disattivo'
+                          color: "#F32000"
+                          icon: mdi:close-circle-outline
+                        - value: 'Programmato'
+                          color: "#009213"
+                          icon: mdi:alarm
+                        - value: 'Automatico'
+                          color: "#FFB600"
+                          icon: mdi:weather-sunny
+                    - type: custom:button-card
+                      icon: mdi:chevron-down
+                      size: 13%
+                      styles:
+                        card:
+                          - padding: 0px
+                      tap_action:
+                        action: call-service
+                        service: input_select.select_previous
+                        service_data:
+                          entity_id: input_select.zn300
               days:
                 card:
-                  type: entities
-                  entities: 
-                    - entity: input_select.zn300_days
+                  type: vertical-stack
+                  cards:
+                    - type: custom:button-card
+                      icon: mdi:chevron-up
+                      size: 18%
+                      styles:
+                        card:
+                          - padding: 0px
+                      tap_action:
+                        action: call-service
+                        service: input_select.select_next
+                        service_data:
+                          entity_id: input_select.zn300_days
                       style: 
                         .: |
-                          state-badge {
-                            display: none;
-                          }
+                          :host {
                           {% if not is_state('input_select.zn300', 'Programmato') %}
-                            ha-paper-dropdown-menu {  
-                                pointer-events: none;
-                            }
+                            pointer-events: none;
                           {% endif %}
-                        ha-paper-dropdown-menu$:
-                          paper-menu-button div:
-                            paper-input$:
-                              paper-input-container: |
-                                {% if not is_state('input_select.zn300', 'Programmato') %}
-                                  iron-input {
-                                    color: var(--disabled-text-color);
-                                  }
-                                {% endif %}
-                  style: |
-                    .card-content {
-                      padding: 0px;
-                      margin-left: 10px;
-                      margin-right: -20px;
-                    }
+                          }
+                    - type: 'custom:button-card'
+                      entity: input_select.zn300_days
+                      tap_action:
+                        action: none
+                      show_state: true
+                      size: 25%
+                      icon: mdi:calendar
+                      color: >
+                        [[[
+                          if (states['input_select.zn300'].state == "Programmato")
+                            return "#009213";
+                          return "var(--disabled-text-color)";
+                        ]]]
+                    - type: custom:button-card
+                      icon: mdi:chevron-down
+                      size: 18%
+                      styles:
+                        card:
+                          - padding: 0px
+                      tap_action:
+                        action: call-service
+                        service: input_select.select_previous
+                        service_data:
+                          entity_id: input_select.zn300_days
+                      style: 
+                        .: |
+                          :host {
+                          {% if not is_state('input_select.zn300', 'Programmato') %}
+                            pointer-events: none;
+                          {% endif %}
+                          }
               time:
                 card:
                   type: horizontal-stack
