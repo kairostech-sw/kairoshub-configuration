@@ -9,7 +9,6 @@ file="./kairoshubHeating.json"
 class HeatingManager(hass.Hass):
 
     maxRetry = 5
-
     def initialize(self):
         self.listen_event(self.handleHeatingProgram,"HA_MANAGE_HEATER")
         self.listen_event(self.handleManualHeating, "AD_HEATING")
@@ -317,7 +316,6 @@ class HeatingManager(hass.Hass):
     async def getTRVListAwait(self):
         trvList=[]
         trvs_group = await self.get_state("group.heating_valves", attribute="entity_id")
-
         for group in trvs_group:
             trvs= await self.get_state(group, attribute="entity_id")
             for trv in trvs:

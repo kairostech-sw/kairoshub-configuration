@@ -55,7 +55,6 @@ class KairoshubSettings(hass.Hass):
             json.dump(jsonData,f)
 
         self.log("User settings stored on filesystem.", level="INFO")
-
         jsonData.pop("lifetime", None)
         eventData= {
             "eventType" : "SETTINGS_SYNC",

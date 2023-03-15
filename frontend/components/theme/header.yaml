@@ -1,6 +1,6 @@
 type: horizontal-stack
 cards:
-  - type: 'custom:button-card'
+  - type: "custom:button-card"
     entity: sensor.datetime
     layout: vertical
     template: no_background
@@ -34,13 +34,12 @@ cards:
         cards:
           - type: 'custom:button-card'
             template: row_space_10
-          - type: 'custom:button-card'
+          - type: "custom:button-card"
             template: row_space_10
-          - type: 'custom:button-card'
+          - type: "custom:button-card"
             template: row_space_10
           - type: 'custom:button-card'
             template: user_notification_header
-          - type: 'custom:button-card'
+          - type: "custom:button-card"
             template: user_profile_header
             label: Online
-  

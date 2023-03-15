@@ -1,4 +1,4 @@
-type: 'custom:button-card'
+type: "custom:button-card"
 style: |
   ha-card.button-card-main {
     padding: 0px !important
@@ -9,19 +9,19 @@ custom_fields:
     card:
       type: horizontal-stack
       cards:
-        - type: 'custom:button-card'
+        - type: "custom:button-card"
           name: Notte
           template: icon_state_header
           entity: input_boolean.night
-          label: 'Notte'
+          label: "Notte"
           state:
-            - value: 'on'
-              icon: 'mdi:weather-night'
-              label: 'Notte'
+            - value: "on"
+              icon: "mdi:weather-night"
+              label: "Notte"
               color: var(--command-state-color)
-            - value: 'off'
-              icon: 'mdi:weather-sunny'
-              label: 'Giorno'
+            - value: "off"
+              icon: "mdi:weather-sunny"
+              label: "Giorno"
               color: var(--command-state-color)
           tap_action:
             action: call-service
@@ -52,9 +52,9 @@ custom_fields:
             service_data:
               entity_id: automation.light_toggle
         - name: Tapparelle aperte
-          type: 'custom:button-card'
+          type: "custom:button-card"
           template: icon_state_header
-          label: 'Aperte'
+          label: "Aperte"
           entity: group.rollershutters
           color: var(--command-state-color)
           tap_action:
@@ -63,36 +63,36 @@ custom_fields:
             service_data:
               entity_id: all
           state:
-            - value: 'open'
+            - value: "open"
               icon: mdi:window-shutter-open
               label: Aperte
-            - value: 'closed'
+            - value: "closed"
               icon: mdi:window-shutter
               label: Chiuse
           styles:
             card:
               - padding-top: 3px
-        - type: 'custom:button-card'
+        - type: "custom:button-card"
           entity: input_boolean.at_home
           template: icon_state_header
-          icon: 'mdi:home'
+          icon: "mdi:home"
           tap_action:
             action: call-service
             service: input_boolean.toggle
             service_data:
               entity_id: input_boolean.at_home
           state:
-            - value: 'on'
-              label: 'In Casa'
+            - value: "on"
+              label: "In Casa"
               color: var(--command-state-active-color)
-            - value: 'off'
-              label: 'Fuori Casa'
+            - value: "off"
+              label: "Fuori Casa"
               color: var(--command-state-color)
           styles:
             card:
               - padding-top: 3px
         - type: custom:button-card
-          entity: 'switch.sw_thermostat'
+          entity: "switch.sw_thermostat"
           template: icon_state_header
           name: Riscaldamento
           tap_action:
@@ -101,25 +101,25 @@ custom_fields:
             service_data:
               entity_id: automation.riscaldamento_manuale
           state:
-            - value: 'on'
+            - value: "on"
               icon: mdi:radiator
-              label: 'Acceso'
+              label: "Acceso"
               color: var(--command-state-active-color)
-            - value: 'off'
+            - value: "off"
               icon: mdi:radiator-off
-              label: 'Spento'
+              label: "Spento"
               color: var(--command-state-color)
           styles:
             card:
               - padding-top: 3px
-        - type: 'custom:button-card'
+        - type: "custom:button-card"
           template: header_icon_clima
           entity: binary_sensor.heater_auto
           state:
-            - value: 'on'
+            - value: "on"
               color: var(--command-state-active-color)
-              label: 'acceso'
-            - value: 'off'
+              label: "acceso"
+            - value: "off"
               color: var(--command-state-color)
           tap_action:
             action: navigate

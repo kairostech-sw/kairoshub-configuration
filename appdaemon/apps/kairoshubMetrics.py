@@ -8,7 +8,6 @@ class KairoshubMetrics(hass.Hass):
         self.listen_event(self.entityMetrics, "AD_ENTITY_METRICS")
 
     def systemMetrics(self, event_name, data, kwargs):
-
         self.log("Retrieving System Metrics", level="INFO")
 
         statMessage = {}

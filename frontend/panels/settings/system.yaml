@@ -113,6 +113,7 @@ custom_fields:
                       service: input_select.select_previous
                       service_data:
                         entity_id: input_select.scene_day
+
             time:
               card:
                 type: horizontal-stack

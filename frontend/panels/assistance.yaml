@@ -1,26 +1,25 @@
-type: 'custom:button-card'
+type: "custom:button-card"
 template: assistance_grid
 custom_fields:
   header:
     card:
-      type: 'custom:button-card'
+      type: "custom:button-card"
       layout: vertical
       template:
         - header_page_text
-      name: 'ASSISTENZA'
-      label: 'Assistenza /'
+      name: "ASSISTENZA"
+      label: "Assistenza /"
       icon: mdi:lifebuoy
   system_data:
     card:
-      type: 'custom:button-card'
-      icon: 'mdi:information-outline'
+      type: "custom:button-card"
+      icon: "mdi:information-outline"
       template: assistance_info
       name: Dati Impianto
-      entity: 'sensor.system_state'
+      entity: "sensor.system_state"
       variables:
         systemCode: input_text.system_code
         systemOwner: input_text.system_name
-        systemKey: input_text.system_key
         systemState: sensor.system_state
         kairoshubSwVersion: sensor.kairoshub_sw_version
       tap_action:
@@ -31,7 +30,7 @@ custom_fields:
   assistance:
     card:
       type: entities
-      icon: 'mdi:lifebuoy'
+      icon: "mdi:lifebuoy"
       state_color: true
       entities:
         - entity: input_boolean.assistance_request
@@ -48,6 +47,6 @@ custom_fields:
       type: markdown
       content: >-
         Impianto installato dalla ***Kairos Tech - Sistemi tecnologici connessi***
-
         Per informazioni e assistenza inviare una mail a assistenza@kairos-tech.it
       title: Dati installatore
+

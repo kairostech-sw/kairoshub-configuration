@@ -1,8 +1,19 @@
 heating_valves:
   name: Temperatura Valvole
   entities:
+    - group.heating_valves_legacy
     - group.heating_valves_day_zone
     - group.heating_valves_night_zone
+heating_valves_legacy:
+  name: Valvole Riscaldamento
+  entities:
+    - sensor.tv01_temp
+    - sensor.tv02_temp
+    - sensor.tv03_temp
+    - sensor.tv04_temp
+    - sensor.tv05_temp
+    - sensor.tv06_temp
+    - sensor.tv07_temp
 heating_valves_day_zone:
   name: Valvole Riscaldamento Zona
   entities:
