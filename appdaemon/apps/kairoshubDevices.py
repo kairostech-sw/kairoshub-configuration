@@ -9,6 +9,8 @@ class KairoshubDevices(hass.Hass):
     self.listen_event(self.triggerAttributesUpdate, "AD_SHELLY_UPDATE")
     self.listen_event(self.setShellyAsleep, "AD_SHELLY_ASLEEP")
     self.listen_event(self.signalNotification, "AD_SHELLY_SIGNAL_CHECK")
+    self.listen_event(self.rollersCalibrate, "AD_ROLLERS_RECALIBRATE")
+    self.listen_event(self.rollersCalibrate, "AD_ROLLERS_RECALIBRATE_ALL")
 
   def installedDevices(self, event_name, data, kwargs):
 
@@ -60,3 +62,14 @@ class KairoshubDevices(hass.Hass):
 
       self.log("Setting %s to sleep", data["entity"], level="INFO")
       self.set_state(data["entity"], state="asleep", attributes=attr)
+
+  def rollersCalibrate(self, event_name, data, kwargs):
+    devices = self.get_state("sensor", copy=False)
+    calibrateAll = "ALL" in event_name
+
+    for device in devices:
+      if re.search("^sensor\.rs.*\d{4}$",device) and self.get_state(device) != "unknown" and self.get_state(device) != "unavailable":
+        if calibrateAll or not self.get_state(device, attribute="calibrated"):
+          device_name = device.split(".")[1].upper()
+          self.log("Calibrating Shelly %s", device_name, level="INFO")
+          self.fire_event("AD_MQTT_PUBLISH", topic=f"shellies/{device_name}/roller/0/command", payload="rc")
