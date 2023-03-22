@@ -92,6 +92,9 @@ custom_fields:
         - value: "Segnale Assente*"
           icon: mdi:wifi-strength-alert-outline
           icon_color: "#FE0000"
+        - value: "* Non Calibrato"
+          icon: mdi:alert-outline
+          icon_color: "#F47A00"
         - value: "Scenario Notte*"
           icon: mdi:weather-night
           icon_color: "#55C1E5"

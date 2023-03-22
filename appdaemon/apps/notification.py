@@ -87,6 +87,10 @@ noty_message={
   "LOW_SIGNAL": {
    "label": "Segnale Basso #ENTITY#",
    "message": "Il sensore #ENTITY# ha poco segnale."
+  },
+  "NOT_CALIBRATED": {
+   "label": "#ENTITY# Non Calibrato",
+   "message": "Il sensore #ENTITY# si recalibrerà a breve."
   }
 }
 
@@ -209,6 +213,10 @@ class Notification(hass.Hass):
           return self.sendBatteryNotification(code, label, kwargs["entity_id"])
         if "SIGNAL" in code:
           return self.sendSignalNotification(code, label, kwargs["entity_id"])
+        if "NOT_CALIBRATED" in code:
+          entity = self.get_state(kwargs["entity_id"], attribute="friendly_name")
+          label = label.replace("#ENTITY#", entity)
+          extra_info = noty_message[code]["message"].replace("#ENTITY#", entity)
         if "HEATING" in code:
           if "comfort_temp" in kwargs and kwargs["comfort_temp"] != None:
             if "TEMP_REACHED" in code:

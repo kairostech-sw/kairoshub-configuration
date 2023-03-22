@@ -69,10 +69,12 @@ class KairoshubDevices(hass.Hass):
   def rollersCalibrate(self, event_name, data, kwargs):
     devices = self.get_state("sensor", copy=False)
     calibrateAll = "ALL" in event_name
+    self.log("Checking Rollers to calibrate", level="INFO")
 
     for device in devices:
       if re.search("^sensor\.rs.*\d{4}$",device) and self.get_state(device) != "unknown" and self.get_state(device) != "unavailable":
         if calibrateAll or not self.get_state(device, attribute="calibrated"):
+          self.fire_event("AD_KAIROSHUB_NOTIFICATION", ncode="NOT_CALIBRATED", sender="HUB", severity="NOTICE", entity=device)
           device_name = device.split(".")[1].upper()
           self.log("Calibrating Shelly %s", device_name, level="INFO")
           self.fire_event("AD_MQTT_PUBLISH", topic=f"shellies/{device_name}/roller/0/command", payload="rc")
@@ -80,11 +82,13 @@ class KairoshubDevices(hass.Hass):
   def trvsCalibrate(self, event_name, data, kwargs):
     devices = self.get_state("sensor", copy=False)
     calibrateAll = "ALL" in event_name
+    self.log("Checking TRVs to calibrate", level="INFO")
 
     for device in devices:
       if re.search("^sensor\.tv.*\d{4}$",device) and self.get_state(device) != "unknown" and self.get_state(device) != "unavailable":
         if calibrateAll or not self.get_state(device, attribute="calibrated"):
           ip = self.get_state(device, attribute="ip")
+          self.fire_event("AD_KAIROSHUB_NOTIFICATION", ncode="NOT_CALIBRATED", sender="HUB", severity="NOTICE", entity=device)
           self.log("Calibrating Shelly %s", device.split(".")[1].upper(), level="INFO")
           self.HTTPCommand(ip, url="/calibrate")
 
