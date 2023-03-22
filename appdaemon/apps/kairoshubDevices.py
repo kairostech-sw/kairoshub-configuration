@@ -1,6 +1,7 @@
 import hassapi as hass
 import re
 import json
+import http.client
 
 class KairoshubDevices(hass.Hass):
 
@@ -11,6 +12,8 @@ class KairoshubDevices(hass.Hass):
     self.listen_event(self.signalNotification, "AD_SHELLY_SIGNAL_CHECK")
     self.listen_event(self.rollersCalibrate, "AD_ROLLERS_RECALIBRATE")
     self.listen_event(self.rollersCalibrate, "AD_ROLLERS_RECALIBRATE_ALL")
+    self.listen_event(self.trvsCalibrate, "AD_TRVS_RECALIBRATE")
+    self.listen_event(self.trvsCalibrate, "AD_TRVS_RECALIBRATE_ALL")
 
   def installedDevices(self, event_name, data, kwargs):
 
@@ -73,3 +76,19 @@ class KairoshubDevices(hass.Hass):
           device_name = device.split(".")[1].upper()
           self.log("Calibrating Shelly %s", device_name, level="INFO")
           self.fire_event("AD_MQTT_PUBLISH", topic=f"shellies/{device_name}/roller/0/command", payload="rc")
+
+  def trvsCalibrate(self, event_name, data, kwargs):
+    devices = self.get_state("sensor", copy=False)
+    calibrateAll = "ALL" in event_name
+
+    for device in devices:
+      if re.search("^sensor\.tv.*\d{4}$",device) and self.get_state(device) != "unknown" and self.get_state(device) != "unavailable":
+        if calibrateAll or not self.get_state(device, attribute="calibrated"):
+          ip = self.get_state(device, attribute="ip")
+          self.log("Calibrating Shelly %s", device.split(".")[1].upper(), level="INFO")
+          self.HTTPCommand(ip, url="/calibrate")
+
+  def HTTPCommand(self, ip,url):
+    connection = http.client.HTTPConnection(ip)
+    connection.request("GET", url)
+    connection.close()
