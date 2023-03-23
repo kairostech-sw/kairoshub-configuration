@@ -4,6 +4,7 @@ filter:
     - entity_id: "/sensor.*\\d{2,4}$/"
   exclude:
     - state: "unknown"
+    - entity_id: "/.*[^l][z]/"
 card:
   type: custom:flex-table-card
   title: Informazioni Dispositivi
@@ -11,6 +12,7 @@ card:
   sort_by:
     - last_updated+
     - rssi+
+    - friendly_name+
   card_mod:
     style: |
       ha-card {
