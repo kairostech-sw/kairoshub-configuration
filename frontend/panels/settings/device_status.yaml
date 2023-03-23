@@ -1,7 +1,7 @@
 type: custom:auto-entities
 filter:
   include:
-    - entity_id: "/sensor.*\\d{4}$/"
+    - entity_id: "/sensor.*\\d{2,4}$/"
   exclude:
     - state: "unknown"
 card:
