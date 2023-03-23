@@ -40,7 +40,7 @@ class KairoshubLights(hass.Hass):
             self.fire_event("AD_KAIROSHUB_NOTIFICATION", sender=data["sender"], ncode="LIGHTS_ON", severity="NOTICE", kwargs={"zone": zone_id, "mode": "Programmato"})
             for light in lights:
                 self.call_service("light/turn_on", entity_id=light)
-        elif off_time<=now:
+        elif off_time<=now and self.get_state("light.group_lz{}".format(zone_id)) == "on":
             self.log("Turning off lights in zone %s",zone_id)
             self.fire_event("AD_KAIROSHUB_NOTIFICATION", sender=data["sender"], ncode="LIGHTS_OFF", severity="NOTICE", kwargs={"zone": zone_id, "mode": "Programmato"})
             for light in lights:

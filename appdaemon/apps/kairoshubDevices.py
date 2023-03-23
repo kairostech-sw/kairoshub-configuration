@@ -2,6 +2,7 @@ import hassapi as hass
 import re
 import json
 import http.client
+from base64 import b64encode
 
 class KairoshubDevices(hass.Hass):
 
@@ -94,5 +95,11 @@ class KairoshubDevices(hass.Hass):
 
   def HTTPCommand(self, ip,url):
     connection = http.client.HTTPConnection(ip)
+    username = "kairostech"
+    password = "kairostech!"
     connection.request("GET", url)
+    response = connection.getresponse()
+    if response.getcode() == 401:
+      headers = { 'Authorization' : "Basic "+ b64encode(f"{username}:{password}".encode('utf-8')).decode("ascii")}
+      connection.request("GET", url, headers=headers)
     connection.close()

@@ -62,10 +62,10 @@ custom_fields:
         - value: "Luci*"
           icon: mdi:lightbulb-off
           icon_color: "#000000"
-        - value: "Tapparelle Acceso*"
+        - value: "Tapparelle Aperte*"
           icon: mdi:window-shutter-open
           icon_color: var(--command-state-active-color)
-        - value: "Tapparelle*"
+        - value: "Tapparelle Chiuse*"
           icon: mdi:window-shutter
           icon_color: "#000000"
         - value: "Sistema*"
