@@ -14,7 +14,7 @@
       state: input_number.rollershutter_athome_position
     - event: AD_KAIROSHUB_NOTIFICATION
       event_data:
-        type: NOTICE
+        severity: NOTICE
         ncode: ROLLERS_OPENED
         sender: "*"
 - alias: CLOSE ROLLERS
@@ -33,6 +33,6 @@
       state: input_number.rollershutter_notathome_position
     - event: AD_KAIROSHUB_NOTIFICATION
       event_data:
-        type: NOTICE
+        severity: NOTICE
         ncode: ROLLERS_CLOSED
         sender: "*"

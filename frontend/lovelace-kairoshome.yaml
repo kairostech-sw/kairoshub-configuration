@@ -366,3 +366,108 @@ views:
       - type: vertical-stack
         cards:
           - !include hakairos-configuration/frontend/panels/zones/nightzone.yaml
+  - path: lights-program1
+    panel: true
+    visible: false
+    cards:
+      - type: vertical-stack
+        cards:
+          - !include hakairos-configuration/frontend/panels/lights/programs/p1.yaml
+  - path: lights-nightzone
+    panel: true
+    visible: false
+    cards:
+      - type: vertical-stack
+        cards:
+          - !include hakairos-configuration/frontend/panels/lights/nightzone.yaml
+  - path: lights-nightzone-room1
+    panel: true
+    visible: false
+    cards:
+      - type: vertical-stack
+        cards:
+          - !include hakairos-configuration/frontend/panels/lights/nightzone/room1.yaml
+  - path: lights-nightzone-room2
+    panel: true
+    visible: false
+    cards:
+      - type: vertical-stack
+        cards:
+          - !include hakairos-configuration/frontend/panels/lights/nightzone/room2.yaml
+  - path: lights-nightzone-room3
+    panel: true
+    visible: false
+    cards:
+      - type: vertical-stack
+        cards:
+          - !include hakairos-configuration/frontend/panels/lights/nightzone/room3.yaml
+  - path: lights-nightzone-room4
+    panel: true
+    visible: false
+    cards:
+      - type: vertical-stack
+        cards:
+          - !include hakairos-configuration/frontend/panels/lights/nightzone/room4.yaml
+  - path: lights-dayzone
+    panel: true
+    visible: false
+    cards:
+      - type: vertical-stack
+        cards:
+          - !include hakairos-configuration/frontend/panels/lights/dayzone.yaml
+  - path: lights-dayzone-room1
+    panel: true
+    visible: false
+    cards:
+      - type: vertical-stack
+        cards:
+          - !include hakairos-configuration/frontend/panels/lights/dayzone/room1.yaml
+  - path: lights-dayzone-room2
+    panel: true
+    visible: false
+    cards:
+      - type: vertical-stack
+        cards:
+          - !include hakairos-configuration/frontend/panels/lights/dayzone/room2.yaml
+  - path: lights-dayzone-room3
+    panel: true
+    visible: false
+    cards:
+      - type: vertical-stack
+        cards:
+          - !include hakairos-configuration/frontend/panels/lights/dayzone/room3.yaml
+  - path: lights-outdoor
+    panel: true
+    visible: false
+    cards:
+      - type: vertical-stack
+        cards:
+          - !include hakairos-configuration/frontend/panels/lights/outdoor.yaml
+  - path: lights-outdoor-room1
+    panel: true
+    visible: false
+    cards:
+      - type: vertical-stack
+        cards:
+          - !include hakairos-configuration/frontend/panels/lights/outdoor/room1.yaml
+  - path: lights-outdoor-room2
+    panel: true
+    visible: false
+    cards:
+      - type: vertical-stack
+        cards:
+          - !include hakairos-configuration/frontend/panels/lights/outdoor/room2.yaml
+  - path: lights-outdoor-room3
+    panel: true
+    visible: false
+    cards:
+      - type: vertical-stack
+        cards:
+          - !include hakairos-configuration/frontend/panels/lights/outdoor/room3.yaml
+  - path: lights-outdoor-room4
+    panel: true
+    visible: false
+    cards:
+      - type: vertical-stack
+        cards:
+          - !include hakairos-configuration/frontend/panels/lights/outdoor/room4.yaml

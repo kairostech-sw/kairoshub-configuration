@@ -1,18 +1,8 @@
 rollershutters:
   name: Tapparelle
   entities:
-    - group.rolershutters_legacy
     - group.rollershutters_day_zone
     - group.rollershutters_night_zone
-rolershutters_legacy:
-  name: Tapparelle legacy
-  entities:
-    - cover.RS01
-    - cover.RS02
-    - cover.RS03
-    - cover.RS04
-    - cover.RS05
-    - cover.RS06
 rollershutters_night_zone:
   name: Tapparelle Zona Notte
   entities:
