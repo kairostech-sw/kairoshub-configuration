@@ -31,12 +31,15 @@ card:
       name: Batteria
     - data: ip
       name: IP
-    - data: ssid
-      name: SSID
+    - data: calibrated
+      name: Calibrato
+      fmt: formatBoolean
     - data: rssi
       name: Segnale
+      fmt: signalIcon
     - data: has_update
       name: Aggiornamento
+      fmt: formatBoolean
     - data: fw_ver
       name: Ver. FW
       fmt: fw

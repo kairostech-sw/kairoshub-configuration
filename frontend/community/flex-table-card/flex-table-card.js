@@ -81,6 +81,36 @@ class CellFormatters {
         if (data != null)
         return data.replace("@","&shy;@")
     }
+    signalIcon(data) {
+        let icon,color;
+        if (data >= -50) {
+            icon = "mdi:wifi-strength-4"
+            color = "#00D100"
+        }
+        if (data < -50 && data >= -60) {
+            icon = "mdi:wifi-strength-3"
+            color = "#D5D232"
+        }
+        if (data < -60 && data >= -70) {
+            icon = "mdi:wifi-strength-2"
+            color = "#F47A00"
+        }
+        if (data < -70 && data >= -85) {
+            icon = "mdi:wifi-strength-1"
+            color = "#FE0000"
+        }
+        if (data < -85 || data == null) {
+            icon = "mdi:wifi-strength-off-outline"
+            color = "#FE0000"
+        }
+
+        return '<ha-icon icon="' + icon + '" style="color:'+ color +'"/>'
+    }
+    formatBoolean(data) {
+        if (data === null) return [];
+        if (data) return 'SI';
+        else return 'NO';
+    }
 
 }
 
