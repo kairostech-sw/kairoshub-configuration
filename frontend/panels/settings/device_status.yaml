@@ -1,53 +1,95 @@
-type: custom:auto-entities
-filter:
-  include:
-    - entity_id: "/sensor.*\\d{2,4}$/"
-  exclude:
-    - state: "unknown"
-    - entity_id: "/.*[^l][z]/"
-card:
-  type: custom:flex-table-card
-  title: Informazioni Dispositivi
-  clickable: false
-  sort_by:
-    - last_updated+
-    - rssi+
-    - friendly_name+
-  card_mod:
-    style: |
-      ha-card {
-        overflow: auto;
-        max-height: 500px;
-      }
-      ha-card::-webkit-scrollbar {
-        display: none !important;
-      }
-  columns:
-    - data: friendly_name
-      name: Nome
-    - data: state
-      name: Stato
-    - data: battery
-      name: Batteria
-    - data: ip
-      name: IP
-    - data: calibrated
-      name: Calibrato
-      fmt: formatBoolean
-    - data: rssi
-      name: Segnale
-      fmt: signalIcon
-    - data: has_update
-      name: Aggiornamento
-      fmt: formatBoolean
-    - data: fw_ver
-      name: Ver. FW
-      fmt: fw
-    - data: last_updated
-      name: Ultimo Aggiornamento Dati
-      fmt: locale
-  css:
-    table+: 'padding-top: 5px; padding-left: 0px;'
-    'tbody tr:nth-child(even)': 'background-color: #a2542f6;'
-    td.left: 'padding: 10px 10px 10px 10px'
-    th.left: 'padding: 0px 0px 10px 3px'
+type: vertical-stack
+cards:
+  - type: custom:flex-table-card
+    title: Informazioni Software
+    entities:
+      - sensor.kairos_home_state
+    clickable: false
+    card_mod:
+      style: |
+        ha-card {
+          overflow: auto;
+          max-height: 120px;
+        }
+        ha-card::-webkit-scrollbar {
+          display: none !important;
+        }
+    columns:
+      - data: system_owner
+        name: Intestatario
+      - data: system_id
+        name: ID
+      - data: system_key
+        name: Chiave
+      - data: kairoshub_version
+        name: Ver. Kairoshub
+      - data: kairoshub_configuration_version
+        name: Ver. Configuration
+      - data: ssid
+        name: SSID
+      - data: ip
+        name: IP
+      - data: rssi
+        name: Segnale
+        fmt: signalIcon
+    css:
+      h1: 'display: none;'
+      table+: >
+        'tbody tr:nth-child(even)': 'background-color: #a2542f6;'
+      td.left: 'padding: 10px 10px 10px 10px'
+      th.left: 'padding: 0px 0px 10px 3px'
+  - type: custom:auto-entities
+    filter:
+      include:
+        - entity_id: "/sensor.*\\d{2,4}$/"
+      exclude:
+        - state: "unknown"
+        - entity_id: "/.*[^l][z]/"
+    card:
+      type: custom:flex-table-card
+      title: Informazioni Dispositivi
+      clickable: false
+      sort_by:
+        - last_updated+
+        - rssi+
+        - friendly_name+
+      card_mod:
+        style: |
+          ha-card {
+            overflow: auto;
+            max-height: 315px;
+          }
+          ha-card::-webkit-scrollbar {
+            display: none !important;
+          }
+      columns:
+        - data: friendly_name
+          name: Nome
+        - data: state
+          name: Stato
+        - data: battery
+          name: Batteria
+        - data: ip
+          name: IP
+        - data: calibrated
+          name: Calibrato
+          fmt: formatBoolean
+        - data: rssi
+          name: Segnale
+          fmt: signalIcon
+        - data: has_update
+          name: Aggiornamento
+          fmt: formatBoolean
+        - data: fw_ver
+          name: Ver. FW
+          fmt: fw
+        - data: last_updated
+          name: Ultimo Aggiornamento Dati
+          fmt: locale
+      css:
+        h1: 'padding: 5px 0px 5px 15px'
+        table+: 'padding-top: 5px; padding-left: 0px;'
+        'tbody tr:nth-child(even)': 'background-color: #a2542f6;'
+        td.left: 'padding: 10px 10px 10px 10px'
+        th.left: 'padding: 0px 0px 10px 3px'
+        thead: 'position: sticky; top: 0;'

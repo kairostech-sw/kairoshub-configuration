@@ -1,5 +1,9 @@
 - platform: template
   sensors:
+    kairos_home_state:
+      friendly_name: Kairoshome State
+      value_template: >-
+        {{ states('sensor.system_state') }}
     pretty_date:
       friendly_name: Data di oggi
       value_template: >-
