@@ -8,8 +8,6 @@
         {% else %}
           off
         {% endif %}
-- platform: template
-  sensors:
     lz100_state:
       friendly_name: "Stato Luci Zona Notte"
       value_template: >-
@@ -18,8 +16,6 @@
         {% else %}
           off
         {% endif %}
-- platform: template
-  sensors:
     lz101_state:
       friendly_name: "Stato Luci Zona 101"
       value_template: >-
@@ -28,8 +24,6 @@
         {% else %}
           off
         {% endif %}
-- platform: template
-  sensors:
     lz102_state:
       friendly_name: "Stato Luci Zona 102"
       value_template: >-
@@ -38,8 +32,6 @@
         {% else %}
           off
         {% endif %}
-- platform: template
-  sensors:
     lz103_state:
       friendly_name: "Stato Luci Zona 103"
       value_template: >-
@@ -48,8 +40,6 @@
         {% else %}
           off
         {% endif %}
-- platform: template
-  sensors:
     lz104_state:
       friendly_name: "Stato Luci Zona 104"
       value_template: >-
@@ -58,8 +48,6 @@
         {% else %}
           off
         {% endif %}
-- platform: template
-  sensors:
     lz200_state:
       friendly_name: "Stato Luci Zona Giorno"
       value_template: >-
@@ -68,8 +56,6 @@
         {% else %}
           off
         {% endif %}
-- platform: template
-  sensors:
     lz201_state:
       friendly_name: "Stato Luci Zona 201"
       value_template: >-
@@ -78,8 +64,6 @@
         {% else %}
           off
         {% endif %}
-- platform: template
-  sensors:
     lz202_state:
       friendly_name: "Stato Luci Zona 202"
       value_template: >-
@@ -88,8 +72,6 @@
         {% else %}
           off
         {% endif %}
-- platform: template
-  sensors:
     lz203_state:
       friendly_name: "Stato Luci Zona 203"
       value_template: >-
@@ -98,8 +80,6 @@
         {% else %}
           off
         {% endif %}
-- platform: template
-  sensors:
     lz300_state:
       friendly_name: "Stato Luci Esterno"
       value_template: >-
@@ -108,8 +88,6 @@
         {% else %}
           off
         {% endif %}
-- platform: template
-  sensors:
     lz301_state:
       friendly_name: "Stato Luci Zona 301"
       value_template: >-
@@ -118,8 +96,6 @@
         {% else %}
           off
         {% endif %}
-- platform: template
-  sensors:
     lz302_state:
       friendly_name: "Stato Luci Zona 302"
       value_template: >-
@@ -128,8 +104,6 @@
         {% else %}
           off
         {% endif %}
-- platform: template
-  sensors:
     lz303_state:
       friendly_name: "Stato Luci Zona 303"
       value_template: >-
@@ -138,8 +112,6 @@
         {% else %}
           off
         {% endif %}
-- platform: template
-  sensors:
     lz304_state:
       friendly_name: "Stato Luci Zona 304"
       value_template: >-

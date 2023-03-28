@@ -109,7 +109,7 @@ custom_fields:
                       entity_id: light.group_lz301
                   hold_action:
                     action: navigate
-                    navigation_path: /lovelace-kairoshub/lights-nightzone-room1
+                    navigation_path: /lovelace-kairoshub/lights-outdoor-room1
             - type: custom:mod-card
               style: |
                 ha-card {
@@ -152,7 +152,7 @@ custom_fields:
                       entity_id: light.group_lz302
                   hold_action:
                     action: navigate
-                    navigation_path: /lovelace-kairoshub/lights-nightzone-room2
+                    navigation_path: /lovelace-kairoshub/lights-outdoor-room2
             - type: custom:mod-card
               style: |
                 ha-card {
@@ -195,7 +195,7 @@ custom_fields:
                       entity_id: light.group_lz303
                   hold_action:
                     action: navigate
-                    navigation_path: /lovelace-kairoshub/lights-nightzone-room3
+                    navigation_path: /lovelace-kairoshub/lights-outdoor-room3
             - type: custom:mod-card
               style: |
                 ha-card {
@@ -241,4 +241,4 @@ custom_fields:
                       entity_id: light.group_lz304
                   hold_action:
                     action: navigate
-                    navigation_path: /lovelace-kairoshub/lights-nightzone-room4
+                    navigation_path: /lovelace-kairoshub/lights-outdoor-room4

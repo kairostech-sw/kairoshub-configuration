@@ -60,11 +60,12 @@ class KairoshubLights(hass.Hass):
         white_light_topic = "shellies/LZ{}/white/0/command".format(light_id)
         color_light_topic = "shellies/LZ{}/color/0/command".format(light_id)
 
-        self.fire_event("AD_KAIROSHUB_NOTIFICATION", sender=data["data"]["sender"], ncode="LIGHTS_{}".format(action.upper()), severity="NOTICE", kwargs={"zone":light_id, "mode": None})
+        if action != "unavailable" or action != "unknown":
+            self.fire_event("AD_KAIROSHUB_NOTIFICATION", sender=data["data"]["sender"], ncode="LIGHTS_{}".format(action.upper()), severity="NOTICE", kwargs={"zone":light_id, "mode": None})
 
-        self.fire_event("AD_MQTT_PUBLISH",topic=switch_light_topic,payload=action)
-        self.fire_event("AD_MQTT_PUBLISH",topic=white_light_topic,payload=action)
-        self.fire_event("AD_MQTT_PUBLISH",topic=color_light_topic,payload=action)
+            self.fire_event("AD_MQTT_PUBLISH",topic=switch_light_topic,payload=action)
+            self.fire_event("AD_MQTT_PUBLISH",topic=white_light_topic,payload=action)
+            self.fire_event("AD_MQTT_PUBLISH",topic=color_light_topic,payload=action)
 
     def copyLights(self, event_name, data, kwargs):
 
