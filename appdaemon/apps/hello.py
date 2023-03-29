@@ -79,8 +79,8 @@ class HelloWorld(hass.Hass):
         hassState["system_owner"] = systemOwner
         hassState["system_id"] = systemCode
         hassState["ssid"] = ssid
-        hassState["signal"] = signal
-        hassState["ip_address"] = ip
+        hassState["rssi"] = signal
+        hassState["ip"] = ip
 
         if state=="MAINTENEANCE":
             self.turn_on("input_boolean.assistance_request")
