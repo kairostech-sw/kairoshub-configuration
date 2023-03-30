@@ -8,14 +8,14 @@ styles:
     - padding-top: 15px
 custom_fields:
   header:
-    card:  
-      type: 'custom:button-card'
+    card:
+      type: "custom:button-card"
       template: header_page_text
-      icon: 'mdi:bell'
-      name: 'NOTIFICHE'
+      icon: "mdi:bell"
+      name: "NOTIFICHE"
   commandbar:
     card:
-      type: 'custom:button-card'
+      type: "custom:button-card"
       template: command_bar
       style: |
         ha-card.button-card-main {
@@ -32,7 +32,7 @@ custom_fields:
           card:
             type: horizontal-stack
             cards:
-              - type: 'custom:button-card'
+              - type: "custom:button-card"
                 template: button_go_back
                 style: |
                   :host {
@@ -45,7 +45,7 @@ custom_fields:
       title: ""
       date_format: DD/MM/YY HH:mm
       history: 5
-      hidden_state: 
+      hidden_state:
         - ""
       icon: mdi:warning
       max_items: 10
@@ -126,4 +126,3 @@ custom_fields:
         div::-webkit-scrollbar {
           display: none !important;
         }
-            
