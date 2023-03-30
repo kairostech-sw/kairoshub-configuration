@@ -40,7 +40,7 @@ class KairoshubLights(hass.Hass):
             self.fire_event("AD_KAIROSHUB_NOTIFICATION", sender=data["sender"], ncode="LIGHTS_ON", severity="NOTICE", kwargs={"zone": zone_id, "mode": "Programmato"})
             for light in lights:
                 self.call_service("light/turn_on", entity_id=light)
-        elif off_time<=now:
+        elif off_time<=now and self.get_state("light.group_lz{}".format(zone_id)) == "on":
             self.log("Turning off lights in zone %s",zone_id)
             self.fire_event("AD_KAIROSHUB_NOTIFICATION", sender=data["sender"], ncode="LIGHTS_OFF", severity="NOTICE", kwargs={"zone": zone_id, "mode": "Programmato"})
             for light in lights:
@@ -60,11 +60,12 @@ class KairoshubLights(hass.Hass):
         white_light_topic = "shellies/LZ{}/white/0/command".format(light_id)
         color_light_topic = "shellies/LZ{}/color/0/command".format(light_id)
 
-        self.fire_event("AD_KAIROSHUB_NOTIFICATION", sender=data["data"]["sender"], ncode="LIGHTS_{}".format(action.upper()), severity="NOTICE", kwargs={"zone":light_id, "mode": None})
+        if action != "unavailable" or action != "unknown":
+            self.fire_event("AD_KAIROSHUB_NOTIFICATION", sender=data["data"]["sender"], ncode="LIGHTS_{}".format(action.upper()), severity="NOTICE", kwargs={"zone":light_id, "mode": None})
 
-        self.fire_event("AD_MQTT_PUBLISH",topic=switch_light_topic,payload=action)
-        self.fire_event("AD_MQTT_PUBLISH",topic=white_light_topic,payload=action)
-        self.fire_event("AD_MQTT_PUBLISH",topic=color_light_topic,payload=action)
+            self.fire_event("AD_MQTT_PUBLISH",topic=switch_light_topic,payload=action)
+            self.fire_event("AD_MQTT_PUBLISH",topic=white_light_topic,payload=action)
+            self.fire_event("AD_MQTT_PUBLISH",topic=color_light_topic,payload=action)
 
     def copyLights(self, event_name, data, kwargs):
 

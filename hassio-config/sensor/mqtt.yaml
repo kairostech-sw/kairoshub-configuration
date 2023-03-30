@@ -46,6 +46,18 @@
   platform: mqtt
   state_topic: "kairostech/system_code"
 
+- name: kairoshub_ssid
+  platform: mqtt
+  state_topic: "kairostech/ssid"
+
+- name: kairoshub_signal
+  platform: mqtt
+  state_topic: "kairostech/signal"
+
+- name: kairoshub_ip_address
+  platform: mqtt
+  state_topic: "kairostech/ip_address"
+
 - name: dayzone_temperature_0
   platform: mqtt
   state_topic: "shellies/TH01/ext_temperature/0"

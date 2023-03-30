@@ -59,7 +59,13 @@ custom_fields:
           color: var(--command-state-color)
           tap_action:
             action: call-service
-            service: cover.toggle
+            service: >
+              [[[
+                if (states['group.rollershutters'].state === 'on')
+                  return 'cover.close_cover';
+                else
+                  return 'cover.open_cover';
+              ]]]
             service_data:
               entity_id: all
           state:

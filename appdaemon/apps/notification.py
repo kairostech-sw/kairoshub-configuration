@@ -87,6 +87,10 @@ noty_message={
   "LOW_SIGNAL": {
    "label": "Segnale Basso #ENTITY#",
    "message": "Il sensore #ENTITY# ha poco segnale."
+  },
+  "NOT_CALIBRATED": {
+   "label": "#ENTITY# Non Calibrato",
+   "message": "Il sensore #ENTITY# si recalibrerà a breve."
   }
 }
 
@@ -141,7 +145,6 @@ class Notification(hass.Hass):
 
     def getMessage(self, code, entityRef):
         message = noty_message[code]["message"]
-
 
         if not message == "":
             if "#ENTITY#" in message and entityRef != "":
@@ -210,6 +213,10 @@ class Notification(hass.Hass):
           return self.sendBatteryNotification(code, label, kwargs["entity_id"])
         if "SIGNAL" in code:
           return self.sendSignalNotification(code, label, kwargs["entity_id"])
+        if "NOT_CALIBRATED" in code:
+          entity = self.get_state(kwargs["entity_id"], attribute="friendly_name")
+          label = label.replace("#ENTITY#", entity)
+          extra_info = noty_message[code]["message"].replace("#ENTITY#", entity)
         if "HEATING" in code:
           if "comfort_temp" in kwargs and kwargs["comfort_temp"] != None:
             if "TEMP_REACHED" in code:
@@ -222,7 +229,6 @@ class Notification(hass.Hass):
         if "LIGHTS" in code:
           if kwargs["zone"] != "all":
             zone = self.get_state("input_text.zn{}".format(kwargs["zone"]))
-            self.log(zone.find("Zona"))
             if zone.find("Zona") <0: zone = "Stanza "+ zone 
             label += " nella {}".format(zone)
             if "ON" in code and kwargs["mode"]: label += " secondo la modalità {}".format(kwargs["mode"])

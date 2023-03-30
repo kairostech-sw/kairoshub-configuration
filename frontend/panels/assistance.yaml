@@ -22,6 +22,7 @@ custom_fields:
         systemOwner: input_text.system_name
         systemState: sensor.system_state
         kairoshubSwVersion: sensor.kairoshub_sw_version
+        systemKey: input_text.system_key
       tap_action:
         action: none
       double_tap_action:

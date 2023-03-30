@@ -1,6 +1,8 @@
 import hassapi as hass
 import re
 import json
+import http.client
+from base64 import b64encode
 
 class KairoshubDevices(hass.Hass):
 
@@ -9,6 +11,10 @@ class KairoshubDevices(hass.Hass):
     self.listen_event(self.triggerAttributesUpdate, "AD_SHELLY_UPDATE")
     self.listen_event(self.setShellyAsleep, "AD_SHELLY_ASLEEP")
     self.listen_event(self.signalNotification, "AD_SHELLY_SIGNAL_CHECK")
+    self.listen_event(self.rollersCalibrate, "AD_ROLLERS_RECALIBRATE")
+    self.listen_event(self.rollersCalibrate, "AD_ROLLERS_RECALIBRATE_ALL")
+    self.listen_event(self.trvsCalibrate, "AD_TRVS_RECALIBRATE")
+    self.listen_event(self.trvsCalibrate, "AD_TRVS_RECALIBRATE_ALL")
 
   def installedDevices(self, event_name, data, kwargs):
 
@@ -60,3 +66,40 @@ class KairoshubDevices(hass.Hass):
 
       self.log("Setting %s to sleep", data["entity"], level="INFO")
       self.set_state(data["entity"], state="asleep", attributes=attr)
+
+  def rollersCalibrate(self, event_name, data, kwargs):
+    devices = self.get_state("sensor", copy=False)
+    calibrateAll = "ALL" in event_name
+    self.log("Checking Rollers to calibrate", level="INFO")
+
+    for device in devices:
+      if re.search("^sensor\.rs.*\d{4}$",device) and self.get_state(device) != "unknown" and self.get_state(device) != "unavailable":
+        if calibrateAll or not self.get_state(device, attribute="calibrated"):
+          self.fire_event("AD_KAIROSHUB_NOTIFICATION", ncode="NOT_CALIBRATED", sender="HUB", severity="NOTICE", entity=device)
+          device_name = device.split(".")[1].upper()
+          self.log("Calibrating Shelly %s", device_name, level="INFO")
+          self.fire_event("AD_MQTT_PUBLISH", topic=f"shellies/{device_name}/roller/0/command", payload="rc")
+
+  def trvsCalibrate(self, event_name, data, kwargs):
+    devices = self.get_state("sensor", copy=False)
+    calibrateAll = "ALL" in event_name
+    self.log("Checking TRVs to calibrate", level="INFO")
+
+    for device in devices:
+      if re.search("^sensor\.tv.*\d{4}$",device) and self.get_state(device) != "unknown" and self.get_state(device) != "unavailable":
+        if calibrateAll or not self.get_state(device, attribute="calibrated"):
+          ip = self.get_state(device, attribute="ip")
+          self.fire_event("AD_KAIROSHUB_NOTIFICATION", ncode="NOT_CALIBRATED", sender="HUB", severity="NOTICE", entity=device)
+          self.log("Calibrating Shelly %s", device.split(".")[1].upper(), level="INFO")
+          self.HTTPCommand(ip, url="/calibrate")
+
+  def HTTPCommand(self, ip,url):
+    connection = http.client.HTTPConnection(ip)
+    username = "kairostech"
+    password = "kairostech!"
+    connection.request("GET", url)
+    response = connection.getresponse()
+    if response.getcode() == 401:
+      headers = { 'Authorization' : "Basic "+ b64encode(f"{username}:{password}".encode('utf-8')).decode("ascii")}
+      connection.request("GET", url, headers=headers)
+    connection.close()

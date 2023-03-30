@@ -1,15 +1,17 @@
 import hassapi as hass
-import os, time
 
-KAIROSHUB_STATE_ENTITY              = "sensor.system_state"
-KAIROSHUB_STATE_DETAIL_ENTITY       = "sensor.system_state_detail"
-KAIROSHUB_SW_VERSION                = "sensor.kairoshub_sw_version"
-KAIROSHUB_SW_LAST_CHECK             = "sensor.kairoshub_sw_last_check"
+KAIROSHUB_STATE_ENTITY               = "sensor.system_state"
+KAIROSHUB_STATE_DETAIL_ENTITY        = "sensor.system_state_detail"
+KAIROSHUB_SW_VERSION                 = "sensor.kairoshub_sw_version"
+KAIROSHUB_SW_LAST_CHECK              = "sensor.kairoshub_sw_last_check"
 KAIROSHUB_CONFIGURATION_SW_VERSION   = "sensor.hakairos_configuration_sw_version"
 KAIROSHUB_CONFIGURATION_SW_LAST_CHECK= "sensor.hakairos_configuration_sw_last_check"
+KAIROSHUB_SSID                       = "sensor.kairoshub_ssid"
+KAIROSHUB_SIGNAL                     = "sensor.kairoshub_signal"
+KAIROSHUB_IP_ADDR                    = "sensor.kairoshub_ip_address"
 KAIROSHUB_SYSTEM_OWNER               = "input_text.system_name"
-KAIROSHUB_SYSTEM_CODE               = "input_text.system_code"
-KAIROSHUB_SYSTEM_KEY               = "input_text.system_key"
+KAIROSHUB_SYSTEM_CODE                = "input_text.system_code"
+KAIROSHUB_SYSTEM_KEY                 = "input_text.system_key"
 
 class HelloWorld(hass.Hass):
     def initialize(self):
@@ -64,6 +66,9 @@ class HelloWorld(hass.Hass):
         khSwLastCheck   = self.get_state(KAIROSHUB_SW_LAST_CHECK)
         khConfSwLastCheck   = self.get_state(KAIROSHUB_CONFIGURATION_SW_LAST_CHECK)
         khConfSwVersion     = self.get_state(KAIROSHUB_CONFIGURATION_SW_VERSION)
+        ssid = self.get_state(KAIROSHUB_SSID)
+        signal = self.get_state(KAIROSHUB_SIGNAL)
+        ip = self.get_state(KAIROSHUB_IP_ADDR)
 
         hassState["state"] = state
         hassState["stateDetail"] = stateDetail
@@ -73,6 +78,9 @@ class HelloWorld(hass.Hass):
         hassState["kairoshub_configuration_last_software_check"] = khConfSwLastCheck
         hassState["system_owner"] = systemOwner
         hassState["system_id"] = systemCode
+        hassState["ssid"] = ssid
+        hassState["rssi"] = signal
+        hassState["ip"] = ip
 
         if state=="MAINTENEANCE":
             self.turn_on("input_boolean.assistance_request")
@@ -83,6 +91,10 @@ class HelloWorld(hass.Hass):
             self.log("Restoring Assistance Button state. state: off",level="INFO")
 
         self.log("Retrieved global state for the application. state: %s", hassState, level="INFO")
+
+        hassCopy = hassState.copy()
+        state = hassCopy.pop("state")
+        self.set_state("sensor.kairos_home_state", state=state, attributes=hassCopy)
 
         eventData = {
             "eventType" : "HELLO",

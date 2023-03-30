@@ -1,24 +1,50 @@
-#Media Posizione Tapparelle Soggiorno
-- platform: min_max
-  name: RZ201
-  type: mean
-  entity_ids:
-    - cover.RS04
-    - cover.RS05
-    - cover.RS2011
-    - cover.RS2012
-#Media Posizione Tapparelle Cucina
-- platform: min_max
-  name: RZ202
-  type: mean
-  entity_ids:
-    - cover.RS06
-    - cover.RS2021
-    - cover.RS2022
-#Media Posizione Tapparelle Bagno 2
-- platform: min_max
-  name: RZ203
-  type: mean
-  entity_ids:
-    - cover.RS2031
-    - cover.RS2032
+- platform: template
+  sensors:
+    rz201:
+      value_template: >
+        {% set cover0 = state_attr('sensor.rs04', 'pos') | int(default=-1) %}
+        {% set cover1 = state_attr('sensor.rs05', 'pos') | int(default=-1) %}
+        {% set cover2 = state_attr('sensor.rs2011', 'pos') | int(default=-1) %}
+        {% set cover3 = state_attr('sensor.rs2012', 'pos') | int(default=-1) %}
+        {% set values = [cover0, cover1, cover2, cover3] %}
+        {% set ns = namespace(count = 0, sum=0) %}
+        {% for value in values | reject('lt', 0) %}
+          {% set ns.count = ns.count +1 %}
+          {% set ns.sum = ns.sum + value %}
+        {% endfor %}
+        {% if ns.count > 0 %}
+          {{ ns.sum / ns.count }}
+        {% else %}
+          unknown
+        {% endif %}
+    rz202:
+      value_template: >
+        {% set cover0 = state_attr('sensor.rs06', 'pos') | int(default=-1) %}
+        {% set cover1 = state_attr('sensor.rs2021', 'pos') | int(default=-1) %}
+        {% set cover2 = state_attr('sensor.rs2022', 'pos') | int(default=-1) %}
+        {% set values = [cover0, cover1, cover2] %}
+        {% set ns = namespace(count = 0, sum=0) %}
+        {% for value in values | reject('lt', 0) %}
+          {% set ns.count = ns.count +1 %}
+          {% set ns.sum = ns.sum + value %}
+        {% endfor %}
+        {% if ns.count > 0 %}
+          {{ ns.sum / ns.count }}
+        {% else %}
+          unknown
+        {% endif %}
+    rz203:
+      value_template: >
+        {% set cover1 = state_attr('sensor.rs2031', 'pos') | int(default=-1) %}
+        {% set cover2 = state_attr('sensor.rs2032', 'pos') | int(default=-1) %}
+        {% set values = [cover1, cover2] %}
+        {% set ns = namespace(count = 0, sum=0) %}
+        {% for value in values | reject('lt', 0) %}
+          {% set ns.count = ns.count +1 %}
+          {% set ns.sum = ns.sum + value %}
+        {% endfor %}
+        {% if ns.count > 0 %}
+          {{ ns.sum / ns.count }}
+        {% else %}
+          unknown
+        {% endif %}

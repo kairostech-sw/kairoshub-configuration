@@ -8,14 +8,14 @@ styles:
     - padding-top: 15px
 custom_fields:
   header:
-    card:  
-      type: 'custom:button-card'
+    card:
+      type: "custom:button-card"
       template: header_page_text
-      icon: 'mdi:bell'
-      name: 'NOTIFICHE'
+      icon: "mdi:bell"
+      name: "NOTIFICHE"
   commandbar:
     card:
-      type: 'custom:button-card'
+      type: "custom:button-card"
       template: command_bar
       style: |
         ha-card.button-card-main {
@@ -32,7 +32,7 @@ custom_fields:
           card:
             type: horizontal-stack
             cards:
-              - type: 'custom:button-card'
+              - type: "custom:button-card"
                 template: button_go_back
                 style: |
                   :host {
@@ -45,7 +45,7 @@ custom_fields:
       title: ""
       date_format: DD/MM/YY HH:mm
       history: 5
-      hidden_state: 
+      hidden_state:
         - ""
       icon: mdi:warning
       max_items: 10
@@ -62,10 +62,10 @@ custom_fields:
         - value: "Luci*"
           icon: mdi:lightbulb-off
           icon_color: "#000000"
-        - value: "Tapparelle Acceso*"
+        - value: "Tapparelle Aperte*"
           icon: mdi:window-shutter-open
           icon_color: var(--command-state-active-color)
-        - value: "Tapparelle*"
+        - value: "Tapparelle Chiuse*"
           icon: mdi:window-shutter
           icon_color: "#000000"
         - value: "Sistema*"
@@ -92,6 +92,9 @@ custom_fields:
         - value: "Segnale Assente*"
           icon: mdi:wifi-strength-alert-outline
           icon_color: "#FE0000"
+        - value: "* Non Calibrato"
+          icon: mdi:alert-outline
+          icon_color: "#F47A00"
         - value: "Scenario Notte*"
           icon: mdi:weather-night
           icon_color: "#55C1E5"
@@ -123,4 +126,3 @@ custom_fields:
         div::-webkit-scrollbar {
           display: none !important;
         }
-            
