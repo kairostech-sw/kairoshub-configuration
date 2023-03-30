@@ -62,9 +62,9 @@ custom_fields:
             service: >
               [[[
                 if (states['group.rollershutters'].state === 'on')
-                  return 'cover.turn_off';
+                  return 'cover.close_cover';
                 else
-                  return 'cover.turn_on';
+                  return 'cover.open_cover';
               ]]]
             service_data:
               entity_id: all
