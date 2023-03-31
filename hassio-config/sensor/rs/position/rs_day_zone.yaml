@@ -1,0 +1,30 @@
+#RS2011
+- platform: mqtt
+  unique_id: "rs2011_pos"
+  name: "RS2011_pos"
+  position_topic: "shellies/RS2011/roller/0/pos"
+#RS2012
+- platform: mqtt
+  unique_id: "rs2012_pos"
+  name: "RS2012_pos"
+  position_topic: "shellies/RS2012/roller/0/pos"
+#RS2021
+- platform: mqtt
+  unique_id: "rs2021_pos"
+  name: "RS2021_pos"
+  position_topic: "shellies/RS2021/roller/0/pos"
+#RS2022
+- platform: mqtt
+  unique_id: "rs2022_pos"
+  name: "RS2022_pos"
+  position_topic: "shellies/RS2022/roller/0/pos"
+#RS2031
+- platform: mqtt
+  unique_id: "rs2031_pos"
+  name: "RS2031_pos"
+  position_topic: "shellies/RS2031/roller/0/pos"
+#RS2032
+- platform: mqtt
+  unique_id: "rs2032_pos"
+  name: "RS2032_pos"
+  position_topic: "shellies/RS2032/roller/0/pos"
