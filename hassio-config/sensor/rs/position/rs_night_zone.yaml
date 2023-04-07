@@ -1,0 +1,40 @@
+#RS1011
+- platform: mqtt
+  unique_id: "rs1011_pos"
+  name: "RS1011_pos"
+  position_topic: "shellies/RS1011/roller/0/pos"
+#RS1012
+- platform: mqtt
+  unique_id: "rs1012_pos"
+  name: "RS1012_pos"
+  position_topic: "shellies/RS1012/roller/0/pos"
+#RS1021
+- platform: mqtt
+  unique_id: "rs1021_pos"
+  name: "RS1021_pos"
+  position_topic: "shellies/RS1021/roller/0/pos"
+#RS1022
+- platform: mqtt
+  unique_id: "rs1022_pos"
+  name: "RS1022_pos"
+  position_topic: "shellies/RS1022/roller/0/pos"
+#RS1031
+- platform: mqtt
+  unique_id: "rs1031_pos"
+  name: "RS1031_pos"
+  position_topic: "shellies/RS1031/roller/0/pos"
+#RS1032
+- platform: mqtt
+  unique_id: "rs1032_pos"
+  name: "RS1032_pos"
+  position_topic: "shellies/RS1032/roller/0/pos"
+#RS1041
+- platform: mqtt
+  unique_id: "rs1041_pos"
+  name: "RS1041_pos"
+  position_topic: "shellies/RS1041/roller/0/pos"
+#RS1042
+- platform: mqtt
+  unique_id: "rs1042_pos"
+  name: "RS1042_pos"
+  position_topic: "shellies/RS1042/roller/0/pos"

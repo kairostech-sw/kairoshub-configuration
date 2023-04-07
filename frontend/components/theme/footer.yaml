@@ -61,7 +61,7 @@ custom_fields:
             action: call-service
             service: >
               [[[
-                if (states['group.rollershutters'].state === 'on')
+                if (states['group.rollershutters'].state === 'open')
                   return 'cover.close_cover';
                 else
                   return 'cover.open_cover';

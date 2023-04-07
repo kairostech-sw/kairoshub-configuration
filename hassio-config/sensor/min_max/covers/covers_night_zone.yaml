@@ -1,65 +1,31 @@
-- platform: template
-  sensors:
-    rz101:
-      value_template: >
-        {% set cover0 = state_attr('sensor.rs01', 'pos') | int(default=-1) %}
-        {% set cover1 = state_attr('sensor.rs1011', 'pos') | int(default=-1) %}
-        {% set cover2 = state_attr('sensor.rs1012', 'pos') | int(default=-1) %}
-        {% set values = [cover0, cover1, cover2] %}
-        {% set ns = namespace(count = 0, sum=0) %}
-        {% for value in values | reject('lt', 0) %}
-          {% set ns.count = ns.count +1 %}
-          {% set ns.sum = ns.sum + value %}
-        {% endfor %}
-        {% if ns.count > 0 %}
-          {{ ns.sum / ns.count }}
-        {% else %}
-          unknown
-        {% endif %}
-    rz102:
-      value_template: >
-        {% set cover0 = state_attr('sensor.rs02', 'pos') | int(default=-1) %}
-        {% set cover1 = state_attr('sensor.rs1021', 'pos') | int(default=-1) %}
-        {% set cover2 = state_attr('sensor.rs1022', 'pos') | int(default=-1) %}
-        {% set values = [cover0, cover1, cover2] %}
-        {% set ns = namespace(count = 0, sum=0) %}
-        {% for value in values | reject('lt', 0) %}
-          {% set ns.count = ns.count +1 %}
-          {% set ns.sum = ns.sum + value %}
-        {% endfor %}
-        {% if ns.count > 0 %}
-          {{ ns.sum / ns.count }}
-        {% else %}
-          unknown
-        {% endif %}
-    rz103:
-      value_template: >
-        {% set cover0 = state_attr('sensor.rs03', 'pos') | int(default=-1) %}
-        {% set cover1 = state_attr('sensor.rs1031', 'pos') | int(default=-1) %}
-        {% set cover2 = state_attr('sensor.rs1032', 'pos') | int(default=-1) %}
-        {% set values = [cover0, cover1, cover2] %}
-        {% set ns = namespace(count = 0, sum=0) %}
-        {% for value in values | reject('lt', 0) %}
-          {% set ns.count = ns.count +1 %}
-          {% set ns.sum = ns.sum + value %}
-        {% endfor %}
-        {% if ns.count > 0 %}
-          {{ ns.sum / ns.count }}
-        {% else %}
-          unknown
-        {% endif %}
-    rz104:
-      value_template: >
-        {% set cover1 = state_attr('sensor.rs1041', 'pos') | int(default=-1) %}
-        {% set cover2 = state_attr('sensor.rs1042', 'pos') | int(default=-1) %}
-        {% set values = [cover1, cover2] %}
-        {% set ns = namespace(count = 0, sum=0) %}
-        {% for value in values | reject('lt', 0) %}
-          {% set ns.count = ns.count +1 %}
-          {% set ns.sum = ns.sum + value %}
-        {% endfor %}
-        {% if ns.count > 0 %}
-          {{ ns.sum / ns.count }}
-        {% else %}
-          unknown
-        {% endif %}
+#Media Posizione Tapparelle Letto 1
+- platform: min_max
+  name: RZ101
+  type: mean
+  entity_ids:
+    - sensor.rs01_pos
+    - sensor.rs1011_pos
+    - sensor.rs1012_pos
+#Media Posizione Tapparelle Letto 2
+- platform: min_max
+  name: RZ102
+  type: mean
+  entity_ids:
+    - sensor.rs02_pos
+    - sensor.rs1021_pos
+    - sensor.rs1022_pos
+#Media Posizione Tapparelle Letto 3
+- platform: min_max
+  name: RZ103
+  type: mean
+  entity_ids:
+    - sensor.rs03_pos
+    - sensor.rs1031_pos
+    - sensor.rs1032_pos
+#Media Posizione Tapparelle Bagno 1
+- platform: min_max
+  name: RZ104
+  type: mean
+  entity_ids:
+    - sensor.rs1041_pos
+    - sensor.rs1042_pos

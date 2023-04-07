@@ -1,0 +1,30 @@
+#RS01
+- platform: mqtt
+  unique_id: "rs01_pos"
+  name: "RS01_pos"
+  position_topic: "shellies/RS01/roller/0/pos"
+#RS02
+- platform: mqtt
+  unique_id: "rs02_pos"
+  name: "RS02_pos"
+  position_topic: "shellies/RS02/roller/0/pos"
+#RS03
+- platform: mqtt
+  unique_id: "rs03_pos"
+  name: "RS03_pos"
+  position_topic: "shellies/RS03/roller/0/pos"
+#RS04
+- platform: mqtt
+  unique_id: "rs04_pos"
+  name: "RS04_pos"
+  position_topic: "shellies/RS04/roller/0/pos"
+#RS05
+- platform: mqtt
+  unique_id: "rs05_pos"
+  name: "RS05_pos"
+  position_topic: "shellies/RS05/roller/0/pos"
+#RS06
+- platform: mqtt
+  unique_id: "rs06_pos"
+  name: "RS06_pos"
+  position_topic: "shellies/RS06/roller/0/pos"
