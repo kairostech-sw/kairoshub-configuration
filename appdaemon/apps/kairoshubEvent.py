@@ -39,7 +39,7 @@ class KairoshubEvent(hass.Hass):
                 self.fire_event("HA_ROLLERS_NOTATHOME_POSITION")
 
             if "SYSTEM_KEY_PUSH" in eventType:
-                self.fire_event("AD_SETTING_SYSTEM_KEY_PUSH")
+                self.fire_event("AD_SETTING_SYSTEM_KEY_PUSH", data=data)
 
             if "INSTALLED_DEVICES" in eventType:
                 self.fire_event("AD_INSTALLED_DEVICES", data=data)
