@@ -17,7 +17,13 @@ class KairoshubSettings(hass.Hass):
     def syncSettings(self, event_name, data, kwargs):
         self.log("Retrieving stored user settings")
 
-        userSettings={"hub_zones":{}, "rollers":{},"heating":{}}
+        userSettings={
+            "hub_zones":{},
+            "rollers":{},
+            "heating":{},
+            "light":{},
+            "scene":{}
+        }
         functionSettings={}
 
         systemCode           = self.get_state("input_text.system_code")
@@ -36,6 +42,10 @@ class KairoshubSettings(hass.Hass):
                 domain = "rollers"
             elif "heating" in entity:
                 domain = "heating"
+            elif "light" in entity:
+                domain = "light"
+            elif "scene" in entity:
+                domain = "scene"
 
             userSettings[domain][entity.split(".")[1]] = self.get_state(entity)
 
@@ -65,7 +75,7 @@ class KairoshubSettings(hass.Hass):
             "timestamp": timestamp
         }
 
-        self.log("Storing user settings on cloud..", level="INFO")
+        self.log("Storing user settings on cloud", level="INFO")
         self.fire_event("HAKAFKA_PRODUCER_PRODUCE", topic="TECHNICAL", message=eventData)
 
     def restoreSettings(self, event_name, data, kwargs):

@@ -35,11 +35,16 @@ class KairoshubMetrics(hass.Hass):
 
         entityMessage = {}
 
-        systemCode                  = self.get_state("input_text.system_code")
-        entityMessage["thermostat"] = self.get_state("sensor.temperatura")
-        entityMessage["roller"]    = self.get_state("sensor.tapparelle")
-        entityMessage["humidity"] = self.get_state("sensor.umidita")
-        entityMessage["power"]      = self.get_state("sensor.em_assorbimento")
+        systemCode             = self.get_state("input_text.system_code")
+        thermostat             = self.get_state("sensor.temperatura")
+        roller                 = self.get_state("sensor.tapparelle")
+        humidity               = self.get_state("sensor.umidita")
+        entityMessage["power"] = self.get_state("sensor.em_assorbimento")
+
+        if thermostat != "unknown": entityMessage["thermostat"]
+        if roller != "unknown": entityMessage["roller"]
+        if humidity != "unknown": entityMessage["humidity"]
+
         entityMessage["hub"] = {}
         entityMessage["hub"]["state"] = self.get_state("sensor.system_state")
         entityMessage["atHome"] = int(self.get_state("input_boolean.at_home") == "on")
@@ -86,7 +91,6 @@ class KairoshubMetrics(hass.Hass):
                     lights_state["state"] = entity
                     lights_state["last_update"] = self.get_state("light.group_lz"+room_id, attribute="last_updated")
                     lights.append(lights_state)
-
 
         if thermostats != []: entityMessage["thermostats"]= thermostats
         if rollers != []: entityMessage["rollers"]= rollers

@@ -7,6 +7,9 @@ kairoshub_settings:
     - input_number.rollershutter_athome_position
     - input_number.rollershutter_notathome_position
     - input_number.manual_heating_temp
+    - input_datetime.offset_sunset
+    - input_select.light_type
+    - input_select.scene_day
 kairoshub_functionalities:
   name: Funzionalità
   entities:
