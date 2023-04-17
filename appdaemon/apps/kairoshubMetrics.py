@@ -46,12 +46,14 @@ class KairoshubMetrics(hass.Hass):
         thermostats=[]
         rollers=[]
         humidity=[]
+        lights=[]
         for group in self.get_state("group.zones", attribute="entity_id"):
             zone = self.get_state(group, attribute="entity_id")
             for room in zone:
                 thermostats_state = {}
                 rollers_state = {}
                 humidity_state = {}
+                lights_state = {}
                 room_name = room.split(".")[1]
                 room_id = room_name.split("zn")[1]
 
@@ -76,9 +78,19 @@ class KairoshubMetrics(hass.Hass):
                     humidity_state["last_update"] = self.get_state("sensor.hz"+room_id, attribute="last_updated")
                     humidity.append(humidity_state)
 
+                entity_state = self.get_state("binary_sensor.lz"+room_id+"_state")
+                entity = self.get_state("light.group_lz"+room_id)
+                if entity_state == "on":
+                    lights_state["zone"] = room_name
+                    lights_state["state"] = entity
+                    lights_state["last_update"] = self.get_state("light.group_lz"+room_id, attribute="last_updated")
+                    lights.append(lights_state)
+
+
         entityMessage["thermostats"]= thermostats
         entityMessage["rollers"]= rollers
         entityMessage["humidities"]= humidity
+        entityMessage["lights"]= lights
 
         entityMessage["heating"] = {}
         entityMessage["heating"]["state"] = 1 if self.get_state("switch.sw_thermostat") == "on" else 0
