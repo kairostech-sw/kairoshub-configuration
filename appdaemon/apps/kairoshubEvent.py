@@ -44,6 +44,9 @@ class KairoshubEvent(hass.Hass):
             if "INSTALLED_DEVICES" in eventType:
                 self.fire_event("AD_INSTALLED_DEVICES", data=data)
 
+            if "RECALIBRATE" in eventType:
+                self.fire_event("AD_"+eventType)
+
         except Exception as e:
             self.log(e, level="ERROR")
         finally:

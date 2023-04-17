@@ -47,7 +47,7 @@ views:
         cards:
           - !include hakairos-configuration/frontend/panels/clima.yaml
   - title: LUCI
-    path: Luci
+    path: luci
     panel: true
     cards:
       - type: vertical-stack
@@ -61,7 +61,6 @@ views:
         cards:
           - !include hakairos-configuration/frontend/panels/settings.yaml
   - title: ASSISTENZA
-    icon:
     path: assistenza
     panel: true
     cards:
