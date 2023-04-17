@@ -1,16 +1,16 @@
-kafkaIntegration:
+kafka_integration:
   initial: true
-lightIntegration:
+light_integration:
   initial: false
-rollerIntegration:
+roller_integration:
   initial: false
-heatingIntegration:
+heating_integration:
   initial: false
-doorIntegration:
+door_integration:
   initial: false
-solarIntegration:
+solar_integration:
   initial: false
-securityIntegration:
+security_integration:
   initial: false
 assistance_request:
   name: Richiedi Assistenza

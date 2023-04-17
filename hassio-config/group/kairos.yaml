@@ -10,10 +10,10 @@ kairoshub_settings:
 kairoshub_functionalities:
   name: Funzionalità
   entities:
-    - input_boolean.kafkaIntegration
-    - input_boolean.lightIntegration
-    - input_boolean.rollerIntegration
-    - input_boolean.heatingIntegration
-    - input_boolean.doorIntegration
-    - input_boolean.solarIntegration
-    - input_boolean.securityIntegration
+    - input_boolean.kafka_integration
+    - input_boolean.light_integration
+    - input_boolean.roller_integration
+    - input_boolean.heating_integration
+    - input_boolean.door_integration
+    - input_boolean.solar_integration
+    - input_boolean.security_integration

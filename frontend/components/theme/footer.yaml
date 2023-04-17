@@ -27,7 +27,7 @@ custom_fields:
             action: call-service
             service: automation.trigger
             service_data:
-              entity_id: automation.scenario_giorno_notte_manuale
+              entity_id: automation.day_night_scene_manual
           styles:
             card:
               - padding-top: 3px
@@ -67,14 +67,22 @@ custom_fields:
             label: "Aperte"
             entity: group.rollershutters
             color: var(--command-state-color)
+            extra_styles: |
+              @keyframes blink-alert {
+                0% { opacity: 0.3; }
+                50% { opacity: 1; }
+                100% { opacity: 0.3; }
+              }
             tap_action:
               action: call-service
               service: >
                 [[[
                   if (states['group.rollershutters'].state === 'open')
                     return 'cover.close_cover';
-                  else
+                  else if (states['group.rollershutters'].state === 'closed')
                     return 'cover.open_cover';
+                  else
+                    return 'cover.stop_cover';
                 ]]]
               service_data:
                 entity_id: all
@@ -85,6 +93,13 @@ custom_fields:
               - value: "closed"
                 icon: mdi:window-shutter
                 label: Chiuse
+              - value: "moving"
+                icon: mdi:pause-octagon-outline
+                color: '#FF1500'
+                label: Ferma
+                styles:
+                  icon:
+                    - animation: blink-alert 2s ease infinite
             styles:
               card:
                 - padding-top: 3px
