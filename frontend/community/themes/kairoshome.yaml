@@ -1,4 +1,17 @@
 kairoshome - light:
+  card-mod-theme: kairoshome - light
+  card-mod-root-yaml: |
+    .: |
+      {% if  is_state("input_boolean.heating_integration", "off") %}
+        paper-tab[aria-label='CLIMA'] {
+          display: none;
+        }
+      {% endif %}
+      {% if  is_state("input_boolean.light_integration", "off") %}
+        paper-tab[aria-label='LUCI'] {
+          display: none;
+        }
+      {% endif %}
   ### Fonts ###
   primary-font-family: "'Open Sans','Rubik',Roboto,sans-serif"
   paper-font-common-base_-_font-family: "var(--primary-font-family)"
