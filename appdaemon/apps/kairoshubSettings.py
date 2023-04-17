@@ -153,6 +153,10 @@ class KairoshubSettings(hass.Hass):
                     domain = "input_number."
                 elif "zn" in entity:
                     domain ="input_text."
+                elif "light" in entity:
+                    domain = "light"
+                elif "scene" in entity:
+                    domain = "scene"
 
                 attributes = self.get_state(domain+entity, attribute="all").get("attributes", {})
                 self.set_state(domain+entity, state = userSettings[key][entity], attributes = attributes)

@@ -97,7 +97,7 @@
     - platform: state
       entity_id: group.lights
       to: 'on'
-      for: "{{states('input_datetime.offset_sunset')}}"
+      for: "{{states('input_datetime.light_offset_sunset')}}"
   condition:
     - condition: state
       entity_id: sun.sun
@@ -123,7 +123,7 @@
     - platform: state
       entity_id: group.lights
       to: 'on'
-      for: "{{states('input_datetime.offset_sunset')}}"
+      for: "{{states('input_datetime.light_offset_sunset')}}"
   condition:
     - condition: state
       entity_id: sun.sun
@@ -149,7 +149,7 @@
     - platform: state
       entity_id: group.lights
       to: 'on'
-      for: "{{states('input_datetime.offset_sunset')}}"
+      for: "{{states('input_datetime.light_offset_sunset')}}"
   condition:
     - condition: state
       entity_id: sun.sun
