@@ -19,7 +19,6 @@ views:
   - title: HOME
     path: home
     panel: true
-    show_name: true
     style: |
       #view {
         padding-left: 1% !important;

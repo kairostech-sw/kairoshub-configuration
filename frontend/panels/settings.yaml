@@ -1,71 +1,75 @@
-type: "custom:button-card"
+type: custom:button-card
 template: button_grid_settings
 custom_fields:
   header:
     card:
-      type: "custom:button-card"
+      type: custom:button-card
       template:
         - header_page_text
-      name: "IMPOSTAZIONI"
-      label: "Impostazioni /"
-      icon: "mdi:cog"
-  b1:
-    card:
-      type: "custom:button-card"
-      template:
-        - settings_card
-      icon: "mdi:thermometer"
-      name: Riscaldamento
-      tap_action:
-        action: navigate
-        navigation_path: /lovelace-kairoshub/impostazioni-riscaldamento
-  b2:
-    card:
-      type: "custom:button-card"
-      template:
-        - settings_card
-      icon: "mdi:window-shutter"
-      name: Tapparelle
-      tap_action:
-        action: navigate
-        navigation_path: /lovelace-kairoshub/impostazioni-tapparelle
-  b3:
-    card:
-      type: "custom:button-card"
-      template:
-        - settings_card
-      icon: "mdi:dots-grid"
-      name: Zone
-      tap_action:
-        action: navigate
-        navigation_path: /lovelace-kairoshub/impostazioni-zone
-  b4:
-    card:
-      type: "custom:button-card"
-      template:
-        - settings_card
-      icon: "mdi:amazon-alexa"
-      name: Alexa
-      tap_action:
-        action: navigate
-        navigation_path: /lovelace-kairoshub/impostazioni-alexa
-  b5:
-    card:
-      type: 'custom:button-card'
-      template:
-        - settings_card
-      icon: 'mdi:lightbulb'
-      name: Luci
-      tap_action:
-        action: navigate
-        navigation_path: /lovelace-kairoshub/impostazioni-luci
-  b6:
-    card:
-      type: 'custom:button-card'
-      template:
-        - settings_card
+      name: IMPOSTAZIONI
+      label: Impostazioni /
       icon: mdi:cog
-      name: Sistema
-      tap_action:
-        action: navigate
-        navigation_path: /lovelace-kairoshub/impostazioni-sistema
+  content:
+    card:
+      type: grid
+      columns: 4
+      square: false
+      cards:
+        - type: conditional
+          conditions:
+            - entity: input_boolean.heating_integration
+              state: "on"
+          card:
+            type: custom:button-card
+            template: settings_card
+            icon: mdi:thermometer
+            name: Riscaldamento
+            tap_action:
+              action: navigate
+              navigation_path: /lovelace-kairoshub/impostazioni-riscaldamento
+        - type: conditional
+          conditions:
+            - entity: input_boolean.roller_integration
+              state: "on"
+          card:
+            type: custom:button-card
+            template: settings_card
+            icon: mdi:window-shutter
+            name: Tapparelle
+            tap_action:
+              action: navigate
+              navigation_path: /lovelace-kairoshub/impostazioni-tapparelle
+        - type: conditional
+          conditions:
+            - entity: input_boolean.light_integration
+              state: "on"
+          card:
+            type: 'custom:button-card'
+            template: settings_card
+            icon: 'mdi:lightbulb'
+            name: Luci
+            tap_action:
+              action: navigate
+              navigation_path: /lovelace-kairoshub/impostazioni-luci
+
+        - type: custom:button-card
+          template: settings_card
+          icon: mdi:dots-grid
+          name: Zone
+          tap_action:
+            action: navigate
+            navigation_path: /lovelace-kairoshub/impostazioni-zone
+        - type: custom:button-card
+          template: settings_card
+          icon: mdi:amazon-alexa
+          name: Alexa
+          tap_action:
+            action: navigate
+            navigation_path: /lovelace-kairoshub/impostazioni-alexa
+        - type: 'custom:button-card'
+          template: settings_card
+          icon: mdi:cog
+          name: Sistema
+          tap_action:
+            action: navigate
+            navigation_path: /lovelace-kairoshub/impostazioni-sistema
