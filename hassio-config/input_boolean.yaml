@@ -1,5 +1,17 @@
 kafka_integration:
   initial: true
+light_integration:
+  initial: false
+roller_integration:
+  initial: false
+heating_integration:
+  initial: false
+door_integration:
+  initial: false
+solar_integration:
+  initial: false
+security_integration:
+  initial: false
 assistance_request:
   name: Richiedi Assistenza
   icon: mdi:hand-coin-outline
