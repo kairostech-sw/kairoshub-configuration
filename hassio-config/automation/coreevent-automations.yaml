@@ -1,7 +1,7 @@
 - alias: Kafka start
   trigger:
     - platform: state
-      entity_id: input_boolean.kafkaIntegration
+      entity_id: input_boolean.kafka_integration
       from: "off"
       to: "on"
   action:
@@ -10,7 +10,7 @@
 - alias: Kafka stop
   trigger:
     - platform: state
-      entity_id: input_boolean.kafkaIntegration
+      entity_id: input_boolean.kafka_integration
       from: "on"
       to: "off"
       for: '00:01:00' 

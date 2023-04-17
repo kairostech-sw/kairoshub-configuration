@@ -120,7 +120,7 @@ custom_fields:
               action: call-service
               service: automation.trigger
               service_data:
-                entity_id: automation.riscaldamento_manuale
+                entity_id: automation.manual_heating
             state:
               - value: "on"
                 icon: mdi:radiator

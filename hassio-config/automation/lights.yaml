@@ -1,11 +1,11 @@
-- alias: Light Toggle
+- alias: LIGHT TOGGLE
   trigger:
   action:
-    event: "AD_LIGHTS_TOGGLE"
+    event: AD_LIGHTS_TOGGLE
     event_data:
-      sender: "HUB"
+      sender: HUB
 
-- alias: Accensione Luci Zona
+- alias: LIGHT ZONE TOGGLE
   trigger:
     - platform: state
       entity_id:
@@ -21,7 +21,7 @@
         - light.group_lz303
         - light.group_lz304
   action:
-    event: "AD_LIGHT_ZONE_CONTROL"
+    event: AD_LIGHT_ZONE_CONTROL
     event_data:
       data:
         light: "{{ trigger.entity_id }}"
@@ -37,11 +37,11 @@
       from: 'off'
       to: 'on'
   action:
-    event: "AD_COPY_LIGHTS"
+    event: AD_COPY_LIGHTS
     event_data:
       zone: "{{trigger.entity_id}}"
 
-- alias: LIGHTS NIGHTZONE PROGRAM 1
+- alias: NIGHTZONE PROGRAM 1
   trigger:
     - platform: time_pattern
       minutes: /15
@@ -50,15 +50,15 @@
     entity_id: input_select.zn100
     state: Programmato
   action:
-    event: "AD_LIGHTS_PROGRAM"
+    event: AD_LIGHTS_PROGRAM
     event_data:
       zone: "100"
       on_time: "{{states('input_datetime.lights_nightzone_on_program1')}}"
       off_time: "{{states('input_datetime.lights_nightzone_off_program1')}}"
       mode: "{{states('input_select.zn100_days')}}"
-      sender: "HUB"
+      sender: HUB
 
-- alias: LIGHTS DAYZONE PROGRAM 1
+- alias: DAYZONE PROGRAM 1
   trigger:
     - platform: time_pattern
       minutes: /15
@@ -67,15 +67,15 @@
     entity_id: input_select.zn200
     state: Programmato
   action:
-    event: "AD_LIGHTS_PROGRAM"
+    event: AD_LIGHTS_PROGRAM
     event_data:
       zone: "200"
       on_time: "{{states('input_datetime.lights_dayzone_on_program1')}}"
       off_time: "{{states('input_datetime.lights_dayzone_off_program1')}}"
       mode: "{{states('input_select.zn200_days')}}"
-      sender: "HUB"
+      sender: HUB
 
-- alias: LIGHTS OUTDOOR PROGRAM 1
+- alias: OUTDOOR PROGRAM 1
   trigger:
     - platform: time_pattern
       minutes: /15
@@ -84,15 +84,15 @@
     entity_id: input_select.zn300
     state: Programmato
   action:
-    event: "AD_LIGHTS_PROGRAM"
+    event: AD_LIGHTS_PROGRAM
     event_data:
       zone: "300"
       on_time: "{{states('input_datetime.lights_outdoor_on_program1')}}"
       off_time: "{{states('input_datetime.lights_outdoor_off_program1')}}"
       mode: "{{states('input_select.zn300_days')}}"
-      sender: "HUB"
+      sender: HUB
 
-- alias: AUTOMATIC TURN OFF NIGHTZONE
+- alias: NIGHTZONE SUNSET TURN OFF
   trigger:
     - platform: state
       entity_id: group.lights
@@ -101,10 +101,10 @@
   condition:
     - condition: state
       entity_id: sun.sun
-      state: "below_horizon"
+      state: below_horizon
     - condition: state
       entity_id: input_select.zn100
-      state: "Automatico"
+      state: Automatico
   action:
     - service: light.turn_off
       target:
@@ -115,10 +115,10 @@
         ncode: LIGHTS_OFF
         severity: NOTICE
         kwargs:
-          zone: 100
+          zone: "100"
           mode: Automatica
 
-- alias: AUTOMATIC TURN OFF DAYZONE
+- alias: DAYZONE SUNSET TURN OFF
   trigger:
     - platform: state
       entity_id: group.lights
@@ -127,10 +127,10 @@
   condition:
     - condition: state
       entity_id: sun.sun
-      state: "below_horizon"
+      state: below_horizon
     - condition: state
       entity_id: input_select.zn200
-      state: "Automatico"
+      state: Automatico
   action:
     - service: light.turn_off
       target:
@@ -141,10 +141,10 @@
         ncode: LIGHTS_OFF
         severity: NOTICE
         kwargs:
-          zone: 200
+          zone: "200"
           mode: Automatica
 
-- alias: AUTOMATIC TURN OFF OUTDOOR
+- alias: OUTDOOR SUNSET TURN OFF
   trigger:
     - platform: state
       entity_id: group.lights
@@ -153,10 +153,10 @@
   condition:
     - condition: state
       entity_id: sun.sun
-      state: "below_horizon"
+      state: below_horizon
     - condition: state
       entity_id: input_select.zn300
-      state: "Automatico"
+      state: Automatico
   action:
     - service: light.turn_off
       target:
@@ -167,5 +167,5 @@
         ncode: LIGHTS_OFF
         severity: NOTICE
         kwargs:
-          zone: 300
+          zone: "300"
           mode: Automatica
