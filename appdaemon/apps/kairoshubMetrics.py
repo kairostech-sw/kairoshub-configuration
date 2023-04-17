@@ -42,6 +42,7 @@ class KairoshubMetrics(hass.Hass):
         entityMessage["power"]      = self.get_state("sensor.em_assorbimento")
         entityMessage["hub"] = {}
         entityMessage["hub"]["state"] = self.get_state("sensor.system_state")
+        entityMessage["atHome"] = int(self.get_state("input_boolean.at_home") == "on")
 
         thermostats=[]
         rollers=[]
@@ -87,13 +88,13 @@ class KairoshubMetrics(hass.Hass):
                     lights.append(lights_state)
 
 
-        entityMessage["thermostats"]= thermostats
-        entityMessage["rollers"]= rollers
-        entityMessage["humidities"]= humidity
-        entityMessage["lights"]= lights
+        if thermostats != []: entityMessage["thermostats"]= thermostats
+        if rollers != []: entityMessage["rollers"]= rollers
+        if humidity != []: entityMessage["humidities"]= humidity
+        if lights != []: entityMessage["lights"]= lights
 
         entityMessage["heating"] = {}
-        entityMessage["heating"]["state"] = 1 if self.get_state("switch.sw_thermostat") == "on" else 0
+        entityMessage["heating"]["state"] = int(self.get_state("switch.sw_thermostat") == "on")
 
         active_program = heatingManager.HeatingManager.isHeatingProgramOn(self)
         if active_program > 0:
