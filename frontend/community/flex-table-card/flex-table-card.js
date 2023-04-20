@@ -77,11 +77,15 @@ class CellFormatters {
         return new Date(data).toLocaleString().replace(",","");
     }
     fw(data) {
-        console.log(data)
         if (data != null)
         return data.replace("@","&shy;@")
     }
+    version(data) {
+        if (data != null)
+        return this.fw(data.replace("#", "<br>"))
+    }
     signalIcon(data) {
+        console.log(data)
         let icon,color;
         if (data >= -50) {
             icon = "mdi:wifi-strength-4"
@@ -99,7 +103,7 @@ class CellFormatters {
             icon = "mdi:wifi-strength-1"
             color = "#FE0000"
         }
-        if (data < -85 || data == null) {
+        if (data < -85 || data == null || data == "unavailable") {
             icon = "mdi:wifi-strength-off-outline"
             color = "#FE0000"
         }
@@ -383,7 +387,8 @@ class DataRow {
             let x = raw;
             let cfg = col_cfgs[idx];
             let content = (cfg.modify) ? eval(cfg.modify) : x;
-            if (content.length == 0) content = "n/a"
+            if (content.length == 0 || content.toLowerCase() === "unavailable")
+                content = "n/a"
 
             // check for undefined/null values and omit if strict set
             if (content === "undefined" || typeof content === "undefined" || content === null ||
