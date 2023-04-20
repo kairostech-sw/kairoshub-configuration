@@ -50,7 +50,8 @@ class KairoshubSettings(hass.Hass):
             userSettings[domain][entity.split(".")[1]] = self.get_state(entity)
 
         for entity in functionSettingsList:
-            functionSettings[entity.split(".")[1]]=self.get_state(entity)
+            entityName = self.toCamelCase(entity)
+            functionSettings[entityName]=self.get_state(entity)
 
         self.log("User settings: %s", userSettings, level="DEBUG")
         self.log("Functionalities: %s", functionSettings, level="DEBUG")
@@ -90,11 +91,11 @@ class KairoshubSettings(hass.Hass):
             timestamp = self.get_state("sensor.date_time_iso")
             with open(file) as f:
                 jsonData=json.load(f)
-                userSettings=jsonData["userSettings"] if "userSettings" in jsonData else ""
-                functionSettings=jsonData["functionSettings"] if "functionSettings" in jsonData else ""
                 if "lifetime" not in jsonData or jsonData["lifetime"] < timestamp:
                     self.log("User settings expired.", level="INFO")
                     raise FileNotFoundError
+                userSettings=jsonData["userSettings"] if "userSettings" in jsonData else ""
+                functionSettings=jsonData["functionSettings"] if "functionSettings" in jsonData else ""
                 self.__updateSensors(userSettings, functionSettings)
                 self.log("User settings restored by filesystem",level="INFO")
 
@@ -147,22 +148,27 @@ class KairoshubSettings(hass.Hass):
 
         for key in userSettings:
             for entity in userSettings[key]:
-                if "rollers" in entity:
-                    domain = "input_number."
-                elif "heating" in entity:
-                    domain = "input_number."
-                elif "zn" in entity:
-                    domain ="input_text."
-                elif "light" in entity:
-                    domain = "light"
-                elif "scene" in entity:
-                    domain = "scene"
-
-                attributes = self.get_state(domain+entity, attribute="all").get("attributes", {})
+                domain = self.getEntityDomain(entity)
+                attributes = self.get_state(domain+entity, attribute="attributes")
                 self.set_state(domain+entity, state = userSettings[key][entity], attributes = attributes)
 
         for entity in functionSettings:
-            self.set_state("input_boolean."+entity, state = functionSettings[entity])
+            entityName = self.toSnakeCase(entity)
+            state = ("off", "on")[functionSettings[entity]]
+            self.set_state("input_boolean."+entityName, state = state)
+
+    def getEntityDomain(self, entity):
+
+        if "rollers" in entity or "heating" in entity:
+            domain = "input_number."
+        elif "zn" in entity:
+            domain ="input_text."
+        elif "offset_sunset" in entity:
+            domain = "input_datetime."
+        elif "scene" in entity or "light_type" in entity:
+            domain = "input_select."
+
+        return domain
 
     def copyPrograms(self, event_name, data, kwargs):
 
@@ -224,3 +230,14 @@ class KairoshubSettings(hass.Hass):
         self.set_state("input_text.system_key", state=key)
 
         self.log("Key updated", level="INFO")
+
+    def toCamelCase(self, text):
+        text = text.split(".")[1].split("_")
+        if len(text) > 1:
+            text = text[0] + "".join(letter.capitalize() for letter in text[1:])
+        return text
+    
+    def toSnakeCase(self, text):
+        return ''.join(['_'+i.lower() if i.isupper()
+            else i for i in text]).lstrip('_')
+        

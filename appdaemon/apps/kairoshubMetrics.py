@@ -41,9 +41,9 @@ class KairoshubMetrics(hass.Hass):
         humidity               = self.get_state("sensor.umidita")
         entityMessage["power"] = self.get_state("sensor.em_assorbimento")
 
-        if thermostat != "unknown": entityMessage["thermostat"]
-        if roller != "unknown": entityMessage["roller"]
-        if humidity != "unknown": entityMessage["humidity"]
+        if thermostat != "unknown": entityMessage["thermostat"] = thermostat
+        if roller != "unknown": entityMessage["roller"] = roller
+        if humidity != "unknown": entityMessage["humidity"] = humidity
 
         entityMessage["hub"] = {}
         entityMessage["hub"]["state"] = self.get_state("sensor.system_state")
