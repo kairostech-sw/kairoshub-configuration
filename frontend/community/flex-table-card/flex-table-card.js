@@ -85,7 +85,6 @@ class CellFormatters {
         return this.fw(data.replace("#", "<br>"))
     }
     signalIcon(data) {
-        console.log(data)
         let icon,color;
         if (data >= -50) {
             icon = "mdi:wifi-strength-4"
