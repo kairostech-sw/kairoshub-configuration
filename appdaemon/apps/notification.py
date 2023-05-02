@@ -36,11 +36,15 @@ noty_message={
     "label": "Batteria Quasi Scarica Sensore Umidità #ENTITY#",
     "message":"Il sensore della temperatura e umidità #ENTITY# si sta scaricando. Sostituire le pile nel retro del sensore. \n\nPuoi ricoscere il sensore dal nome applicato nella parte retrostante."
     },
+  "ROLLERS_OPEN": {
+    "label": "Tapparelle Aperte",
+    "message":"Le tapparelle sono state aperte correttamente."
+    },
   "ROLLERS_OPENED": {
     "label": "Tapparelle Aperte",
     "message":"Le tapparelle sono state aperte correttamente."
     },
-  "ROLLERS_OPENED_ERROR": {
+  "ROLLERS_OPEN_ERROR": {
   "label": "Errore Tapparelle",
   "message":"Si è verificato un problema nell'apertura delle tapparelle."
   },
@@ -232,6 +236,11 @@ class Notification(hass.Hass):
             if zone.find("Zona") <0: zone = "Stanza "+ zone 
             label += " nella {}".format(zone)
             if "ON" in code and kwargs["mode"]: label += " secondo la modalità {}".format(kwargs["mode"])
+        if "ROLLERS" in code:
+          if "pos" in kwargs:
+            pos = int(float(kwargs["pos"]))
+            state, pos = (("chiuse",100-pos), ("aperte", pos))["OPEN" in code]
+            more_info = f"Tapparelle sono state {state} al {pos}%"
 
         if "SCENE_NIGHT" in code:
           label += " {}".format(kwargs["mode"])
@@ -260,7 +269,7 @@ class Notification(hass.Hass):
               else:
                 extra_info = extra_info[:-2] + " e "
                 extra_info+=zone
-          pos = 100.0-int(float(kwargs["rollers"]))
+          pos = int(float(kwargs["rollers"]))
           more_info = f"Tapparelle sono state aperte al {pos}%"
 
         if notification["sender"] != "HUB": label += " da Assistente Remoto"

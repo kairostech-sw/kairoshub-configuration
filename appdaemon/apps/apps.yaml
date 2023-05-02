@@ -28,3 +28,6 @@ kairoshub_devices:
 kairoshub_scenes:
   module: kairoshubScenes
   class: KairoshubScenes
+kairoshub_rollers:
+  module: kairoshubRollers
+  class: KairoshubRollers

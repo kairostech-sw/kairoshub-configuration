@@ -25,7 +25,6 @@ rollershutter_athome_position:
   max: 100
   step: 5
   initial: 100
-  unit_of_measurement: "%"
   mode: slider
   name: Posizione In Casa
   icon: mdi:window-shutter
@@ -34,7 +33,6 @@ rollershutter_notathome_position:
   max: 100
   step: 5
   initial: 0
-  unit_of_measurement: "%"
   mode: slider
   name: Posizione Fuori Casa
   icon: mdi:window-shutter-open

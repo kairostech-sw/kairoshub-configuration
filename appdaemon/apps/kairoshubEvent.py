@@ -33,10 +33,10 @@ class KairoshubEvent(hass.Hass):
                 self.fire_event("HA_ASSSISTANCE_OFF")
 
             if "ROLLERS_ATHOME_POSITION" in eventType:
-                self.fire_event("HA_ROLLERS_ATHOME_POSITION")
+                self.fire_event("AD_SET_ROLLERS_POS", data={"mode": "athome", "event": event })
 
             if "ROLLERS_NOTATHOME_POSITION" in eventType:
-                self.fire_event("HA_ROLLERS_NOTATHOME_POSITION")
+                self.fire_event("AD_SET_ROLLERS_POS",  data={"mode": "notathome", "event": event })
 
             if "SYSTEM_KEY_PUSH" in eventType:
                 self.fire_event("AD_SETTING_SYSTEM_KEY_PUSH", data=data)

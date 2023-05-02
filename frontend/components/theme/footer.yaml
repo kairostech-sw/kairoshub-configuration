@@ -75,17 +75,9 @@ custom_fields:
               }
             tap_action:
               action: call-service
-              service: >
-                [[[
-                  if (states['group.rollershutters'].state === 'open')
-                    return 'cover.close_cover';
-                  else if (states['group.rollershutters'].state === 'closed')
-                    return 'cover.open_cover';
-                  else
-                    return 'cover.stop_cover';
-                ]]]
+              service: automation.trigger
               service_data:
-                entity_id: all
+                entity_id: automation.control_rollers
             state:
               - value: "open"
                 icon: mdi:window-shutter-open
