@@ -21,6 +21,10 @@ at_home:
   name: In Casa
 night:
   name: Notte
+calibrate_rollers:
+  name: Calibrazione Tapparelle
+calibrate_trvs:
+  name: Calibrazione Teste Termostatiche
 heater_program1:
   name: Programma 1
 heater_program2:

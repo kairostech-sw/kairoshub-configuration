@@ -36,3 +36,9 @@
         severity: NOTICE
         ncode: ROLLERS_CLOSED
         sender: "*"
+- alias: CALIBRATE ROLLERS
+  trigger:
+    - platform: event
+      event_type: HA_CALIBRATE_ROLLERS
+  action:
+    event: AD_ROLLERS_RECALIBRATE

@@ -290,3 +290,10 @@
     event: AD_COPY_PROGRAMS
     event_data:
       program: "{{trigger.entity_id}}"
+
+- alias: CALIBRATE TRVS
+  trigger:
+    - platform: event
+      event_type: HA_CALIBRATE_TRVS
+  action:
+    event: AD_TRVS_RECALIBRATE
