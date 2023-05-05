@@ -11,7 +11,8 @@ class HeatingManager(hass.Hass):
     maxRetry = 5
     def initialize(self):
         self.listen_event(self.handleHeatingProgram,"HA_MANAGE_HEATER")
-        self.listen_event(self.handleManualHeating, "AD_HEATING")
+        self.listen_event(self.handleManualHeating, "AD_HEATING_ON")
+        self.listen_event(self.handleManualHeating, "AD_HEATING_OFF")
         self.listen_event(self.turnProgramOff,"AD_PROGRAM_OFF")
 
     def handleManualHeating(self, event_name, data, kwargs):
@@ -19,9 +20,9 @@ class HeatingManager(hass.Hass):
         if comfort_temp <= self.get_state("sensor.temperatura"):
             self.fire_event("AD_KAIROSHUB_NOTIFICATION",sender=data["data"]["event"]["sender"], ncode="HEATING_TEMP_REACHED", severity="NOTICE", kwargs={"program": int(data["data"]["program"][-1]), "comfort_temp": comfort_temp})
             return
-        if self.get_state("switch.sw_thermostat") =="off":
+        if "ON" in event_name:
             self.turnHeatingOn(data['data'])
-        else:
+        elif "OFF" in event_name:
             self.turnProgramOff(event_name, data['data'], kwargs)
 
     def handleHeatingProgram(self, event_name, data, kwargs):

@@ -228,15 +228,26 @@
       event_data:
         program: "{{ trigger.entity_id }}"
 
-- alias: MANUAL HEATING
+- alias: MANUAL HEATING ON
   trigger:
   action:
-    - event: AD_HEATING
+    - event: AD_HEATING_ON
       event_data:
         data:
           program: prog0
           event:
-            eventType: AD_HEATING
+            eventType: AD_HEATING_ON
+            sender: HUB
+
+- alias: MANUAL HEATING OFF
+  trigger:
+  action:
+    - event: AD_HEATING_OFF
+      event_data:
+        data:
+          program: prog0
+          event:
+            eventType: AD_HEATING_OFF
             sender: HUB
 
 - alias: COMFORT TEMP REACHED

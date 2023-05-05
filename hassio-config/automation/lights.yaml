@@ -1,7 +1,14 @@
-- alias: LIGHT TOGGLE
+- alias: LIGHT TURN ON
   trigger:
   action:
-    event: AD_LIGHTS_TOGGLE
+    event: AD_LIGHTS_ON
+    event_data:
+      sender: HUB
+
+- alias: LIGHT TURN OFF
+  trigger:
+  action:
+    event: AD_LIGHTS_OFF
     event_data:
       sender: HUB
 
@@ -20,6 +27,7 @@
         - light.group_lz302
         - light.group_lz303
         - light.group_lz304
+      to: group.lights
   action:
     event: AD_LIGHT_ZONE_CONTROL
     event_data:

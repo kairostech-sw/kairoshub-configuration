@@ -55,7 +55,13 @@ custom_fields:
               action: call-service
               service: automation.trigger
               service_data:
-                entity_id: automation.light_toggle
+                entity_id: >
+                  [[[
+                    if (states['group.lights'].state == 'on')
+                      return 'automation.light_turn_off'
+                    else if (states['group.lights'].state == 'off')
+                      return 'automation.light_turn_on'
+                  ]]]
         - type: conditional
           conditions:
             - entity: input_boolean.roller_integration
@@ -127,7 +133,13 @@ custom_fields:
               action: call-service
               service: automation.trigger
               service_data:
-                entity_id: automation.manual_heating
+                entity_id: >
+                  [[[
+                    if (states['switch.sw_thermostat'].state == 'on')
+                      return 'automation.manual_heating_off'
+                    else if (states['switch.sw_thermostat'].state == 'off')
+                      return 'automation.manual_heating_on'
+                  ]]]
             state:
               - value: "on"
                 icon: mdi:radiator

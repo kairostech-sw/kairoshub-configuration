@@ -39,7 +39,7 @@ class KairoshubRollers(hass.Hass):
 
       position = int(float(self.get_state(f"input_number.rollershutter_{mode}_position")))
 
-      self.log("Setting Rollers position at %s\%", position)
+      self.log(f"Setting Rollers position at {position}%")
       self.call_service("cover/set_cover_position",entity_id="group.rollershutters", position=position)
 
       state = ("CLOSED","OPEN")["athome" == mode]

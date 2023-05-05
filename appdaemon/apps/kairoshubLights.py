@@ -7,17 +7,27 @@ class KairoshubLights(hass.Hass):
         self.listen_event(self.lightControl, "AD_LIGHT_ZONE_CONTROL")
         self.listen_event(self.copyLights, "AD_COPY_LIGHTS")
         self.listen_event(self.lightProgram, "AD_LIGHTS_PROGRAM")
-        self.listen_event(self.lightToggle, "AD_LIGHTS_TOGGLE")
+        self.listen_event(self.lightToggle, "AD_LIGHTS_ON")
+        self.listen_event(self.lightToggle, "AD_LIGHTS_OFF")
         self.listen_event(self.lightSceneAutomation, "AD_AUTOMATIC_LIGHTS")
 
+    def turnOn(self, sender):
+        self.log("Turning Lights on", level="INFO")
+        self.turn_on("group.lights")
+        self.fire_event("AD_KAIROSHUB_NOTIFICATION", sender=sender, ncode="LIGHTS_ON", severity="NOTICE", kwargs={"zone":"all"})
+
+    def turnOff(self, sender):
+        self.log("Turning Lights off", level="INFO")
+        self.turn_off("group.lights")
+        self.fire_event("AD_KAIROSHUB_NOTIFICATION", sender=sender, ncode="LIGHTS_OFF", severity="NOTICE", kwargs={"zone":"all"})
+
     def lightToggle(self, event_name, data, kwargs):
-        action = ("ON", "OFF")[self.get_state("group.lights") == "on"]
-        self.log("Turning %s lights", action, level="INFO")
-        self.toggle("group.lights")
-        if self.get_state("group.lights") == action:
-            self.fire_event("AD_KAIROSHUB_NOTIFICATION", sender=data["sender"], ncode="LIGHTS_{}".format(action), severity="NOTICE", kwargs={"zone":"all"})
-        else:
-            self.fire_event("AD_KAIROSHUB_NOTIFICATION", sender=data["sender"], ncode="LIGHTS_{}_ERROR".format(action), severity="ALERT")
+        sender = data["data"]["sender"] if "data" in data else data["sender"]
+
+        if "ON" in event_name:
+            self.turnOn(sender)
+        elif "OFF" in event_name:
+            self.turnOff(sender)
 
     def lightProgram(self, event_name, data, kwargs):
         now = datetime.strptime(self.get_state("sensor.date_time_iso"),"%Y-%m-%dT%H:%M:%S")

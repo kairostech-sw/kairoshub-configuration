@@ -11,6 +11,7 @@ class KairoshubEvent(hass.Hass):
         try:
             eventType = data["eventType"]
             sender = data["sender"] if "sender" in data else ""
+            eventValue = data["eventValue"] if "eventValue" in data else ""
 
             event = {
                 "eventType": eventType,
@@ -20,11 +21,33 @@ class KairoshubEvent(hass.Hass):
             if "SETTINGS" in eventType:
                 self.fire_event("AD_"+ eventType, data=data)
 
-            if "HEATING_COMMAND_OFF" in eventType:
-                self.fire_event("AD_HEATING", data={"program": "prog0", "event": event})
-
             if "HEATING_COMMAND_ON" in eventType:
-                self.fire_event("AD_HEATING", data={"program": "prog0", "event": event})
+                self.fire_event("AD_HEATING_ON", data={"program": "prog0", "event": event})
+
+            if "HEATING_COMMAND_OFF" in eventType:
+                self.fire_event("AD_HEATING_OFF", data={"program": "prog0", "event": event})
+
+            # controlla stato di attivazione o avvia il programma?
+            if "HEATING_PROGRAM_COMMAND_ON" in eventType:
+                self.turn_on(f"input_boolean.heater_program{eventValue}")
+
+            if "HEATING_PROGRAM_COMMAND_OFF" in eventType:
+                self.turn_off(f"input_boolean.heater_program{eventValue}")
+
+            if "LIGHTS_COMMAND_ON" in eventType:
+                self.fire_event("AD_LIGHTS_ON", data=event)
+
+            if "LIGHTS_COMMAND_OFF" in eventType:
+                self.fire_event("AD_LIGHTS_OFF", data=event)
+
+            if "ATHOME_COMMAND_ON" in eventType:
+                self.turn_on("input_boolean.at_home")
+
+            if "ATHOME_COMMAND_OFF" in eventType:
+                self.turn_off("input_boolean.at_home")
+
+            if "SCENE_COMMAND_ACTIVATE" in eventType:
+                self.fire_event("AD_SCENES_DAY_NIGHT", data={"state":eventValue, "sender": event["sender"], "mode": "Manuale"})
 
             if "ASSISTANCE_COMMAND_ON" in eventType:
                 self.fire_event("HA_ASSSISTANCE_ON")
