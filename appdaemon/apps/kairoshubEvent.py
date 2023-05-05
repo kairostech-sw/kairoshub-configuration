@@ -29,10 +29,10 @@ class KairoshubEvent(hass.Hass):
 
             # controlla stato di attivazione o avvia il programma?
             if "HEATING_PROGRAM_COMMAND_ON" in eventType:
-                self.turn_on(f"input_boolean.heater_program{eventValue}")
+                self.turn_on(f"input_boolean.heater_program{eventValue[-1]}")
 
             if "HEATING_PROGRAM_COMMAND_OFF" in eventType:
-                self.turn_off(f"input_boolean.heater_program{eventValue}")
+                self.turn_off(f"input_boolean.heater_program{eventValue[-1]}")
 
             if "LIGHTS_COMMAND_ON" in eventType:
                 self.fire_event("AD_LIGHTS_ON", data=event)
