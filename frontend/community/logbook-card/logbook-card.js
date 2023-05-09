@@ -2950,10 +2950,24 @@ function ge(t) {
   return t.replace(/\\/g, "\\\\").replace(/\u0008/g, "\\b").replace(/\t/g, "\\t").replace(/\n/g, "\\n").replace(/\f/g, "\\f").replace(/\r/g, "\\r").replace(/'/g, "\\'").replace(/"/g, '\\"')
 }
 
-function ve(t) {
+function regFlags(flags) {
+  let f = {
+    indices: "d",
+    global: "g",
+    ignore_case: "i",
+    multiline: "m",
+    dotAll: "s",
+    unicode: "u",
+    sticky: "y",
+  };
+  return Object.keys(f).filter((e) => e in flags).map(e => f[e]);
+}
+
+function ve(t, flags) {
+  flags  = void 0 == flags ? "" : regFlags(flags)
   return new RegExp("^" + t.split(/\*+/).map(t => function(t) {
       return t.replace(/[|\\{}()[\]^$+*?.]/g, "\\$&")
-  }(t)).join(".*") + "$")
+  }(t)).join(".*") + "$", flags)
 }
 console.info("%c LOGBOOK-CARD %c 1.9.3 ", "color: orange; font-weight: bold; background: black", "color: darkblue; font-weight: bold; background: white"), window.customCards = window.customCards || [], window.customCards.push({
   type: "logbook-card",
@@ -3009,7 +3023,7 @@ let pe = class extends et {
           state_map: null !== (r = null === (i = t.state_map) || void 0 === i ? void 0 : i.map(t => {
               var e;
               return Object.assign(Object.assign({}, t), {
-                  regexp: ve(null !== (e = t.value) && void 0 !== e ? e : "")
+                  regexp: ve(null !== (e = t.value) && void 0 !== e ? e : "", t.flags)
               })
           })) && void 0 !== r ? r : [],
           show: Object.assign(Object.assign({}, Kt), t.show),
