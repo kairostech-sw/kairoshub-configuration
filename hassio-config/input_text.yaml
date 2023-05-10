@@ -64,3 +64,5 @@ alexa_linked_account:
   name: Account Associato
 alexa_linked_device:
   name: Dispositivo Associato
+alexa_auto_renew:
+  name: Rinnovo Automatico

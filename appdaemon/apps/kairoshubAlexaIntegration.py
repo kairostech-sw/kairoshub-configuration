@@ -10,7 +10,7 @@ class KairoshubAlexaIntegration(hass.Hass):
     self.listen_event(self.setIntegrationStatus, "AD_ALEXA_INTEGRATION_DETAIL")
 
   def setIntegrationStatus(self, event_name, data, kwargs):
-    data = {**data["data"]}
+    data = data["data"]
     self.log("Setting Alexa Integration status")
 
     integration = {
@@ -18,7 +18,8 @@ class KairoshubAlexaIntegration(hass.Hass):
       "alexa_subscription_activation_date": data["activation_date"],
       "alexa_subscription_renew_date": data["renew_date"],
       "alexa_linked_account": data["linked_account"],
-      "alexa_linked_device": data["linked_device"]
+      "alexa_linked_device": data["linked_device"],
+      "alexa_auto_renew": ("NO","SI")[data["renew"]]
     }
 
     for k,v in integration.items():

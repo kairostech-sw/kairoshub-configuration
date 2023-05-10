@@ -1,0 +1,14 @@
+type: vertical-stack
+cards:
+  - type: conditional
+    conditions:
+      - entity: input_boolean.alexa_integration
+        state: "off"
+    card:
+      !include not_registered.yaml
+  - type: conditional
+    conditions:
+      - entity: input_boolean.alexa_integration
+        state: "on"
+    card:
+      !include registered.yaml
