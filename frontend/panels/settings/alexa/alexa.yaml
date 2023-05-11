@@ -2,13 +2,21 @@ type: vertical-stack
 cards:
   - type: conditional
     conditions:
-      - entity: input_boolean.alexa_integration
-        state: "off"
+      - entity: input_text.alexa_subscription_state
+        state: "DISATTIVA"
     card:
       !include not_registered.yaml
   - type: conditional
     conditions:
-      - entity: input_boolean.alexa_integration
-        state: "on"
+      - entity: input_text.alexa_subscription_state
+        state: "ATTIVA"
     card:
       !include registered.yaml
+  - type: conditional
+    conditions:
+      - entity: input_text.alexa_subscription_state
+        state_not:
+          - "ATTIVA"
+          - "DISATTIVA"
+    card:
+      !include alexa_wip.yaml

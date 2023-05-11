@@ -14,7 +14,7 @@ class KairoshubAlexaIntegration(hass.Hass):
     self.log("Setting Alexa Integration status")
 
     integration = {
-      "alexa_subscription_state": data["subscription_state"],
+      "alexa_subscription_state": ("DISATTIVA", "ATTIVA")[data["subscription_state"]],
       "alexa_subscription_activation_date": data["activation_date"],
       "alexa_subscription_renew_date": data["renew_date"],
       "alexa_linked_account": data["linked_account"],
