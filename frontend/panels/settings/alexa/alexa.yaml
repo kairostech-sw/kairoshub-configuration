@@ -12,11 +12,11 @@ cards:
         state: "ATTIVA"
     card:
       !include registered.yaml
-  - type: conditional
-    conditions:
-      - entity: input_text.alexa_subscription_state
-        state_not:
-          - "ATTIVA"
-          - "DISATTIVA"
-    card:
-      !include alexa_wip.yaml
+  # - type: conditional
+  #   conditions:
+  #     - entity: input_text.alexa_subscription_state
+  #       state_not:
+  #         - "ATTIVA"
+  #         - "DISATTIVA"
+  #   card:
+  #     !include alexa_wip.yaml
