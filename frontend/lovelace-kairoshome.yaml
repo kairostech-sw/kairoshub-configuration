@@ -335,7 +335,7 @@ views:
     cards:
       - type: vertical-stack
         cards:
-          - !include hakairos-configuration/frontend/panels/settings/alexa.yaml
+          - !include hakairos-configuration/frontend/panels/settings/alexa/alexa.yaml
   - path: impostazioni-luci
     panel: true
     visible: false
