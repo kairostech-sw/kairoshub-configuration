@@ -27,7 +27,6 @@ class KairoshubEvent(hass.Hass):
             if "HEATING_COMMAND_OFF" in eventType:
                 self.fire_event("AD_HEATING_OFF", data={"program": "prog0", "event": event})
 
-            # controlla stato di attivazione o avvia il programma?
             if "HEATING_PROGRAM_COMMAND_ON" in eventType:
                 self.turn_on(f"input_boolean.heater_program{eventValue[-1]}")
 
@@ -69,6 +68,12 @@ class KairoshubEvent(hass.Hass):
 
             if "RECALIBRATE" in eventType:
                 self.fire_event("AD_"+eventType)
+
+            if "ALEXA" in eventType:
+                if "INTEGRATION_ALEXA_DETAIL" == eventType:
+                    self.fire_event("AD_ALEXA_INTEGRATION_DETAIL", data=data["technicalMessage"])
+                else:
+                    self.fire_event("AD_KAIROSHUB_NOTIFICATION",sender="HUB", ncode=eventType, severity="NOTICE")
 
         except Exception as e:
             self.log(e, level="ERROR")

@@ -152,10 +152,10 @@ class KairoshubSettings(hass.Hass):
                 attributes = self.get_state(domain+entity, attribute="attributes")
                 self.set_state(domain+entity, state = userSettings[key][entity], attributes = attributes)
 
-        for entity in functionSettings:
-            entityName = self.toSnakeCase(entity)
-            state = ("off", "on")[functionSettings[entity].capitalize()] 
-            self.set_state("input_boolean."+entityName, state = state)
+        # for entity in functionSettings:
+        #     entityName = self.toSnakeCase(entity)
+        #     state = ("off", "on")[functionSettings[entity].capitalize()] 
+        #     self.set_state("input_boolean."+entityName, state = state)
 
     def getEntityDomain(self, entity):
 

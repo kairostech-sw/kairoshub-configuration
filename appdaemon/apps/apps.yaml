@@ -31,3 +31,6 @@ kairoshub_scenes:
 kairoshub_rollers:
   module: kairoshubRollers
   class: KairoshubRollers
+kairoshub_alexa_integration:
+  module: kairoshubAlexaIntegration
+  class: KairoshubAlexaIntegration
