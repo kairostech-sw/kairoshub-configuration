@@ -113,25 +113,96 @@
         topic: "kairostech/system/exchange_service"
         payload: "OFFLINE"
         retain: true
-- alias: COPY PROGRAM TIMERS
+
+- alias: HEATING INTEGRATION
   trigger:
     - platform: state
-      entity_id: input_boolean.copy_program1
-      from: 'off'
-      to: 'on'
-    - platform: state
-      entity_id: input_boolean.copy_program2
-      from: 'off'
-      to: 'on'
-    - platform: state
-      entity_id: input_boolean.copy_program3
-      from: 'off'
-      to: 'on'
-    - platform: state
-      entity_id: input_boolean.copy_program4
-      from: 'off'
-      to: 'on'
+      entity_id: input_boolean.heating_integration
   action:
-    event: "AD_COPY_PROGRAMS"
-    event_data:
-      program: "{{trigger.entity_id}}"
+    service: >
+      automation.turn_{{trigger.to_state.state}}
+    target:
+      entity_id:
+        - automation.heating_program_1
+        - automation.heating_program_2
+        - automation.heating_program_3
+        - automation.heating_program_4
+        - automation.manual_heating
+        - automation.comfort_temp_reached
+        - automation.low_tv_battery_notification
+        - automation.low_th_battery_notification
+        - automation.copy_program_timers
+        - automation.calibrate_trvs
+- alias: ROLLER INTEGRATION
+  trigger:
+    - platform: state
+      entity_id: input_boolean.roller_integration
+  action:
+    service: >
+      automation.turn_{{trigger.to_state.state}}
+    target:
+      entity_id:
+        - automation.open_rollers
+        - automation.close_rollers
+        - automation.control_rollers
+        - automation.calibrate_rollers
+- alias: LIGHT INTEGRATION
+  trigger:
+    - platform: state
+      entity_id: input_boolean.light_integration
+  action:
+    service: >
+      automation.turn_{{trigger.to_state.state}}
+    target:
+      entity_id:
+        - automation.light_toggle
+        - automation.light_zone_toggle
+        - automation.copy_light_settings
+        - automation.nightzone_program_1
+        - automation.dayzone_program_1
+        - automation.outdoor_program_1
+        - automation.nightzone_sunset_turn_off
+        - automation.dayzone_sunset_turn_off
+        - automation.outdoor_sunset_turn_off
+# - alias: DOOR INTEGRATION
+#   trigger:
+#     - platform: state
+#       entity_id: input_boolean.door_integration
+#   action:
+#     service: >
+#       automation.turn_{{trigger.to_state.state}}
+#     target:
+#       entity_id:
+#         - automation.
+# - alias: SOLAR INTEGRATION
+#   trigger:
+#     - platform: state
+#       entity_id: input_boolean.solar_integration
+#   action:
+#     service: >
+#       automation.turn_{{trigger.to_state.state}}
+#     target:
+#       entity_id:
+#         - automation.
+# - alias: SECURITY INTEGRATION
+#   trigger:
+#     - platform: state
+#       entity_id: input_boolean.security_integration
+#   action:
+#     service: >
+#       automation.turn_{{trigger.to_state.state}}
+#     target:
+#       entity_id:
+#         - automation.
+- alias: ALEXA INTEGRATION START
+  trigger:
+  action:
+    event: AD_ALEXA_INTEGRATION_REQUEST
+- alias: ALEXA INTEGRATION DELETE ACCOUNT
+  trigger:
+  action:
+    event: AD_INTEGRATION_ALEXA_ACCOUNT_REMOVE
+- alias: ALEXA INTEGRATION DELETE SUB
+  trigger:
+  action:
+    event: AD_ALEXA_SUB_REMOVE

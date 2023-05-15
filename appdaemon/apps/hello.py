@@ -1,4 +1,5 @@
 import hassapi as hass
+from datetime import datetime
 
 KAIROSHUB_STATE_ENTITY               = "sensor.system_state"
 KAIROSHUB_STATE_DETAIL_ENTITY        = "sensor.system_state_detail"
@@ -94,6 +95,7 @@ class HelloWorld(hass.Hass):
 
         hassCopy = hassState.copy()
         state = hassCopy.pop("state")
+        hassCopy["version"] = hassCopy["kairoshub_version"]+"#"+ hassCopy["kairoshub_configuration_version"]
         self.set_state("sensor.kairos_home_state", state=state, attributes=hassCopy)
 
         eventData = {
@@ -109,6 +111,8 @@ class HelloWorld(hass.Hass):
         deviceRequest = {
             "eventType": "DEVICE_REQ",
             "systemCode": systemCode,
-            "message": "DEVICE REQ"
+            "message": "DEVICE REQ",
+            "timestamp": datetime.strptime(self.get_state("sensor.date_time_iso"),"%Y-%m-%dT%H:%M:%S")
         }
+        self.log("Requesting installed devices", level="INFO")
         self.fire_event("HAKAFKA_PRODUCER_PRODUCE", topic="TECHNICAL", message=deviceRequest)

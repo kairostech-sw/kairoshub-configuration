@@ -7,7 +7,8 @@ class KairoshubScenes(hass.Hass):
 
     def manageScene(self, event_name, data, kwargs):
       self.log("Managing Day/Night scene", level="INFO")
-      if data["state"] == "on":
+      if "data" in data: data = data["data"]
+      if data["state"] == "on" or data["state"] == "night":
         self.activateNightScene(data)
       else:
         self.activateDayScene(data)

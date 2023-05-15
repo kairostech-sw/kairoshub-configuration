@@ -21,10 +21,9 @@ cards:
         name: ID
       - data: system_key
         name: Chiave
-      - data: kairoshub_version
-        name: Ver. Kairoshub
-      - data: kairoshub_configuration_version
-        name: Ver. Configuration
+      - data: version
+        name: Versioni
+        fmt: version
       - data: ssid
         name: SSID
       - data: ip
@@ -44,6 +43,7 @@ cards:
         - entity_id: "/sensor.*\\d{2,4}$/"
       exclude:
         - state: "unknown"
+        - state: "unavailable"
         - entity_id: "/.*[^l][z]/"
     card:
       type: custom:flex-table-card

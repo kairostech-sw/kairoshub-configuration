@@ -71,9 +71,11 @@ custom_fields:
         - value: "Sistema*"
           icon: mdi:cog
           icon_color: "#000000"
-        - value: "Errore*"
+        - value: "*Errore*"
           icon: mdi:alert-circle-outline
           icon_color: "#FE0000"
+          flags:
+            ignore_case: true
         - value: "Batteria*"
           icon: mdi:battery-20
           icon_color: "#FE0000"
@@ -101,6 +103,9 @@ custom_fields:
         - value: "Scenario*"
           icon: mdi:weather-sunny
           icon_color: "#FFB600"
+        - value: "*Alexa*"
+          icon: mdi:amazon-alexa
+          icon_color: "#00CAFF"
       show:
         separator: true
         end_date: false

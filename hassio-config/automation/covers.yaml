@@ -3,36 +3,36 @@
     - platform: event
       event_type: HA_ROLLERS_ATHOME_POSITION
   action:
-    - service: cover.set_cover_position
-      target:
-        entity_id: all
-      data:
-        position: "{{states('input_number.rollershutter_athome_position')}}"
-    - delay: "00:01:00"
-    - condition: state
-      entity_id: sensor.tapparelle
-      state: input_number.rollershutter_athome_position
-    - event: AD_KAIROSHUB_NOTIFICATION
-      event_data:
-        severity: NOTICE
-        ncode: ROLLERS_OPENED
-        sender: "*"
+    event: AD_SET_ROLLERS_POS
+    event_data:
+      mode: athome
 - alias: CLOSE ROLLERS
   trigger:
     - platform: event
       event_type: HA_ROLLERS_NOTATHOME_POSITION
   action:
-    - service: cover.set_cover_position
-      target:
-        entity_id: all
-      data:
-        position: "{{states('input_number.rollershutter_notathome_position')}}"
-    - delay: "00:01:00"
+    event: AD_SET_ROLLERS_POS
+    event_data:
+      mode: notathome
+- alias: CONTROL ROLLERS
+  mode: restart
+  trigger:
+  action:
+    - event: AD_ROLLERS_CONTROL
+    - delay: 00:00:30
     - condition: state
-      entity_id: sensor.tapparelle
-      state: input_number.rollershutter_notathome_position
+      entity_id: group.rollershutters
+      state:
+        - open
+        - closed
     - event: AD_KAIROSHUB_NOTIFICATION
       event_data:
+        sender: HUB
+        ncode: "ROLLERS_{{ states('group.rollershutters') | upper }}"
         severity: NOTICE
-        ncode: ROLLERS_CLOSED
-        sender: "*"
+- alias: CALIBRATE ROLLERS
+  trigger:
+    - platform: event
+      event_type: HA_CALIBRATE_ROLLERS
+  action:
+    event: AD_ROLLERS_RECALIBRATE

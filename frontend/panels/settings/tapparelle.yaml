@@ -43,8 +43,26 @@ custom_fields:
             - entity: input_number.rollershutter_athome_position
               tap_action:
                 action: none
-        - type: entities
-          entities:
             - entity: input_number.rollershutter_notathome_position
               tap_action:
                 action: none
+            - type: divider
+              style:
+                background-color: transparent
+                height: 8px
+            - type: button
+              entity: input_boolean.calibrate_rollers
+              name: Calibra Tapparelle
+              icon: mdi:cog-outline
+              card_mod:
+                style:
+                  .flex mwc-button:
+                    $: |
+                      .mdc-button {
+                        margin-right: 10px;
+                      }
+              tap_action:
+                action: call-service
+                service: automation.trigger
+                service_data:
+                  entity_id: automation.calibrate_rollers

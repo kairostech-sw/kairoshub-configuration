@@ -7,7 +7,7 @@ from base64 import b64encode
 class KairoshubDevices(hass.Hass):
 
   def initialize(self):
-    self.listen_event(self.installedDevices, "AD_INSTALLED_DEVICES")
+    self.listen_event(self.installedDevices, "AD_DEVICE_INSTALLED")
     self.listen_event(self.triggerAttributesUpdate, "AD_SHELLY_UPDATE")
     self.listen_event(self.setShellyAsleep, "AD_SHELLY_ASLEEP")
     self.listen_event(self.signalNotification, "AD_SHELLY_SIGNAL_CHECK")
@@ -22,7 +22,9 @@ class KairoshubDevices(hass.Hass):
     devices = data["data"]["technicalMessage"]["devices"]
 
     for device in devices:
-      self.set_state("sensor."+device.lower(), state="idle", attributes={"friendly_name": device.lower()})
+      if not device["deviceId"].isdigit():
+        self.set_state("sensor."+device["deviceId"].lower(), state="idle", attributes={"friendly_name": device["deviceId"].upper()})
+
     self.fire_event("AD_MQTT_PUBLISH", topic="shellies/command", payload="announce")
     self.fire_event("AD_MQTT_PUBLISH", topic="shellies/command", payload="update")
 

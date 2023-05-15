@@ -36,11 +36,15 @@ noty_message={
     "label": "Batteria Quasi Scarica Sensore Umidità #ENTITY#",
     "message":"Il sensore della temperatura e umidità #ENTITY# si sta scaricando. Sostituire le pile nel retro del sensore. \n\nPuoi ricoscere il sensore dal nome applicato nella parte retrostante."
     },
+  "ROLLERS_OPEN": {
+    "label": "Tapparelle Aperte",
+    "message":"Le tapparelle sono state aperte correttamente."
+    },
   "ROLLERS_OPENED": {
     "label": "Tapparelle Aperte",
     "message":"Le tapparelle sono state aperte correttamente."
     },
-  "ROLLERS_OPENED_ERROR": {
+  "ROLLERS_OPEN_ERROR": {
   "label": "Errore Tapparelle",
   "message":"Si è verificato un problema nell'apertura delle tapparelle."
   },
@@ -91,6 +95,30 @@ noty_message={
   "NOT_CALIBRATED": {
    "label": "#ENTITY# Non Calibrato",
    "message": "Il sensore #ENTITY# si recalibrerà a breve."
+  },
+  "INTEGRATION_ALEXA_REGISTRATION_OK": {
+   "label": "La sottoiscrizione ad Alexa è stata completata con successo.",
+   "message": "La sottoiscrizione ad Alexa è stata completata con successo."
+  },
+  "INTEGRATION_ALEXA_REGISTRATION_ERROR": {
+   "label": "Si è verificato un errore durante la sottoiscrizione ad Alexa.",
+   "message": "Si è verificato un errore durante la sottoiscrizione ad Alexa."
+  },
+  "INTEGRATION_ALEXA_ACCOUNT_REMOVE_OK": {
+   "label": "L'account Alexa è stato rimosso correttamente.",
+   "message": "L'account Alexa è stato rimosso correttamente."
+  },
+  "INTEGRATION_ALEXA_ACCOUNT_REMOVE_ERROR": {
+   "label": "Si è verificato un errore durante la rimossione dell'account Alexa.",
+   "message": "Si è verificato un errore durante la rimossione dell'account Alexa."
+  },
+  "INTEGRATION_ALEXA_SUBSCRIPTION_REMOVE_OK": {
+   "label": "La sottoiscrizione ad Alexa è stata disattivata correttamente.",
+   "message": "La sottoiscrizione ad Alexa è stata disattivata correttamente."
+  },
+  "INTEGRATION_ALEXA_SUBSCRIPTION_REMOVE_ERROR": {
+   "label": "Si è verificato un errore durante la cancellazione della sottoiscrizione ad Alexa.",
+   "message": "Si è verificato un errore durante la cancellazione della sottoiscrizione ad Alexa."
   }
 }
 
@@ -145,6 +173,7 @@ class Notification(hass.Hass):
 
     def getMessage(self, code, entityRef):
         message = noty_message[code]["message"]
+        self.log(entityRef)
 
         if not message == "":
             if "#ENTITY#" in message and entityRef != "":
@@ -208,11 +237,17 @@ class Notification(hass.Hass):
         more_info = None
 
         if "ERROR" in code or "VALVES" in code:
-          return self.sendErrorNotification(code, label)
+          self.sendErrorNotification(code, label)
+          return
         if "BATTERY" in code:
-          return self.sendBatteryNotification(code, label, kwargs["entity_id"])
+          self.sendBatteryNotification(code, label, kwargs["entity_id"])
+          return
         if "SIGNAL" in code:
-          return self.sendSignalNotification(code, label, kwargs["entity_id"])
+          self.sendSignalNotification( label, kwargs["entity_id"])
+          return
+        if "ALEXA" in code:
+          self.send(label)
+          return
         if "NOT_CALIBRATED" in code:
           entity = self.get_state(kwargs["entity_id"], attribute="friendly_name")
           label = label.replace("#ENTITY#", entity)
@@ -229,9 +264,14 @@ class Notification(hass.Hass):
         if "LIGHTS" in code:
           if kwargs["zone"] != "all":
             zone = self.get_state("input_text.zn{}".format(kwargs["zone"]))
-            if zone.find("Zona") <0: zone = "Stanza "+ zone 
+            if zone.find("Zona") <0: zone = "Stanza "+ zone
             label += " nella {}".format(zone)
             if "ON" in code and kwargs["mode"]: label += " secondo la modalità {}".format(kwargs["mode"])
+        if "ROLLERS" in code:
+          if "pos" in kwargs:
+            pos = int(float(kwargs["pos"]))
+            state, pos = (("chiuse",100-pos), ("aperte", pos))["OPEN" in code]
+            more_info = f"Tapparelle sono state {state} al {pos}%"
 
         if "SCENE_NIGHT" in code:
           label += " {}".format(kwargs["mode"])
@@ -260,13 +300,13 @@ class Notification(hass.Hass):
               else:
                 extra_info = extra_info[:-2] + " e "
                 extra_info+=zone
-          pos = 100.0-int(float(kwargs["rollers"]))
+          pos = int(float(kwargs["rollers"]))
           more_info = f"Tapparelle sono state aperte al {pos}%"
 
         if notification["sender"] != "HUB": label += " da Assistente Remoto"
         if label == noty_message[code]["label"]: label +=" Manualmente"
-        self.set_state("input_text.notify", state=label, attributes={"extra_info":extra_info, "more_info": more_info})
-        self.turn_on("input_boolean.notification_to_read")
+
+        self.send(label, extra_info, more_info)
 
     def sendErrorNotification(self, code, label):
 
@@ -277,20 +317,20 @@ class Notification(hass.Hass):
          extra_info = "Si è verificato un problema nell{} della caldaia.".format(("o spegnimento","'accensione")["ON" in code])
       else: extra_info = noty_message[code]["message"]
 
-      self.set_state("input_text.notify", state=label, attributes={"extra_info": extra_info})
-      self.turn_on("input_boolean.notification_to_read")
+      self.send(label, extra_info)
 
     def sendBatteryNotification(self, code, label, entity):
       entity = self.get_state(entity, attribute = 'friendly_name').replace("_battery","")
-      extra_info = None
       if "SENSOR" in code: label = label.replace("#ENTITY#", entity)
-      self.set_state("input_text.notify", state=label, attributes={"extra_info": extra_info})
-      self.turn_on("input_boolean.notification_to_read")
 
-    def sendSignalNotification(self, code, label, entity):
+      self.send(label)
+
+    def sendSignalNotification(self, label, entity):
       entity = self.get_state(entity, attribute = 'friendly_name')
-      extra_info = None
       label = label.replace("#ENTITY#", entity)
+      self.send(label)
 
-      self.set_state("input_text.notify", state=label, attributes={"extra_info": extra_info})
+    def send(self, label, extra_info = None, more_info = None):
+
+      self.set_state("input_text.notify", state=label, attributes={"extra_info": extra_info, "more_info": more_info})
       self.turn_on("input_boolean.notification_to_read")

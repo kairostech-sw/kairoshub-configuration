@@ -51,7 +51,7 @@
         state: "{{states('input_boolean.night')}}"
     - event: AD_KAIROSHUB_STARTED
 
-- alias: Scenario Giorno Notte Manuale
+- alias: DAY NIGHT SCENE MANUAL
   trigger:
   action:
     - service: input_boolean.toggle
@@ -63,7 +63,7 @@
         mode: Manuale
         sender: HUB
 
-- alias: Scenario Notte Programmato
+- alias: NIGHT SCENE PROGRAMMED
   trigger:
     - platform: time
       at: input_datetime.scene_day_off
@@ -81,7 +81,7 @@
         mode: Programmato
         sender: HUB
 
-- alias: Scenario Giorno Programmato
+- alias: DAY SCENE PROGRAMMED
   trigger:
     - platform: time
       at: input_datetime.scene_day_on
@@ -99,7 +99,7 @@
         mode: Programmato
         sender: HUB
 
-- alias: Scenario Notte Automatico
+- alias: NIGHT SCENE AUTO
   trigger:
     - platform: numeric_state
       entity_id: sun.sun
@@ -119,7 +119,7 @@
         mode: Automatico
         sender: HUB
 
-- alias: Scenario Giorno Automatico
+- alias: DAY SCENE AUTO
   trigger:
     - platform: numeric_state
       entity_id: sun.sun

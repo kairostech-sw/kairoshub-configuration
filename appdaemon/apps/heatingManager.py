@@ -11,19 +11,18 @@ class HeatingManager(hass.Hass):
     maxRetry = 5
     def initialize(self):
         self.listen_event(self.handleHeatingProgram,"HA_MANAGE_HEATER")
-        self.listen_event(self.handleManualHeating, "AD_HEATING")
+        self.listen_event(self.handleManualHeating, "AD_HEATING_ON")
+        self.listen_event(self.handleManualHeating, "AD_HEATING_OFF")
         self.listen_event(self.turnProgramOff,"AD_PROGRAM_OFF")
-        self.listen_event(self.getTRVList, "AD_TRVS")
-
 
     def handleManualHeating(self, event_name, data, kwargs):
         comfort_temp = self.get_state("input_number.manual_heating_temp")
         if comfort_temp <= self.get_state("sensor.temperatura"):
             self.fire_event("AD_KAIROSHUB_NOTIFICATION",sender=data["data"]["event"]["sender"], ncode="HEATING_TEMP_REACHED", severity="NOTICE", kwargs={"program": int(data["data"]["program"][-1]), "comfort_temp": comfort_temp})
             return
-        if self.get_state("switch.sw_thermostat") =="off":
+        if "ON" in event_name:
             self.turnHeatingOn(data['data'])
-        else:
+        elif "OFF" in event_name:
             self.turnProgramOff(event_name, data['data'], kwargs)
 
     def handleHeatingProgram(self, event_name, data, kwargs):
@@ -111,12 +110,12 @@ class HeatingManager(hass.Hass):
         if program!="prog0":
             self.__setProgramSchedule__(program[-1], data, status="running")
 
-        if asyncio.run(self.checkHeaterState({"counter": 1}, "on", time=5)):
+        if asyncio.run(self.checkHeaterState( 1, "on", time=5)):
             self.log("Thermostat turned on", level="INFO")
             self.fire_event("AD_KAIROSHUB_NOTIFICATION",sender=eventData["sender"], ncode="HEATING_ON", severity="NOTICE", kwargs={"program": int(program[-1])})
             self.fire_event("HA_ENTITY_METRICS") #entity metrics request update
 
-            if not asyncio.run(self.isValveOpen({"trvList":trvList,"counter":1})):
+            if not asyncio.run(self.isValveOpen(trvList, 1)):
                 self.fire_event("AD_KAIROSHUB_NOTIFICATION",sender=eventData["sender"], ncode="HEATING_VALVES_CLOSED", severity="NOTICE")
                 self.fire_event("HA_ENTITY_METRICS") #entity metrics request update
         else:
@@ -141,7 +140,7 @@ class HeatingManager(hass.Hass):
 
         self.turn_off("switch.sw_thermostat")
 
-        if asyncio.run(self.checkHeaterState({"counter":1}, "off", time=5)):
+        if asyncio.run(self.checkHeaterState( 1, "off", time=5)):
             self.fire_event("AD_KAIROSHUB_NOTIFICATION",sender=data["sender"], ncode="HEATING_OFF", severity="NOTICE", kwargs = {"program": int(program[-1]), "comfort_temp": data["comfort_temp"]})
             self.log("Thermostat turned off", level="INFO")
         else:
@@ -233,60 +232,55 @@ class HeatingManager(hass.Hass):
                 return index
         return 0
 
-    async def checkHeaterState(self, kwargs, state, time=30):
-        self.log("Checking if the heater was turned %s. Try: %s of %s", state, kwargs["counter"], self.maxRetry, level="INFO")
+    async def checkHeaterState(self, counter, state, time=30):
+        self.log("Checking if the heater was turned %s. Try: %s of %s", state, counter, self.maxRetry, level="INFO")
 
         if await self.get_state("switch.sw_thermostat")==state:
             return True
-        if kwargs["counter"] < self.maxRetry:
+        if counter < self.maxRetry:
             await asyncio.sleep(time)
-            return await self.checkHeaterState( {"counter": kwargs["counter"]+1}, state, time=time)
-
+            return await self.checkHeaterState( counter+1, state, time=time)
         else:
             return False
 
-    async def isValveOpen(self, kwargs):
+    async def isValveOpen(self, trvList, counter):
+        self.log("Checking if valves are open. Try: %s of %s", counter, self.maxRetry, level="INFO")
 
-            self.log("Checking if valves are open. Try: %s of %s", kwargs["counter"], self.maxRetry, level="INFO")
-            trvList=kwargs["trvList"]
-            counter=kwargs["counter"]
-            trvList= await self.getTRVListAwait()
-            for trv in trvList:
-                sensor=trv["sensorName"]
-                trv_pos=trv[sensor+"_pos"]
-                if trv_pos!="unknown" and trv_pos!="unavailable" and float(trv_pos)>0 :
-                    self.log("Valve %s is open", sensor, level="INFO")
-                    return True
+        for trv in trvList:
+            sensor=trv["sensorName"]
+            trv_pos=trv[sensor+"_pos"]
+            if trv_pos!="unknown" and trv_pos!="unavailable" and float(trv_pos)>0 :
+                self.log("Valve %s is open", sensor, level="INFO")
+                return True
 
-            if counter < self.maxRetry:
-                await asyncio.sleep(30)
-                counter=counter+1
-                kwargs={"trvList":trvList,"counter":counter}
-                return await self.isValveOpen( kwargs)
+        if counter < self.maxRetry:
+            await asyncio.sleep(30)
+            return await self.isValveOpen(trvList, counter+1 )
 
-            else:
-                self.log("No valves are open", level="ERROR")
-                return False
+        else:
+            self.log("No valves are open", level="ERROR")
+            return False
 
     def setTargetTempFromProgram(self, trvList, program):
+        temperature = 0
+        if program=="prog0":
+            temperature = float(self.get_state("input_number.manual_heating_temp"))
+        elif program=="prog1":
+            temperature = float(self.get_state("input_number.temperature_period1"))
+        elif program=="prog2":
+            temperature = float(self.get_state("input_number.temperature_period2"))
+        elif program=="prog3":
+            temperature = float(self.get_state("input_number.temperature_period3"))
+        elif program=="prog4":
+            temperature = float(self.get_state("input_number.temperature_period4"))
         for trv in trvList:
-            if program=="prog0":
-                self.setTargetTemp(trv["command_topic"], float(self.get_state("input_number.manual_heating_temp")))
-            elif program=="prog1":
-                self.setTargetTemp(trv["command_topic"], float(self.get_state("input_number.temperature_period1")))
-            elif program=="prog2":
-                self.setTargetTemp(trv["command_topic"], float(self.get_state("input_number.temperature_period2")))
-            elif program=="prog3":
-                self.setTargetTemp(trv["command_topic"], float(self.get_state("input_number.temperature_period3")))
-            elif program=="prog4":
-                self.setTargetTemp(trv["command_topic"], float(self.get_state("input_number.temperature_period4")))
+            self.setTargetTemp(trv["command_topic"], temperature)
 
     def setTargetTemp(self, topic, value):
         topic=topic+"target_t"
         if value <18: value=18
         if value >31: value=31
 
-        #mqtt publish on topic with value
         self.fire_event("AD_MQTT_PUBLISH",topic=topic,payload=value)
 
         self.log("Target temperature for %s was set to: %s",topic, value, level="INFO")
@@ -299,38 +293,18 @@ class HeatingManager(hass.Hass):
             trvs= self.get_state(group, attribute="entity_id")
 
             for trv in trvs:
-                attributes={}
-                sensor= trv[: trv.find("_")]
-                name = sensor.split(".")[1].upper()
+                if self.get_state(trv) != "unknown":
+                    attributes={}
+                    sensor = trv[: trv.find("_")]
+                    name = sensor.split(".")[1].upper()
 
-                attributes["sensorName"]=sensor
-                attributes[sensor+"_temp"]= self.get_state(sensor+"_temp")
-                attributes[sensor+"_target_temp"]= self.get_state(sensor+"_target_temp")
-                attributes[sensor+"_pos"]= self.get_state(sensor+"_pos")
-                attributes["state_topic"]="shellies/{}/info".format(name)
-                attributes["command_topic"]="shellies/{}/thermostat/0/command/".format(name)
-                trvList.append(attributes)
-
-        return trvList
-
-    async def getTRVListAwait(self):
-        trvList=[]
-        trvs_group = await self.get_state("group.heating_valves", attribute="entity_id")
-        for group in trvs_group:
-            trvs= await self.get_state(group, attribute="entity_id")
-            for trv in trvs:
-                attributes={}
-                sensor= trv[: trv.find("_")]
-                name = sensor.split(".")[1].upper()
-
-                attributes["sensorName"]=sensor
-                attributes[sensor+"_temp"]= await self.get_state(sensor+"_temp")
-                attributes[sensor+"_target_temp"]= await self.get_state(sensor+"_target_temp")
-                attributes[sensor+"_pos"]= await self.get_state(sensor+"_pos")
-                attributes["state_topic"]="shellies/{}/info".format(name)
-                attributes["command_topic"]="shellies/{}/thermostat/0/command/".format(name)
-                trvList.append(attributes)
-
+                    attributes["sensorName"]= sensor
+                    attributes[sensor+"_temp"]= self.get_state(sensor+"_temp")
+                    attributes[sensor+"_target_temp"]= self.get_state(sensor+"_target_temp")
+                    attributes[sensor+"_pos"]= self.get_state(sensor+"_pos")
+                    attributes["state_topic"]="shellies/{}/info".format(name)
+                    attributes["command_topic"]="shellies/{}/thermostat/0/command/".format(name)
+                    trvList.append(attributes)
         return trvList
 
     def extractEventData(self, eventData):

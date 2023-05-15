@@ -19,7 +19,6 @@ views:
   - title: HOME
     path: home
     panel: true
-    show_name: true
     style: |
       #view {
         padding-left: 1% !important;
@@ -47,7 +46,7 @@ views:
         cards:
           - !include hakairos-configuration/frontend/panels/clima.yaml
   - title: LUCI
-    path: Luci
+    path: luci
     panel: true
     cards:
       - type: vertical-stack
@@ -61,7 +60,6 @@ views:
         cards:
           - !include hakairos-configuration/frontend/panels/settings.yaml
   - title: ASSISTENZA
-    icon:
     path: assistenza
     panel: true
     cards:
@@ -337,7 +335,7 @@ views:
     cards:
       - type: vertical-stack
         cards:
-          - !include hakairos-configuration/frontend/panels/settings/alexa.yaml
+          - !include hakairos-configuration/frontend/panels/settings/alexa/alexa.yaml
   - path: impostazioni-luci
     panel: true
     visible: false

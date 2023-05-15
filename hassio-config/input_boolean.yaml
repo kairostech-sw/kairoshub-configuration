@@ -1,5 +1,26 @@
 kafka_integration:
+  initial: true #non modificare
+light_integration:
+  name: Integrazione Luci
   initial: true
+roller_integration:
+  name: Integrazione Tapparelle
+  initial: true
+heating_integration:
+  name: Integrazione Riscaldamento
+  initial: true
+door_integration:
+  name: Integrazione Sensori Apertura
+  initial: true
+solar_integration:
+  name: Integrazione Fotovoltaico
+  initial: true
+security_integration:
+  name: Integrazione Allarme
+  initial: true
+alexa_integration:
+  name: Integrazione Alexa
+  initial: false
 assistance_request:
   name: Richiedi Assistenza
   icon: mdi:hand-coin-outline
@@ -9,6 +30,10 @@ at_home:
   name: In Casa
 night:
   name: Notte
+calibrate_rollers:
+  name: Calibrazione Tapparelle
+calibrate_trvs:
+  name: Calibrazione Teste Termostatiche
 heater_program1:
   name: Programma 1
 heater_program2:

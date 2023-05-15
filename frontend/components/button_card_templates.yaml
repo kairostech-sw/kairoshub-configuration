@@ -1490,7 +1490,7 @@ button_grid_settings:
   template: grid_style
   styles:
     grid:
-      - grid-template-areas: '"header header header header" "b1 b2 b3 b4" "b5 b6 b7 b8"'
+      - grid-template-areas: '"header" "content"'
       - grid-template-columns: auto
       - grid-template-rows: min-content min-content min-content
       - justify-items: center
@@ -1704,6 +1704,7 @@ settings_card:
       - width: 165px
       - height: 115px
       - box-shadow: 1px 5px 8px rgba(0, 0, 0, 0.3)
+      - margin: 5px
 
 command_bar:
   styles:

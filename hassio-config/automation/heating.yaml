@@ -1,4 +1,4 @@
-- alias: Prog riscaldamento 1
+- alias: HEATING PROGRAM 1
   trigger:
     - platform: time_pattern
       minutes: /5
@@ -50,7 +50,7 @@
             on_time: "{{states('input_datetime.thermostat_sunday_on_period1')}}"
             off_time: "{{states('input_datetime.thermostat_sunday_off_period1')}}"
 
-- alias: Prog riscaldamento 2
+- alias: HEATING PROGRAM 2
   trigger:
     - platform: time_pattern
       minutes: /5
@@ -103,7 +103,7 @@
             on_time: "{{states('input_datetime.thermostat_sunday_on_period2')}}"
             off_time: "{{states('input_datetime.thermostat_sunday_off_period2')}}"
 
-- alias: Prog riscaldamento 3
+- alias: HEATING PROGRAM 3
   trigger:
     - platform: time_pattern
       minutes: /5
@@ -156,7 +156,7 @@
             on_time: "{{states('input_datetime.thermostat_sunday_on_period3')}}"
             off_time: "{{states('input_datetime.thermostat_sunday_off_period3')}}"
 
-- alias: Prog riscaldamento 4
+- alias: HEATING PROGRAM 4
   trigger:
     - platform: time_pattern
       minutes: /5
@@ -209,7 +209,7 @@
             on_time: "{{states('input_datetime.thermostat_sunday_on_period4')}}"
             off_time: "{{states('input_datetime.thermostat_sunday_off_period4')}}"
 
-- alias: Spegnimento Programma
+- alias: PROGRAM TURN OFF
   trigger:
     - platform: state
       entity_id: input_boolean.heater_program1
@@ -228,18 +228,29 @@
       event_data:
         program: "{{ trigger.entity_id }}"
 
-- alias: RISCALDAMENTO MANUALE
+- alias: MANUAL HEATING ON
   trigger:
   action:
-    - event: AD_HEATING
+    - event: AD_HEATING_ON
       event_data:
         data:
           program: prog0
           event:
-            eventType: AD_HEATING
+            eventType: AD_HEATING_ON
             sender: HUB
 
-- alias: SPEGNIMENTO RISCALDAMENTO MANUALE
+- alias: MANUAL HEATING OFF
+  trigger:
+  action:
+    - event: AD_HEATING_OFF
+      event_data:
+        data:
+          program: prog0
+          event:
+            eventType: AD_HEATING_OFF
+            sender: HUB
+
+- alias: COMFORT TEMP REACHED
   trigger:
     - platform: numeric_state
       entity_id: sensor.temperatura
@@ -267,3 +278,33 @@
       event_data:
         program: prog0
         comfort_temp: "{{ states('input_number.manual_heating_temp') }}"
+
+- alias: COPY PROGRAM TIMERS
+  trigger:
+    - platform: state
+      entity_id: input_boolean.copy_program1
+      from: 'off'
+      to: 'on'
+    - platform: state
+      entity_id: input_boolean.copy_program2
+      from: 'off'
+      to: 'on'
+    - platform: state
+      entity_id: input_boolean.copy_program3
+      from: 'off'
+      to: 'on'
+    - platform: state
+      entity_id: input_boolean.copy_program4
+      from: 'off'
+      to: 'on'
+  action:
+    event: AD_COPY_PROGRAMS
+    event_data:
+      program: "{{trigger.entity_id}}"
+
+- alias: CALIBRATE TRVS
+  trigger:
+    - platform: event
+      event_type: HA_CALIBRATE_TRVS
+  action:
+    event: AD_TRVS_RECALIBRATE

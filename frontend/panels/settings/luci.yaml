@@ -66,7 +66,7 @@ custom_fields:
         picker:
           card:
             type: custom:time-picker-card
-            entity: input_datetime.offset_sunset
+            entity: input_datetime.light_offset_sunset
             hour_mode: 24
             embedded: true
             style: |
