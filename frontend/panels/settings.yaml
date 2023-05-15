@@ -59,13 +59,18 @@ custom_fields:
           tap_action:
             action: navigate
             navigation_path: /lovelace-kairoshub/impostazioni-zone
-        - type: custom:button-card
-          template: settings_card
-          icon: mdi:amazon-alexa
-          name: Alexa
-          tap_action:
-            action: navigate
-            navigation_path: /lovelace-kairoshub/impostazioni-alexa
+        - type: conditional
+          conditions:
+            - entity: input_boolean.alexa_integration
+              state: "on"
+          card:
+            type: custom:button-card
+            template: settings_card
+            icon: mdi:amazon-alexa
+            name: Alexa
+            tap_action:
+              action: navigate
+              navigation_path: /lovelace-kairoshub/impostazioni-alexa
         - type: 'custom:button-card'
           template: settings_card
           icon: mdi:cog

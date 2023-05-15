@@ -194,3 +194,15 @@
 #     target:
 #       entity_id:
 #         - automation.
+- alias: ALEXA INTEGRATION START
+  trigger:
+  action:
+    event: AD_ALEXA_INTEGRATION_REQUEST
+- alias: ALEXA INTEGRATION DELETE ACCOUNT
+  trigger:
+  action:
+    event: AD_INTEGRATION_ALEXA_ACCOUNT_REMOVE
+- alias: ALEXA INTEGRATION DELETE SUB
+  trigger:
+  action:
+    event: AD_ALEXA_SUB_REMOVE

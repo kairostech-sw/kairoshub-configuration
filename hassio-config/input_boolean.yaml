@@ -1,16 +1,25 @@
 kafka_integration:
-  initial: true
+  initial: true #non modificare
 light_integration:
-  initial: false
+  name: Integrazione Luci
+  initial: true
 roller_integration:
-  initial: false
+  name: Integrazione Tapparelle
+  initial: true
 heating_integration:
-  initial: false
+  name: Integrazione Riscaldamento
+  initial: true
 door_integration:
-  initial: false
+  name: Integrazione Sensori Apertura
+  initial: true
 solar_integration:
-  initial: false
+  name: Integrazione Fotovoltaico
+  initial: true
 security_integration:
+  name: Integrazione Allarme
+  initial: true
+alexa_integration:
+  name: Integrazione Alexa
   initial: false
 assistance_request:
   name: Richiedi Assistenza
