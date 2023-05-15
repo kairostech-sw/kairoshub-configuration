@@ -1,5 +1,5 @@
 kafka_integration:
-  initial: true
+  initial: true #non modificare
 light_integration:
   name: Integrazione Luci
   initial: true
