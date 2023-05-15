@@ -43,5 +43,4 @@ class KairoshubRollers(hass.Hass):
       self.call_service("cover/set_cover_position",entity_id="group.rollershutters", position=position)
 
       state = ("CLOSED","OPEN")["athome" == mode]
-      time.sleep(30)
       self.fire_event("AD_KAIROSHUB_NOTIFICATION", sender=sender, severity="NOTICE", ncode=f"ROLLERS_{state}", kwargs={"pos": position})
