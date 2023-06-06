@@ -59,15 +59,12 @@ cards:
       - type: 'custom:button-card'
         template: row_space_10
 
-  - type: 'custom:button-card'
+  - type: "custom:button-card"
     template: command_bar
     style: |
       ha-card.button-card-main {
         padding: 0px !important
       }
-    styles:
-      card:
-        - top: 6.4em
     custom_fields:
       commands:
         card:

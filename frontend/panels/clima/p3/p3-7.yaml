@@ -5,12 +5,12 @@ cards:
     template: header_page_text
     icon: 'mdi:calendar-check'
     name: |
-      [[[ 
-          if (entity.state == 'on') { 
-            return 'Domenica  (ON)'; 
-          } else { 
-            return 'Domenica  (OFF)'; 
-          } 
+      [[[
+          if (entity.state == 'on') {
+            return 'Domenica  (ON)';
+          } else {
+            return 'Domenica  (OFF)';
+          }
       ]]]
     label: 'Clima / Programma 3 / Domenica'
     styles:
@@ -65,9 +65,6 @@ cards:
       ha-card.button-card-main {
         padding: 0px !important
       }
-    styles:
-      card:
-        - top: 6.4em
     custom_fields:
       commands:
         card:
@@ -86,8 +83,8 @@ cards:
                 card:
                   - background: none
                   - color: '#f4f4f4'
-                  - box-shadow: none 
-                  - margin-left: 10px 
+                  - box-shadow: none
+                  - margin-left: 10px
                   - width: 200px
               style: |
                 :host {
@@ -125,7 +122,7 @@ cards:
               label: 'Cancella'
               show_label: true
               hold_action:
-                confirmation: 
+                confirmation:
                   text: 'Sei sicuro di voler cancellare la programmazione?'
                 action: call-service
                 service:  input_datetime.set_datetime

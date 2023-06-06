@@ -18,9 +18,6 @@ custom_fields:
         ha-card.button-card-main {
           padding: 0px !important
         }
-        div#container {
-          justify-items: left;
-        }
       styles:
         card:
           - width: 800px
