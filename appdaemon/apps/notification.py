@@ -1,126 +1,127 @@
 import json
 import hassapi as hass
 
-KAIROSHUB_SYSTEM_CODE               = "input_text.system_code"
-file="./kairoshubNotification.json"
-noty_message={
-  "HEATING_ON":{
-    "label": "Riscaldamento Acceso",
-    "message":"Impianto di riscaldamento acceso correttamente."
-  },
-  "HEATING_ON_ERROR":{
-    "label": "Errore Riscaldamento",
-    "message":"Si è verificato un problema nell'accensione dell'impianto di riscaldamento. Verifica l'accensione della caldaia, se il problema persiste contattare l'assistenza."
-  },
-  "HEATING_VALVES_CLOSED":{
-    "label": "Errore Valvole",
-    "message":"Sembra che le teste termostatiche dei termosifoni non siano raggiungibili dall'impianto. Verificare la carica delle teste, se cariche e il problema persiste contattare l'assistenza."
+KAIROSHUB_SYSTEM_CODE = "input_text.system_code"
+file = "./kairoshubNotification.json"
+noty_message = {
+    "HEATING_ON": {
+        "label": "Riscaldamento Acceso",
+        "message": "Impianto di riscaldamento acceso correttamente."
     },
-  "HEATING_OFF":{
-    "label": "Riscaldamento Spento",
-    "message":"Impianto di riscaldamento spento correttamente."
+    "HEATING_ON_ERROR": {
+        "label": "Errore Riscaldamento",
+        "message": "Si è verificato un problema nell'accensione dell'impianto di riscaldamento. Verifica l'accensione della caldaia, se il problema persiste contattare l'assistenza."
     },
-  "HEATING_OFF_ERROR":{
-    "label": "Errore Riscaldamento",
-    "message":"Si è verificato un problema nello spegnimento dell'impianto di riscaldamento. Verifica l'accensione della caldaia, se il problema persiste contattare l'assistenza."
+    "HEATING_VALVES_CLOSED": {
+        "label": "Errore Valvole",
+        "message": "Sembra che le teste termostatiche dei termosifoni non siano raggiungibili dall'impianto. Verificare la carica delle teste, se cariche e il problema persiste contattare l'assistenza."
     },
-  "HEATING_TEMP_REACHED":{
-   "label": "Riscaldamento non acceso",
-   "message": "Il riscaldamento non è stato acceso perché la temperatura è già superiore a quella impostata."
-  },
-  "HEATING_SENSOR_BATTERY_LOW": {
-    "label": "Batteria Quasi Scarica Testa Termostatica #ENTITY#",
-    "message":"La testa termostatica #ENTITY# si sta scaricando. Collegala ad un carica batterie oppure ad una Powerbank. \n\nPuoi ricoscere la testa termostatica dal nome applicato nella parte sottostante."
+    "HEATING_OFF": {
+        "label": "Riscaldamento Spento",
+        "message": "Impianto di riscaldamento spento correttamente."
     },
-  "TH_SENSOR_BATTERY_LOW": {
-    "label": "Batteria Quasi Scarica Sensore Umidità #ENTITY#",
-    "message":"Il sensore della temperatura e umidità #ENTITY# si sta scaricando. Sostituire le pile nel retro del sensore. \n\nPuoi ricoscere il sensore dal nome applicato nella parte retrostante."
+    "HEATING_OFF_ERROR": {
+        "label": "Errore Riscaldamento",
+        "message": "Si è verificato un problema nello spegnimento dell'impianto di riscaldamento. Verifica l'accensione della caldaia, se il problema persiste contattare l'assistenza."
     },
-  "ROLLERS_OPEN": {
-    "label": "Tapparelle Aperte",
-    "message":"Le tapparelle sono state aperte correttamente."
+    "HEATING_TEMP_REACHED": {
+        "label": "Riscaldamento non acceso",
+        "message": "Il riscaldamento non è stato acceso perché la temperatura è già superiore a quella impostata."
     },
-  "ROLLERS_OPENED": {
-    "label": "Tapparelle Aperte",
-    "message":"Le tapparelle sono state aperte correttamente."
+    "HEATING_SENSOR_BATTERY_LOW": {
+        "label": "Batteria Quasi Scarica Testa Termostatica #ENTITY#",
+        "message": "La testa termostatica #ENTITY# si sta scaricando. Collegala ad un carica batterie oppure ad una Powerbank. \n\nPuoi ricoscere la testa termostatica dal nome applicato nella parte sottostante."
     },
-  "ROLLERS_OPEN_ERROR": {
-  "label": "Errore Tapparelle",
-  "message":"Si è verificato un problema nell'apertura delle tapparelle."
-  },
-  "ROLLERS_CLOSED": {
-    "label": "Tapparelle Chiuse",
-    "message":"Le tapparelle sono state chiuse correttamente."
-  },
-  "ROLLERS_CLOSED_ERROR": {
-    "label": "Errore Tapparelle",
-    "message":"Si è verificato un problema nella chiusura delle tapparelle."
-  },
-  "LIGHTS_ON": {
-    "label": "Luci Accese",
-    "message": "Le luci sono state accese correttamente."
-  },
-  "LIGHTS_ON_ERROR": {
-    "label": "Errore Luci",
-    "message": "Si è verificato un problema nell'accensione delle luci."
-  },
-  "LIGHTS_OFF": {
-    "label": "Luci Spente",
-    "message": "Le luci sono state spente correttamente."
-  },
-  "LIGHTS_OFF_ERROR": {
-    "label": "Errore Luci",
-    "message": "Si è verificato un problema nello spegnimento delle luci."
-  },
-  "SCENE_NIGHT": {
-    "label": "Scenario Notte",
-    "message": "Lo scenario Notte è ora attivo."
-  },
-  "SCENE_DAY": {
-    "label": "Scenario Giorno",
-    "message": "Lo scenario Giorno è ora attivo"
-  },
-  "NO_SIGNAL": {
-   "label": "Segnale Assente #ENTITY#",
-   "message": "Il sensore #ENTITY# non riceve segnale."
-  },
-  "VERY_LOW_SIGNAL": {
-   "label": "Segnale Molto Basso #ENTITY#",
-   "message": "Il sensore #ENTITY# ha poco segnale."
-  },
-  "LOW_SIGNAL": {
-   "label": "Segnale Basso #ENTITY#",
-   "message": "Il sensore #ENTITY# ha poco segnale."
-  },
-  "NOT_CALIBRATED": {
-   "label": "#ENTITY# Non Calibrato",
-   "message": "Il sensore #ENTITY# si recalibrerà a breve."
-  },
-  "INTEGRATION_ALEXA_REGISTRATION_OK": {
-   "label": "La sottoiscrizione ad Alexa è stata completata con successo.",
-   "message": "La sottoiscrizione ad Alexa è stata completata con successo."
-  },
-  "INTEGRATION_ALEXA_REGISTRATION_ERROR": {
-   "label": "Si è verificato un errore durante la sottoiscrizione ad Alexa.",
-   "message": "Si è verificato un errore durante la sottoiscrizione ad Alexa."
-  },
-  "INTEGRATION_ALEXA_ACCOUNT_REMOVE_OK": {
-   "label": "L'account Alexa è stato rimosso correttamente.",
-   "message": "L'account Alexa è stato rimosso correttamente."
-  },
-  "INTEGRATION_ALEXA_ACCOUNT_REMOVE_ERROR": {
-   "label": "Si è verificato un errore durante la rimossione dell'account Alexa.",
-   "message": "Si è verificato un errore durante la rimossione dell'account Alexa."
-  },
-  "INTEGRATION_ALEXA_SUBSCRIPTION_REMOVE_OK": {
-   "label": "La sottoiscrizione ad Alexa è stata disattivata correttamente.",
-   "message": "La sottoiscrizione ad Alexa è stata disattivata correttamente."
-  },
-  "INTEGRATION_ALEXA_SUBSCRIPTION_REMOVE_ERROR": {
-   "label": "Si è verificato un errore durante la cancellazione della sottoiscrizione ad Alexa.",
-   "message": "Si è verificato un errore durante la cancellazione della sottoiscrizione ad Alexa."
-  }
+    "TH_SENSOR_BATTERY_LOW": {
+        "label": "Batteria Quasi Scarica Sensore Umidità #ENTITY#",
+        "message": "Il sensore della temperatura e umidità #ENTITY# si sta scaricando. Sostituire le pile nel retro del sensore. \n\nPuoi ricoscere il sensore dal nome applicato nella parte retrostante."
+    },
+    "ROLLERS_OPEN": {
+        "label": "Tapparelle Aperte",
+        "message": "Le tapparelle sono state aperte correttamente."
+    },
+    "ROLLERS_OPENED": {
+        "label": "Tapparelle Aperte",
+        "message": "Le tapparelle sono state aperte correttamente."
+    },
+    "ROLLERS_OPEN_ERROR": {
+        "label": "Errore Tapparelle",
+        "message": "Si è verificato un problema nell'apertura delle tapparelle."
+    },
+    "ROLLERS_CLOSED": {
+        "label": "Tapparelle Chiuse",
+        "message": "Le tapparelle sono state chiuse correttamente."
+    },
+    "ROLLERS_CLOSED_ERROR": {
+        "label": "Errore Tapparelle",
+        "message": "Si è verificato un problema nella chiusura delle tapparelle."
+    },
+    "LIGHTS_ON": {
+        "label": "Luci Accese",
+        "message": "Le luci sono state accese correttamente."
+    },
+    "LIGHTS_ON_ERROR": {
+        "label": "Errore Luci",
+        "message": "Si è verificato un problema nell'accensione delle luci."
+    },
+    "LIGHTS_OFF": {
+        "label": "Luci Spente",
+        "message": "Le luci sono state spente correttamente."
+    },
+    "LIGHTS_OFF_ERROR": {
+        "label": "Errore Luci",
+        "message": "Si è verificato un problema nello spegnimento delle luci."
+    },
+    "SCENE_NIGHT": {
+        "label": "Scenario Notte",
+        "message": "Lo scenario Notte è ora attivo."
+    },
+    "SCENE_DAY": {
+        "label": "Scenario Giorno",
+        "message": "Lo scenario Giorno è ora attivo"
+    },
+    "NO_SIGNAL": {
+        "label": "Segnale Assente #ENTITY#",
+        "message": "Il sensore #ENTITY# non riceve segnale."
+    },
+    "VERY_LOW_SIGNAL": {
+        "label": "Segnale Molto Basso #ENTITY#",
+        "message": "Il sensore #ENTITY# ha poco segnale."
+    },
+    "LOW_SIGNAL": {
+        "label": "Segnale Basso #ENTITY#",
+        "message": "Il sensore #ENTITY# ha poco segnale."
+    },
+    "NOT_CALIBRATED": {
+        "label": "#ENTITY# Non Calibrato",
+        "message": "Il sensore #ENTITY# si recalibrerà a breve."
+    },
+    "INTEGRATION_ALEXA_REGISTRATION_REQ": {
+        "label": "E' stato avviato il processo di integrazione con Alexa.",
+        "message": "E' stato avviato il processo di integrazione con Alexa."
+    },
+    "INTEGRATION_ALEXA_REGISTRATION_ON": {
+        "label": "L'integrazione con Alexa è stata attivata con successo.",
+        "message": "L'integrazione con Alexa è stata completata con successo."
+    },
+    "INTEGRATION_ALEXA_REGISTRATION_OFF": {
+        "label": "L'integrazione con  Alexa è stata disattivata con successo.",
+        "message": "L'integrazione con Alexa è stata disattivata con successo."
+    },
+    "INTEGRATION_ALEXA_REGISTRATION_ERROR": {
+        "label": "Si è verificato un errore durante il processo di integrazione con Alexa.",
+        "message": "Si è verificato un errore durante il processo di integrazione con Alexa."
+    },
+    "INTEGRATION_ALEXA_SUBSCRIPTION_RENEW_TOGGLE": {
+        "label": "E' statLa sottoiscrizione ad Alexa è stata disattivata correttamente.",
+        "message": "La sottoiscrizione ad Alexa è stata disattivata correttamente."
+    },
+    "INTEGRATION_ALEXA_SUBSCRIPTION_REMOVE_ERROR": {
+        "label": "Si è verificato un errore durante la cancellazione della sottoiscrizione ad Alexa.",
+        "message": "Si è verificato un errore durante la cancellazione della sottoiscrizione ad Alexa."
+    }
 }
+
 
 class Notification(hass.Hass):
 
@@ -133,27 +134,28 @@ class Notification(hass.Hass):
 
     def notification(self, event_name, data, kwargs):
 
-        ncode=data["ncode"]
+        ncode = data["ncode"]
         sender = data["sender"] if "sender" in data and "" != data["sender"] else "HUB"
-        severity=data["severity"]
+        severity = data["severity"]
         entity_id = data["entity"] if "entity" in data else None
         extra_data = data["kwargs"] if "kwargs" in data else {}
         extra_data["entity_id"] = entity_id
 
-        notificationToSend = self.buildNotification(severity=severity, sender=sender, code=ncode, entityRef=entity_id)
+        notificationToSend = self.buildNotification(
+            severity=severity, sender=sender, code=ncode, entityRef=entity_id)
 
         self.dispatchNotification(notificationToSend, extra_data)
 
     def buildNotification(self, severity, sender, code, entityRef):
         if None == self.systemCode:
-            self.systemCode	= self.get_state(KAIROSHUB_SYSTEM_CODE)
+            self.systemCode = self.get_state(KAIROSHUB_SYSTEM_CODE)
         message = self.getMessage(code, entityRef)
         noty = {
-            "eventType" : code.upper(),
-            "severity"  : severity.upper(),
+            "eventType": code.upper(),
+            "severity": severity.upper(),
             "systemCode": self.systemCode,
             "sender": sender,
-            "message"   : message,
+            "message": message,
         }
         self.log("Notification : %s", noty, level="DEBUG")
         return noty
@@ -161,14 +163,16 @@ class Notification(hass.Hass):
     def dispatchNotification(self, notificationToSend, kwargs):
 
         self.sendHubNotification(notificationToSend, kwargs)
-        if ( notificationToSend["sender"] == "*" or notificationToSend["sender"] != "" ) and notificationToSend["sender"] != "HUB":
+        if (notificationToSend["sender"] == "*" or notificationToSend["sender"] != "") and notificationToSend["sender"] != "HUB":
 
-            #removing attributes
+            # removing attributes
             notificationToSend.pop("severity", None)
-            self.log("Producing notification message on topic: %s message: %s", self.cloudTopic, notificationToSend)
-            self.fire_event("HAKAFKA_PRODUCER_PRODUCE", topic=self.cloudTopic, message=notificationToSend)
+            self.log("Producing notification message on topic: %s message: %s",
+                     self.cloudTopic, notificationToSend)
+            self.fire_event("HAKAFKA_PRODUCER_PRODUCE",
+                            topic=self.cloudTopic, message=notificationToSend)
 
-            #TODO: valutare se spostare nella funzione principale al fine di inviare sempre un aggiornamento
+            # TODO: valutare se spostare nella funzione principale al fine di inviare sempre un aggiornamento
             self.fire_event("AD_ENTITY_METRICS")
 
     def getMessage(self, code, entityRef):
@@ -177,9 +181,10 @@ class Notification(hass.Hass):
 
         if not message == "":
             if "#ENTITY#" in message and entityRef != "":
-                entityName = self.get_state(entityRef, attribute = 'friendly_name')
+                entityName = self.get_state(
+                    entityRef, attribute='friendly_name')
                 if "_battery" in entityName:
-                    entityName= entityName.replace("_battery", "")
+                    entityName = entityName.replace("_battery", "")
 
                 return message.replace("#ENTITY#", entityName)
             else:
@@ -211,7 +216,7 @@ class Notification(hass.Hass):
         self.log("Pushing message file", level="INFO")
 
         try:
-            jsonData=data["data"]["technicalMessage"]
+            jsonData = data["data"]["technicalMessage"]
             with open(file, "w+") as f:
                 json.dump(jsonData, f)
         except FileNotFoundError:
@@ -237,100 +242,119 @@ class Notification(hass.Hass):
         more_info = None
 
         if "ERROR" in code or "VALVES" in code:
-          self.sendErrorNotification(code, label)
-          return
+            self.sendErrorNotification(code, label)
+            return
         if "BATTERY" in code:
-          self.sendBatteryNotification(code, label, kwargs["entity_id"])
-          return
+            self.sendBatteryNotification(code, label, kwargs["entity_id"])
+            return
         if "SIGNAL" in code:
-          self.sendSignalNotification( label, kwargs["entity_id"])
-          return
+            self.sendSignalNotification(label, kwargs["entity_id"])
+            return
         if "ALEXA" in code:
-          self.send(label)
-          return
+            self.send(label)
+            return
         if "NOT_CALIBRATED" in code:
-          entity = self.get_state(kwargs["entity_id"], attribute="friendly_name")
-          label = label.replace("#ENTITY#", entity)
-          extra_info = noty_message[code]["message"].replace("#ENTITY#", entity)
+            entity = self.get_state(
+                kwargs["entity_id"], attribute="friendly_name")
+            label = label.replace("#ENTITY#", entity)
+            extra_info = noty_message[code]["message"].replace(
+                "#ENTITY#", entity)
         if "HEATING" in code:
-          if "comfort_temp" in kwargs and kwargs["comfort_temp"] != None:
-            if "TEMP_REACHED" in code:
-              label +=" perché è già stata raggiunta la temperatura"
-            else:
-              label +=  " dopo aver raggiunto la temperatura impostata"
-            extra_info = "Temperatura Impostata: {}°C".format(kwargs["comfort_temp"])
-          elif kwargs["program"] > 0:
-            label += " dal Programma {}".format(kwargs["program"])
+            if "comfort_temp" in kwargs and kwargs["comfort_temp"] != None:
+                if "TEMP_REACHED" in code:
+                    label += " perché è già stata raggiunta la temperatura"
+                else:
+                    label += " dopo aver raggiunto la temperatura impostata"
+                extra_info = "Temperatura Impostata: {}°C".format(
+                    kwargs["comfort_temp"])
+            elif kwargs["program"] > 0:
+                label += " dal Programma {}".format(kwargs["program"])
         if "LIGHTS" in code:
-          if kwargs["zone"] != "all":
-            zone = self.get_state("input_text.zn{}".format(kwargs["zone"]))
-            if zone.find("Zona") <0: zone = "Stanza "+ zone
-            label += " nella {}".format(zone)
-            if "ON" in code and kwargs["mode"]: label += " secondo la modalità {}".format(kwargs["mode"])
+            if kwargs["zone"] != "all":
+                zone = self.get_state("input_text.zn{}".format(kwargs["zone"]))
+                if zone.find("Zona") < 0:
+                    zone = "Stanza " + zone
+                label += " nella {}".format(zone)
+                if "ON" in code and kwargs["mode"]:
+                    label += " secondo la modalità {}".format(kwargs["mode"])
         if "ROLLERS" in code:
-          if "pos" in kwargs:
-            pos = int(float(kwargs["pos"]))
-            state, pos = (("chiuse",100-pos), ("aperte", pos))["OPEN" in code]
-            more_info = f"Tapparelle sono state {state} al {pos}%"
+            if "pos" in kwargs:
+                pos = int(float(kwargs["pos"]))
+                state, pos = (("chiuse", 100-pos),
+                              ("aperte", pos))["OPEN" in code]
+                more_info = f"Tapparelle sono state {state} al {pos}%"
 
         if "SCENE_NIGHT" in code:
-          label += " {}".format(kwargs["mode"])
-          zones = kwargs["zones"]
-          if len(zones) > 0:
-            vowel = ("a","e")[len(zones)>1]
-            extra_info = "Luci Accese nell#?# Zon#?#: ".replace("#?#", vowel)
-            for index in range(len(zones)):
-              zone= self.get_state(f"input_text.zn{zones[index]}").removeprefix("Zona ")
-              if index < len(zones)-1: extra_info += zone + ", "
-              else:
-                extra_info = extra_info[:-2] + " e "
-                extra_info+=zone
-          pos = 100.0-int(float(kwargs["rollers"]))
-          more_info = f"Tapparelle sono state chiuse al {pos}%"
+            label += " {}".format(kwargs["mode"])
+            zones = kwargs["zones"]
+            if len(zones) > 0:
+                vowel = ("a", "e")[len(zones) > 1]
+                extra_info = "Luci Accese nell#?# Zon#?#: ".replace(
+                    "#?#", vowel)
+                for index in range(len(zones)):
+                    zone = self.get_state(
+                        f"input_text.zn{zones[index]}").removeprefix("Zona ")
+                    if index < len(zones)-1:
+                        extra_info += zone + ", "
+                    else:
+                        extra_info = extra_info[:-2] + " e "
+                        extra_info += zone
+            pos = 100.0-int(float(kwargs["rollers"]))
+            more_info = f"Tapparelle sono state chiuse al {pos}%"
 
         if "SCENE_DAY" in code:
-          label += " {}".format(kwargs["mode"])
-          zones = kwargs["zones"]
-          if len(zones) > 0:
-            vowel = ("a","e")[len(zones)>1]
-            extra_info = "Luci Spente nell#?# Zon#?#: ".replace("#?#", vowel)
-            for index in range(len(zones)):
-              zone= self.get_state(f"input_text.zn{zones[index]}").removeprefix("Zona ")
-              if index < len(zones)-1: extra_info += zone + ", "
-              else:
-                extra_info = extra_info[:-2] + " e "
-                extra_info+=zone
-          pos = int(float(kwargs["rollers"]))
-          more_info = f"Tapparelle sono state aperte al {pos}%"
+            label += " {}".format(kwargs["mode"])
+            zones = kwargs["zones"]
+            if len(zones) > 0:
+                vowel = ("a", "e")[len(zones) > 1]
+                extra_info = "Luci Spente nell#?# Zon#?#: ".replace(
+                    "#?#", vowel)
+                for index in range(len(zones)):
+                    zone = self.get_state(
+                        f"input_text.zn{zones[index]}").removeprefix("Zona ")
+                    if index < len(zones)-1:
+                        extra_info += zone + ", "
+                    else:
+                        extra_info = extra_info[:-2] + " e "
+                        extra_info += zone
+            pos = int(float(kwargs["rollers"]))
+            more_info = f"Tapparelle sono state aperte al {pos}%"
 
-        if notification["sender"] != "HUB": label += " da Assistente Remoto"
-        if label == noty_message[code]["label"]: label +=" Manualmente"
+        if notification["sender"] != "HUB":
+            label += " da Assistente Remoto"
+        if label == noty_message[code]["label"]:
+            label += " Manualmente"
 
         self.send(label, extra_info, more_info)
 
     def sendErrorNotification(self, code, label):
 
-      extra_info = None
-      if "VALVES" in code:
-         extra_info = "Le teste termostatiche non sono state raggiunte dal sistema. Verificare che siano cariche"
-      elif "HEATING" in code:
-         extra_info = "Si è verificato un problema nell{} della caldaia.".format(("o spegnimento","'accensione")["ON" in code])
-      else: extra_info = noty_message[code]["message"]
+        extra_info = None
+        if "VALVES" in code:
+            extra_info = "Le teste termostatiche non sono state raggiunte dal sistema. Verificare che siano cariche"
+        elif "HEATING" in code:
+            extra_info = "Si è verificato un problema nell{} della caldaia.".format(
+                ("o spegnimento", "'accensione")["ON" in code])
+        else:
+            extra_info = noty_message[code]["message"]
 
-      self.send(label, extra_info)
+        self.send(label, extra_info)
 
     def sendBatteryNotification(self, code, label, entity):
-      entity = self.get_state(entity, attribute = 'friendly_name').replace("_battery","")
-      if "SENSOR" in code: label = label.replace("#ENTITY#", entity)
+        entity = self.get_state(
+            entity, attribute='friendly_name').replace("_battery", "")
+        if "SENSOR" in code:
+            label = label.replace("#ENTITY#", entity)
 
-      self.send(label)
+        self.send(label)
 
     def sendSignalNotification(self, label, entity):
-      entity = self.get_state(entity, attribute = 'friendly_name')
-      label = label.replace("#ENTITY#", entity)
-      self.send(label)
+        entity = self.get_state(entity, attribute='friendly_name')
+        label = label.replace("#ENTITY#", entity)
+        self.send(label)
 
-    def send(self, label, extra_info = None, more_info = None):
+    def send(self, label, extra_info=None, more_info=None):
 
-      self.set_state("input_text.notify", state=label, attributes={"extra_info": extra_info, "more_info": more_info})
-      self.turn_on("input_boolean.notification_to_read")
+        self.set_state("input_text.notify", state=label, attributes={
+                       "extra_info": extra_info, "more_info": more_info})
+        self.turn_on("input_boolean.notification_to_read")
