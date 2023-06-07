@@ -111,9 +111,6 @@ custom_fields:
         ha-card.button-card-main {
           padding: 0px !important
         }
-      styles:
-        card:
-          - margin-top: 65px
       custom_fields:
         commands:
           card:

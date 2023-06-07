@@ -65,9 +65,6 @@ cards:
       ha-card.button-card-main {
         padding: 0px !important
       }
-    styles:
-      card:
-        - top: 6.4em
     custom_fields:
       commands:
         card:

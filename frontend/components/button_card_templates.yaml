@@ -1713,12 +1713,12 @@ command_bar:
     card:
       - margin-top: 0.5px
       - margin-bottom: 0px
-      # - justify-content: space-evenly
       - box-shadow: 1px -1px 8px rgba(0, 0, 0, 0.3)
-      - background: '#333333'
+      - background: "#333333"
       - text-color: white
-      # - border-top: solid 1px #3377b5
-      # - border-style: rgb(210,210,210)
+      - position: fixed
+      - bottom: 0px
+      - z-index: 100
     custom_fields:
       commands:
         - margin-top: 3px
