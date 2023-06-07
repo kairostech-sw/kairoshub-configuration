@@ -78,12 +78,15 @@
       data_template:
         topic: "kairostech/command"
         payload: "KAIROSHUB_RELEASE_CHECK"
-- alias: SYNC SETTINGS
-  trigger:
-    - platform: time
-      at: "00:00:00"
-  action:
-    event: "AD_SETTINGS_SYNC"
+# rimossa perche causa non aggiornamento delle settings da parte del cloud attraverso il comando RESTORE
+# problema: settings sync start 00:00, prende settings fs e aggiorna lifetime +1d.
+# restore start 03:00 | (every reboot), controlla lifetime ma sarà sempre valido
+# - alias: SYNC SETTINGS
+#   trigger:
+#     - platform: time
+#       at: "00:00:00"
+#   action:
+#     event: "AD_SETTINGS_SYNC"
 - alias: RESTORE SETTINGS
   trigger:
   action:
@@ -198,11 +201,7 @@
   trigger:
   action:
     event: AD_ALEXA_INTEGRATION_REQUEST
-- alias: ALEXA INTEGRATION DELETE ACCOUNT
+- alias: ALEXA INTEGRATION RENEW TOGGLE
   trigger:
   action:
-    event: AD_INTEGRATION_ALEXA_ACCOUNT_REMOVE
-- alias: ALEXA INTEGRATION DELETE SUB
-  trigger:
-  action:
-    event: AD_ALEXA_SUB_REMOVE
+    event: AD_ALEXA_RENEW_TOGGLE

@@ -20,3 +20,4 @@ kairoshub_functionalities:
     - input_boolean.door_integration
     - input_boolean.solar_integration
     - input_boolean.security_integration
+    - input_boolean.alexa_integration

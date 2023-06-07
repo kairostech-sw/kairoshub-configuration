@@ -3,15 +3,15 @@ template: panel_grid
 custom_fields:
   header:
     card:
-      type: 'custom:button-card'
+      type: "custom:button-card"
       label: "Impostazioni / Alexa"
       template:
         - header_page_text
-      name: 'IMPOSTAZIONI'
-      icon: 'mdi:cog'
+      name: "IMPOSTAZIONI"
+      icon: "mdi:cog"
   commandbar:
     card:
-      type: 'custom:button-card'
+      type: "custom:button-card"
       template: command_bar
       style: |
         ha-card.button-card-main {
@@ -48,30 +48,6 @@ custom_fields:
                 card:
                   type: horizontal-stack
                   cards:
-                    - type: custom:button-card
-                      template: header_button_menu
-                      name: Disassocia
-                      tap_action:
-                        confirmation:
-                          text: "Sei sicuro di voler rimuovere il dispositivo associato?"
-                        action: call-service
-                        service: automation.trigger
-                        service_data:
-                          entity_id: automation.alexa_integration_delete_account
-                      style: |
-                        :host {
-                          align-self: center;
-                          padding: 0px !important;
-                        }
-                      styles:
-                        card:
-                          - width: 150px
-                          - background: none
-                          - box-shadow: none
-                          - bottom: -10px
-                          - padding: 6px 0px
-                        name:
-                          - color: '#f4f4f4'
                     - type: conditional
                       conditions:
                         - entity: input_text.alexa_auto_renew
@@ -86,7 +62,7 @@ custom_fields:
                           action: call-service
                           service: automation.trigger
                           service_data:
-                            entity_id: automation.alexa_integration_delete_sub
+                            entity_id: automation.alexa_integration_renew_toggle
                         style: |
                           :host {
                             align-self: center;
@@ -100,7 +76,7 @@ custom_fields:
                             - bottom: -10px
                             - padding: 6px 0px
                           name:
-                            - color: '#f4f4f4'
+                            - color: "#f4f4f4"
                     - type: conditional
                       conditions:
                         - entity: input_text.alexa_auto_renew
@@ -111,11 +87,11 @@ custom_fields:
                         name: Attiva Rinnovo
                         tap_action:
                           confirmation:
-                            text: "Sei sicuro di voler riattivare il rinnovo automatico?"
+                            text: "Sei sicuro di voler attivare il rinnovo automatico?"
                           action: call-service
                           service: automation.trigger
                           service_data:
-                            entity_id: automation.alexa_integration_delete_sub
+                            entity_id: automation.alexa_integration_renew_toggle
                         style: |
                           :host {
                             align-self: center;
@@ -129,7 +105,7 @@ custom_fields:
                             - bottom: -10px
                             - padding: 6px 0px
                           name:
-                            - color: '#f4f4f4'
+                            - color: "#f4f4f4"
               back:
                 card:
                   type: custom:button-card
@@ -151,7 +127,7 @@ custom_fields:
                       - bottom: -10px
                       - padding: 6px 0px
                     name:
-                      - color: '#f4f4f4'
+                      - color: "#f4f4f4"
   content:
     card:
       type: custom:integration-info-card
@@ -159,10 +135,6 @@ custom_fields:
       entities:
         - entity: input_text.alexa_subscription_state
           icon: mdi:amazon-alexa
-        - entity: input_text.alexa_linked_account
-          icon: mdi:account-outline
-        - entity: input_text.alexa_linked_device
-          icon: mdi:tablet-cellphone
         - entity: input_text.alexa_subscription_activation_date
           icon: mdi:calendar-check-outline
           color: green
