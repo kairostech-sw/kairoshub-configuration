@@ -7,7 +7,7 @@ class KairoshubAlexaIntegration(hass.Hass):
         self.listen_event(self.sendIntegrationRequest,
                           "AD_INTEGRATION_ALEXA_REGISTRATION_REQ")
         self.listen_event(self.sendIntegrationRequest,
-                          "AD_INTEGRATION_ALEXA_SUBSCRIPTION_RENEW_TOGGLE_REQ")
+                          "AD_INTEGRATION_ALEXA_SUBSCRIPTION_RENEW_TOGGLE_REQ", skipSendNofity=True)
 
         self.listen_event(self.updateIntegrationState,
                           "AD_INTEGRATION_ALEXA_REGISTRATION_ON")
@@ -21,8 +21,10 @@ class KairoshubAlexaIntegration(hass.Hass):
     def sendIntegrationRequest(self, event_name, data, kwargs):
         self.log("Sending request to integration event: "+event_name)
 
+        eventType = event_name.replace("AD_", "")
         event_data = {
-            "eventType": event_name.replace("AD_"),
+            "eventType": eventType,
+            "sender": "*",
             "systemCode": self.get_state("input_text.system_code"),
             "message": event_name.replace("_", " ")
         }
@@ -30,8 +32,9 @@ class KairoshubAlexaIntegration(hass.Hass):
         self.fire_event("HAKAFKA_PRODUCER_PRODUCE",
                         topic="TECHNICAL", message=event_data)
 
-        self.fire_event("AD_KAIROSHUB_NOTIFICATION",
-                        sender="*", ncode=event_name, severity="NOTICE")
+        if not ("skipSendNofity" in kwargs and kwargs["skipSendNofity"]):
+            self.fire_event("AD_KAIROSHUB_NOTIFICATION",
+                            sender="*", ncode=event_name, severity="NOTICE")
 
     def updateIntegrationState(self, event_name, data, kwargs):
         integrations = data["data"]["integrations"]
@@ -41,14 +44,14 @@ class KairoshubAlexaIntegration(hass.Hass):
                 self.persistIntegrationState(i)
 
             self.fire_event("AD_KAIROSHUB_NOTIFICATION",
-                            sender="*", ncode=event_name.replace("AD_"), severity="NOTICE")
+                            sender="*", ncode=event_name.replace("AD_", ""), severity="NOTICE")
         except Exception as e:
             self.log("Error occourred on updating integration state "+e)
 
     def persistIntegrationState(self, i):
 
         # ALEXA
-        if "alexa" in integration["subscription_ref"]:
+        if "alexa" in i["subscription_ref"]:
             self.log("Setting Alexa Integration status")
 
             integration = {

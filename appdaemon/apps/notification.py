@@ -97,24 +97,28 @@ noty_message = {
         "message": "Il sensore #ENTITY# si recalibrerà a breve."
     },
     "INTEGRATION_ALEXA_REGISTRATION_REQ": {
-        "label": "E' stato avviato il processo di integrazione con Alexa.",
-        "message": "E' stato avviato il processo di integrazione con Alexa."
+        "label": "E' stato avviato il processo di connessione ad Alexa.",
+        "message": "E' stato avviato il processo di connessione ad Alexa."
     },
     "INTEGRATION_ALEXA_REGISTRATION_ON": {
-        "label": "L'integrazione con Alexa è stata attivata con successo.",
-        "message": "L'integrazione con Alexa è stata completata con successo."
+        "label": "Alexa è stata attivata con successo.",
+        "message": "Alexa è stata completata con successo."
     },
     "INTEGRATION_ALEXA_REGISTRATION_OFF": {
-        "label": "L'integrazione con  Alexa è stata disattivata con successo.",
-        "message": "L'integrazione con Alexa è stata disattivata con successo."
+        "label": " Alexa è stata disattivata con successo.",
+        "message": "Alexa è stata disattivata con successo."
     },
     "INTEGRATION_ALEXA_REGISTRATION_ERROR": {
         "label": "Si è verificato un errore durante il processo di integrazione con Alexa.",
         "message": "Si è verificato un errore durante il processo di integrazione con Alexa."
     },
-    "INTEGRATION_ALEXA_SUBSCRIPTION_RENEW_TOGGLE": {
-        "label": "E' statLa sottoiscrizione ad Alexa è stata disattivata correttamente.",
-        "message": "La sottoiscrizione ad Alexa è stata disattivata correttamente."
+    "INTEGRATION_ALEXA_SUBSCRIPTION_RENEW_TOGGLE_ON": {
+        "label": "La sottoscrizione ad Alexa si rinnoverà automaticamente.",
+        "message": "La sottoscrizione ad Alexa si rinnoverà automaticamente."
+    },
+    "INTEGRATION_ALEXA_SUBSCRIPTION_RENEW_TOGGLE_OFF": {
+        "label": "Il rinnovo automatico per Alexa è stato disattivato.",
+        "message": "Il rinnovo automatico per Alexa è stato disattivato."
     },
     "INTEGRATION_ALEXA_SUBSCRIPTION_REMOVE_ERROR": {
         "label": "Si è verificato un errore durante la cancellazione della sottoiscrizione ad Alexa.",
