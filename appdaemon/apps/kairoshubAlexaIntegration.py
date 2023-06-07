@@ -6,17 +6,17 @@ class KairoshubAlexaIntegration(hass.Hass):
     def initialize(self):
         self.listen_event(self.sendIntegrationRequest,
                           "AD_INTEGRATION_ALEXA_REGISTRATION_REQ")
+        self.listen_event(self.sendIntegrationRequest,
+                          "AD_INTEGRATION_ALEXA_SUBSCRIPTION_RENEW_TOGGLE_REQ")
+
         self.listen_event(self.updateIntegrationState,
                           "AD_INTEGRATION_ALEXA_REGISTRATION_ON")
         self.listen_event(self.updateIntegrationState,
                           "AD_INTEGRATION_ALEXA_REGISTRATION_OFF")
-
-        self.listen_event(self.sendIntegrationRequest,
-                          "INTEGRATION_ALEXA_SUBSCRIPTION_RENEW_TOGGLE_REQ")
         self.listen_event(self.updateIntegrationState,
-                          "INTEGRATION_ALEXA_SUBSCRIPTION_RENEW_TOGGLE_TO_ON")
+                          "AD_INTEGRATION_ALEXA_SUBSCRIPTION_RENEW_TOGGLE_TO_ON")
         self.listen_event(self.updateIntegrationState,
-                          "INTEGRATION_ALEXA_SUBSCRIPTION_RENEW_TOGGLE_TO_OFF")
+                          "AD_INTEGRATION_ALEXA_SUBSCRIPTION_RENEW_TOGGLE_TO_OFF")
 
     def sendIntegrationRequest(self, event_name, data, kwargs):
         self.log("Sending request to integration event: "+event_name)
@@ -41,7 +41,7 @@ class KairoshubAlexaIntegration(hass.Hass):
                 self.persistIntegrationState(i)
 
             self.fire_event("AD_KAIROSHUB_NOTIFICATION",
-                            sender="*", ncode=event_name, severity="NOTICE")
+                            sender="*", ncode=event_name.replace("AD_"), severity="NOTICE")
         except Exception as e:
             self.log("Error occourred on updating integration state "+e)
 
