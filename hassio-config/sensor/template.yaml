@@ -23,4 +23,3 @@
       friendly_name: "EM Consumo"
       value_template: '{{ (states("sensor.em_consumo_ch1")|float(default=0) + states("sensor.em_consumo_ch2")|float(default=0))|float|round(1) }}'
       unit_of_measurement: "Watt"
-      icon_template: mdi:speedometer

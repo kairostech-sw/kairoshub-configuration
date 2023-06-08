@@ -1,403 +1,100 @@
-type: vertical-stack
-cards:
-  - type: 'custom:button-card'
-    styles:
-      card:
-        - background: none
-        - padding-top: 15px
-        - '--mdc-ripple-press-opacity': 0 
-      grid:
-        - grid-template-areas: '"headersx headerdx"  "contentsx  contentdx"'
-        - grid-template-columns: 1fr 35%
-        - grid-template-rows: 1fr min-content
-        - align-items: start
-        - row-gap: 5px
-      custom_fields:
-        headerdx:
-          - margin-right: 10px
-        contentsx:
-          - margin-left: 10px
-          - margin-right: 7px
-        contentdx:
-          - margin-right: 7px
-    custom_fields:
-      headersx:
-        card:
-          type: 'custom:button-card'
-          entity: binary_sensor.heater_auto
-          layout: vertical
-          template: header_page_text
-          icon: 'mdi:thermometer'
-          name: 'CLIMA'
-          label: 'Clima /'
-      contentsx:
-        card:
-          type: vertical-stack
+type: "custom:button-card"
+template: panel_grid
+custom_fields:
+  header:
+    card:
+      type: "custom:button-card"
+      entity: binary_sensor.heater_auto
+      layout: vertical
+      template: header_page_text
+      icon: "mdi:thermometer"
+      name: "CLIMA"
+      label: "Clima /"
+  content:
+    card:
+      type: vertical-stack
+      cards:
+        - type: horizontal-stack
           cards:
-            - type: horizontal-stack
-              cards:
-              - type: 'custom:button-card'
-                # entity: 'sensor.tz100'
-                template: 'clima_zones_detail'
-                name: >
-                  [[[
-                    return states["input_text.zn100"].state;
-                  ]]]
-                variables:
-                  temperature: >
-                    [[[
-                      return states["sensor.tz100"].state;
-                    ]]]
-                  temp_color: >
-                    [[[
-                      var zoneTemperature = states['sensor.tz100'].state;
-                      if (
-                        (zoneTemperature > states["input_number.temperature_period1"].state 
-                        && states["input_boolean.heater_program1_on"].state ==="on") ||
-                        (zoneTemperature > states["input_number.temperature_period2"].state 
-                        && states["input_boolean.heater_program2_on"].state ==="on") ||
-                        (zoneTemperature > states["input_number.temperature_period3"].state 
-                        && states["input_boolean.heater_program3_on"].state ==="on") ||
-                        (zoneTemperature > states["input_number.temperature_period4"].state 
-                        && states["input_boolean.heater_program4_on"].state ==="on") ||
-                        zoneTemperature > states['input_number.manual_heating_temp'].state)
-                        return 'var(--temperature-primary-color)';
-                      else
-                        return 'var(--temperature-secondary-color)';
-                    ]]]
-                  humidity: >
-                    [[[
-                      return states["sensor.hz100"].state;
-                    ]]]
-                  # visibility: input_boolean.zn_100
-                  # state: >
-                  #   [[[
-                  #     return states["sensor.tz100_state"].state;
-                  #     ]]]
-                  lastupdate: >
-                    [[[
-                      var datetime =  states["sensor.tz100"].last_changed.split("T");
-                      datetime = new Date(datetime).toLocaleString().replace(","," ");
-                      return datetime.substring(0,datetime.length-3);
-                    ]]]
-                tap_action:
-                  action: navigate
-                  navigation_path: /lovelace-kairoshub/nightzone
-                custom_fields:
-                  icon1:
-                    card:
-                      type: custom:button-card
-                      icon: mdi:thermometer
-                      styles:
-                        icon:
-                          - width: 80%
-                          - color: >
-                              [[[
-                                var zoneTemperature = states['sensor.tz100'].state;
-                                if (
-                                  (zoneTemperature > states["input_number.temperature_period1"].state 
-                                  && states["input_boolean.heater_program1_on"].state ==="on") ||
-                                  (zoneTemperature > states["input_number.temperature_period2"].state 
-                                  && states["input_boolean.heater_program2_on"].state ==="on") ||
-                                  (zoneTemperature > states["input_number.temperature_period3"].state 
-                                  && states["input_boolean.heater_program3_on"].state ==="on") ||
-                                  (zoneTemperature > states["input_number.temperature_period4"].state 
-                                  && states["input_boolean.heater_program4_on"].state ==="on") ||
-                                  zoneTemperature > states['input_number.manual_heating_temp'].state)
-                                  return 'var(--temperature-primary-color)';
-                                else
-                                  return 'var(--temperature-secondary-color)';
-                              ]]]
-                  icon2:
-                    card:
-                      type: conditional
-                      conditions:
-                          - entity: sensor.hz100
-                            state_not: unknown
-                      card:
-                        type: custom:button-card
-                        icon: mdi:water-percent
-                        styles:
-                          icon:
-                            - width: 80%
-                            - color: var(--humidity-primary-color)
-              - type: 'custom:button-card'
-                # entity: 'sensor.tv01_lastupdate'
-                template: 'clima_zones_detail'
-                name: >
-                  [[[
-                    return states["input_text.zn200"].state;
-                  ]]]
-                variables:
-                  temperature: >
-                    [[[
-                      return states["sensor.tz200"].state;
-                    ]]]
-                  temp_color: >
-                    [[[
-                      var zoneTemperature = states['sensor.tz200'].state;
-                      if (
-                        (zoneTemperature > states["input_number.temperature_period1"].state 
-                        && states["input_boolean.heater_program1_on"].state ==="on") ||
-                        (zoneTemperature > states["input_number.temperature_period2"].state 
-                        && states["input_boolean.heater_program2_on"].state ==="on") ||
-                        (zoneTemperature > states["input_number.temperature_period3"].state 
-                        && states["input_boolean.heater_program3_on"].state ==="on") ||
-                        (zoneTemperature > states["input_number.temperature_period4"].state 
-                        && states["input_boolean.heater_program4_on"].state ==="on") ||
-                        zoneTemperature > states['input_number.manual_heating_temp'].state)
-                        return 'var(--temperature-primary-color)';
-                      else
-                        return 'var(--temperature-secondary-color)';
-                    ]]]
-                  humidity: >
-                    [[[
-                      return states["sensor.hz200"].state;
-                    ]]]
-                  # visibility: input_boolean.zn_200
-                  # state: >
-                  #   [[[
-                  #     return states["sensor.tz200_state"].state;
-                  #     ]]]
-                  lastupdate: >
-                    [[[
-                      var datetime =  states["sensor.tz200"].last_changed.split("T");
-                      datetime = new Date(datetime).toLocaleString().replace(","," ");
-                      return datetime.substring(0,datetime.length-3);
-                    ]]]
-                tap_action:
-                  action: navigate
-                  navigation_path: /lovelace-kairoshub/dayzone
-                custom_fields:
-                  icon1:
-                    card:
-                      type: custom:button-card
-                      icon: mdi:thermometer
-                      styles:
-                        icon:
-                          - width: 80%
-                          - color: >
-                              [[[
-                                var zoneTemperature = states['sensor.tz200'].state;
-                                if (
-                                  (zoneTemperature > states["input_number.temperature_period1"].state 
-                                  && states["input_boolean.heater_program1_on"].state ==="on") ||
-                                  (zoneTemperature > states["input_number.temperature_period2"].state 
-                                  && states["input_boolean.heater_program2_on"].state ==="on") ||
-                                  (zoneTemperature > states["input_number.temperature_period3"].state 
-                                  && states["input_boolean.heater_program3_on"].state ==="on") ||
-                                  (zoneTemperature > states["input_number.temperature_period4"].state 
-                                  && states["input_boolean.heater_program4_on"].state ==="on") ||
-                                  zoneTemperature > states['input_number.manual_heating_temp'].state)
-                                  return 'var(--temperature-primary-color)';
-                                else
-                                  return 'var(--temperature-secondary-color)';
-                              ]]]
-                  icon2:
-                    card:
-                      type: conditional
-                      conditions:
-                          - entity: sensor.hz200
-                            state_not: unknown
-                      card:
-                        type: custom:button-card
-                        icon: mdi:water-percent
-                        styles:
-                          icon:
-                            - width: 80%
-                            - color: var(--humidity-primary-color)
-      # contentdx:
-      #   card:
-      #     type: vertical-stack
-      #     cards:
-      #       - type: vertical-stack
-      #         cards:
-      #           - type: 'custom:button-card'
-      #             template:
-      #               - icon_clima
-      #               - icon_header
-      #               - button_grid_4
-      #             name: Programmi Riscaldamento
-      #             styles:
-      #               card:
-      #                 - box-shadow: 0px 0px 0px rgba(0, 0, 0, 0)
-      #                 - background: none
-      #             custom_fields:
-      #               buttons:
-      #                 card:
-      #                   type: horizontal-stack
-      #                   cards:
-      #                     - type: 'custom:button-card'
-      #                       template: button_go_to_program
-      #                       entity: input_boolean.heater_program1
-      #                       variables:
-      #                         progId: '1'
-      #                       styles:
-      #                         card:
-      #                           - border-right: solid 1px
-      #                           - border-color: lightgrey
-      #                     - type: 'custom:button-card'
-      #                       template: button_go_to_program
-      #                       entity: input_boolean.heater_program2
-      #                       variables:
-      #                         progId: '2'
-      #                       styles:
-      #                         card:
-      #                           - border-right: solid 1px
-      #                           - border-color: lightgrey
-      #                     - type: 'custom:button-card'
-      #                       template: button_go_to_program
-      #                       entity: input_boolean.heater_program3
-      #                       variables:
-      #                         progId: '3'
-      #                       styles:
-      #                         card:
-      #                           - border-right: solid 1px
-      #                           - border-color: lightgrey
-      #                     - type: 'custom:button-card'
-      #                       template: button_go_to_program
-      #                       entity: input_boolean.heater_program4
-      #                       variables:
-      #                         progId: '4'
-      #       # - type: vertical-stack
-      #       #   cards:
-      #       #     - type: 'custom:button-card'
-      #       #       template:
-      #       #         - icon_header
-      #       #         - button_grid_2
-      #       #       icon: 'mdi:dots-grid'
-      #       #       name: Zone di Riscaldamento
-      #       #       styles:
-      #       #         card:
-      #       #           - box-shadow: 0px 0px 0px rgb(0,0,0)
-      #       #           - background: none
-      #       #       custom_fields:
-      #       #         b1:
-      #       #           card:
-      #       #             type: vertical-stack
-      #       #             cards:
-      #       #               - type: 'custom:button-card'
-      #       #                 label: Zona Notte
-      #       #                 template: button_go_to_zone
-      #       #                 variables:
-      #       #                   navigation_path: >
-      #       #                     [[[
-      #       #                       return "nightzone";
-      #       #                     ]]]
-      #       #         b2:
-      #       #           card:
-      #       #             type: vertical-stack
-      #       #             cards:
-      #       #               - type: 'custom:button-card'
-      #       #                 label: Zona Giorno
-      #       #                 template: button_go_to_zone
-      #       #                 variables:
-      #       #                   navigation_path: >
-      #       #                     [[[
-      #       #                       return "dayzone";
-      #       #                     ]]]
-  - type: 'custom:button-card'
-    template: command_bar
-    style: |
-      ha-card.button-card-main {
-        padding: 0px !important
-      }
-    styles:
-      card:
-        - top: 8.9em
-    custom_fields:
-      commands:
-        card:
-          type: horizontal-stack
-          cards:
-            - type: custom:button-card
-              name: Programmi<br/> Riscaldamento
-              styles:
-                card:
-                  - background: none
-                  - color: '#f4f4f4'
-                  - box-shadow: none 
-                  - margin-left: 10px 
-                  - width: 200px
-                  # - top: 10px
-              style: |
-                :host {
-                  align-self: center;
-                }
-              tap_action:
-                action: none
-            - type: 'custom:button-card'
-              template: button_go_to_program
-              entity: input_boolean.heater_program1
+            - type: "custom:button-card"
+              template: "clima_zones_detail"
+              triggers_update:
+                - sensor.tz100
+                - sensor.hz100
               variables:
-                progId: '1'
-              state:
-                - value: 'on'
-                  color: var(--command-state-active-color)
-                - value: 'off'
-                  color: var(--command-state-color)
-              # styles:
-              #   card:
-              #     - background: none
-              style: |
-                :host {
-                  align-self: center;
-                }
-            - type: 'custom:button-card'
-              template: button_go_to_program
-              entity: input_boolean.heater_program2
-              variables:
-                progId: '2'
-              state:
-                - value: 'on'
-                  color: var(--command-state-active-color)
-                - value: 'off'
-                  color: var(--command-state-color)
-              style: |
-                :host {
-                  align-self: center;
-                }
-            - type: 'custom:button-card'
-              template: button_go_to_program
-              entity: input_boolean.heater_program3
-              variables:
-                progId: '3'
-              state:
-                - value: 'on'
-                  color: var(--command-state-active-color)
-                - value: 'off'
-                  color: var(--command-state-color)
-              style: |
-                :host {
-                  align-self: center;
-                }
-            - type: 'custom:button-card'
-              template: button_go_to_program
-              entity: input_boolean.heater_program4
-              state:
-                - value: 'on'
-                  color: var(--command-state-active-color)
-                - value: 'off'
-                  color: var(--command-state-color)
-              variables:
-                progId: '4'
-              style: |
-                :host {
-                  align-self: center;
-                }
-            - type: 'custom:button-card'
-              template: button_go_to_program
-              # name: Impostazioni Clima
-              styles:
-                card:
-                  - background: none
-                  - left: 210px
-              style: |
-                :host {
-                  align-self: center;
-                }
-              icon: 'mdi:cog'
-              color: var(--command-state-color)
+                zoneId: 100
               tap_action:
                 action: navigate
-                navigation_path: /lovelace-kairoshub/impostazioni-riscaldamento
+                navigation_path: /lovelace-kairoshub/nightzone
+            - type: "custom:button-card"
+              template: "clima_zones_detail"
+              triggers_update:
+                - sensor.tz200
+                - sensor.hz200
+              variables:
+                zoneId: 200
+              tap_action:
+                action: navigate
+                navigation_path: /lovelace-kairoshub/dayzone
+  commandbar:
+    card:
+      type: "custom:button-card"
+      template: command_bar
+      style: |
+        ha-card.button-card-main {
+          padding: 0px !important
+        }
+      styles:
+        card:
+          - margin-left: -10px
+      custom_fields:
+        commands:
+          card:
+            type: horizontal-stack
+            cards:
+              - type: custom:button-card
+                name: Programmi<br/> Riscaldamento
+                styles:
+                  card:
+                    - background: none
+                    - color: "#f4f4f4"
+                    - box-shadow: none
+                    - margin-left: 10px
+                    - width: 200px
+                style: |
+                  :host {
+                    align-self: center;
+                  }
+                tap_action:
+                  action: none
+              - type: "custom:button-card"
+                template: button_go_to_program
+                entity: input_boolean.heater_program1
+                variables:
+                  progId: "1"
+              - type: "custom:button-card"
+                template: button_go_to_program
+                entity: input_boolean.heater_program2
+                variables:
+                  progId: "2"
+              - type: "custom:button-card"
+                template: button_go_to_program
+                entity: input_boolean.heater_program3
+                variables:
+                  progId: "3"
+              - type: "custom:button-card"
+                template: button_go_to_program
+                entity: input_boolean.heater_program4
+                variables:
+                  progId: "4"
+              - type: "custom:button-card"
+                template: button_go_to_program
+                styles:
+                  card:
+                    - background: none
+                    - left: 210px
+                icon: "mdi:cog"
+                color: var(--command-state-color)
+                tap_action:
+                  action: navigate
+                  navigation_path: /lovelace-kairoshub/impostazioni-riscaldamento

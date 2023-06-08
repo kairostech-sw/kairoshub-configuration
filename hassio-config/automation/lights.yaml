@@ -40,10 +40,18 @@
     - platform: state
       entity_id:
         - input_boolean.copy_lights_zn101
-        - input_boolean.copy_lights_dayzone
-        - input_boolean.copy_lights_outdoor
-      from: 'off'
-      to: 'on'
+        - input_boolean.copy_lights_zn102
+        - input_boolean.copy_lights_zn103
+        - input_boolean.copy_lights_zn104
+        - input_boolean.copy_lights_zn201
+        - input_boolean.copy_lights_zn202
+        - input_boolean.copy_lights_zn203
+        - input_boolean.copy_lights_zn301
+        - input_boolean.copy_lights_zn302
+        - input_boolean.copy_lights_zn303
+        - input_boolean.copy_lights_zn304
+      from: "off"
+      to: "on"
   action:
     event: AD_COPY_LIGHTS
     event_data:
@@ -104,7 +112,7 @@
   trigger:
     - platform: state
       entity_id: group.lights
-      to: 'on'
+      to: "on"
       for: "{{states('input_datetime.light_offset_sunset')}}"
   condition:
     - condition: state
@@ -130,7 +138,7 @@
   trigger:
     - platform: state
       entity_id: group.lights
-      to: 'on'
+      to: "on"
       for: "{{states('input_datetime.light_offset_sunset')}}"
   condition:
     - condition: state
@@ -156,7 +164,7 @@
   trigger:
     - platform: state
       entity_id: group.lights
-      to: 'on'
+      to: "on"
       for: "{{states('input_datetime.light_offset_sunset')}}"
   condition:
     - condition: state
@@ -177,3 +185,29 @@
         kwargs:
           zone: "300"
           mode: Automatica
+- alias: LIGHT PROGRAM 1 TURN ON
+  trigger:
+    - platform: state
+      entity_id:
+        - input_select.zn100
+        - input_select.zn200
+        - input_select.zn300
+      from: Disattivo
+      for: 00:00:10
+  action:
+    - service: input_boolean.turn_on
+      target:
+        entity_id: input_boolean.light_program1
+- alias: LIGHT PROGRAM 1 TURN OFF
+  trigger:
+    - platform: state
+      entity_id:
+        - input_select.zn100
+        - input_select.zn200
+        - input_select.zn300
+      to: Disattivo
+      for: 00:00:10
+  action:
+    - service: input_boolean.turn_off
+      target:
+        entity_id: input_boolean.light_program1
