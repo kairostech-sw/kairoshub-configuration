@@ -283,20 +283,20 @@
   trigger:
     - platform: state
       entity_id: input_boolean.copy_program1
-      from: 'off'
-      to: 'on'
+      from: "off"
+      to: "on"
     - platform: state
       entity_id: input_boolean.copy_program2
-      from: 'off'
-      to: 'on'
+      from: "off"
+      to: "on"
     - platform: state
       entity_id: input_boolean.copy_program3
-      from: 'off'
-      to: 'on'
+      from: "off"
+      to: "on"
     - platform: state
       entity_id: input_boolean.copy_program4
-      from: 'off'
-      to: 'on'
+      from: "off"
+      to: "on"
   action:
     event: AD_COPY_PROGRAMS
     event_data:
@@ -308,3 +308,171 @@
       event_type: HA_CALIBRATE_TRVS
   action:
     event: AD_TRVS_RECALIBRATE
+
+- alias: PROGRAM 1 TEMPERATURE CHANGE
+  trigger:
+    - platform: state
+      entity_id: input_number.temperature_period1
+  action:
+    service: input_number.set_value
+    target:
+      entity_id:
+        - input_number.temperature_zn100_period1
+        - input_number.temperature_zn200_period1
+    data:
+      value: "{{ trigger.to_state.state }}"
+
+- alias: PROGRAM 1 NIGHTZONE TEMPERATURE CHANGE
+  trigger:
+    - platform: state
+      entity_id: input_number.temperature_zn100_period1
+  action:
+    service: input_number.set_value
+    target:
+      entity_id:
+        - input_number.temperature_zn101_period1
+        - input_number.temperature_zn102_period1
+        - input_number.temperature_zn103_period1
+        - input_number.temperature_zn104_period1
+    data:
+      value: "{{ trigger.to_state.state }}"
+
+- alias: PROGRAM 1 DAYZONE TEMPERATURE CHANGE
+  trigger:
+    - platform: state
+      entity_id: input_number.temperature_zn200_period1
+  action:
+    service: input_number.set_value
+    target:
+      entity_id:
+        - input_number.temperature_zn201_period1
+        - input_number.temperature_zn202_period1
+        - input_number.temperature_zn203_period1
+    data:
+      value: "{{ trigger.to_state.state }}"
+
+- alias: PROGRAM 2 TEMPERATURE CHANGE
+  trigger:
+    - platform: state
+      entity_id: input_number.temperature_period2
+  action:
+    service: input_number.set_value
+    target:
+      entity_id:
+        - input_number.temperature_zn100_period2
+        - input_number.temperature_zn200_period2
+    data:
+      value: "{{ trigger.to_state.state }}"
+
+- alias: PROGRAM 2 NIGHTZONE TEMPERATURE CHANGE
+  trigger:
+    - platform: state
+      entity_id: input_number.temperature_zn100_period2
+  action:
+    service: input_number.set_value
+    target:
+      entity_id:
+        - input_number.temperature_zn101_period2
+        - input_number.temperature_zn102_period2
+        - input_number.temperature_zn103_period2
+        - input_number.temperature_zn104_period2
+    data:
+      value: "{{ trigger.to_state.state }}"
+
+- alias: PROGRAM 2 DAYZONE TEMPERATURE CHANGE
+  trigger:
+    - platform: state
+      entity_id: input_number.temperature_zn200_period2
+  action:
+    service: input_number.set_value
+    target:
+      entity_id:
+        - input_number.temperature_zn201_period2
+        - input_number.temperature_zn202_period2
+        - input_number.temperature_zn203_period2
+    data:
+      value: "{{ trigger.to_state.state }}"
+
+- alias: PROGRAM 3 TEMPERATURE CHANGE
+  trigger:
+    - platform: state
+      entity_id: input_number.temperature_period3
+  action:
+    service: input_number.set_value
+    target:
+      entity_id:
+        - input_number.temperature_zn100_period3
+        - input_number.temperature_zn200_period3
+    data:
+      value: "{{ trigger.to_state.state }}"
+
+- alias: PROGRAM 3 NIGHTZONE TEMPERATURE CHANGE
+  trigger:
+    - platform: state
+      entity_id: input_number.temperature_zn100_period3
+  action:
+    service: input_number.set_value
+    target:
+      entity_id:
+        - input_number.temperature_zn101_period3
+        - input_number.temperature_zn102_period3
+        - input_number.temperature_zn103_period3
+        - input_number.temperature_zn104_period3
+    data:
+      value: "{{ trigger.to_state.state }}"
+
+- alias: PROGRAM 3 DAYZONE TEMPERATURE CHANGE
+  trigger:
+    - platform: state
+      entity_id: input_number.temperature_zn200_period3
+  action:
+    service: input_number.set_value
+    target:
+      entity_id:
+        - input_number.temperature_zn201_period3
+        - input_number.temperature_zn202_period3
+        - input_number.temperature_zn203_period3
+    data:
+      value: "{{ trigger.to_state.state }}"
+
+- alias: PROGRAM 4 TEMPERATURE CHANGE
+  trigger:
+    - platform: state
+      entity_id: input_number.temperature_period4
+  action:
+    service: input_number.set_value
+    target:
+      entity_id:
+        - input_number.temperature_zn100_period4
+        - input_number.temperature_zn200_period4
+    data:
+      value: "{{ trigger.to_state.state }}"
+
+- alias: PROGRAM 4 NIGHTZONE TEMPERATURE CHANGE
+  trigger:
+    - platform: state
+      entity_id: input_number.temperature_zn100_period4
+  action:
+    service: input_number.set_value
+    target:
+      entity_id:
+        - input_number.temperature_zn101_period4
+        - input_number.temperature_zn102_period4
+        - input_number.temperature_zn103_period4
+        - input_number.temperature_zn104_period4
+    data:
+      value: "{{ trigger.to_state.state }}"
+
+- alias: PROGRAM 4 DAYZONE TEMPERATURE CHANGE
+  trigger:
+    - platform: state
+      entity_id: input_number.temperature_zn200_period4
+  action:
+    service: input_number.set_value
+    target:
+      entity_id:
+        - input_number.temperature_zn201_period4
+        - input_number.temperature_zn202_period4
+        - input_number.temperature_zn203_period4
+    data:
+      value: "{{ trigger.to_state.state }}"

@@ -73,7 +73,7 @@ views:
     cards:
       - type: vertical-stack
         cards:
-          - !include hakairos-configuration/frontend/panels/clima/p1.yaml
+          - !include hakairos-configuration/frontend/panels/clima/programs/prog1.yaml
   - title: Programma 2
     path: clima-p2
     panel: true
@@ -81,7 +81,7 @@ views:
     cards:
       - type: vertical-stack
         cards:
-          - !include hakairos-configuration/frontend/panels/clima/p2.yaml
+          - !include hakairos-configuration/frontend/panels/clima/programs/prog2.yaml
   - title: Programma 3
     path: clima-p3
     panel: true
@@ -89,7 +89,7 @@ views:
     cards:
       - type: vertical-stack
         cards:
-          - !include hakairos-configuration/frontend/panels/clima/p3.yaml
+          - !include hakairos-configuration/frontend/panels/clima/programs/prog3.yaml
   - title: Programma 4
     path: clima-p4
     panel: true
@@ -97,7 +97,7 @@ views:
     cards:
       - type: vertical-stack
         cards:
-          - !include hakairos-configuration/frontend/panels/clima/p4.yaml
+          - !include hakairos-configuration/frontend/panels/clima/programs/prog4.yaml
   - path: clima-p1-1
     panel: true
     visible: false

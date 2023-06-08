@@ -32,11 +32,11 @@ cards:
         name: Segnale
         fmt: signalIcon
     css:
-      h1: 'display: none;'
+      h1: "display: none;"
       table+: >
         'tbody tr:nth-child(even)': 'background-color: #a2542f6;'
-      td.left: 'padding: 10px 10px 10px 10px'
-      th.left: 'padding: 0px 0px 10px 3px'
+      td.left: "padding: 10px 10px 10px 10px"
+      th.left: "padding: 0px 0px 10px 3px"
   - type: custom:auto-entities
     filter:
       include:
@@ -87,9 +87,9 @@ cards:
           name: Ultimo Aggiornamento Dati
           fmt: locale
       css:
-        h1: 'padding: 5px 0px 5px 15px'
-        table+: 'padding-top: 5px; padding-left: 0px;'
-        'tbody tr:nth-child(even)': 'background-color: #a2542f6;'
-        td.left: 'padding: 10px 10px 10px 10px'
-        th.left: 'padding: 0px 0px 10px 3px'
-        thead: 'position: sticky; top: 0;'
+        h1: "padding: 5px 0px 5px 15px"
+        table+: "padding-top: 5px; padding-left: 0px;"
+        "tbody tr:nth-child(even)": "background-color: #a2542f6;"
+        td.left: "padding: 10px 10px 10px 10px"
+        th.left: "padding: 0px 0px 10px 3px"
+        thead: "position: sticky; top: 0; z-index: 100; background: white;"

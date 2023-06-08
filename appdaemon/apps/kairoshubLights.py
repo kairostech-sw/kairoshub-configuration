@@ -85,17 +85,19 @@ class KairoshubLights(hass.Hass):
         self.log("Copying light from Zone %s to all lights in the same zone")
 
         light_groups = self.get_state("light.group_lz{}00".format(zone_id[0]), attribute="entity_id")
-        color = self.get_state("light.lcz{}".format(zone_id), attribute="all").get("attributes",{})
-        white = self.get_state("light.lwz{}".format(zone_id), attribute="all").get("attributes",{})
-        self.log("color: %s", color, level="DEBUG")
-        self.log("white: %s", white, level="DEBUG")
+        color_rgbw = self.get_state("light.lcz{}".format(zone_id), attribute="rgbw_color")
+        color_brightness = self.get_state("light.lcz{}".format(zone_id), attribute="brightness")
 
-        if "rgbw_color" in color:
-            color_payload = {"turn": "on", "red": color["rgbw_color"][0], "green": color["rgbw_color"][1], "blue": color["rgbw_color"][2], "white": color["white_value"], "gain": color["brightness"]}
+        white_brightness = self.get_state("light.lwz{}".format(zone_id), attribute="brightness")
+        self.log("color: %s", color_rgbw, level="DEBUG")
+        self.log("white: %s", white_brightness, level="DEBUG")
+
+        if "rgbw_color" in color_rgbw:
+            color_payload = {"turn": "on", "red": color_rgbw[0], "green": color_rgbw[1], "blue": color_rgbw[2], "white": color_rgbw[3], "gain": color_brightness}
         else:
             color_payload = {"turn": "off"}
-        if "brightness" in white:
-            white_payload = {"turn": "on", "brightness": round(white["brightness"]/2.55)}
+        if white_brightness:
+            white_payload = {"turn": "on", "brightness": round(white_brightness/2.55)}
         else:
             white_payload = {"turn": "off"}
 
