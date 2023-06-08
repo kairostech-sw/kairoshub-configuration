@@ -35,6 +35,17 @@
       event_type: HA_ENTITY_METRICS
   action:
     event: "AD_ENTITY_METRICS"
+- alias: ENTITY METRICS ON STATE CHANGE
+  trigger:
+    - platform: state
+      entity_id:
+        - sensor.tapparelle
+        - input_boolean.at_home
+        - input_boolean.night
+        - group.lights
+        - switch.sw_thermostat
+  action:
+    event: AD_ENTITY_METRICS
 - alias: Hassio shutdown routine
   trigger:
     event: shutdown
@@ -167,6 +178,8 @@
         - automation.nightzone_sunset_turn_off
         - automation.dayzone_sunset_turn_off
         - automation.outdoor_sunset_turn_off
+        - automation.light_program_1_turn_on
+        - automation.light_program_1_turn_off
 # - alias: DOOR INTEGRATION
 #   trigger:
 #     - platform: state

@@ -152,7 +152,7 @@ class DataTable {
         // sorting is allowed asc/desc for one column
         if (this.cfg.sort_by) {
             let sort_cols = listify(this.cfg.sort_by);
-            
+
             let sort_conf = sort_cols.map((sort_col) => {
                 let out = { dir: 1, col: sort_col, idx: null };
                 if (["-", "+"].includes(sort_col.slice(-1))) {
@@ -171,9 +171,9 @@ class DataTable {
             // sort conf checks
             sort_conf = sort_conf.filter((conf) => conf.idx !== -1 && conf.idx !== null);
             if (sort_conf.length > 0) {
-                
-                this.rows.sort((x, y) => 
-                    sort_conf.reduce((out, conf) => 
+
+                this.rows.sort((x, y) =>
+                    sort_conf.reduce((out, conf) =>
                         out || conf.dir * compare(
                             x.data[conf.idx] && x.data[conf.idx].content,
                             y.data[conf.idx] && y.data[conf.idx].content),
@@ -386,6 +386,7 @@ class DataRow {
             let x = raw;
             let cfg = col_cfgs[idx];
             let content = (cfg.modify) ? eval(cfg.modify) : x;
+            content += "";
             if (content.length == 0 || content.toLowerCase() === "unavailable")
                 content = "n/a"
 

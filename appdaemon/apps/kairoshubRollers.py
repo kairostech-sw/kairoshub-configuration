@@ -1,4 +1,3 @@
-import time
 import hassapi as hass
 
 class KairoshubRollers(hass.Hass):
@@ -44,3 +43,4 @@ class KairoshubRollers(hass.Hass):
 
       state = ("CLOSED","OPEN")["athome" == mode]
       self.fire_event("AD_KAIROSHUB_NOTIFICATION", sender=sender, severity="NOTICE", ncode=f"ROLLERS_{state}", kwargs={"pos": position})
+      self.fire_event("AD_ENTITY_METRICS")
