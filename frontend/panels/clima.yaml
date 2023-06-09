@@ -17,7 +17,7 @@ custom_fields:
         - type: horizontal-stack
           cards:
             - type: "custom:button-card"
-              template: "clima_zones_detail"
+              template: "clima_tv_detail"
               triggers_update:
                 - sensor.tz100
                 - sensor.hz100
@@ -27,7 +27,7 @@ custom_fields:
                 action: navigate
                 navigation_path: /lovelace-kairoshub/nightzone
             - type: "custom:button-card"
-              template: "clima_zones_detail"
+              template: "clima_tv_detail"
               triggers_update:
                 - sensor.tz200
                 - sensor.hz200
@@ -69,22 +69,22 @@ custom_fields:
                   action: none
               - type: "custom:button-card"
                 template: button_go_to_program
-                entity: input_boolean.heater_program1
+                entity: group.heater_program1
                 variables:
                   progId: "1"
               - type: "custom:button-card"
                 template: button_go_to_program
-                entity: input_boolean.heater_program2
+                entity: group.heater_program2
                 variables:
                   progId: "2"
               - type: "custom:button-card"
                 template: button_go_to_program
-                entity: input_boolean.heater_program3
+                entity: group.heater_program3
                 variables:
                   progId: "3"
               - type: "custom:button-card"
                 template: button_go_to_program
-                entity: input_boolean.heater_program4
+                entity: group.heater_program4
                 variables:
                   progId: "4"
               - type: "custom:button-card"
@@ -92,7 +92,9 @@ custom_fields:
                 styles:
                   card:
                     - background: none
-                    - left: 210px
+                    - position: fixed
+                    - right: 10px
+                    - bottom: -17px
                 icon: "mdi:cog"
                 color: var(--command-state-color)
                 tap_action:

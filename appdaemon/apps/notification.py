@@ -297,13 +297,13 @@ class Notification(hass.Hass):
                     "#?#", vowel)
                 for index in range(len(zones)):
                     zone = self.get_state(
-                        f"input_text.zn{zones[index]}").removeprefix("Zona ")
+                        f"input_text.zn{zones[index]}").replace("Zona ", "")
                     if index < len(zones)-1:
                         extra_info += zone + ", "
                     else:
                         extra_info = extra_info[:-2] + " e "
                         extra_info += zone
-            pos = 100.0-int(float(kwargs["rollers"]))
+            pos = 100-int(float(kwargs["rollers"]))
             more_info = f"Tapparelle sono state chiuse al {pos}%"
 
         if "SCENE_DAY" in code:
@@ -315,7 +315,7 @@ class Notification(hass.Hass):
                     "#?#", vowel)
                 for index in range(len(zones)):
                     zone = self.get_state(
-                        f"input_text.zn{zones[index]}").removeprefix("Zona ")
+                        f"input_text.zn{zones[index]}").replace("Zona ", "")
                     if index < len(zones)-1:
                         extra_info += zone + ", "
                     else:

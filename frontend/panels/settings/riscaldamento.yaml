@@ -28,12 +28,8 @@ custom_fields:
           card:
             type: horizontal-stack
             cards:
-              - type: 'custom:button-card'
+              - type: "custom:button-card"
                 template: button_go_back
-                style: |
-                  :host {
-                    align-self: center;
-                  }
   entities:
     card:
       type: vertical-stack

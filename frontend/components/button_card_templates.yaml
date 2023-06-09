@@ -1040,16 +1040,14 @@ user_notification_header:
     navigation_path: /lovelace-kairoshub/notification
 
 icon_clima:
-  icon: "mdi:calendar-check"
+  icon: mdi:calendar-remove
+  color: var(--command-state-color)
+  label: "OFF"
   state:
     - value: "on"
       icon: mdi:calendar-check
       label: "ON"
       color: var(--command-state-active-color)
-    - value: "off"
-      icon: mdi:calendar-remove
-      label: "OFF"
-      color: var(--command-state-color)
 
 header_icon_clima:
   name: Programma caldo
@@ -1072,99 +1070,26 @@ button_hold:
 # NAVIGATION BUTTONS
 ####################
 
-# button_return_to_clima:
-#   type: 'custom:button-card'
-#   template: header_button_menu
-#   name: Indietro
-#   tap_action:
-#     action: navigate
-#     navigation_path: /lovelace-kairoshub/clima
-
 button_go_to_program:
   type: "custom:button-card"
   template: icon_state_header
   icon: '[[[ return "mdi:numeric-" + variables.progId + "-box-outline"]]]'
-  # label: '[[[ return "Prog " + variables.progId]]]'
-  # color: auto
+  state:
+    - value: "on"
+      color: var(--command-state-active-color)
+    - value: "off"
+      color: var(--command-state-color)
   tap_action:
     action: navigate
     navigation_path: '[[[ return "/lovelace-kairoshub/clima-p" + variables.progId]]]'
   styles:
     card:
-      # - box-shadow: 1px 5px 8px rgba(0, 0, 0, 0.3)
-      # - padding: 5px
       - width: 63px
-      # - border-right: solid 3px
-      # - border-color: var(--primary-background-color)
       - background: none
-
-# button_go_to_prog1:
-#   type: 'custom:button-card'
-#   template: icon_state_header
-#   entity: input_boolean.heater_program1
-#   icon: mdi:numeric-1-box-outline
-#   label: Prog 1
-#   color: auto
-#   tap_action:
-#     action: navigate
-#     navigation_path: /lovelace-kairoshub/clima-p1
-#   styles:
-#     card:
-#       - box-shadow: 1px 5px 8px rgba(0, 0, 0, 0.3)
-#       - padding: 5px
-#       - width: 63px
-#       - background: rgb(255, 255, 255)
-
-# button_go_to_prog2:
-#   type: 'custom:button-card'
-#   template: icon_state_header
-#   entity: input_boolean.heater_program2
-#   icon: mdi:numeric-2-box-outline
-#   label: Prog 2
-#   color: auto
-#   tap_action:
-#     action: navigate
-#     navigation_path: /lovelace-kairoshub/clima-p2
-#   styles:
-#     card:
-#       - box-shadow: 1px 5px 8px rgba(0, 0, 0, 0.3)
-#       - padding: 5px
-#       - width: 63px
-#       - background: rgb(255, 255, 255)
-
-# button_go_to_prog3:
-#   type: 'custom:button-card'
-#   template: icon_state_header
-#   entity: input_boolean.heater_program3
-#   icon: mdi:numeric-3-box-outline
-#   label: Prog 3
-#   color: auto
-#   tap_action:
-#     action: navigate
-#     navigation_path: /lovelace-kairoshub/clima-p3
-#   styles:
-#     card:
-#       - box-shadow: 1px 5px 8px rgba(0, 0, 0, 0.3)
-#       - padding: 5px
-#       - width: 63px
-#       - background: rgb(255, 255, 255)
-
-# button_go_to_prog4:
-# type: 'custom:button-card'
-# template: icon_state_header
-# entity: input_boolean.heater_program4
-# icon: mdi:numeric-4-box-outline
-# label: Prog 4
-# color: auto
-# tap_action:
-#   action: navigate
-#   navigation_path: /lovelace-kairoshub/clima-p4
-# styles:
-#   card:
-#     - box-shadow: 1px 5px 8px rgba(0, 0, 0, 0.3)
-#     - padding: 5px
-#     - width: 63px
-#     - background: rgb(255, 255, 255)
+  style: |
+    :host {
+      align-self: center;
+    }
 
 button_return_to_program:
   type: "custom:button-card"
@@ -1172,38 +1097,6 @@ button_return_to_program:
   tap_action:
     action: navigate
     navigation_path: "[[[window.history.back()]]]"
-
-# button_return_to_program1:
-#   type: 'custom:button-card'
-#   template: header_button_menu
-#   name: Indietro
-#   tap_action:
-#     action: navigate
-#     navigation_path: /lovelace-kairoshub/clima-p1
-
-# button_return_to_program2:
-#   type: 'custom:button-card'
-#   template: header_button_menu
-#   name: Indietro
-#   tap_action:
-#     action: navigate
-#     navigation_path: /lovelace-kairoshub/clima-p2
-
-# button_return_to_program3:
-#   type: 'custom:button-card'
-#   template: header_button_menu
-#   name: Indietro
-#   tap_action:
-#     action: navigate
-#     navigation_path: /lovelace-kairoshub/clima-p3
-
-# button_return_to_program4:
-#   type: 'custom:button-card'
-#   template: header_button_menu
-#   name: Indietro
-#   tap_action:
-#     action: navigate
-#     navigation_path: /lovelace-kairoshub/clima-p4
 
 button_return_to_settings:
   type: "custom:button-card"
@@ -1225,6 +1118,11 @@ button_go_back:
       - box-shadow: none
     name:
       - color: "#f4f4f4"
+  style: |
+    :host {
+      align-self: center;
+    }
+
 button_go_to_zone:
   type: "custom:button-card"
   show_label: true
@@ -1242,16 +1140,11 @@ button_go_to_zone:
 clima_tv_detail:
   type: "custom:button-card"
   icon: "mdi:texture-box"
+  name: "[[[return states[`input_text.zn${variables.zoneId}`].state;]]]"
   tap_action:
     action: none
   styles:
     card:
-      # - display: >
-      #     [[[
-      #       if ( `${states[ variables.visibility ].state}` != 'on') return 'none !important';
-      #         return 'flex';
-      #     ]]]
-      # - background: rgb(245,245,245)
       - padding: 5px
       - color: var(--primary-text-color)
       - font-size: 10px
@@ -1259,18 +1152,13 @@ clima_tv_detail:
       - box-shadow: 1px 5px 8px rgba(0, 0, 0, 0.3)
       - margin-bottom: 5px
       - margin-right: 3px
-      - height: 140px
-      # - border-width: 2px
-      # - border-style: double
-      # - border-color: >
-      #     [[[
-      #       if (variables.state != 'online') return 'var(--error-color)';
-      #         return 'var(--active-color)';
-      #     ]]]
+      - height: 85px
     grid:
-      - grid-template-areas: '"i header temp icon1" "content content humidity icon2 " "graph graph graph graph"'
+      - grid-template-areas: >
+          "i header temp icon1"
+          "last_update last_update humidity icon2"
       - grid-template-columns: 30px 2fr 1fr 30px
-      - grid-template-rows: 45px 25px min-content
+      - grid-template-rows: 45px 25px
     name:
       - font-weight: bold
       - font-size: 16px
@@ -1286,12 +1174,7 @@ clima_tv_detail:
       - margin: none
       - grid-area: i
     icon:
-      - color:
-          var(--paper-item-icon-color)
-          # [[[
-          #   if (entity.state != '0') return 'var(--paper-item-icon-color)';
-          #     return 'var(--active-color)'
-          # ]]]
+      - color: var(--paper-item-icon-color)
       - width: 80%
     custom_fields:
       temp:
@@ -1300,7 +1183,7 @@ clima_tv_detail:
       humidity:
         - justify-self: end
         - align-self: middle
-      content:
+      last_update:
         - justify-self: start
         - align-self: middle
       graph:
@@ -1308,43 +1191,81 @@ clima_tv_detail:
   custom_fields:
     temp: >
       [[[
+        var zoneTemperature = states[`sensor.tz${variables.zoneId}`].state;
+        var tempColor = 'var(--temperature-secondary-color)';
+        if (
+          (zoneTemperature > states["input_number.temperature_period1"].state
+          && states["input_boolean.heater_program1_on"].state ==="on") ||
+          (zoneTemperature > states["input_number.temperature_period2"].state
+          && states["input_boolean.heater_program2_on"].state ==="on") ||
+          (zoneTemperature > states["input_number.temperature_period3"].state
+          && states["input_boolean.heater_program3_on"].state ==="on") ||
+          (zoneTemperature > states["input_number.temperature_period4"].state
+          && states["input_boolean.heater_program4_on"].state ==="on") ||
+          zoneTemperature > states['input_number.manual_heating_temp'].state)
+            tempColor = 'var(--temperature-primary-color)';
         return `<div style="align-items: center; display: flex;">
-          <span style="font-size: 18px; font-weight: 600; color: ${variables.temp_color};">${ variables.temperature }°C</span>
+          <span style="font-size: 18px; font-weight: 600; color: ${tempColor};">${ zoneTemperature }°C</span>
           <br />
           </div>
         `
       ]]]
     humidity: >
       [[[
-        if (variables.humidity != "unknown" && variables.humidity != "unavailable")
-          {return `<div style="align-items: center; display: flex;"><span style="font-size: 18px; font-weight: 600; color: var(--humidity-primary-color);">${ variables.humidity }%</span>
+        var humidity = states[`sensor.hz${variables.zoneId}`].state;
+        if (humidity != "unknown" && humidity != "unavailable")
+          return `<div style="align-items: center; display: flex;"><span style="font-size: 18px; font-weight: 600; color: var(--humidity-primary-color);">${ humidity }%</span>
           <br />
-          </div>`;}
-        else return;
+          </div>`;
+        return "</>";
       ]]]
-    content: >
+    last_update: >
       [[[
-        return `<span style="font-size: 12px;">${ variables.lastupdate }</span>`
+        var datetime =  states[`sensor.tz${variables.zoneId}`].last_changed.split("T");
+        datetime = new Date(datetime).toLocaleString().replace(","," ");
+        var lastupdate = datetime.substring(0,datetime.length-3);
+        return `<span style="font-size: 12px;">${lastupdate }</span>`
       ]]]
+    icon1:
+      card:
+        type: custom:button-card
+        icon: mdi:thermometer
+        styles:
+          icon:
+            - width: 80%
+            - color: >
+                [[[
+                  var zoneTemperature = states[`sensor.tz${variables.zoneId}`].state;
+                  if (
+                    (zoneTemperature > states["input_number.temperature_period1"].state
+                    && states["input_boolean.heater_program1_on"].state ==="on") ||
+                    (zoneTemperature > states["input_number.temperature_period2"].state
+                    && states["input_boolean.heater_program2_on"].state ==="on") ||
+                    (zoneTemperature > states["input_number.temperature_period3"].state
+                    && states["input_boolean.heater_program3_on"].state ==="on") ||
+                    (zoneTemperature > states["input_number.temperature_period4"].state
+                    && states["input_boolean.heater_program4_on"].state ==="on") ||
+                    zoneTemperature > states['input_number.manual_heating_temp'].state)
+                      return 'var(--temperature-primary-color)';
 
-clima_zones_detail:
-  type: "custom:button-card"
-  template: clima_tv_detail
-  styles:
-    card:
-      - height: 100px
-      - "--mdc-ripple-press-opacity": 0.2
-    grid:
-      - grid-template-areas: '"i header temp icon1" "content content humidity icon2"'
-      - grid-template-columns: 30px 2fr 1fr 30px
-      - grid-template-rows: auto
-    custom_fields:
-      temp:
-        - justify-self: end
-      humidity:
-        - justify-self: end
+                  return 'var(--temperature-secondary-color)';
+                ]]]
+    icon2:
+      card:
+        type: conditional
+        conditions:
+          - entity: "[[[return `sensor.hz${variables.zoneId}`]]]"
+            state_not: unknown
+        card:
+          type: custom:button-card
+          icon: mdi:water-percent
+          styles:
+            icon:
+              - width: 80%
+              - color: var(--humidity-primary-color)
 
 temperature_value:
+  icon: "mdi:thermometer"
   show_state: true
   show_icon: false
   show_name: false
@@ -1442,24 +1363,6 @@ heating_program_ctrl:
       ]]]
     service_data:
       entity_id: "[[[ return variables.service_data; ]]]"
-
-clima_programs_template:
-  template: header_page_text
-  label: "[[[ return `Clima / Programma ${variables.progId} / ${variables.day}`; ]]]"
-  state:
-    - value: "on"
-      icon: mdi:calendar-check
-      styles:
-        icon:
-          - color: var(--command-state-active-color)
-      name: "[[[ return `${variables.day}  (ON)`; ]]]"
-    - value: "off"
-      icon: mdi:calendar-remove
-      color: var(--command-state-color)
-      name: "[[[ return `${variables.day}  (OFF)`; ]]]"
-  styles:
-    card:
-      - padding-top: 15px
 
 light_detail:
   icon: mdi:lightbulb
@@ -1756,8 +1659,8 @@ panel_grid:
       - background: none
       - padding-top: 15px
     grid:
-      - grid-template-areas: '"header header" "content content" "commandbar commandbar"'
-      - grid-template-columns: 1fr 1fr
+      - grid-template-areas: '"header" "content" "commandbar"'
+      - grid-template-columns: 1fr
       - grid-auto-rows: auto
       - row-gap: 3px
       - column-gap: 10px
@@ -1769,7 +1672,7 @@ panel_grid:
         - margin-left: -10px
         - height: 46px
       content:
-        - height: 302px
+        - max-height: 300px
         - margin-top: 5px
 
 zone_table:
@@ -1913,7 +1816,7 @@ new_heating_program_layout:
     header:
       card:
         type: "custom:button-card"
-        entity: "[[[return `input_boolean.heater_program${variables.progId}`]]]"
+        entity: "[[[return `group.heater_program${variables.progId}`]]]"
         template:
           - header_page_text
           - icon_clima

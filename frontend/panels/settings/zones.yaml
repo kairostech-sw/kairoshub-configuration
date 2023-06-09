@@ -1,21 +1,21 @@
 type: vertical-stack
 cards:
-  - type: 'custom:button-card'
+  - type: "custom:button-card"
     template: zone_table
     custom_fields:
       header:
         card:
-          type: 'custom:button-card'
+          type: "custom:button-card"
           entity: binary_sensor.heater_auto
           layout: vertical
           template:
             - header_page_text
-          name: 'IMPOSTAZIONI'
-          icon: 'mdi:cog'
+          name: "IMPOSTAZIONI"
+          icon: "mdi:cog"
           label: "Impostazioni / Zone"
       commandbar:
         card:
-          type: 'custom:button-card'
+          type: "custom:button-card"
           template: command_bar
           style: |
             ha-card.button-card-main {
@@ -24,15 +24,12 @@ cards:
             div#container {
               justify-items: right;
             }
-          styles:
-            card:
-              - width: 800px
           custom_fields:
             commands:
               card:
                 type: horizontal-stack
                 cards:
-                  - type: 'custom:button-card'
+                  - type: "custom:button-card"
                     template: button_go_back
                     style: |
                       :host {
@@ -40,7 +37,7 @@ cards:
                       }
       warning:
         card:
-          type: 'custom:button-card'
+          type: "custom:button-card"
           template: no_background
           name: >
             [[[
@@ -58,34 +55,34 @@ cards:
         card:
           type: vertical-stack
           cards:
-            - type: 'custom:button-card'
+            - type: "custom:button-card"
               template: zone_name
               name: '[[[ return "ZN101".bold()+": "+states["input_text.zn101"].state]]]'
-              style: 
+              style:
                 div: |
                   div#name {
                     justify-self: left;
                   }
-            - type: 'custom:button-card'
+            - type: "custom:button-card"
               template: zone_name
               name: '[[[ return "ZN102".bold()+": "+states["input_text.zn102"].state]]]'
-              style: 
+              style:
                 div: |
                   div#name {
                     justify-self: left;
                   }
-            - type: 'custom:button-card'
+            - type: "custom:button-card"
               template: zone_name
               name: '[[[ return "ZN103".bold()+": "+states["input_text.zn103"].state]]]'
-              style: 
+              style:
                 div: |
                   div#name {
                     justify-self: left;
                   }
-            - type: 'custom:button-card'
+            - type: "custom:button-card"
               template: zone_name
               name: '[[[ return "ZN104".bold()+": "+states["input_text.zn104"].state]]]'
-              style: 
+              style:
                 div: |
                   div#name {
                     justify-self: left;
@@ -94,26 +91,26 @@ cards:
         card:
           type: vertical-stack
           cards:
-            - type: 'custom:button-card'
+            - type: "custom:button-card"
               template: zone_name
               name: '[[[ return "ZN201".bold()+": "+states["input_text.zn201"].state]]]'
-              style: 
+              style:
                 div: |
                   div#name {
                     justify-self: left;
                   }
-            - type: 'custom:button-card'
+            - type: "custom:button-card"
               template: zone_name
               name: '[[[ return `<div style="text-align: left;"><strong>ZN202</strong>: ${states["input_text.zn202"].state}</div>`]]]'
-              style: 
+              style:
                 div: |
                   div#name {
                     justify-self: left;
                   }
-            - type: 'custom:button-card'
+            - type: "custom:button-card"
               template: zone_name
               name: '[[[ return "ZN203".bold()+": "+states["input_text.zn203"].state]]]'
-              style: 
+              style:
                 div: |
                   div#name {
                     justify-self: left;

@@ -1,0 +1,9 @@
+type: custom:button-card
+template: new_heating_program_layout
+variables:
+  progId: 2
+card_mod:
+  style: |
+    #content::-webkit-scrollbar {
+      display: none !important;
+    }
