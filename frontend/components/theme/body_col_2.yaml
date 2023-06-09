@@ -1,0 +1,119 @@
+type: "custom:mod-card"
+card_mod:
+  style:
+    tabbed-card $:
+      .: |
+        {% if is_state("sensor.umidita", "unknown")%}
+          mwc-tab[label='Umidità'] {
+            display: none;
+          }
+        {% endif %}
+      mwc-tab:
+        $ mwc-tab-indicator $: |
+          .mdc-tab-indicator__content--underline {
+            border-color: var(--command-state-active-color) !important;
+          }
+card:
+  type: "custom:tabbed-card"
+  options:
+    defaultTabIndex: 0
+  attributes:
+    stacked: true
+  styles:
+    --mdc-typography-button-font-size: 12px
+  tabs:
+    - attributes:
+        label: "Temperatura"
+        icon: "mdi:thermometer"
+      card:
+        type: "custom:button-card"
+        template: graph
+        custom_fields:
+          graph:
+            card:
+              type: sensor
+              entity: sensor.temperatura
+              graph: line
+              icon: "mdi:thermometer"
+              detail: 1
+              style: |
+                {% if (states(config.entity)> states("input_number.temperature_period1") and is_state("input_boolean.heater_program1_on","on")) or
+                (states(config.entity)> states("input_number.temperature_period2") and is_state("input_boolean.heater_program2_on","on")) or
+                (states(config.entity)> states("input_number.temperature_period3") and is_state("input_boolean.heater_program3_on","on")) or
+                (states(config.entity)> states("input_number.temperature_period4") and is_state("input_boolean.heater_program4_on","on")) or
+                states(config.entity) > states("input_number.manual_heating_temp")
+                %}
+                ha-card {
+                  --accent-color: var(--temperature-primary-color);
+                }
+                .header .icon {
+                  color: var(--temperature-primary-color);
+                }
+                {% else %}
+                ha-card {
+                  --accent-color: var(--temperature-secondary-color);
+                }
+                .header .icon {
+                  color: var(--temperature-secondary-color);
+                }
+                {% endif %}
+        style: |
+          ha-card {
+            height: 130px !important;
+          }
+        tap_action:
+          action: none
+    - attributes:
+        label: "Umidità"
+        icon: "mdi:water-percent"
+      card:
+        type: "custom:button-card"
+        template: graph
+        custom_fields:
+          graph:
+            card:
+              type: sensor
+              entity: sensor.umidita
+              graph: line
+              icon: "mdi:water-percent"
+              detail: 1
+              style: |
+                ha-card {
+                  --accent-color:  var(--humidity-primary-color);
+                }
+                .header .icon {
+                  color:  var(--humidity-primary-color);
+                }
+        style: |
+          ha-card {
+            height: 130px !important;
+          }
+        tap_action:
+          action: none
+    - attributes:
+        label: "Consumi"
+        icon: "mdi:flash"
+      card:
+        type: "custom:button-card"
+        template: graph
+        custom_fields:
+          graph:
+            card:
+              type: sensor
+              entity: sensor.em_assorbimento
+              graph: line
+              icon: "mdi:lightning-bolt"
+              detail: 1
+              style: |
+                ha-card {
+                  --accent-color: var(--energy-consume-primary-color);
+                }
+                .header .icon {
+                  color: var(--energy-consume-primary-color);
+                }
+        style: |
+          ha-card {
+            height: 130px !important;
+          }
+        tap_action:
+          action: none

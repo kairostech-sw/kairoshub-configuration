@@ -31,7 +31,7 @@ views:
           - type: horizontal-stack
             cards:
               - !include hakairos-configuration/frontend/components/theme/body_col_1.yaml
-              - !include hakairos-configuration/frontend/components/theme/body_col_3.yaml
+              - !include hakairos-configuration/frontend/components/theme/body_col_2.yaml
           - type: "custom:button-card"
             color_type: blank-card
             styles:

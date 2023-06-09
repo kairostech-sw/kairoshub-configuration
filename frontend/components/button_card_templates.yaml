@@ -344,11 +344,17 @@ icon_clima:
 # TODO: Check if can be changed & removed
 header_icon_clima:
   name: Programma caldo
-  template:
-    - icon_state_header
-    - icon_clima
+  template: icon_state_header
   entity: binary_sensor.heater_auto
-  color: auto
+  icon: mdi:calendar-remove
+  label: "OFF"
+  state:
+    - value: "on"
+      icon: mdi:calendar-check
+      label: "ON"
+      styles:
+        icon:
+          - color: var(--command-state-active-color)
   tap_action:
     action: none
 

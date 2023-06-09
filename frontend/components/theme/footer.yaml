@@ -150,6 +150,7 @@ custom_fields:
             type: "custom:button-card"
             template: header_icon_clima
             entity: binary_sensor.heater_auto
+            show_label: true
             state:
               - value: "on"
                 color: var(--command-state-active-color)
