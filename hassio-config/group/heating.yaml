@@ -1,0 +1,115 @@
+heater_program1:
+  name: Programma 1
+  entities:
+    - group.heater_zn100_program1
+    - group.heater_zn200_program1
+heater_zn100_program1:
+  name: Zona Notte Programma 1
+  entities:
+    - input_boolean.heater_zn101_program1
+    - input_boolean.heater_zn102_program1
+    - input_boolean.heater_zn103_program1
+    - input_boolean.heater_zn104_program1
+heater_zn200_program1:
+  name: Zona Giorno Programma 1
+  entities:
+    - input_boolean.heater_zn201_program1
+    - input_boolean.heater_zn202_program1
+    - input_boolean.heater_zn203_program1
+program1_days:
+  name: Giorni Programma 1
+  entities:
+    - input_boolean.thermostat_monday_program1
+    - input_boolean.thermostat_tuesday_program1
+    - input_boolean.thermostat_wednesday_program1
+    - input_boolean.thermostat_thursday_program1
+    - input_boolean.thermostat_friday_program1
+    - input_boolean.thermostat_saturday_program1
+    - input_boolean.thermostat_sunday_program1
+
+heater_program2:
+  name: Programma 2
+  entities:
+    - group.heater_zn100_program2
+    - group.heater_zn200_program2
+heater_zn100_program2:
+  name: Zona Notte Programma 2
+  entities:
+    - input_boolean.heater_zn101_program2
+    - input_boolean.heater_zn102_program2
+    - input_boolean.heater_zn103_program2
+    - input_boolean.heater_zn104_program2
+heater_zn200_program2:
+  name: Zona Giorno Programma 2
+  entities:
+    - input_boolean.heater_zn201_program2
+    - input_boolean.heater_zn202_program2
+    - input_boolean.heater_zn203_program2
+program2_days:
+  name: Giorni Programma 2
+  entities:
+    - input_boolean.thermostat_monday_program2
+    - input_boolean.thermostat_tuesday_program2
+    - input_boolean.thermostat_wednesday_program2
+    - input_boolean.thermostat_thursday_program2
+    - input_boolean.thermostat_friday_program2
+    - input_boolean.thermostat_saturday_program2
+    - input_boolean.thermostat_sunday_program2
+
+heater_program3:
+  name: Programma 3
+  entities:
+    - group.heater_zn100_program3
+    - group.heater_zn200_program3
+heater_zn100_program3:
+  name: Zona Notte Programma 3
+  entities:
+    - input_boolean.heater_zn101_program3
+    - input_boolean.heater_zn102_program3
+    - input_boolean.heater_zn103_program3
+    - input_boolean.heater_zn104_program3
+heater_zn200_program3:
+  name: Zona Giorno Programma 3
+  entities:
+    - input_boolean.heater_zn201_program3
+    - input_boolean.heater_zn202_program3
+    - input_boolean.heater_zn203_program3
+program3_days:
+  name: Giorni Programma 3
+  entities:
+    - input_boolean.thermostat_monday_program3
+    - input_boolean.thermostat_tuesday_program3
+    - input_boolean.thermostat_wednesday_program3
+    - input_boolean.thermostat_thursday_program3
+    - input_boolean.thermostat_friday_program3
+    - input_boolean.thermostat_saturday_program3
+    - input_boolean.thermostat_sunday_program3
+
+heater_program4:
+  name: Programma 4
+  entities:
+    - group.heater_zn100_program4
+    - group.heater_zn200_program4
+heater_zn100_program4:
+  name: Zona Notte Programma 4
+  entities:
+    - input_boolean.heater_zn101_program4
+    - input_boolean.heater_zn102_program4
+    - input_boolean.heater_zn103_program4
+    - input_boolean.heater_zn104_program4
+heater_zn200_program4:
+  name: Zona Giorno Programma 4
+  entities:
+    - input_boolean.heater_zn201_program4
+    - input_boolean.heater_zn202_program4
+    - input_boolean.heater_zn203_program4
+program4_days:
+  name: Giorni Programma 4
+  entities:
+    - input_boolean.thermostat_monday_program4
+    - input_boolean.thermostat_tuesday_program4
+    - input_boolean.thermostat_wednesday_program4
+    - input_boolean.thermostat_thursday_program4
+    - input_boolean.thermostat_friday_program4
+    - input_boolean.thermostat_saturday_program4
+    - input_boolean.thermostat_sunday_program4
