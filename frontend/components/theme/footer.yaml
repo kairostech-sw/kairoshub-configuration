@@ -10,27 +10,25 @@ custom_fields:
       type: horizontal-stack
       cards:
         - type: "custom:button-card"
-          name: Notte
           template: icon_state_header
           entity: input_boolean.night
-          label: "Notte"
+          color: var(--command-state-color)
           state:
             - value: "on"
               icon: "mdi:weather-night"
               label: "Notte"
-              color: var(--command-state-color)
             - value: "off"
               icon: "mdi:weather-sunny"
               label: "Giorno"
-              color: var(--command-state-color)
           tap_action:
             action: call-service
             service: automation.trigger
             service_data:
               entity_id: automation.day_night_scene_manual
-          styles:
-            card:
-              - padding-top: 3px
+          <<: &footer_padding
+            styles:
+              card:
+                - padding-top: 3px
         - type: conditional
           conditions:
             - entity: input_boolean.light_integration
@@ -42,15 +40,13 @@ custom_fields:
             entity: group.lights
             icon: mdi:lightbulb
             state:
-              - value: 'on'
+              - value: "on"
                 label: Accese
                 color: var(--command-state-active-color)
-              - value: 'off'
+              - value: "off"
                 label: Spente
                 color: var(--command-state-color)
-            styles:
-              card:
-                - padding-top: 3px
+            <<: *footer_padding
             tap_action:
               action: call-service
               service: automation.trigger
@@ -93,14 +89,12 @@ custom_fields:
                 label: Chiuse
               - value: "moving"
                 icon: mdi:pause-octagon-outline
-                color: '#FF1500'
+                color: "#FF1500"
                 label: Ferma
                 styles:
                   icon:
                     - animation: blink-alert 2s ease infinite
-            styles:
-              card:
-                - padding-top: 3px
+            <<: *footer_padding
         - type: "custom:button-card"
           entity: input_boolean.at_home
           template: icon_state_header
@@ -117,9 +111,7 @@ custom_fields:
             - value: "off"
               label: "Fuori Casa"
               color: var(--command-state-color)
-          styles:
-            card:
-              - padding-top: 3px
+          <<: *footer_padding
         - type: conditional
           conditions:
             - entity: input_boolean.heating_integration
@@ -149,9 +141,7 @@ custom_fields:
                 icon: mdi:radiator-off
                 label: "Spento"
                 color: var(--command-state-color)
-            styles:
-              card:
-                - padding-top: 3px
+            <<: *footer_padding
         - type: conditional
           conditions:
             - entity: input_boolean.heating_integration
@@ -169,6 +159,4 @@ custom_fields:
             tap_action:
               action: navigate
               navigation_path: /lovelace-kairoshub/clima
-            styles:
-              card:
-                - padding-top: 3px
+            <<: *footer_padding

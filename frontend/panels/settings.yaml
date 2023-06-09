@@ -4,8 +4,7 @@ custom_fields:
   header:
     card:
       type: custom:button-card
-      template:
-        - header_page_text
+      template: header_page_text
       name: IMPOSTAZIONI
       label: Impostazioni /
       icon: mdi:cog
@@ -44,9 +43,9 @@ custom_fields:
             - entity: input_boolean.light_integration
               state: "on"
           card:
-            type: 'custom:button-card'
+            type: "custom:button-card"
             template: settings_card
-            icon: 'mdi:lightbulb'
+            icon: "mdi:lightbulb"
             name: Luci
             tap_action:
               action: navigate
@@ -71,7 +70,7 @@ custom_fields:
             tap_action:
               action: navigate
               navigation_path: /lovelace-kairoshub/impostazioni-alexa
-        - type: 'custom:button-card'
+        - type: "custom:button-card"
           template: settings_card
           icon: mdi:cog
           name: Sistema

@@ -1,5 +1,5 @@
 type: "custom:button-card"
-template: clima_zone_grid
+template: zones_grid
 custom_fields:
   header:
     card:

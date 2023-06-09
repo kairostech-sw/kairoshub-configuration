@@ -1,23 +1,21 @@
-type: 'custom:button-card'
-template: clima_zone_grid
+type: "custom:button-card"
+template: zones_grid
 custom_fields:
   header:
     card:
-      type: 'custom:button-card'
-      entity: binary_sensor.heater_auto
-      layout: vertical
+      type: "custom:button-card"
       template:
         - header_page_text
-      icon: 'mdi:lightbulb'
-      name: 'LUCI'
+      icon: "mdi:lightbulb"
+      name: "LUCI"
       label: >
         [[[
-          return "Luci / "+states["input_text.zn100"].state + 
+          return "Luci / "+states["input_text.zn100"].state +
             " / "+states["input_text.zn102"].state;
         ]]]
   commandbar:
     card:
-      type: 'custom:button-card'
+      type: "custom:button-card"
       template: command_bar
       style: |
         ha-card.button-card-main {
@@ -28,18 +26,17 @@ custom_fields:
         }
       styles:
         card:
-          - width: 800px
           - margin-left: -10px
       custom_fields:
         commands:
           card:
             type: horizontal-stack
             cards:
-              - type: 'custom:button-card'
-                name: 'Copia'
+              - type: "custom:button-card"
+                name: "Copia"
                 hold_action:
                   confirmation:
-                    text: 'Vuoi copiare questa impostazione per tutti le luci di questa zona?'
+                    text: "Vuoi copiare questa impostazione per tutte le luci di questa zona?"
                   action: call-service
                   service: input_boolean.turn_on
                   service_data:
@@ -47,25 +44,20 @@ custom_fields:
                 styles:
                   card:
                     - background: none
-                    - color: '#f4f4f4'
-                    - box-shadow: none 
+                    - color: "#f4f4f4"
+                    - box-shadow: none
                     - width: 200px
                     - left: -474px
                 style: |
                   :host {
                     align-self: center;
                   }
-              - type: 'custom:button-card'
+              - type: "custom:button-card"
                 template: button_go_back
-                style: |
-                  :host {
-                    align-self: center;
-                  }
   zones:
     card:
       type: horizontal-stack
-      cards: #TODO Automation Copy
-      ## Automation Turn on/off all in group LyZxxx
+      cards:
         - type: conditional
           conditions:
             - entity: input_select.light_type

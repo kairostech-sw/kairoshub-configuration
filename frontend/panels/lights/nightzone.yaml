@@ -1,19 +1,16 @@
-type: 'custom:button-card'
+type: "custom:button-card"
 template: panel_grid
 custom_fields:
   header:
     card:
-      type: 'custom:button-card'
-      entity: binary_sensor.heater_auto
-      layout: vertical
-      template:
-        - header_page_text
-      icon: 'mdi:lightbulb'
-      name: 'LUCI'
+      type: "custom:button-card"
+      template: header_page_text
+      icon: "mdi:lightbulb"
+      name: "LUCI"
       label: '[[[return "Luci / "+states["input_text.zn100"].state]]]'
   commandbar:
     card:
-      type: 'custom:button-card'
+      type: "custom:button-card"
       template: command_bar
       style: |
         ha-card.button-card-main {
@@ -24,19 +21,14 @@ custom_fields:
         }
       styles:
         card:
-          - width: 800px
           - margin-left: -10px
       custom_fields:
         commands:
           card:
             type: horizontal-stack
             cards:
-              - type: 'custom:button-card'
+              - type: "custom:button-card"
                 template: button_go_back
-                style: |
-                  :host {
-                    align-self: center;
-                  }
   content:
     card:
       type: vertical-stack
@@ -52,7 +44,7 @@ custom_fields:
             - entity: binary_sensor.lz104_state
               state: "off"
           card:
-            type: 'custom:button-card'
+            type: "custom:button-card"
             template: no_background
             name: >
               [[[
@@ -62,46 +54,28 @@ custom_fields:
                 </ha-alert>`;
               ]]]
             tap_action:
-                action: none
+              action: none
         - type: grid
           columns: 2
           square: false
           cards:
-            - type: custom:mod-card
-              style: |
-                ha-card {
-                  display: inline-block;
-                }
+            - <<: &inline-mod-card
+                type: custom:mod-card
+                style: |
+                  ha-card {
+                    display: inline-block;
+                  }
               card:
                 type: conditional
                 conditions:
                   - entity: binary_sensor.lz101_state
                     state_not: "off"
                 card:
-                  type: 'custom:button-card'
+                  type: "custom:button-card"
                   template: light_detail
                   entity: light.group_lz101
-                  name: >
-                    [[[
-                      return states["input_text.zn101"].state;
-                    ]]]
-                  state:
-                    - value: 'off'
-                      color: black
-                    - value: 'on'
-                      color: >
-                        [[[
-                          if (states["input_select.light_type"].state == "color")
-                          {
-                            if (states["light.lcz101"].state) {
-                              if (states["light.lcz101"].attributes.rgb_color != undefined) {
-                              var color = states["light.lcz101"].attributes.rgb_color
-                              return "rgb("+color[0]+","+color[1]+","+color[2]+")";
-                              }
-                            }
-                          }
-                          else return "#DCA200";
-                        ]]]
+                  variables:
+                    zoneId: 101
                   tap_action:
                     action: call-service
                     service: light.toggle
@@ -110,41 +84,18 @@ custom_fields:
                   hold_action:
                     action: navigate
                     navigation_path: /lovelace-kairoshub/lights-nightzone-room1
-            - type: custom:mod-card
-              style: |
-                ha-card {
-                  display: inline-block;
-                }
+            - <<: *inline-mod-card
               card:
                 type: conditional
                 conditions:
                   - entity: binary_sensor.lz102_state
                     state_not: "off"
                 card:
-                  type: 'custom:button-card'
+                  type: "custom:button-card"
                   template: light_detail
                   entity: light.group_lz102
-                  name: >
-                    [[[
-                      return states["input_text.zn102"].state;
-                    ]]]
-                  state:
-                    - value: 'off'
-                      color: black
-                    - value: 'on'
-                      color: >
-                        [[[
-                          if (states["input_select.light_type"].state == "color")
-                          {
-                            if (states["light.lcz102"].state) {
-                              if (states["light.lcz102"].attributes.rgb_color != undefined) {
-                              var color = states["light.lcz102"].attributes.rgb_color
-                              return "rgb("+color[0]+","+color[1]+","+color[2]+")";
-                              }
-                            }
-                          }
-                          else return "#DCA200";
-                        ]]]
+                  variables:
+                    zoneId: 102
                   tap_action:
                     action: call-service
                     service: light.toggle
@@ -153,41 +104,18 @@ custom_fields:
                   hold_action:
                     action: navigate
                     navigation_path: /lovelace-kairoshub/lights-nightzone-room2
-            - type: custom:mod-card
-              style: |
-                ha-card {
-                  display: inline-block;
-                }
+            - <<: *inline-mod-card
               card:
                 type: conditional
                 conditions:
                   - entity: binary_sensor.lz103_state
                     state_not: "off"
                 card:
-                  type: 'custom:button-card'
+                  type: "custom:button-card"
                   template: light_detail
                   entity: light.group_lz103
-                  name: >
-                    [[[
-                      return states["input_text.zn103"].state;
-                    ]]]
-                  state:
-                    - value: 'off'
-                      color: black
-                    - value: 'on'
-                      color: >
-                        [[[
-                          if (states["input_select.light_type"].state == "color")
-                          {
-                            if (states["light.lcz103"].state) {
-                              if (states["light.lcz103"].attributes.rgb_color != undefined) {
-                              var color = states["light.lcz103"].attributes.rgb_color
-                              return "rgb("+color[0]+","+color[1]+","+color[2]+")";
-                              }
-                            }
-                          }
-                          else return "#DCA200";
-                        ]]]
+                  variables:
+                    zoneId: 103
                   tap_action:
                     action: call-service
                     service: light.toggle
@@ -196,44 +124,18 @@ custom_fields:
                   hold_action:
                     action: navigate
                     navigation_path: /lovelace-kairoshub/lights-nightzone-room3
-            - type: custom:mod-card
-              style: |
-                ha-card {
-                  display: inline-block;
-                }
+            - <<: *inline-mod-card
               card:
                 type: conditional
                 conditions:
                   - entity: binary_sensor.lz104_state
                     state_not: "off"
-                styles:
-                  card:
-                    - justify-self: center
                 card:
-                  type: 'custom:button-card'
+                  type: "custom:button-card"
                   template: light_detail
                   entity: light.group_lz104
-                  name: >
-                    [[[
-                      return states["input_text.zn104"].state;
-                    ]]]
-                  state:
-                    - value: 'off'
-                      color: black
-                    - value: 'on'
-                      color: >
-                        [[[
-                          if (states["input_select.light_type"].state == "color")
-                          {
-                            if (states["light.lcz104"].state) {
-                              if (states["light.lcz104"].attributes.rgb_color != undefined) {
-                              var color = states["light.lcz104"].attributes.rgb_color
-                              return "rgb("+color[0]+","+color[1]+","+color[2]+")";
-                              }
-                            }
-                          }
-                          else return "#DCA200";
-                        ]]]
+                  variables:
+                    zoneId: 104
                   tap_action:
                     action: call-service
                     service: light.toggle

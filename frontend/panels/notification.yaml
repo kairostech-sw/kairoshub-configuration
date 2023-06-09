@@ -13,6 +13,7 @@ custom_fields:
       template: header_page_text
       icon: "mdi:bell"
       name: "NOTIFICHE"
+      label: "Notifiche /"
   commandbar:
     card:
       type: "custom:button-card"
@@ -24,9 +25,6 @@ custom_fields:
         div#container {
           justify-items: right;
         }
-      styles:
-        card:
-          - width: 800px
       custom_fields:
         commands:
           card:
@@ -34,10 +32,6 @@ custom_fields:
             cards:
               - type: "custom:button-card"
                 template: button_go_back
-                style: |
-                  :host {
-                    align-self: center;
-                  }
   notifications:
     card:
       type: custom:logbook-card
@@ -50,6 +44,11 @@ custom_fields:
       icon: mdi:warning
       max_items: 10
       state_map:
+        - value: "*Errore*"
+          icon: mdi:alert-circle-outline
+          icon_color: "#FE0000"
+          flags:
+            ignore_case: true
         - value: "Riscaldamento Acceso*"
           icon: mdi:radiator
           icon_color: var(--command-state-active-color)
@@ -71,11 +70,6 @@ custom_fields:
         - value: "Sistema*"
           icon: mdi:cog
           icon_color: "#000000"
-        - value: "*Errore*"
-          icon: mdi:alert-circle-outline
-          icon_color: "#FE0000"
-          flags:
-            ignore_case: true
         - value: "Batteria*"
           icon: mdi:battery-20
           icon_color: "#FE0000"

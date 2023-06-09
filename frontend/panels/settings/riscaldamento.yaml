@@ -1,17 +1,17 @@
-type: 'custom:button-card'
+type: "custom:button-card"
 template: entities_grid
 custom_fields:
   header:
     card:
-      type: 'custom:button-card'
+      type: "custom:button-card"
       label: "Impostazioni / Riscaldamento"
       template:
         - header_page_text
-      name: 'IMPOSTAZIONI'
-      icon: 'mdi:cog'
+      name: "IMPOSTAZIONI"
+      icon: "mdi:cog"
   commandbar:
     card:
-      type: 'custom:button-card'
+      type: "custom:button-card"
       template: command_bar
       style: |
         ha-card.button-card-main {
@@ -20,9 +20,6 @@ custom_fields:
         div#container {
           justify-items: right;
         }
-      styles:
-        card:
-          - width: 800px
       custom_fields:
         commands:
           card:

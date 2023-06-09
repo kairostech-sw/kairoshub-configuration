@@ -1,18 +1,16 @@
-type: 'custom:button-card'
+type: "custom:button-card"
 template: panel_grid
 custom_fields:
   header:
     card:
-      type: 'custom:button-card'
-      layout: vertical
-      template:
-        - header_page_text
-      icon: 'mdi:lightbulb'
-      name: 'LUCI'
+      type: "custom:button-card"
+      template: header_page_text
+      icon: "mdi:lightbulb"
+      name: "LUCI"
       label: Luci
   commandbar:
     card:
-      type: 'custom:button-card'
+      type: "custom:button-card"
       template: command_bar
       style: |
         ha-card.button-card-main {
@@ -20,45 +18,40 @@ custom_fields:
         }
       styles:
         card:
-          - width: 800px
           - margin-left: -10px
       custom_fields:
         commands:
           card:
             type: horizontal-stack
             cards:
-              - type: 'custom:button-card'
+              - type: "custom:button-card"
                 name: Programmazione Luci
                 styles:
                   card:
                     - background: none
-                    - color: '#f4f4f4'
-                    - box-shadow: none 
-                    - margin-left: 10px 
+                    - color: "#f4f4f4"
+                    - box-shadow: none
+                    - margin-left: 10px
                     - width: 200px
                 style: |
                   :host {
                     align-self: center;
                   }
                 tap_action:
-                  action: none  
-              - type: 'custom:button-card'
+                  action: none
+              - type: "custom:button-card"
                 template: button_go_to_program
                 entity: input_boolean.light_program1
                 tap_action:
                   action: navigate
                   navigation_path: /lovelace-kairoshub/lights-program1
                 variables:
-                  progId: '1'
+                  progId: "1"
                 state:
-                  - value: 'on'
+                  - value: "on"
                     color: var(--command-state-active-color)
-                  - value: 'off'
+                  - value: "off"
                     color: var(--command-state-color)
-                style: |
-                  :host {
-                    align-self: center;
-                  }
   content:
     card:
       type: vertical-stack
@@ -72,7 +65,7 @@ custom_fields:
             - entity: binary_sensor.lz300_state
               state: "off"
           card:
-            type: 'custom:button-card'
+            type: "custom:button-card"
             template: no_background
             name: >
               [[[
@@ -82,113 +75,58 @@ custom_fields:
                 </ha-alert>`;
               ]]]
             tap_action:
-                action: none
+              action: none
         - type: grid
           columns: 2
           square: false
           cards:
-            - type: custom:mod-card
-              style: |
-                ha-card {
-                  display: inline-block;
-                }
+            - <<: &inline-mod-card
+                type: "custom:mod-card"
+                style: |
+                  ha-card {
+                    display: inline-block;
+                  }
               card:
                 type: conditional
                 conditions:
                   - entity: binary_sensor.lz100_state
                     state_not: "off"
                 card:
-                  type: custom:button-card
-                  name: '[[[return states["input_text.zn100"].state ]]]'
-                  state:
-                    - value: 'off'
-                      color: black
-                    - value: 'on'
-                      color: >
-                        [[[
-                          if (states["input_select.light_type"].state == "color")
-                          {
-                            if (states["light.group_lz100"].state) {
-                              if (states["light.group_lz100"].attributes.rgb_color != undefined) {
-                              var color = states["light.group_lz100"].attributes.rgb_color
-                              return "rgb("+color[0]+","+color[1]+","+color[2]+")";
-                              }
-                            }
-                          }
-                          else return "#DCA200";
-                        ]]]
+                  type: "custom:button-card"
                   template: light_detail
                   entity: light.group_lz100
+                  variables:
+                    zoneId: 100
                   tap_action:
                     action: navigate
-                    navigation_path: /lovelace-kairoshub/lights-nightzone       
-            - type: custom:mod-card
-              style: |
-                ha-card {
-                  display: inline-block;
-                }
+                    navigation_path: /lovelace-kairoshub/lights-nightzone
+            - <<: *inline-mod-card
               card:
                 type: conditional
                 conditions:
                   - entity: binary_sensor.lz200_state
                     state_not: "off"
                 card:
-                  type: custom:button-card
-                  name: '[[[return states["input_text.zn200"].state ]]]'
-                  state:
-                    - value: 'off'
-                      color: black
-                    - value: 'on'
-                      color: >
-                        [[[
-                          if (states["input_select.light_type"].state == "color")
-                          {
-                            if (states["light.group_lz200"].state) {
-                              if (states["light.group_lz200"].attributes.rgb_color != undefined) {
-                              var color = states["light.group_lz200"].attributes.rgb_color
-                              return "rgb("+color[0]+","+color[1]+","+color[2]+")";
-                              }
-                            }
-                          }
-                          else return "#DCA200";
-                        ]]]
+                  type: "custom:button-card"
                   template: light_detail
                   entity: light.group_lz200
+                  variables:
+                    zoneId: 200
                   tap_action:
                     action: navigate
-                    navigation_path: /lovelace-kairoshub/lights-dayzone          
-            - type: custom:mod-card
-              style: |
-                ha-card {
-                  display: inline-block;
-                }
+                    navigation_path: /lovelace-kairoshub/lights-dayzone
+            - <<: *inline-mod-card
               card:
                 type: conditional
                 conditions:
                   - entity: binary_sensor.lz300_state
                     state_not: "off"
                 card:
-                  type: custom:button-card
-                  name: '[[[return states["input_text.zn300"].state ]]]'
-                  state:
-                    - value: 'off'
-                      color: black
-                    - value: 'on'
-                      color: >
-                        [[[
-                          if (states["input_select.light_type"].state == "color")
-                          {
-                            if (states["light.group_lz300"].state) {
-                              if (states["light.group_lz300"].attributes.rgb_color != undefined) {
-                              var color = states["light.group_lz300"].attributes.rgb_color
-                              return "rgb("+color[0]+","+color[1]+","+color[2]+")";
-                              }
-                            }
-                          }
-                          else return "#DCA200";
-                        ]]]
+                  type: "custom:button-card"
                   template: light_detail
                   entity: light.group_lz300
+                  variables:
+                    zoneId: 300
                   tap_action:
                     action: navigate
                     navigation_path: /lovelace-kairoshub/lights-outdoor

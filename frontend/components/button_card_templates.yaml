@@ -1,135 +1,3 @@
-########################
-### PICTURE ELEMENTS ###
-########################
-
-pic_label_stato_operativo:
-  template:
-    - no_background
-  show_icon: false
-  show_state: false
-  styles:
-    name:
-      - justify-self: start
-      - font-size: 120%
-    card:
-      - border-radius: 0px
-      - padding: 0px
-  state:
-    - value: "on"
-      name: IN FUNZIONE
-      styles:
-        name:
-          - color: var(--paper-item-icon-active-color)
-          - font-weight: bold
-    - value: "off"
-      name: SPENTA
-      styles:
-        name:
-          - color: var(--secondary-text-color)
-
-pic_icon_stato_operativo_lavatrice:
-  template:
-    - no_background
-  show_name: false
-  show_state: false
-  show_icon: true
-  styles:
-    card:
-      - border-radius: 0px
-  state:
-    - value: "on"
-      icon: "mdi:washing-machine"
-      styles:
-        icon:
-          - color: var(--paper-item-icon-active-color)
-    - value: "off"
-      icon: "mdi:washing-machine-off"
-      styles:
-        icon:
-          - color: var(--secondary-text-color)
-
-pic_icon_stato_operativo_lavastoviglie:
-  template:
-    - no_background
-  show_name: false
-  show_state: false
-  show_icon: true
-  styles:
-    card:
-      - border-radius: 0px
-  state:
-    - value: "on"
-      icon: "mdi:dishwasher"
-      styles:
-        icon:
-          - color: var(--paper-item-icon-active-color)
-    - value: "off"
-      icon: "mdi:dishwasher-off"
-      styles:
-        icon:
-          - color: var(--secondary-text-color)
-
-pic_icon_stato_operativo_asciugatrice:
-  template:
-    - no_background
-  show_name: false
-  show_state: false
-  show_icon: true
-  styles:
-    card:
-      - border-radius: 0px
-  state:
-    - value: "on"
-      icon: "mdi:tumble-dryer"
-      styles:
-        icon:
-          - color: var(--paper-item-icon-active-color)
-    - value: "off"
-      icon: "mdi:tumble-dryer-off"
-      styles:
-        icon:
-          - color: var(--secondary-text-color)
-
-pic_label_fase_operativa:
-  show_icon: false
-  template: no_background
-  name: Riscaldamento Acqua
-  styles:
-    name:
-      - font-size: 110%
-      - justify-self: start
-
-    card:
-      - border-radius: 0px
-      - padding: 0px
-
-pic_label_tempo_ciclo:
-  template: no_background
-  show_icon: false
-  show_state: true
-  show_name: false
-  styles:
-    card:
-      - border-radius: 0px
-      - padding: 0px
-    state:
-      - justify-self: start
-      - font-size: 110%
-      - font-weight: bold
-
-pic_label_consumo:
-  template: no_background
-  show_icon: false
-  show_state: true
-  show_name: false
-  styles:
-    card:
-      - border-radius: 0px
-      - padding: 0px
-    state:
-      - justify-self: start
-      - font-size: 95%
-
 feedback_click:
   styles:
     card:
@@ -139,74 +7,6 @@ feedback_click:
 #######################
 ### ACTION TEMPLATE ###
 #######################
-
-action_var:
-  entity: var.spotify_var_room
-  styles:
-    card:
-      - height: 80px
-    name:
-      - margin-bottom: 5px
-  tap_action:
-    action: call-service
-    service: script.spotify_set_room
-    service_data:
-      room: "[[[ return variables.room ]]]"
-  state:
-    - value: "[[[ return variables.room ]]]"
-      styles:
-        icon:
-          - color: var(--paper-item-icon-active-color)
-          - font-weight: bold
-        name:
-          - color: var(--paper-item-icon-active-color)
-          - font-weight: bold
-
-action_var_echo_entity:
-  entity: var.alexa_echo_entity
-  styles:
-    card:
-      - height: 80px
-    name:
-      - margin-bottom: 5px
-  tap_action:
-    action: call-service
-    service: var.set
-    service_data:
-      entity_id: var.alexa_echo_entity
-      value: "[[[ return variables.echo_entity ]]]"
-  state:
-    - value: "[[[ return variables.echo_entity ]]]"
-      styles:
-        icon:
-          - color: var(--paper-item-icon-active-color)
-          - font-weight: bold
-        name:
-          - color: var(--paper-item-icon-active-color)
-          - font-weight: bold
-
-action_state_numeric:
-  state:
-    - value: 0
-      operator: ">"
-      styles:
-        icon:
-          - color: var(--paper-item-icon-active-color)
-
-action_turn_off:
-  state:
-    - value: "off"
-      styles:
-        icon:
-          - color: var(--disabled-text-color)
-        name:
-          - color: var(--disabled-text-color)
-  icon: "mdi:power"
-  tap_action:
-    action: call-service
-    service: homeassistant.turn_off
-    service_data:
-      entity_id: "[[[ return entity.entity_id ]]]"
 action_state_off:
   state:
     - value: "off"
@@ -215,62 +15,11 @@ action_state_off:
           - color: var(--disabled-text-color)
         name:
           - color: var(--disabled-text-color)
-action_state_number_off:
-  state:
-    - value: 0
-      styles:
-        icon:
-          - color: var(--disabled-text-color)
-        name:
-          - color: var(--disabled-text-color)
-    - value: 0
-      operator: ">"
-      styles:
-        icon:
-          - color: red
-action_turn_scene:
-  template: feedback_click
-  tap_action:
-    action: call-service
-    service: scene.turn_on
-    service_data:
-      entity_id: "[[[ return entity.entity_id ]]]"
 
 #######################
 ### BUTTON TEMPLATE ###
 #######################
 
-button_home:
-  template: feedback_click
-  layout: icon_name
-  name: GO TO HOME
-  styles:
-    card:
-      - height: 70px
-    name:
-      - justify-self: left
-  icon: "phu:routinesComingHome"
-  tap_action:
-    action: navigate
-    navigation_path: /lovelace-tablet/home
-button_footer:
-  template: feedback_click
-  layout: icon_name
-  styles:
-    card:
-      - height: 70px
-    name:
-      - justify-self: left
-button_icon_square:
-  template: feedback_click
-  size: 60%
-  show_name: false
-  aspect_ratio: 1/1
-button_text_square:
-  template: feedback_click
-  size: 60%
-  show_icon: false
-  aspect_ratio: 1/1
 button_horizontal:
   layout: icon_name
   show_icon: true
@@ -279,100 +28,7 @@ button_horizontal:
       - height: 50px
     name:
       - padding-right: 5px
-button_routine_home:
-  template:
-    - button_horizontal
-    - feedback_click
-  size: 50%
-  styles:
-    grid:
-      - grid-template-columns: 30% 1fr
-    name:
-      - color: var(--secondary-text-color)
-    icon:
-      - color: var(--secondary-text-color)
-    tap_action:
-      action: call-service
-      service: "[[[ return entity.entity_id ]]]"
-button_channel:
-  template: no_background
-  show_icon: false
-  show_name: false
-  size: 70%
-  show_entity_picture: true
-  styles:
-    card:
-      - height: 90px
-  entity_picture: '[[[ return "/local/tv_logos/" + variables.picture_name ]]]'
-  tap_action:
-    action: call-service
-    service: '[[[ return "script.harmony_channel_" + variables.activity ]]]'
-    service_data:
-      canale: "[[[ return variables.channel ]]]"
-button_radio:
-  template: no_background
-  show_icon: false
-  show_name: false
-  size: 60%
-  show_entity_picture: true
-  styles:
-    card:
-      - height: 90px
-  entity_picture: '[[[ return "/local/radio_logos/" + variables.picture_name ]]]'
-  tap_action:
-    action: call-service
-    service: media_player.play_media
-    service_data:
-      entity_id: '[[[ return "media_player." + states["var.alexa_echo_entity"].state ]]]'
-      media_content_id: "[[[ return variables.stazione ]]]"
-      media_content_type: TUNEIN
-button_number_channel:
-  template:
-    - action_state_off
-    - feedback_click
-  entity: sensor.command_device
-  show_name: false
-  styles:
-    card:
-      - height: 60px
-    icon:
-      - width: 40px
-  icon: '[[[ return "mdi:numeric-" + variables.number + "-circle" ]]]'
-  tap_action:
-    action: call-service
-    service: script.harmony_command
-    service_data:
-      comando: "[[[ return variables.number ]]]"
-button_text_label:
-  template: feedback_click
-  show_label: true
-  show_icon: false
-  styles:
-    card:
-      - height: 60px
-    name:
-      - font-size: 90%
-      - color: var(--secondary-text-color)
-      - margin-bottom: 2px
-    label:
-      - margin-top: 2px
-      - font-weight: bold
-button_icon_label:
-  show_label: true
-  show_state: false
-  show_name: true
-  styles:
-    grid:
-      - grid-template-areas: '"i l" "i n"'
-      - grid-template-columns: 30% 1fr
-      - grid-template-rows: 1fr 1fr
-    card:
-      - height: 60px
-    label:
-      - font-size: 90%
-      - color: var(--secondary-text-color)
-    name:
-      - font-weight: bold
+
 button_text:
   show_label: false
   show_icon: false
@@ -381,269 +37,23 @@ button_text:
       - height: 60px
     name:
       - font-weight: bold
-button_menu:
-  template:
-    - button_text
-    - feedback_click
-  icon: "mdi:power"
-  styles:
-    card:
-      - background: "rgba(25, 25, 25, 1)"
-    name:
-      - color: var(--secondary-text-color)
-    icon:
-      - color: var(--secondary-text-color)
+
+# TODO: Could be changed
 header_button_menu:
   template:
     - feedback_click
   styles:
     card:
-      # - background: "#DCDCDC"
       - box-shadow: 1px 5px 8px rgba(0, 0, 0, 0.3)
     name:
       - color: var(--primary-text-color)
       - font-weight: bold
     icon:
       - color: var(--primary-text-color)
-button_light:
-  color: auto
-  styles:
-    name:
-      - margin-top: 5px
-    label:
-      - margin-top: 5px
-      - font-size: 80%
-      - color: var(--secondary-text-color)
-  state:
-    - value: "off"
-      styles:
-        icon:
-          - color: var(--disabled-text-color)
-        label:
-          - color: var(--disabled-text-color)
-        name:
-          - color: var(--secondary-text-color)
-    - value: "on"
-      styles:
-        name:
-          - font-weight: bold
-button_light_brightness:
-  show_label: true
-  label: |
-    [[[
-      if (entity.state === 'on' && entity.attributes.brightness)
-      {
-        const brightness = Math.round(entity.attributes.brightness / 2.54);
-        return brightness + '<span style="font-size: 80%;">%</span>';
-      } else {
-        return '0%';
-      }
-    ]]]
-
-######################
-### POPUP TEMPLATE ###
-######################
-
-popup_light:
-  hold_action:
-    action: fire-dom-event
-    browser_mod:
-      command: popup
-      title: "[[[ return entity.attributes.friendly_name ]]]"
-      hide_header: true
-      auto_close: false
-      style:
-        $: |
-          .mdc-dialog .mdc-dialog__container {
-            width: 100%;
-          }
-          .mdc-dialog .mdc-dialog__container .mdc-dialog__surface {
-            width:100%;
-            box-shadow:none;
-          }
-        .: |
-          :host {
-            --mdc-theme-surface: rgba(0,0,0,0);
-            --secondary-background-color: rgba(0,0,0,0);
-            --ha-card-background: rgba(0,0,0,0);
-            --mdc-dialog-scrim-color: rgba(0,0,0,0.8);
-            --mdc-dialog-min-height: 100%;
-            --mdc-dialog-min-width: 100%;
-            --mdc-dialog-max-width: 100%;
-          }
-          mwc-icon-button {
-            color: #FFF;
-          }
-      card:
-        type: "custom:light-popup-card"
-        entity: "[[[ return entity.entity_id ]]]"
-        icon: "mdi:led-strip"
-        actionSize: 60px
-        actions:
-          - service: light.turn_on
-            service_data:
-              entity_id: "[[[ return entity.entity_id ]]]"
-              color_temp: 153
-            color: "#d8d9e1"
-          - service: light.turn_on
-            service_data:
-              entity_id: "[[[ return entity.entity_id ]]]"
-              color_temp: 326
-            color: "#d5b08d"
-          - service: light.turn_on
-            service_data:
-              entity_id: "[[[ return entity.entity_id ]]]"
-              color_temp: 500
-            color: "#ce944b"
-popup_light_rgb:
-  hold_action:
-    action: fire-dom-event
-    browser_mod:
-      command: popup
-      title: "[[[ return entity.attributes.friendly_name ]]]"
-      hide_header: true
-      auto_close: false
-      style:
-        $: |
-          .mdc-dialog .mdc-dialog__container {
-            width: 100%;
-          }
-          .mdc-dialog .mdc-dialog__container .mdc-dialog__surface {
-            width:100%;
-            box-shadow:none;
-          }
-        .: |
-          :host {
-            --mdc-theme-surface: rgba(0,0,0,0);
-            --secondary-background-color: rgba(0,0,0,0);
-            --ha-card-background: rgba(0,0,0,0);
-            --mdc-dialog-scrim-color: rgba(0,0,0,0.8);
-            --mdc-dialog-min-height: 100%;
-            --mdc-dialog-min-width: 100%;
-            --mdc-dialog-max-width: 100%;
-          }
-          mwc-icon-button {
-            color: #FFF;
-          }
-      card:
-        type: "custom:light-popup-card"
-        entity: "[[[ return entity.entity_id ]]]"
-        icon: "mdi:led-strip"
-        actionSize: 60px
-        settings:
-          openButton: RGB
-          closeButton: CHIUDI
-        settingsCard:
-          type: "custom:light-entity-card"
-          cardOptions:
-            entity: "[[[ return entity.entity_id ]]]"
-            brightness: false
-            full_width_sliders: true
-            hide_header: true
-            show_slider_percent: true
-            smooth_color_wheel: true
-            consolidate_entities: true
-        actions:
-          - service: light.turn_on
-            service_data:
-              entity_id: "[[[ return entity.entity_id ]]]"
-              color_temp: 153
-            color: "#d8d9e1"
-          - service: light.turn_on
-            service_data:
-              entity_id: "[[[ return entity.entity_id ]]]"
-              color_temp: 326
-            color: "#d5b08d"
-          - service: light.turn_on
-            service_data:
-              entity_id: "[[[ return entity.entity_id ]]]"
-              color_temp: 500
-            color: "#ce944b"
-
-#######################
-### SENSOR TEMPLATE ###
-#######################
-
-sensor_card:
-  layout: icon_name_state2nd
-  show_state: true
-  styles:
-    card:
-      - padding-top: 2%
-      - padding-bottom: 2%
-    state:
-      - font-size: 140%
-      - font-weight: bold
-      - justify-self: start
-      - align-self: center
-    name:
-      - font-size: 85%
-      - justify-self: start
-      - color: var(--secondary-text-color)
-  tap_action:
-    action: none
-sensor_card_text:
-  show_icon: false
-  show_state: true
-  styles:
-    card:
-      - height: 60px
-    name:
-      - font-size: 80%
-      - color: var(--secondary-text-color)
-    state:
-      - font-size: 120%
-      - font-weight: bold
-  tap_action:
-    action: none
-sensor_person:
-  label: Online
-  layout: icon_name_state2nd
-  show_icon: false
-  show_entity_picture: true
-  show_name: true
-  show_state: true
-  show_label: true
-  styles:
-    state:
-      - font-size: 120%
-    name:
-      - font-size: 14px
-      - font-weight: 500
-      - color: var(--secondary-text-color)
-    label:
-      - margin-top: 8px
-      - color: var(--secondary-text-color)
-      - font-size: 80%
-    entity_picture:
-      - border-radius: 50%
-      - width: 40px
-  state:
-    - value: home
-      operator: "!="
-      styles:
-        state:
-          - color: var(--paper-item-icon-active-color)
 
 ###########################
 ### LABEL & EMPTY CARDS ###
 ###########################
-
-card_header:
-  styles:
-    card:
-      - height: 80px
-empty_card:
-  template: no_background
-  color_type: blank-card
-row_space_5:
-  template: no_background
-  tap_action:
-    action: none
-  styles:
-    card:
-      - height: 5px
-      - padding: 0px
 
 row_space_10:
   template: no_background
@@ -654,144 +64,26 @@ row_space_10:
       - height: 10px
       - padding: 0px
 
-row_space_15:
-  template: no_background
-  tap_action:
-    action: none
-  styles:
-    card:
-      - height: 15px
-      - padding: 0px
-row_space_20:
-  template: no_background
-  tap_action:
-    action: none
-  styles:
-    card:
-      - height: 20px
-      - padding: 0px
-row_space_25:
-  template: no_background
-  tap_action:
-    action: none
-  styles:
-    card:
-      - height: 25px
-      - padding: 0px
-row_space_30:
-  template: no_background
-  tap_action:
-    action: none
-  styles:
-    card:
-      - height: 30px
-      - padding: 0px
-row_space_35:
-  template: no_background
-  tap_action:
-    action: none
-  styles:
-    card:
-      - height: 35px
-      - padding: 0px
-row_space_40:
-  template: no_background
-  tap_action:
-    action: none
-  styles:
-    card:
-      - height: 40px
-      - padding: 0px
-row_space_80:
-  template: no_background
-  tap_action:
-    action: none
-  styles:
-    card:
-      - height: 80px
-      - padding: 0px
 no_background:
   styles:
     card:
       - background-color: "rgba(0, 0, 0, 0.0)"
       - box-shadow: none
 
-clima_template:
+grey_background:
   styles:
     card:
-      - background-color: "rgba(0, 0, 0, 0.0)"
-      - box-shadow: none
-    states:
-      - padding: 0px
+      - background: var(--primary-background-color)
 
-label_left:
+width_50:
   styles:
     card:
-      - padding: 5px 5px
-      - margin-left: 4px
-      - border-radius: 0px
-    name:
-      - justify-self: left
-      - font-size: 120%
-      - color: var(--secondary-text-color)
-  template: no_background
-  tap_action:
-    action: none
-label_center:
-  styles:
-    card:
-      - padding: 5px 5px
-    name:
-      - justify-self: center
-      - font-size: 120%
-      - color: var(--secondary-text-color)
-  template: no_background
-  tap_action:
-    action: none
-
-on_off_buttoncard:
-  template:
-    - button_horizontal
-    - feedback_click
-  size: 50%
-  styles:
-    grid:
-      - grid-template-columns: 30% 1fr
-    card:
-      - margin-top: 5px !important
-      - height: 50px !important
-      - box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1)
-      - transition: all 0.3s ease 0s
-    name:
-      - color: var(--secondary-text-color)
-      - font-size: 15px
-    tap_action:
-      action: call-service
-      service: "[[[ return entity.entity_id ]]]"
-  state:
-    - value: "on"
-      styles:
-        icon:
-          - color: var(--active-color)
-
+      - width: 50px
 #######################
 ### BUTTON TEMPLATE ###
 #######################
 
-clima_timepicker_template:
-  hour_mode: 12
-  embedded: true
-  hide:
-    name: false
-  style: |
-    ha-card > .time-picker-header {
-      padding: 5px
-    }
-
-    ha-card > .time-picker-row {
-      padding: 0px !important
-    }
-
+# TODO: Can be deleted
 program_day_overview_theme:
   icon: "mdi:calendar-blank-outline"
   state:
@@ -896,8 +188,11 @@ program_day_overview_theme:
         return '/lovelace-kairoshub/'+ variables.navigation_path
       ]]]
 
-###################
-# HEADER
+####################
+###### HEADER ######
+####################
+
+# TODO: Check if can be changed
 header_page_text:
   type: "custom:button-card"
   template: no_background
@@ -935,6 +230,7 @@ header_page_text:
   tap_action:
     action: none
 
+# TODO: Check if can be changed
 user_profile_header:
   type: "custom:button-card"
   entity: person.utente
@@ -1023,15 +319,12 @@ user_notification_header:
   styles:
     card:
       - padding-top: 10px
-    # label:
-    #   - justify-content: end
     grid:
       - grid-template-areas: '"a"'
       - grid-template-columns: 60px
       - grid-template-rows: min-content min-content
     img_cell:
       - grid-area: a
-      # - justify-content: end
     icon:
       - width: 32px
       - height: 32px
@@ -1041,14 +334,14 @@ user_notification_header:
 
 icon_clima:
   icon: mdi:calendar-remove
-  color: var(--command-state-color)
-  label: "OFF"
   state:
     - value: "on"
       icon: mdi:calendar-check
-      label: "ON"
-      color: var(--command-state-active-color)
+      styles:
+        icon:
+          - color: var(--command-state-active-color)
 
+# TODO: Check if can be changed & removed
 header_icon_clima:
   name: Programma caldo
   template:
@@ -1059,6 +352,7 @@ header_icon_clima:
   tap_action:
     action: none
 
+# TODO: Check if can be changed & removed
 button_hold:
   template: feedback_click
   styles:
@@ -1070,6 +364,7 @@ button_hold:
 # NAVIGATION BUTTONS
 ####################
 
+# TODO: Could be changed
 button_go_to_program:
   type: "custom:button-card"
   template: icon_state_header
@@ -1091,19 +386,6 @@ button_go_to_program:
       align-self: center;
     }
 
-button_return_to_program:
-  type: "custom:button-card"
-  template: button_go_back
-  tap_action:
-    action: navigate
-    navigation_path: "[[[window.history.back()]]]"
-
-button_return_to_settings:
-  type: "custom:button-card"
-  template: button_go_back
-  tap_action:
-    action: navigate
-    navigation_path: "[[[window.history.back()]]]"
 button_go_back:
   type: "custom:button-card"
   template: header_button_menu
@@ -1123,20 +405,11 @@ button_go_back:
       align-self: center;
     }
 
-button_go_to_zone:
-  type: "custom:button-card"
-  show_label: true
-  tap_action:
-    action: navigate
-    navigation_path: '[[[return "/lovelace-kairoshub/"+ variables.navigation_path]]]'
-  styles:
-    card:
-      - box-shadow: 1px 5px 8px rgba(0, 0, 0, 0.3)
-      - height: 50px
-      - width: 125px
-
 ####################
-# CLIMA
+# CLIMA ############
+####################
+
+# TODO: Check if can be changed
 clima_tv_detail:
   type: "custom:button-card"
   icon: "mdi:texture-box"
@@ -1186,8 +459,6 @@ clima_tv_detail:
       last_update:
         - justify-self: start
         - align-self: middle
-      graph:
-        - margin-top: 2px
   custom_fields:
     temp: >
       [[[
@@ -1300,6 +571,10 @@ temperature_value:
       - size: 20%
     card:
       - box-shadow: none
+  style: |
+    :host {
+      align-self: center;
+    }
 
 temperature_ctrl_plus:
   icon: mdi:thermometer-plus
@@ -1335,6 +610,7 @@ temperature_ctrl_minus:
     service_data:
       entity_id: "[[[ return variables.entity; ]]]"
 
+# TODO: Check if can be changed
 heating_program_ctrl:
   icon: mdi:power
   state:
@@ -1344,29 +620,11 @@ heating_program_ctrl:
     - value: "off"
       label: "Spento"
       color: var(--command-state-color)
-  hold_action:
-    confirmation:
-      text: >
-        [[[
-          if (states[variables.entity].state === 'on')
-            return "Sei sicuro di voler disattivare tutte le programmazioni?";
-          else
-            return "Sei sicuro di voler attivare tutte le programmazioni?";
-        ]]]
-    action: call-service
-    service: >
-      [[[
-        if (states[variables.entity].state === 'on')
-          return 'input_boolean.turn_off';
-        else
-          return 'input_boolean.turn_on';
-      ]]]
-    service_data:
-      entity_id: "[[[ return variables.service_data; ]]]"
 
 light_detail:
   icon: mdi:lightbulb
   size: 75%
+  name: "[[[return states[`input_text.zn${variables.zoneId}`].state;]]]"
   tap_action:
     action: none
   styles:
@@ -1397,6 +655,26 @@ light_detail:
       - margin-left: 10px
       - width: 60px
       - height: 50px
+    icon:
+      - color: "#000000"
+  state:
+    - value: "on"
+      styles:
+        icon:
+          - color: >
+              [[[
+                if (states["input_select.light_type"].state == "color")
+                {
+                  var light = `light.group_lz${variables.zoneId}`
+                  if (states[light].state) {
+                    if (states[light].attributes.rgb_color != undefined) {
+                    var color = states[light].attributes.rgb_color
+                    return "rgb("+color[0]+","+color[1]+","+color[2]+")";
+                    }
+                  }
+                }
+                return "#DCA200";
+              ]]]
 
 light_program:
   styles:
@@ -1437,29 +715,7 @@ scenes_program:
         - margin-top: 10px
         - margin-left: 60px
 
-icon_header:
-  layout: icon_name
-  styles:
-    card:
-      - box-shadow: 1px 5px 8px rgba(0, 0, 0, 0.3)
-    grid:
-      - grid-template-areas: '"i n"'
-      - grid-template-columns: 60px 1fr
-    name:
-      - font-weight: bold
-      - font-size: 16px
-      - justify-self: start
-      - padding-bottom: 4px
-      - padding-right: 5px
-      - padding-top: 5px
-    img_cell:
-      - justify-content: start
-      - align-items: start
-      - margin: none
-      - grid-area: i
-    icon:
-      - color: var(--paper-item-icon-color)
-
+# TODO: Can be removed
 program_page_grid:
   styles:
     card:
@@ -1484,25 +740,7 @@ program_page_grid:
         - margin-right: 3px
         - "--mdc-ripple-press-opacity": 0.2
 
-button_grid_2:
-  styles:
-    grid:
-      - grid-template-areas: '"i n n n" "b1 b1 b2 b2"'
-      - grid-template-columns: 1fr 1fr 1fr 1fr
-      - grid-template-rows: min-content min-content
-      - justify-items: center
-      - row-gap: 10px
-    name:
-      - font-weight: bold
-      - font-size: 16px
-    img_cell:
-      - justify-content: start
-      - align-items: start
-      - margin: none
-      - grid-area: i
-    icon:
-      - color: var(--paper-item-icon-color)
-
+# TODO: Check if can be changed
 button_grid_settings:
   template: grid_style
   styles:
@@ -1518,6 +756,7 @@ button_grid_settings:
       header:
         - justify-self: start
 
+# TODO: Check if can be changed
 assistance_grid:
   template: grid_style
   styles:
@@ -1609,6 +848,7 @@ assistance_info:
         `
       ]]]
 
+# TODO: Check if can be changed
 grid_style:
   styles:
     card:
@@ -1633,7 +873,7 @@ entities_grid:
         - text-align: start
         - height: 290px
 
-clima_zone_grid:
+zones_grid:
   template: grid_style
   styles:
     grid:
@@ -1675,6 +915,7 @@ panel_grid:
         - max-height: 300px
         - margin-top: 5px
 
+# TODO: Check if can be changed
 zone_table:
   template: grid_style
   styles:
@@ -1691,6 +932,7 @@ zone_table:
       list1:
         - margin-left: 40px
 
+# TODO: Check if can be changed
 zone_name:
   styles:
     card:
@@ -1701,6 +943,7 @@ zone_name:
   tap_action:
     action: none
 
+# TODO: Check if can be changed
 graph:
   styles:
     custom_fields:
@@ -1741,6 +984,7 @@ command_bar:
         - margin-top: 3px
         - height: 60px
 
+# TODO: Check if can be changed
 new_heating_program_ctrl:
   styles:
     card:
@@ -1754,6 +998,7 @@ new_heating_program_ctrl:
         - display: flex
         - justify-content: space-evenly
         - box-shadow: none
+        - margin-bottom: 32px
       time:
         - box-shadow: none
         - padding: 10px
@@ -1784,8 +1029,13 @@ heating_program_label:
     card:
       - box-shadow: none
 
-new_heating_program_layout:
+heating_program_layout:
   template: grid_style
+  card_mod:
+    style: |
+      #content::-webkit-scrollbar {
+        display: none !important;
+      }
   styles:
     card:
       - background: none
@@ -1808,19 +1058,18 @@ new_heating_program_layout:
         - margin-left: -10px
         - height: 46px
       content:
-        - height: 302px
+        - height: 300px
         - margin-top: 5px
         - overflow: auto
-        - max-height: 250px
   custom_fields:
     header:
       card:
         type: "custom:button-card"
-        entity: "[[[return `group.heater_program${variables.progId}`]]]"
+        entity: "[[[return `input_boolean.heater_program${variables.progId}`]]]"
         template:
           - header_page_text
           - icon_clima
-        name: "[[[return `Programma ${variables.progId}`]]]"
+        name: "[[[return `PROGRAMMA ${variables.progId}`]]]"
         label: "[[[return `Clima / Programma ${variables.progId}`]]]"
     commandbar:
       card:
@@ -1894,48 +1143,61 @@ heating_week:
   custom_fields:
     days:
       card:
-        type: grid
-        columns: 4
-        square: false
+        type: vertical-stack
         cards:
-          - type: custom:button-card
-            template: heating_program_day
-            entity: "[[[return `input_boolean.thermostat_monday_program${variables.progId}`]]]"
-            name: LUN
-          - type: custom:button-card
-            template: heating_program_day
-            entity: "[[[return `input_boolean.thermostat_tuesday_program${variables.progId}`]]]"
-            name: MAR
-          - type: custom:button-card
-            template: heating_program_day
-            entity: "[[[return `input_boolean.thermostat_wednesday_program${variables.progId}`]]]"
-            name: MER
-          - type: custom:button-card
-            template: heating_program_day
-            entity: "[[[return `input_boolean.thermostat_thursday_program${variables.progId}`]]]"
-            name: GIO
-          - type: custom:button-card
-            template: heating_program_day
-            entity: "[[[return `input_boolean.thermostat_friday_program${variables.progId}`]]]"
-            name: VEN
-          - type: custom:button-card
-            template: heating_program_day
-            entity: "[[[return `input_boolean.thermostat_saturday_program${variables.progId}`]]]"
-            name: SAB
-          - type: custom:button-card
-            template: heating_program_day
-            entity: "[[[return `input_boolean.thermostat_sunday_program${variables.progId}`]]]"
-            name: DOM
           - type: "custom:button-card"
-            template: heating_program_label
-            entity: "[[[return `group.program${variables.progId}_days`]]]"
-            layout: vertical
-            show_label: false
-            show_name: false
+            template: no_background
+            name: "Giorni"
             styles:
               card:
-                - height: 30px
-                - width: 60px
+                - padding-top: 0px
+              name:
+                - margin: 0px auto
+                - font-size: large
+          - type: grid
+            columns: 4
+            square: false
+            cards:
+              - type: custom:button-card
+                template: heating_program_day
+                entity: "[[[return `input_boolean.thermostat_monday_program${variables.progId}`]]]"
+                name: LUN
+              - type: custom:button-card
+                template: heating_program_day
+                entity: "[[[return `input_boolean.thermostat_tuesday_program${variables.progId}`]]]"
+                name: MAR
+              - type: custom:button-card
+                template: heating_program_day
+                entity: "[[[return `input_boolean.thermostat_wednesday_program${variables.progId}`]]]"
+                name: MER
+              - type: custom:button-card
+                template: heating_program_day
+                entity: "[[[return `input_boolean.thermostat_thursday_program${variables.progId}`]]]"
+                name: GIO
+              - type: custom:button-card
+                template: heating_program_day
+                entity: "[[[return `input_boolean.thermostat_friday_program${variables.progId}`]]]"
+                name: VEN
+              - type: custom:button-card
+                template: heating_program_day
+                entity: "[[[return `input_boolean.thermostat_saturday_program${variables.progId}`]]]"
+                name: SAB
+              - type: custom:button-card
+                template: heating_program_day
+                entity: "[[[return `input_boolean.thermostat_sunday_program${variables.progId}`]]]"
+                name: DOM
+              - type: "custom:button-card"
+                template: heating_program_label
+                entity: "[[[return `group.program${variables.progId}_days`]]]"
+                layout: icon_name
+                name: "Tutti"
+                size: 100%
+                show_label: false
+                show_name: true
+                styles:
+                  card:
+                    - height: 30px
+                    - width: 60px
 
 heating_time_picker:
   styles:
@@ -1984,12 +1246,7 @@ heating_command_bar:
             template:
               - icon_state_header
               - heating_program_ctrl
-            entity: "[[[return `group.heater_program${variables.progId}`]]]"
-            variables:
-              entity: "[[[return `input_boolean.heater_program${variables.progId}`]]]"
-              # Can be removed
-              service_data:
-                - "[[[return `input_boolean.heater_program${variables.progId}`]]]"
+            entity: "[[[return `input_boolean.heater_program${variables.progId}`]]]"
           - type: "custom:button-card"
             template:
               - header_button_menu
@@ -2005,10 +1262,6 @@ heating_command_bar:
             template:
               - no_background
               - temperature_value
-            style: |
-              :host {
-                align-self: center;
-              }
           - type: "custom:button-card"
             template:
               - header_button_menu
@@ -2021,10 +1274,6 @@ heating_command_bar:
               entity: "[[[return `input_number.temperature_period${variables.progId}`]]]"
           - type: "custom:button-card"
             template: button_go_back
-            style: |
-              :host {
-                align-self: center;
-              }
 
 expander_template:
   styles:
@@ -2040,6 +1289,7 @@ heating_expander_nightzone:
       card:
         type: "custom:expander-card"
         padding: 10px
+        gap: 0px
         title-card:
           type: "custom:button-card"
           template: heating_expander_zone
@@ -2056,30 +1306,42 @@ heating_expander_nightzone:
                   }
               entities:
                 - type: divider
-          - type: grid
-            columns: 2
-            square: false
-            cards:
-              - type: "custom:button-card"
-                template: heating_expander_room
-                variables:
-                  progId: "[[[return variables.progId]]]"
-                  zone: zn101
-              - type: "custom:button-card"
-                template: heating_expander_room
-                variables:
-                  progId: "[[[return variables.progId]]]"
-                  zone: zn102
-              - type: "custom:button-card"
-                template: heating_expander_room
-                variables:
-                  progId: "[[[return variables.progId]]]"
-                  zone: zn103
-              - type: "custom:button-card"
-                template: heating_expander_room
-                variables:
-                  progId: "[[[return variables.progId]]]"
-                  zone: zn104
+                  style:
+                    background-color: "#000000"
+                    height: 4px
+          - <<: &mod-card-room
+              type: custom:mod-card
+              card_mod:
+                style:
+                  hui-grid-card$: |
+                    div#root {
+                      background: var(--primary-background-color);
+                    }
+            card:
+              type: grid
+              columns: 2
+              square: false
+              cards:
+                - type: "custom:button-card"
+                  template: heating_expander_room
+                  variables:
+                    progId: "[[[return variables.progId]]]"
+                    zone: zn101
+                - type: "custom:button-card"
+                  template: heating_expander_room
+                  variables:
+                    progId: "[[[return variables.progId]]]"
+                    zone: zn102
+                - type: "custom:button-card"
+                  template: heating_expander_room
+                  variables:
+                    progId: "[[[return variables.progId]]]"
+                    zone: zn103
+                - type: "custom:button-card"
+                  template: heating_expander_room
+                  variables:
+                    progId: "[[[return variables.progId]]]"
+                    zone: zn104
 
 heating_expander_dayzone:
   template: expander_template
@@ -2088,6 +1350,7 @@ heating_expander_dayzone:
       card:
         type: "custom:expander-card"
         padding: 11px
+        gap: 0px
         title-card:
           type: "custom:button-card"
           template: heating_expander_zone
@@ -2096,25 +1359,27 @@ heating_expander_dayzone:
             zone: zn200
         cards:
           - <<: *divider
-          - type: grid
-            columns: 2
-            square: false
-            cards:
-              - type: "custom:button-card"
-                template: heating_expander_room
-                variables:
-                  progId: "[[[return variables.progId]]]"
-                  zone: zn201
-              - type: "custom:button-card"
-                template: heating_expander_room
-                variables:
-                  progId: "[[[return variables.progId]]]"
-                  zone: zn202
-              - type: "custom:button-card"
-                template: heating_expander_room
-                variables:
-                  progId: "[[[return variables.progId]]]"
-                  zone: zn203
+          - <<: *mod-card-room
+            card:
+              type: grid
+              columns: 2
+              square: false
+              cards:
+                - type: "custom:button-card"
+                  template: heating_expander_room
+                  variables:
+                    progId: "[[[return variables.progId]]]"
+                    zone: zn201
+                - type: "custom:button-card"
+                  template: heating_expander_room
+                  variables:
+                    progId: "[[[return variables.progId]]]"
+                    zone: zn202
+                - type: "custom:button-card"
+                  template: heating_expander_room
+                  variables:
+                    progId: "[[[return variables.progId]]]"
+                    zone: zn203
 
 heating_expander_zone:
   styles:
@@ -2164,32 +1429,51 @@ heating_expander_room:
       - background: none
     card:
       - box-shadow: none
+      - background: var(--primary-background-color)
     custom_fields:
       temp:
-        - width: 200px
+        - width: 160px
   custom_fields:
     label:
       card:
         type: "custom:button-card"
-        template: heating_program_label
+        template:
+          - heating_program_label
+          - grey_background
         entity: "[[[return `input_boolean.heater_${variables.zone}_program${variables.progId}`]]]"
         name: "[[[return states[`input_text.${variables.zone}`].state;]]]"
+        size: 55%
     temp:
       card:
-        type: horizontal-stack
-        cards:
-          - type: custom:button-card
-            template: temperature_ctrl_minus
-            icon: mdi:minus
-            size: 25%
-            variables:
+        type: custom:mod-card
+        card_mod:
+          style:
+            hui-horizontal-stack-card:
+              $: |
+                #root > * {
+                  margin: 0px !important;
+                }
+        card:
+          type: horizontal-stack
+          cards:
+            - type: custom:button-card
+              template:
+                - temperature_ctrl_minus
+                - width_50
+              icon: mdi:minus
+              size: 50%
+              variables:
+                entity: "[[[return `input_number.temperature_${variables.zone}_period${variables.progId}`]]]"
+            - type: "custom:button-card"
+              template:
+                - temperature_value
+                - grey_background
               entity: "[[[return `input_number.temperature_${variables.zone}_period${variables.progId}`]]]"
-          - type: "custom:button-card"
-            entity: "[[[return `input_number.temperature_${variables.zone}_period${variables.progId}`]]]"
-            template: temperature_value
-          - type: custom:button-card
-            template: temperature_ctrl_plus
-            icon: mdi:plus
-            size: 25%
-            variables:
-              entity: "[[[return `input_number.temperature_${variables.zone}_period${variables.progId}`]]]"
+            - type: custom:button-card
+              template:
+                - temperature_ctrl_plus
+                - width_50
+              icon: mdi:plus
+              size: 50%
+              variables:
+                entity: "[[[return `input_number.temperature_${variables.zone}_period${variables.progId}`]]]"

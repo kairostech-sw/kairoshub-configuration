@@ -69,22 +69,22 @@ custom_fields:
                   action: none
               - type: "custom:button-card"
                 template: button_go_to_program
-                entity: group.heater_program1
+                entity: input_boolean.heater_program1
                 variables:
                   progId: "1"
               - type: "custom:button-card"
                 template: button_go_to_program
-                entity: group.heater_program2
+                entity: input_boolean.heater_program2
                 variables:
                   progId: "2"
               - type: "custom:button-card"
                 template: button_go_to_program
-                entity: group.heater_program3
+                entity: input_boolean.heater_program3
                 variables:
                   progId: "3"
               - type: "custom:button-card"
                 template: button_go_to_program
-                entity: group.heater_program4
+                entity: input_boolean.heater_program4
                 variables:
                   progId: "4"
               - type: "custom:button-card"
