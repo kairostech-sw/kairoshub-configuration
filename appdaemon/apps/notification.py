@@ -102,7 +102,7 @@ noty_message = {
     },
     "INTEGRATION_ALEXA_REGISTRATION_ON": {
         "label": "Alexa è stata attivata con successo.",
-        "message": "Alexa è stata completata con successo."
+        "message": "Alexa è stata attivata con successo."
     },
     "INTEGRATION_ALEXA_REGISTRATION_OFF": {
         "label": " Alexa è stata disattivata con successo.",
@@ -112,11 +112,11 @@ noty_message = {
         "label": "Si è verificato un errore durante il processo di integrazione con Alexa.",
         "message": "Si è verificato un errore durante il processo di integrazione con Alexa."
     },
-    "INTEGRATION_ALEXA_SUBSCRIPTION_RENEW_TOGGLE_ON": {
+    "INTEGRATION_ALEXA_SUBSCRIPTION_RENEW_TOGGLE_TO_ON": {
         "label": "La sottoscrizione ad Alexa si rinnoverà automaticamente.",
         "message": "La sottoscrizione ad Alexa si rinnoverà automaticamente."
     },
-    "INTEGRATION_ALEXA_SUBSCRIPTION_RENEW_TOGGLE_OFF": {
+    "INTEGRATION_ALEXA_SUBSCRIPTION_RENEW_TOGGLE_TO_OFF": {
         "label": "Il rinnovo automatico per Alexa è stato disattivato.",
         "message": "Il rinnovo automatico per Alexa è stato disattivato."
     },

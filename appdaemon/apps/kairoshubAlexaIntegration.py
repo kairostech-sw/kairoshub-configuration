@@ -34,7 +34,7 @@ class KairoshubAlexaIntegration(hass.Hass):
 
         if not ("skipSendNofity" in kwargs and kwargs["skipSendNofity"]):
             self.fire_event("AD_KAIROSHUB_NOTIFICATION",
-                            sender="*", ncode=event_name, severity="NOTICE")
+                            sender="*", ncode=eventType, severity="NOTICE")
 
     def updateIntegrationState(self, event_name, data, kwargs):
         integrations = data["data"]["integrations"]
