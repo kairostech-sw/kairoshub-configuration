@@ -16,8 +16,8 @@ class HeatingManager(hass.Hass):
         self.listen_event(self.turnProgramOff,"AD_PROGRAM_OFF")
 
     def handleManualHeating(self, event_name, data, kwargs):
-        comfort_temp = self.get_state("input_number.manual_heating_temp")
-        if comfort_temp <= self.get_state("sensor.temperatura"):
+        if self.isComfortTempReached(self.get_state("sensor.temperatura")):
+            comfort_temp = self.get_state("input_number.manual_heating_temp")
             self.fire_event("AD_KAIROSHUB_NOTIFICATION",sender=data["data"]["event"]["sender"], ncode="HEATING_TEMP_REACHED", severity="NOTICE", kwargs={"program": int(data["data"]["program"][-1]), "comfort_temp": comfort_temp})
             return
         if "ON" in event_name:
@@ -39,33 +39,30 @@ class HeatingManager(hass.Hass):
             self.log("Creating the heating schedule file", level="INFO")
             self.programSchedule(data)
 
-        if activeProgram!=int(progID) and activeProgram!=0:
+        if activeProgram != int(progID) and activeProgram != 0:
             self.log("Program {} is already active".format(activeProgram), level="INFO")
             return
 
-        comfort_temp = self.get_state("input_number.temperature_period{}".format(progID))
+        if not self.checkTemperature(progID):
+            self.log("Comfort Temperature was reached. Program will now end", level="INFO")
+            self.turnProgramOff(event_name, data, kwargs={**kwargs, "comfort_temp": None})
+            return
 
-        if activeProgram==0:
+        if activeProgram == 0:
             self.log("Checking the heating program state", level="INFO")
 
-            if self.get_state("input_boolean.thermostat_{}_program{}".format(today,progID))=="off":
+            if self.get_state("input_boolean.thermostat_{}_program{}".format(today,progID)) == "off":
                 self.log("The Program is not active for today", level="INFO")
                 return
 
             on_time,off_time,status=self.getProgramSchedule(progID, data, "running")
-            if status=="manual_off":
-                if off_time<now:
+            if status == "manual_off":
+                if off_time < now:
                     self.__setProgramSchedule__(progID, data, status="not running")
                 else:
                     self.log("The program was manually interrupted", level="INFO")
                 return
-            if on_time<=now<off_time:
-                if float(comfort_temp)<=float(data["temperature"]):
-                    self.log("The comfort temperature was reached", level="INFO")
-                    if self.get_state("input_boolean.heater_program{}_on".format(progID))=="on":
-                        self.log("The program is now ending", level="INFO")
-                        self.turnProgramOff(event_name, data, kwargs={**kwargs, "comfort_temp": comfort_temp})
-                    return
+            if on_time <= now < off_time:
                 if self.get_state("input_boolean.heater_program{}_on".format(progID))=="off":
                     self.log("The heating program {} is now starting".format(progID), level="INFO")
                     self.turn_on("input_boolean.heater_program{}_on".format(progID))
@@ -76,13 +73,8 @@ class HeatingManager(hass.Hass):
                 self.log("Program {} is not active right now".format(progID), level="INFO")
 
         else:
-            off_time=self.getProgramSchedule(progID,data, "running")[1]
-            if float(comfort_temp)<=float(data["temperature"]):
-                        self.log("The comfort temperature was reached", level="INFO")
-                        self.log("The program is now ending", level="INFO")
-                        self.turnProgramOff(event_name, data={**data,"comfort_temp": comfort_temp}, kwargs=kwargs )
-                        return
-            if off_time<=now:
+            off_time = self.getProgramSchedule(progID,data, "running")[1]
+            if off_time <= now:
                 self.log("The heating program {} is now ending".format(progID), level="INFO")
                 self.turnProgramOff(event_name, data, kwargs)
                 return
@@ -95,19 +87,26 @@ class HeatingManager(hass.Hass):
 
         trvList=[]
 
-        if program=="prog0":
+        if program == "prog0":
             self.log("Checking if another program is on", level="INFO")
-            if self.isHeatingProgramOn()!=0: return
+            if self.isHeatingProgramOn() != 0:
+                self.log("A program is already active", level="INFO")
+                return
 
         self.log("Retrieving TRV list", level="INFO")
 
         trvList=self.getTRVList()
+        programTemperature = self.getProgramZoneTemperature(progId=program[-1])
+        temperature = self.get_state("input_number.manual_heating_temp")
 
         self.log("Starting heating", level="INFO")
         self.log("Setting temperature", level="INFO")
-        self.setTargetTempFromProgram(trvList, program)
+        for trv in trvList:
+            if program != "prog0":
+                self.setTargetTemp(topic=trv["topic"], value=programTemperature[trv["zone"]])
+            else: self.setTargetTemp(topic=trv["topic"], value=temperature)
         self.turn_on("switch.sw_thermostat")
-        if program!="prog0":
+        if program != "prog0":
             self.__setProgramSchedule__(program[-1], data, status="running")
 
         if asyncio.run(self.checkHeaterState( 1, "on", time=5)):
@@ -162,21 +161,20 @@ class HeatingManager(hass.Hass):
 
     def programSchedule(self, data):
         now=datetime.strptime(self.get_state("sensor.date_time_iso"),"%Y-%m-%dT%H:%M:%S")
-        today=now.strftime("%A").lower()
         date=now.strftime("%Y-%m-%dT")
         nextdate=(now+timedelta(days=1)).strftime("%Y-%m-%dT")
         schedule={}
 
         for id in range(1,5):
-            schedule["prog{}".format(id)]={}
-            on_time=datetime.strptime(date+self.get_state("input_datetime.thermostat_{}_on_period{}".format(today, id)),"%Y-%m-%dT%H:%M:%S")
-            off_time=datetime.strptime(date+self.get_state("input_datetime.thermostat_{}_off_period{}".format(today, id)),"%Y-%m-%dT%H:%M:%S")
+            schedule["prog{}".format(id)] = {}
+            on_time = datetime.strptime(date+self.get_state("input_datetime.thermostat_on_period{}".format(id)),"%Y-%m-%dT%H:%M:%S")
+            off_time = datetime.strptime(date+self.get_state("input_datetime.thermostat_off_period{}".format(id)),"%Y-%m-%dT%H:%M:%S")
             delta=on_time-off_time
-            if delta>timedelta(0):
-                off_time=datetime.strptime(nextdate+self.get_state("input_datetime.thermostat_{}_off_period{}".format(today, id)),"%Y-%m-%dT%H:%M:%S")
-            schedule["prog{}".format(id)]["on_time"]=on_time.strftime("%Y-%m-%dT%H:%M:%S")
-            schedule["prog{}".format(id)]["off_time"]=off_time.strftime("%Y-%m-%dT%H:%M:%S")
-            schedule["prog{}".format(id)]["status"]="not running"
+            if delta > timedelta(0):
+                off_time = datetime.strptime(nextdate+self.get_state("input_datetime.thermostat_off_period{}".format(id)),"%Y-%m-%dT%H:%M:%S")
+            schedule["prog{}".format(id)]["on_time"] = on_time.strftime("%Y-%m-%dT%H:%M:%S")
+            schedule["prog{}".format(id)]["off_time"] = off_time.strftime("%Y-%m-%dT%H:%M:%S")
+            schedule["prog{}".format(id)]["status"] = "not running"
 
         with open(file,"w") as f:
             json.dump(schedule,f)
@@ -211,11 +209,11 @@ class HeatingManager(hass.Hass):
             self.log("This program schedule should not change")
             return f_on_time, f_off_time, "running"
         else:
-            on_time=datetime.strptime(date+self.get_state("input_datetime.thermostat_{}_on_period{}".format(today,progID)),"%Y-%m-%dT%H:%M:%S")
-            off_time=datetime.strptime(date+self.get_state("input_datetime.thermostat_{}_off_period{}".format(today,progID)),"%Y-%m-%dT%H:%M:%S")
+            on_time=datetime.strptime(date+self.get_state("input_datetime.thermostat_on_period{}".format(progID)),"%Y-%m-%dT%H:%M:%S")
+            off_time=datetime.strptime(date+self.get_state("input_datetime.thermostat_off_period{}".format(progID)),"%Y-%m-%dT%H:%M:%S")
             delta=on_time-off_time
             if delta>timedelta(0):
-                off_time=datetime.strptime(nextdate+self.get_state("input_datetime.thermostat_{}_off_period{}".format(today,progID)),"%Y-%m-%dT%H:%M:%S")
+                off_time=datetime.strptime(nextdate+self.get_state("input_datetime.thermostat_off_period{}".format(progID)),"%Y-%m-%dT%H:%M:%S")
         f_on_time=on_time
         f_off_time=off_time
         schedule["on_time"]=f_on_time.strftime("%Y-%m-%dT%H:%M:%S")
@@ -278,11 +276,9 @@ class HeatingManager(hass.Hass):
 
     def setTargetTemp(self, topic, value):
         topic=topic+"target_t"
-        if value <18: value=18
-        if value >31: value=31
+        if float(value) > 31.0: value=31.0
 
         self.fire_event("AD_MQTT_PUBLISH",topic=topic,payload=value)
-
         self.log("Target temperature for %s was set to: %s",topic, value, level="INFO")
 
     def getTRVList(self):
@@ -298,14 +294,44 @@ class HeatingManager(hass.Hass):
                     sensor = trv[: trv.find("_")]
                     name = sensor.split(".")[1].upper()
 
-                    attributes["sensorName"]= sensor
-                    attributes[sensor+"_temp"]= self.get_state(sensor+"_temp")
-                    attributes[sensor+"_target_temp"]= self.get_state(sensor+"_target_temp")
-                    attributes[sensor+"_pos"]= self.get_state(sensor+"_pos")
-                    attributes["state_topic"]="shellies/{}/info".format(name)
-                    attributes["command_topic"]="shellies/{}/thermostat/0/command/".format(name)
+                    attributes["name"]= name
+                    attributes["zone"] = self.getZoneFromId(name[2:])
+                    attributes[name.lower()+"_pos"] = self.get_state(sensor+"_pos")
+                    attributes["topic"] = "shellies/{}/thermostat/0/command/".format(name)
                     trvList.append(attributes)
         return trvList
+
+    def getZoneFromId(self, id):
+        if id == "01": return "zn101"
+        if id == "02": return "zn102"
+        if id == "03": return "zn103"
+        if id in ["04", "05"]: return "zn201"
+        if id == "06": return "zn202"
+        if id == "07": return "zn203"
+
+        return f"zn{id[:-1]}"
+
+    def getProgramZoneTemperature(self, progId):
+        programZones = self.get_state(f"group.heater_program{progId}", attribute="entity_id")
+        zones = {}
+        for zone in programZones:
+            rooms = self.get_state(zone, attribute="entity_id")
+            for room in rooms:
+                if self.get_state(room) == "on":
+                    self.turn_on(room+"_on")
+                    room = room.split(".")[1]
+                    room = room.replace("heater", "temperature")
+                    room = room.replace("program", "period")
+                    temperature = self.get_state(f"input_number.{room}")
+                    room = room.split("_")[1]
+                    zones[room] = temperature
+                else:
+                    self.turn_off(room+"_on")
+                    zones[room.split("_")[2]] = 4.0
+
+        self.log("Temperatures per Zone of this program: %s", zones, level="INFO")
+        return zones
+
 
     def extractEventData(self, eventData):
 
@@ -323,3 +349,24 @@ class HeatingManager(hass.Hass):
                 "sender": "",
                 "eventType": ""
             }
+
+    def isComfortTempReached(self, temperature, progId=0, zone=""):
+        if progId == 0:
+            return temperature >= self.get_state("input_number.manual_heating_temp")
+
+        return temperature >= self.get_state(f"input_number.temperature_{zone}_period{progId}")
+
+    def checkTemperature(self, progId):
+        zones = self.getProgramZoneTemperature(progId).keys()
+        isActive = False
+        for zone in zones:
+            zone_state = f"input_boolean.heater_{zone}_program{progId}_on"
+            if self.get_state(zone_state) != "on":
+                zoneId = zone[2:]
+                temperature = self.get_state(f"sensor.tz{zoneId}").lower()
+                if self.isComfortTempReached(temperature, progId, zone):
+                    self.turn_off(zone_state)
+                else:
+                    isActive = True
+
+        return isActive

@@ -52,60 +52,119 @@ heater_program4_on:
   name: Programma 4 Attivo
 heater_zn101_program1:
   name: Zona Notte 1
+heater_zn101_program1_on:
+  name: Zona Notte 1 Attivo
 heater_zn102_program1:
   name: Zona Notte 2
+heater_zn102_program1_on:
+  name: Zona Notte 2 Attivo
 heater_zn103_program1:
   name: Zona Notte 3
+heater_zn103_program1_on:
+  name: Zona Notte 3 Attivo
 heater_zn104_program1:
   name: Zona Notte 4
+heater_zn104_program1_on:
+  name: Zona Notte 4 Attivo
 heater_zn201_program1:
   name: Zona Giorno 1
+heater_zn201_program1_on:
+  name: Zona Giorno 1 Attivo
 heater_zn202_program1:
   name: Zona Giorno 2
+heater_zn202_program1_on:
+  name: Zona Giorno 2 Attivo
 heater_zn203_program1:
   name: Zona Giorno 3
+heater_zn203_program1_on:
+  name: Zona Giorno 3 Attivo
+
 heater_zn101_program2:
   name: Zona Notte 1
+heater_zn101_program2_on:
+  name: Zona Notte 1 Attivo
 heater_zn102_program2:
   name: Zona Notte 2
+heater_zn102_program2_on:
+  name: Zona Notte 2 Attivo
 heater_zn103_program2:
   name: Zona Notte 3
+heater_zn103_program2_on:
+  name: Zona Notte 3 Attivo
 heater_zn104_program2:
   name: Zona Notte 4
+heater_zn104_program2_on:
+  name: Zona Notte 4 Attivo
 heater_zn201_program2:
   name: Zona Giorno 1
+heater_zn201_program2_on:
+  name: Zona Giorno 1 Attivo
 heater_zn202_program2:
   name: Zona Giorno 2
+heater_zn202_program2_on:
+  name: Zona Giorno 2 Attivo
 heater_zn203_program2:
   name: Zona Giorno 3
+heater_zn203_program2_on:
+  name: Zona Giorno 3 Attivo
+
 heater_zn101_program3:
   name: Zona Notte 1
+heater_zn101_program3_on:
+  name: Zona Notte 1 Attivo
 heater_zn102_program3:
   name: Zona Notte 2
+heater_zn102_program3_on:
+  name: Zona Notte 2 Attivo
 heater_zn103_program3:
   name: Zona Notte 3
+heater_zn103_program3_on:
+  name: Zona Notte 3 Attivo
 heater_zn104_program3:
   name: Zona Notte 4
+heater_zn104_program3_on:
+  name: Zona Notte 4 Attivo
 heater_zn201_program3:
   name: Zona Giorno 1
+heater_zn201_program3_on:
+  name: Zona Giorno 1 Attivo
 heater_zn202_program3:
   name: Zona Giorno 2
+heater_zn202_program3_on:
+  name: Zona Giorno 2 Attivo
 heater_zn203_program3:
   name: Zona Giorno 3
+heater_zn203_program3_on:
+  name: Zona Giorno 3 Attivo
+
 heater_zn101_program4:
   name: Zona Notte 1
+heater_zn101_program4_on:
+  name: Zona Notte 1 Attivo
 heater_zn102_program4:
   name: Zona Notte 2
+heater_zn102_program4_on:
+  name: Zona Notte 2 Attivo
 heater_zn103_program4:
   name: Zona Notte 3
+heater_zn103_program4_on:
+  name: Zona Notte 3 Attivo
 heater_zn104_program4:
   name: Zona Notte 4
+heater_zn104_program4_on:
+  name: Zona Notte 4 Attivo
 heater_zn201_program4:
   name: Zona Giorno 1
+heater_zn201_program4_on:
+  name: Zona Giorno 1 Attivo
 heater_zn202_program4:
   name: Zona Giorno 2
+heater_zn202_program4_on:
+  name: Zona Giorno 2 Attivo
 heater_zn203_program4:
   name: Zona Giorno 3
+heater_zn203_program4_on:
+  name: Zona Giorno 3 Attivo
 
 copy_program1:
   name: Copia Orari Programma 1

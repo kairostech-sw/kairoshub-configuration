@@ -181,7 +181,6 @@ class Notification(hass.Hass):
 
     def getMessage(self, code, entityRef):
         message = noty_message[code]["message"]
-        self.log(entityRef)
 
         if not message == "":
             if "#ENTITY#" in message and entityRef != "":
