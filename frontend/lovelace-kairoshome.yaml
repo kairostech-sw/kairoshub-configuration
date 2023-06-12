@@ -350,20 +350,6 @@ views:
       - type: vertical-stack
         cards:
           - !include hakairos-configuration/frontend/panels/settings/system.yaml
-  - path: dayzone
-    panel: true
-    visible: false
-    cards:
-      - type: vertical-stack
-        cards:
-          - !include hakairos-configuration/frontend/panels/zones/dayzone.yaml
-  - path: nightzone
-    panel: true
-    visible: false
-    cards:
-      - type: vertical-stack
-        cards:
-          - !include hakairos-configuration/frontend/panels/zones/nightzone.yaml
   - path: lights-program1
     panel: true
     visible: false
