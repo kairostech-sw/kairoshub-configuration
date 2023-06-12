@@ -1,7 +1,7 @@
 import { marked } from "./marked.js";
 
 console.info(
-  "%c DOCUMENTATION-CARD \n%c Version 1.9.3      ",
+  "%c DOCUMENTATION-CARD \n%c Version 0.1.0      ",
   "color: orange; font-weight: bold; background: black",
   "color: darkblue; font-weight: bold; background: white"
 );
@@ -29,7 +29,11 @@ class DocumentationCard extends HTMLElement {
       <ha-card>
         <div id="header">
           <div>
+<<<<<<< Updated upstream
             <ha-icon icon="mdi:book-outline" style="width: 24px; padding:5px; color: white;"></ha-icon>
+=======
+            <ha-icon icon="mdi:help-circle-outline" style="width: 24px; padding:5px; color: white;"></ha-icon>
+>>>>>>> Stashed changes
             <label style="font-weight: bold; color: white; ">Documentazione</label>
           </div>
           <button id="button" onclick="window.history.back();">Indietro</button>

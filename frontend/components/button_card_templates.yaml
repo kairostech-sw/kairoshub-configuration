@@ -415,29 +415,225 @@ button_go_back:
 # CLIMA ############
 ####################
 
-# TODO: Check if can be changed
-clima_tv_detail:
-  type: "custom:button-card"
-  icon: "mdi:texture-box"
+clima_detail_page:
+  template: grid_style
+  card_mod:
+    style: |
+      #content::-webkit-scrollbar {
+        display: none !important;
+      }
+  styles:
+    grid:
+      - grid-template-areas: '"header" "content" "commandbar"'
+    custom_fields:
+      header:
+        - margin-bottom: 2px
+        - height: 46px
+      content:
+        - height: 300px
+        - margin-top: 5px
+        - overflow: auto
+
+clima_nightzone_expander:
+  template: expander_template
+  custom_fields:
+    expander:
+      card:
+        <<: &expander-card-style
+          type: "custom:expander-card"
+          padding: 10px
+          gap: 0px
+        title-card:
+          type: "custom:button-card"
+          template: clima_detail
+          triggers_update:
+            - sensor.tz100
+            - sensor.hz100
+            - input_text.zn100
+          variables:
+            zoneId: "[[[ return variables.zoneId;]]]"
+            icon: "[[[ return variables.icon;]]]"
+        cards:
+          - <<: &divider
+              type: entities
+              card_mod:
+                style: |
+                  div.card-content {
+                    padding: 0px;
+                  }
+              entities:
+                - type: divider
+                  style:
+                    background-color: "#000000"
+                    height: 4px
+          - type: custom:mod-card
+            card_mod:
+              style:
+                hui-grid-card$: |
+                  div#root {
+                    background: var(--primary-background-color);
+                  }
+            card:
+              type: grid
+              columns: 2
+              square: false
+              cards:
+                - type: conditional
+                  conditions:
+                    - entity: sensor.tz101
+                      state: unknown
+                    - entity: sensor.tz102
+                      state: unknown
+                    - entity: sensor.tz103
+                      state: unknown
+                    - entity: sensor.tz104
+                      state: unknown
+                  card:
+                    type: "custom:button-card"
+                    template: no_background
+                    name: >
+                      [[[
+                        return `
+                        <ha-alert alert-type="warning" style="justify-self: center;">
+                          Non ci sono zone attive </br>
+                        </ha-alert>`;
+                      ]]]
+                    tap_action:
+                      action: none
+                - type: conditional
+                  conditions:
+                    - entity: sensor.tz101
+                      state_not: "unknown"
+                  card:
+                    type: "custom:button-card"
+                    template: clima_detail
+                    variables:
+                      zoneId: 101
+                      icon: "mdi:bed-outline"
+                - type: conditional
+                  conditions:
+                    - entity: sensor.tz102
+                      state_not: "unknown"
+                  card:
+                    type: "custom:button-card"
+                    template: clima_detail
+                    variables:
+                      zoneId: 102
+                      icon: "mdi:bed-outline"
+                - type: conditional
+                  conditions:
+                    - entity: sensor.tz103
+                      state_not: "unknown"
+                  card:
+                    type: "custom:button-card"
+                    template: clima_detail
+                    variables:
+                      zoneId: 103
+                      icon: "mdi:bed-outline"
+                - type: conditional
+                  conditions:
+                    - entity: sensor.tz103
+                      state_not: "unknown"
+                  card:
+                    type: "custom:button-card"
+                    template: clima_detail
+                    variables:
+                      zoneId: 104
+                      icon: "mdi:shower"
+
+clima_dayzone_expander:
+  template: expander_template
+  custom_fields:
+    expander:
+      card:
+        <<: *expander-card-style
+        title-card:
+          type: "custom:button-card"
+          template: clima_detail
+          triggers_update:
+            - sensor.tz200
+            - sensor.hz200
+            - input_text.zn200
+          variables:
+            zoneId: "[[[ return variables.zoneId;]]]"
+            icon: "[[[return variables.icon;]]]"
+        cards:
+          - <<: *divider
+          - type: custom:mod-card
+            card_mod:
+              style:
+                hui-grid-card$: |
+                  div#root {
+                    background: var(--primary-background-color);
+                  }
+            card:
+              type: grid
+              columns: 2
+              square: false
+              cards:
+                - type: conditional
+                  conditions:
+                    - entity: sensor.tz201
+                      state: unknown
+                    - entity: sensor.tz202
+                      state: unknown
+                    - entity: sensor.tz203
+                      state: unknown
+                  card:
+                    type: "custom:button-card"
+                    template: no_background
+                    name: >
+                      [[[
+                        return `
+                        <ha-alert alert-type="warning" style="justify-self: center;">
+                          Non ci sono zone attive </br>
+                        </ha-alert>`;
+                      ]]]
+                    tap_action:
+                      action: none
+                - type: conditional
+                  conditions:
+                    - entity: sensor.tz201
+                      state_not: "unknown"
+                  card:
+                    type: "custom:button-card"
+                    template: "clima_detail"
+                    variables:
+                      zoneId: 201
+                      icon: "mdi:sofa-outline"
+                - type: conditional
+                  conditions:
+                    - entity: sensor.tz202
+                      state_not: "unknown"
+                  card:
+                    type: "custom:button-card"
+                    template: "clima_detail"
+                    variables:
+                      zoneId: 202
+                      icon: "mdi:countertop-outline"
+                - type: conditional
+                  conditions:
+                    - entity: sensor.tz203
+                      state_not: "unknown"
+                  card:
+                    type: "custom:button-card"
+                    template: "clima_detail"
+                    variables:
+                      zoneId: 203
+                      icon: "mdi:toilet"
+
+clima_detail:
+  icon: "[[[return variables.icon]]]"
   name: "[[[return states[`input_text.zn${variables.zoneId}`].state;]]]"
-  tap_action:
-    action: none
+  template: no_background
   styles:
     card:
-      - padding: 5px
-      - color: var(--primary-text-color)
-      - font-size: 10px
-      - text-transform: capitalize
-      - box-shadow: 1px 5px 8px rgba(0, 0, 0, 0.3)
-      - margin-bottom: 5px
-      - margin-right: 3px
-      - height: 85px
+      - padding: 1%
     grid:
-      - grid-template-areas: >
-          "i header temp icon1"
-          "last_update last_update humidity icon2"
-      - grid-template-columns: 30px 2fr 1fr 30px
-      - grid-template-rows: 45px 25px
+      - grid-template-areas: '"i n humidity temp" "lastupdate lastupdate other other"'
+      - grid-template-columns: 50px 1fr auto
+      - grid-template-rows: 50px 30px
+      - column-gap: 5px
     name:
       - font-weight: bold
       - font-size: 16px
@@ -446,23 +642,14 @@ clima_tv_detail:
       - padding-bottom: 4px
       - padding-right: 5px
       - padding-top: 5px
-      - grid-area: header
     img_cell:
       - justify-content: start
       - align-items: start
       - margin: none
-      - grid-area: i
     icon:
-      - color: var(--paper-item-icon-color)
-      - width: 80%
+      - width: 70%
     custom_fields:
-      temp:
-        - justify-self: end
-        - align-self: middle
-      humidity:
-        - justify-self: end
-        - align-self: middle
-      last_update:
+      lastupdate:
         - justify-self: start
         - align-self: middle
   custom_fields:
@@ -483,63 +670,27 @@ clima_tv_detail:
             tempColor = 'var(--temperature-primary-color)';
         return `<div style="align-items: center; display: flex;">
           <span style="font-size: 18px; font-weight: 600; color: ${tempColor};">${ zoneTemperature }°C</span>
-          <br />
-          </div>
-        `
+          <ha-icon icon="mdi:thermometer"
+            style="color: ${tempColor}; width: 24px; padding: 5px; margin: 0px;"/>
+          </div>`;
       ]]]
     humidity: >
       [[[
         var humidity = states[`sensor.hz${variables.zoneId}`].state;
         if (humidity != "unknown" && humidity != "unavailable")
           return `<div style="align-items: center; display: flex;"><span style="font-size: 18px; font-weight: 600; color: var(--humidity-primary-color);">${ humidity }%</span>
-          <br />
+            <ha-icon icon="mdi:water-percent"
+              style="color: var(--humidity-primary-color); width: 24px; padding: 5px; margin: 0px;"/>
           </div>`;
         return "</>";
       ]]]
-    last_update: >
+    lastupdate: >
       [[[
         var datetime =  states[`sensor.tz${variables.zoneId}`].last_changed.split("T");
         datetime = new Date(datetime).toLocaleString().replace(","," ");
         var lastupdate = datetime.substring(0,datetime.length-3);
         return `<span style="font-size: 12px;">${lastupdate }</span>`
       ]]]
-    icon1:
-      card:
-        type: custom:button-card
-        icon: mdi:thermometer
-        styles:
-          icon:
-            - width: 80%
-            - color: >
-                [[[
-                  var zoneTemperature = states[`sensor.tz${variables.zoneId}`].state;
-                  if (
-                    (zoneTemperature > states["input_number.temperature_period1"].state
-                    && states["input_boolean.heater_program1_on"].state ==="on") ||
-                    (zoneTemperature > states["input_number.temperature_period2"].state
-                    && states["input_boolean.heater_program2_on"].state ==="on") ||
-                    (zoneTemperature > states["input_number.temperature_period3"].state
-                    && states["input_boolean.heater_program3_on"].state ==="on") ||
-                    (zoneTemperature > states["input_number.temperature_period4"].state
-                    && states["input_boolean.heater_program4_on"].state ==="on") ||
-                    zoneTemperature > states['input_number.manual_heating_temp'].state)
-                      return 'var(--temperature-primary-color)';
-
-                  return 'var(--temperature-secondary-color)';
-                ]]]
-    icon2:
-      card:
-        type: conditional
-        conditions:
-          - entity: "[[[return `sensor.hz${variables.zoneId}`]]]"
-            state_not: unknown
-        card:
-          type: custom:button-card
-          icon: mdi:water-percent
-          styles:
-            icon:
-              - width: 80%
-              - color: var(--humidity-primary-color)
 
 temperature_value:
   icon: "mdi:thermometer"
@@ -1118,17 +1269,19 @@ heating_program_content:
         type: vertical-stack
         cards:
           - type: "custom:button-card"
-            template: heating_expander_nightzone
+            template: heating_program_expander_nightzone
             variables:
               progId: "[[[return variables.progId]]]"
           - type: "custom:button-card"
-            template: heating_expander_dayzone
+            template: heating_program_expander_dayzone
             variables:
               progId: "[[[return variables.progId]]]"
 
 heating_program_day:
+  color_type: card
   state:
     - value: "on"
+      color: var(--command-state-active-color)
       styles:
         card:
           - border-color: var(--command-state-active-color)
@@ -1288,33 +1441,20 @@ expander_template:
     card:
       - padding: 0px
 
-heating_expander_nightzone:
+heating_program_expander_nightzone:
   template: expander_template
   custom_fields:
     expander:
       card:
-        type: "custom:expander-card"
-        padding: 10px
-        gap: 0px
+        <<: *expander-card-style
         title-card:
           type: "custom:button-card"
-          template: heating_expander_zone
+          template: heating_program_expander_zone
           variables:
             progId: "[[[return variables.progId]]]"
             zone: zn100
         cards:
-          - <<: &divider
-              type: entities
-              card_mod:
-                style: |
-                  div.card-content {
-                    padding: 0px;
-                  }
-              entities:
-                - type: divider
-                  style:
-                    background-color: "#000000"
-                    height: 4px
+          - <<: *divider
           - <<: &mod-card-room
               type: custom:mod-card
               card_mod:
@@ -1329,37 +1469,35 @@ heating_expander_nightzone:
               square: false
               cards:
                 - type: "custom:button-card"
-                  template: heating_expander_room
+                  template: heating_program_expander_room
                   variables:
                     progId: "[[[return variables.progId]]]"
                     zone: zn101
                 - type: "custom:button-card"
-                  template: heating_expander_room
+                  template: heating_program_expander_room
                   variables:
                     progId: "[[[return variables.progId]]]"
                     zone: zn102
                 - type: "custom:button-card"
-                  template: heating_expander_room
+                  template: heating_program_expander_room
                   variables:
                     progId: "[[[return variables.progId]]]"
                     zone: zn103
                 - type: "custom:button-card"
-                  template: heating_expander_room
+                  template: heating_program_expander_room
                   variables:
                     progId: "[[[return variables.progId]]]"
                     zone: zn104
 
-heating_expander_dayzone:
+heating_program_expander_dayzone:
   template: expander_template
   custom_fields:
     expander:
       card:
-        type: "custom:expander-card"
-        padding: 11px
-        gap: 0px
+        <<: *expander-card-style
         title-card:
           type: "custom:button-card"
-          template: heating_expander_zone
+          template: heating_program_expander_zone
           variables:
             progId: "[[[return variables.progId]]]"
             zone: zn200
@@ -1372,22 +1510,22 @@ heating_expander_dayzone:
               square: false
               cards:
                 - type: "custom:button-card"
-                  template: heating_expander_room
+                  template: heating_program_expander_room
                   variables:
                     progId: "[[[return variables.progId]]]"
                     zone: zn201
                 - type: "custom:button-card"
-                  template: heating_expander_room
+                  template: heating_program_expander_room
                   variables:
                     progId: "[[[return variables.progId]]]"
                     zone: zn202
                 - type: "custom:button-card"
-                  template: heating_expander_room
+                  template: heating_program_expander_room
                   variables:
                     progId: "[[[return variables.progId]]]"
                     zone: zn203
 
-heating_expander_zone:
+heating_program_expander_zone:
   styles:
     grid:
       - grid-template-areas: '"label temp"'
@@ -1428,7 +1566,7 @@ heating_expander_zone:
             variables:
               entity: "[[[return `input_number.temperature_${variables.zone}_period${variables.progId}`]]]"
 
-heating_expander_room:
+heating_program_expander_room:
   styles:
     grid:
       - grid-template-areas: '"label temp"'

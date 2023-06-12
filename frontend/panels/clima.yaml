@@ -1,5 +1,5 @@
 type: "custom:button-card"
-template: panel_grid
+template: clima_detail_page
 custom_fields:
   header:
     card:
@@ -10,32 +10,6 @@ custom_fields:
       icon: "mdi:thermometer"
       name: "CLIMA"
       label: "Clima /"
-  content:
-    card:
-      type: vertical-stack
-      cards:
-        - type: horizontal-stack
-          cards:
-            - type: "custom:button-card"
-              template: "clima_tv_detail"
-              triggers_update:
-                - sensor.tz100
-                - sensor.hz100
-              variables:
-                zoneId: 100
-              tap_action:
-                action: navigate
-                navigation_path: /lovelace-kairoshub/nightzone
-            - type: "custom:button-card"
-              template: "clima_tv_detail"
-              triggers_update:
-                - sensor.tz200
-                - sensor.hz200
-              variables:
-                zoneId: 200
-              tap_action:
-                action: navigate
-                navigation_path: /lovelace-kairoshub/dayzone
   commandbar:
     card:
       type: "custom:button-card"
@@ -44,59 +18,72 @@ custom_fields:
         ha-card.button-card-main {
           padding: 0px !important
         }
-      styles:
-        card:
-          - margin-left: -10px
       custom_fields:
         commands:
           card:
             type: horizontal-stack
             cards:
-              - type: custom:button-card
-                name: Programmi<br/> Riscaldamento
+              - type: horizontal-stack
+                cards:
+                  - type: custom:button-card
+                    name: Programmi<br/> Riscaldamento
+                    styles:
+                      card:
+                        - background: none
+                        - color: "#f4f4f4"
+                        - box-shadow: none
+                        - margin-left: 10px
+                        - width: 200px
+                    style: |
+                      :host {
+                        align-self: center;
+                      }
+                    tap_action:
+                      action: none
+                  - type: "custom:button-card"
+                    template: button_go_to_program
+                    entity: input_boolean.heater_program1
+                    variables:
+                      progId: "1"
+                  - type: "custom:button-card"
+                    template: button_go_to_program
+                    entity: input_boolean.heater_program2
+                    variables:
+                      progId: "2"
+                  - type: "custom:button-card"
+                    template: button_go_to_program
+                    entity: input_boolean.heater_program3
+                    variables:
+                      progId: "3"
+                  - type: "custom:button-card"
+                    template: button_go_to_program
+                    entity: input_boolean.heater_program4
+                    variables:
+                      progId: "4"
+              - type: "custom:button-card"
+                template: button_go_to_program
                 styles:
                   card:
                     - background: none
-                    - color: "#f4f4f4"
-                    - box-shadow: none
-                    - margin-left: 10px
-                    - width: 200px
-                style: |
-                  :host {
-                    align-self: center;
-                  }
-                tap_action:
-                  action: none
-              - type: "custom:button-card"
-                template: button_go_to_program
-                entity: input_boolean.heater_program1
-                variables:
-                  progId: "1"
-              - type: "custom:button-card"
-                template: button_go_to_program
-                entity: input_boolean.heater_program2
-                variables:
-                  progId: "2"
-              - type: "custom:button-card"
-                template: button_go_to_program
-                entity: input_boolean.heater_program3
-                variables:
-                  progId: "3"
-              - type: "custom:button-card"
-                template: button_go_to_program
-                entity: input_boolean.heater_program4
-                variables:
-                  progId: "4"
-              - type: "custom:button-card"
-                template: button_go_to_program
-                styles:
-                  card:
-                    - background: none
-                    - position: fixed
-                    - right: 10px
-                    - bottom: -17px
+                    - margin-right: 10px
                 icon: "mdi:cog"
                 color: var(--command-state-color)
                 tap_action:
                   action: navigate
                   navigation_path: /lovelace-kairoshub/impostazioni-riscaldamento
+  content:
+    card:
+      type: vertical-stack
+      cards:
+        - type: "custom:button-card"
+          template: clima_nightzone_expander
+          variables:
+            zoneId: 100
+            icon: "mdi:weather-night"
+            color: "#55C1E5"
+        - type: "custom:button-card"
+          template: clima_dayzone_expander
+          variables:
+            zoneId: 200
+            icon: "mdi:weather-sunny"
+            color: "var(--command-state-active-color)"
