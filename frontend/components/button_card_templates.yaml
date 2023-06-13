@@ -766,12 +766,11 @@ clima_infos:
     grid:
       - grid-template-areas: '"alert active"'
       - grid-template-columns: auto
-    card:
-      - width: 80px
   custom_fields:
     active: >
       [[[
         var color = "#000000";
+        var state = "DISATTIVO";
         var input = `input_boolean.heater_zn${variables.zoneId}_program`;
         if ((""+variables.zoneId).endsWith("00"))
           input = input.replace("input_boolean", "group");
@@ -779,9 +778,16 @@ clima_infos:
           console.log(input+`${i}_on`)
           if (states[input+`${i}_on`].state === "on") {
             color = "var(--command-state-active-color)";
+            state = "ATTIVO";
           }
         }
-        return `<ha-icon icon="mdi:power" style="width: 24px; color: ${color}; margin-right: 5px;" />`;
+        return `<div style="display: flex; align-items: center;">
+          <ha-icon icon="mdi:power" style="width: 24px; color: ${color}; margin-right: 5px;"></ha-icon>
+          <label>
+            ${state}
+          </label>
+          </div>`;
+      ]]]
       ]]]
 
 temperature_value:
