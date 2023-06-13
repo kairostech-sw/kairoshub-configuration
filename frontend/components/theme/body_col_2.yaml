@@ -13,6 +13,26 @@ card_mod:
           .mdc-tab-indicator__content--underline {
             border-color: var(--command-state-active-color) !important;
           }
+        .: |
+          mwc-tab:not(:last-child) {
+            border-color: #000000;
+            border-width: 0px;
+            border-right-width: 1px;
+            border-style: solid;
+            overflow: hidden;
+          }
+          mwc-tab[label="Temperatura"] {
+            {% if (states("sensor.temperatura")> states("input_number.temperature_period1") and is_state("input_boolean.heater_program1_on","on")) or
+            (states("sensor.temperatura")> states("input_number.temperature_period2") and is_state("input_boolean.heater_program2_on","on")) or
+            (states("sensor.temperatura")> states("input_number.temperature_period3") and is_state("input_boolean.heater_program3_on","on")) or
+            (states("sensor.temperatura")> states("input_number.temperature_period4") and is_state("input_boolean.heater_program4_on","on")) or
+            states("sensor.temperatura") > states("input_number.manual_heating_temp")
+            %}
+              --mdc-theme-primary: var(--temperature-primary-color);
+            {% else %}
+              --mdc-theme-primary: var(--temperature-secondary-color)
+            {% endif %}
+          }
 card:
   type: "custom:tabbed-card"
   options:
@@ -20,7 +40,7 @@ card:
   attributes:
     stacked: true
   styles:
-    --mdc-typography-button-font-size: 12px
+    --mdc-typography-button-font-size: 11px
   tabs:
     - attributes:
         label: "Temperatura"
@@ -35,7 +55,7 @@ card:
               entity: sensor.temperatura
               graph: line
               icon: "mdi:thermometer"
-              detail: 1
+              detail: 2
               style: |
                 {% if (states(config.entity)> states("input_number.temperature_period1") and is_state("input_boolean.heater_program1_on","on")) or
                 (states(config.entity)> states("input_number.temperature_period2") and is_state("input_boolean.heater_program2_on","on")) or
@@ -57,15 +77,24 @@ card:
                   color: var(--temperature-secondary-color);
                 }
                 {% endif %}
-        style: |
-          ha-card {
-            height: 130px !important;
-          }
-        tap_action:
-          action: none
+                .header .name  {
+                  font-size:  18px;
+                }
+                hui-graph-header-footer {
+                  margin-top: 39px;
+                }
+        <<: &height-and-no-tap
+          style: |
+            ha-card {
+              height: 210px !important;
+            }
+          tap_action:
+            action: none
     - attributes:
         label: "Umidità"
         icon: "mdi:water-percent"
+      styles:
+        --mdc-theme-primary: var(--humidity-primary-color)
       card:
         type: "custom:button-card"
         template: graph
@@ -76,7 +105,7 @@ card:
               entity: sensor.umidita
               graph: line
               icon: "mdi:water-percent"
-              detail: 1
+              detail: 2
               style: |
                 ha-card {
                   --accent-color:  var(--humidity-primary-color);
@@ -84,15 +113,18 @@ card:
                 .header .icon {
                   color:  var(--humidity-primary-color);
                 }
-        style: |
-          ha-card {
-            height: 130px !important;
-          }
-        tap_action:
-          action: none
+                .header .name  {
+                  font-size:  18px;
+                }
+                hui-graph-header-footer {
+                  margin-top: 39px;
+                }
+        <<: *height-and-no-tap
     - attributes:
         label: "Consumi"
-        icon: "mdi:flash"
+        icon: "mdi:lightning-bolt"
+      styles:
+        --mdc-theme-primary: "#e6c300"
       card:
         type: "custom:button-card"
         template: graph
@@ -103,7 +135,7 @@ card:
               entity: sensor.em_assorbimento
               graph: line
               icon: "mdi:lightning-bolt"
-              detail: 1
+              detail: 2
               style: |
                 ha-card {
                   --accent-color: var(--energy-consume-primary-color);
@@ -111,9 +143,10 @@ card:
                 .header .icon {
                   color: var(--energy-consume-primary-color);
                 }
-        style: |
-          ha-card {
-            height: 130px !important;
-          }
-        tap_action:
-          action: none
+                .header .name  {
+                  font-size:  18px;
+                }
+                hui-graph-header-footer {
+                  margin-top: 39px;
+                }
+        <<: *height-and-no-tap

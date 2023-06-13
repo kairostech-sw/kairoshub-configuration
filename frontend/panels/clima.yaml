@@ -75,15 +75,25 @@ custom_fields:
     card:
       type: vertical-stack
       cards:
-        - type: "custom:button-card"
-          template: clima_nightzone_expander
-          variables:
-            zoneId: 100
-            icon: "mdi:weather-night"
-            color: "#55C1E5"
-        - type: "custom:button-card"
-          template: clima_dayzone_expander
-          variables:
-            zoneId: 200
-            icon: "mdi:weather-sunny"
-            color: "var(--command-state-active-color)"
+        - type: conditional
+          conditions:
+            - entity: sensor.tz100
+              state_not: "unknown"
+          card:
+            type: "custom:button-card"
+            template: clima_nightzone_expander
+            variables:
+              zoneId: 100
+              icon: "mdi:weather-night"
+              color: "#55C1E5"
+        - type: conditional
+          conditions:
+            - entity: sensor.tz200
+              state_not: "unknown"
+          card:
+            type: "custom:button-card"
+            template: clima_dayzone_expander
+            variables:
+              zoneId: 200
+              icon: "mdi:weather-sunny"
+              color: "var(--command-state-active-color)"

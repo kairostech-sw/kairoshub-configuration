@@ -10,12 +10,25 @@ heater_zn100_program1:
     - input_boolean.heater_zn102_program1
     - input_boolean.heater_zn103_program1
     - input_boolean.heater_zn104_program1
+heater_zn100_program1_on:
+  name: Zona Notte Programma 1
+  entities:
+    - input_boolean.heater_zn101_program1_on
+    - input_boolean.heater_zn102_program1_on
+    - input_boolean.heater_zn103_program1_on
+    - input_boolean.heater_zn104_program1_on
 heater_zn200_program1:
   name: Zona Giorno Programma 1
   entities:
     - input_boolean.heater_zn201_program1
     - input_boolean.heater_zn202_program1
     - input_boolean.heater_zn203_program1
+heater_zn200_program1_on:
+  name: Zona Giorno Programma 1
+  entities:
+    - input_boolean.heater_zn201_program1_on
+    - input_boolean.heater_zn202_program1_on
+    - input_boolean.heater_zn203_program1_on
 program1_days:
   name: Giorni Programma 1
   entities:
@@ -39,12 +52,25 @@ heater_zn100_program2:
     - input_boolean.heater_zn102_program2
     - input_boolean.heater_zn103_program2
     - input_boolean.heater_zn104_program2
+heater_zn100_program2_on:
+  name: Zona Notte Programma 2
+  entities:
+    - input_boolean.heater_zn101_program2_on
+    - input_boolean.heater_zn102_program2_on
+    - input_boolean.heater_zn103_program2_on
+    - input_boolean.heater_zn104_program2_on
 heater_zn200_program2:
   name: Zona Giorno Programma 2
   entities:
     - input_boolean.heater_zn201_program2
     - input_boolean.heater_zn202_program2
     - input_boolean.heater_zn203_program2
+heater_zn200_program2_on:
+  name: Zona Giorno Programma 2
+  entities:
+    - input_boolean.heater_zn201_program2_on
+    - input_boolean.heater_zn202_program2_on
+    - input_boolean.heater_zn203_program2_on
 program2_days:
   name: Giorni Programma 2
   entities:
@@ -68,12 +94,25 @@ heater_zn100_program3:
     - input_boolean.heater_zn102_program3
     - input_boolean.heater_zn103_program3
     - input_boolean.heater_zn104_program3
+heater_zn100_program3_on:
+  name: Zona Notte Programma 3
+  entities:
+    - input_boolean.heater_zn101_program3_on
+    - input_boolean.heater_zn102_program3_on
+    - input_boolean.heater_zn103_program3_on
+    - input_boolean.heater_zn104_program3_on
 heater_zn200_program3:
   name: Zona Giorno Programma 3
   entities:
     - input_boolean.heater_zn201_program3
     - input_boolean.heater_zn202_program3
     - input_boolean.heater_zn203_program3
+heater_zn200_program3_on:
+  name: Zona Giorno Programma 3
+  entities:
+    - input_boolean.heater_zn201_program3_on
+    - input_boolean.heater_zn202_program3_on
+    - input_boolean.heater_zn203_program3_on
 program3_days:
   name: Giorni Programma 3
   entities:
@@ -97,12 +136,25 @@ heater_zn100_program4:
     - input_boolean.heater_zn102_program4
     - input_boolean.heater_zn103_program4
     - input_boolean.heater_zn104_program4
+heater_zn100_program4_on:
+  name: Zona Notte Programma 4
+  entities:
+    - input_boolean.heater_zn101_program4_on
+    - input_boolean.heater_zn102_program4_on
+    - input_boolean.heater_zn103_program4_on
+    - input_boolean.heater_zn104_program4_on
 heater_zn200_program4:
   name: Zona Giorno Programma 4
   entities:
     - input_boolean.heater_zn201_program4
     - input_boolean.heater_zn202_program4
     - input_boolean.heater_zn203_program4
+heater_zn200_program4_on:
+  name: Zona Giorno Programma 4
+  entities:
+    - input_boolean.heater_zn201_program4_on
+    - input_boolean.heater_zn202_program4_on
+    - input_boolean.heater_zn203_program4_on
 program4_days:
   name: Giorni Programma 4
   entities:

@@ -166,6 +166,26 @@ heater_zn203_program4:
 heater_zn203_program4_on:
   name: Zona Giorno 3 Attivo
 
+zn100_alert:
+  name: Zona Notte
+zn101_alert:
+  name: Zona Notte
+zn102_alert:
+  name: Zona Notte
+zn103_alert:
+  name: Zona Notte
+zn104_alert:
+  name: Zona Notte
+
+zn200_alert:
+  name: Zona Notte
+zn201_alert:
+  name: Zona Notte
+zn202_alert:
+  name: Zona Notte
+zn203_alert:
+  name: Zona Notte
+
 copy_program1:
   name: Copia Orari Programma 1
 copy_program2:
