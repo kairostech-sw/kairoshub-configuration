@@ -4,6 +4,9 @@ hello_world:
 heating_manager:
   module: heatingManager
   class: HeatingManager
+kairoshub_heating:
+  module: kairoshubHeating
+  class: KairoshubHeating
 kairoshub_metrics:
   module: kairoshubMetrics
   class: KairoshubMetrics

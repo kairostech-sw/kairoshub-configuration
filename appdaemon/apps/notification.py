@@ -28,6 +28,10 @@ noty_message = {
         "label": "Riscaldamento non acceso",
         "message": "Il riscaldamento non è stato acceso perché la temperatura è già superiore a quella impostata."
     },
+    "HEATING_NO_ZONE_ERROR": {
+        "label": "Errore Programma Riscaldamento",
+        "message": "Il programma di riscaldamento #id# non è stato acceso perché non sono state impostate zone."
+    },
     "HEATING_SENSOR_BATTERY_LOW": {
         "label": "Batteria Quasi Scarica Testa Termostatica #ENTITY#",
         "message": "La testa termostatica #ENTITY# si sta scaricando. Collegala ad un carica batterie oppure ad una Powerbank. \n\nPuoi ricoscere la testa termostatica dal nome applicato nella parte sottostante."
@@ -241,11 +245,12 @@ class Notification(hass.Hass):
         self.log("Sending HUB notification")
         code = notification["eventType"]
         label = noty_message[code]["label"]
+        program = kwargs["program"] if "program" in kwargs else ""
         extra_info = None
         more_info = None
 
         if "ERROR" in code or "VALVES" in code:
-            self.sendErrorNotification(code, label)
+            self.sendErrorNotification(code, label, program)
             return
         if "BATTERY" in code:
             self.sendBatteryNotification(code, label, kwargs["entity_id"])
@@ -263,13 +268,13 @@ class Notification(hass.Hass):
             extra_info = noty_message[code]["message"].replace(
                 "#ENTITY#", entity)
         if "HEATING" in code:
-            if "comfort_temp" in kwargs and kwargs["comfort_temp"] != None:
+            if "comfort_temp" in kwargs and kwargs["comfort_temp"]:
                 if "TEMP_REACHED" in code:
                     label += " perché è già stata raggiunta la temperatura"
+                    extra_info = "Temperatura Impostata: {}°C".format(
+                        kwargs["comfort_temp"])
                 else:
                     label += " dopo aver raggiunto la temperatura impostata"
-                extra_info = "Temperatura Impostata: {}°C".format(
-                    kwargs["comfort_temp"])
             elif kwargs["program"] > 0:
                 label += " dal Programma {}".format(kwargs["program"])
         if "LIGHTS" in code:
@@ -330,11 +335,13 @@ class Notification(hass.Hass):
 
         self.send(label, extra_info, more_info)
 
-    def sendErrorNotification(self, code, label):
+    def sendErrorNotification(self, code, label, program):
 
         extra_info = None
         if "VALVES" in code:
             extra_info = "Le teste termostatiche non sono state raggiunte dal sistema. Verificare che siano cariche"
+        elif "NO_ZONE" in code:
+            extra_info = noty_message[code]["message"].replace("#id#", str(program))
         elif "HEATING" in code:
             extra_info = "Si è verificato un problema nell{} della caldaia.".format(
                 ("o spegnimento", "'accensione")["ON" in code])
