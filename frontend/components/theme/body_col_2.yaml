@@ -22,10 +22,10 @@ card_mod:
             overflow: hidden;
           }
           mwc-tab[label="Temperatura"] {
-            {% if (states("sensor.temperatura")> states("input_number.temperature_period1") and is_state("input_boolean.heater_program1_on","on")) or
-            (states("sensor.temperatura")> states("input_number.temperature_period2") and is_state("input_boolean.heater_program2_on","on")) or
-            (states("sensor.temperatura")> states("input_number.temperature_period3") and is_state("input_boolean.heater_program3_on","on")) or
-            (states("sensor.temperatura")> states("input_number.temperature_period4") and is_state("input_boolean.heater_program4_on","on")) or
+            {% if (states("sensor.temperatura")> states("input_number.temperature_period1") and is_state("group.heater_program1_on","on")) or
+            (states("sensor.temperatura")> states("input_number.temperature_period2") and is_state("group.heater_program2_on","on")) or
+            (states("sensor.temperatura")> states("input_number.temperature_period3") and is_state("group.heater_program3_on","on")) or
+            (states("sensor.temperatura")> states("input_number.temperature_period4") and is_state("group.heater_program4_on","on")) or
             states("sensor.temperatura") > states("input_number.manual_heating_temp")
             %}
               --mdc-theme-primary: var(--temperature-primary-color);
@@ -57,10 +57,10 @@ card:
               icon: "mdi:thermometer"
               detail: 2
               style: |
-                {% if (states(config.entity)> states("input_number.temperature_period1") and is_state("input_boolean.heater_program1_on","on")) or
-                (states(config.entity)> states("input_number.temperature_period2") and is_state("input_boolean.heater_program2_on","on")) or
-                (states(config.entity)> states("input_number.temperature_period3") and is_state("input_boolean.heater_program3_on","on")) or
-                (states(config.entity)> states("input_number.temperature_period4") and is_state("input_boolean.heater_program4_on","on")) or
+                {% if (states(config.entity)> states("input_number.temperature_period1") and is_state("group.heater_program1_on","on")) or
+                (states(config.entity)> states("input_number.temperature_period2") and is_state("group.heater_program2_on","on")) or
+                (states(config.entity)> states("input_number.temperature_period3") and is_state("group.heater_program3_on","on")) or
+                (states(config.entity)> states("input_number.temperature_period4") and is_state("group.heater_program4_on","on")) or
                 states(config.entity) > states("input_number.manual_heating_temp")
                 %}
                 ha-card {
