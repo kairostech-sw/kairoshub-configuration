@@ -1,5 +1,5 @@
 type: "custom:button-card"
-template: panel_grid
+template: detail_page
 custom_fields:
   header:
     card:
@@ -16,9 +16,6 @@ custom_fields:
         ha-card.button-card-main {
           padding: 0px !important
         }
-      styles:
-        card:
-          - margin-left: -10px
       custom_fields:
         commands:
           card:
@@ -76,57 +73,30 @@ custom_fields:
               ]]]
             tap_action:
               action: none
-        - type: grid
-          columns: 2
-          square: false
-          cards:
-            - <<: &inline-mod-card
-                type: "custom:mod-card"
-                style: |
-                  ha-card {
-                    display: inline-block;
-                  }
-              card:
-                type: conditional
-                conditions:
-                  - entity: binary_sensor.lz100_state
-                    state_not: "off"
-                card:
-                  type: "custom:button-card"
-                  template: light_detail
-                  entity: light.group_lz100
-                  variables:
-                    zoneId: 100
-                  tap_action:
-                    action: navigate
-                    navigation_path: /lovelace-kairoshub/lights-nightzone
-            - <<: *inline-mod-card
-              card:
-                type: conditional
-                conditions:
-                  - entity: binary_sensor.lz200_state
-                    state_not: "off"
-                card:
-                  type: "custom:button-card"
-                  template: light_detail
-                  entity: light.group_lz200
-                  variables:
-                    zoneId: 200
-                  tap_action:
-                    action: navigate
-                    navigation_path: /lovelace-kairoshub/lights-dayzone
-            - <<: *inline-mod-card
-              card:
-                type: conditional
-                conditions:
-                  - entity: binary_sensor.lz300_state
-                    state_not: "off"
-                card:
-                  type: "custom:button-card"
-                  template: light_detail
-                  entity: light.group_lz300
-                  variables:
-                    zoneId: 300
-                  tap_action:
-                    action: navigate
-                    navigation_path: /lovelace-kairoshub/lights-outdoor
+        - type: conditional
+          conditions:
+            - entity: binary_sensor.lz100_state
+              state_not: "off"
+          card:
+            type: "custom:button-card"
+            template: lights_expander_nightzone
+            variables:
+              zoneId: 100
+        - type: conditional
+          conditions:
+            - entity: binary_sensor.lz200_state
+              state_not: "off"
+          card:
+            type: "custom:button-card"
+            template: lights_expander_dayzone
+            variables:
+              zoneId: 200
+        - type: conditional
+          conditions:
+            - entity: binary_sensor.lz300_state
+              state_not: "off"
+          card:
+            type: "custom:button-card"
+            template: lights_expander_outdoor
+            variables:
+              zoneId: 300

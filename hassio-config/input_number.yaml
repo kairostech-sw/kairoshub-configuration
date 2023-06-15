@@ -4,187 +4,106 @@ metrics_frequency:
   min: 1
   max: 24
   step: 1
-temperature_period1:
-  min: 18
-  max: 30
-  step: 0.5
-temperature_period2:
-  min: 18
-  max: 30
-  step: 0.5
-temperature_period3:
-  min: 18
-  max: 30
-  step: 0.5
-temperature_period4:
-  min: 18
-  max: 30
-  step: 0.5
-temperature_zn100_period1:
-  min: 18
-  max: 30
-  step: 0.5
-temperature_zn101_period1:
-  min: 18
-  max: 30
-  step: 0.5
-temperature_zn102_period1:
-  min: 18
-  max: 30
-  step: 0.5
-temperature_zn103_period1:
-  min: 18
-  max: 30
-  step: 0.5
-temperature_zn104_period1:
-  min: 18
-  max: 30
-  step: 0.5
-temperature_zn200_period1:
-  min: 18
-  max: 30
-  step: 0.5
-temperature_zn201_period1:
-  min: 18
-  max: 30
-  step: 0.5
-temperature_zn202_period1:
-  min: 18
-  max: 30
-  step: 0.5
-temperature_zn203_period1:
-  min: 18
-  max: 30
-  step: 0.5
-temperature_zn100_period2:
-  min: 18
-  max: 30
-  step: 0.5
-temperature_zn101_period2:
-  min: 18
-  max: 30
-  step: 0.5
-temperature_zn102_period2:
-  min: 18
-  max: 30
-  step: 0.5
-temperature_zn103_period2:
-  min: 18
-  max: 30
-  step: 0.5
-temperature_zn104_period2:
-  min: 18
-  max: 30
-  step: 0.5
-temperature_zn200_period2:
-  min: 18
-  max: 30
-  step: 0.5
-temperature_zn201_period2:
-  min: 18
-  max: 30
-  step: 0.5
-temperature_zn202_period2:
-  min: 18
-  max: 30
-  step: 0.5
-temperature_zn203_period2:
-  min: 18
-  max: 30
-  step: 0.5
-temperature_zn100_period3:
-  min: 18
-  max: 30
-  step: 0.5
-temperature_zn101_period3:
-  min: 18
-  max: 30
-  step: 0.5
-temperature_zn102_period3:
-  min: 18
-  max: 30
-  step: 0.5
-temperature_zn103_period3:
-  min: 18
-  max: 30
-  step: 0.5
-temperature_zn104_period3:
-  min: 18
-  max: 30
-  step: 0.5
-temperature_zn200_period3:
-  min: 18
-  max: 30
-  step: 0.5
-temperature_zn201_period3:
-  min: 18
-  max: 30
-  step: 0.5
-temperature_zn202_period3:
-  min: 18
-  max: 30
-  step: 0.5
-temperature_zn203_period3:
-  min: 18
-  max: 30
-  step: 0.5
-temperature_zn100_period4:
-  min: 18
-  max: 30
-  step: 0.5
-temperature_zn101_period4:
-  min: 18
-  max: 30
-  step: 0.5
-temperature_zn102_period4:
-  min: 18
-  max: 30
-  step: 0.5
-temperature_zn103_period4:
-  min: 18
-  max: 30
-  step: 0.5
-temperature_zn104_period4:
-  min: 18
-  max: 30
-  step: 0.5
-temperature_zn200_period4:
-  min: 18
-  max: 30
-  step: 0.5
-temperature_zn201_period4:
-  min: 18
-  max: 30
-  step: 0.5
-temperature_zn202_period4:
-  min: 18
-  max: 30
-  step: 0.5
-temperature_zn203_period4:
-  min: 18
-  max: 30
-  step: 0.5
-rollershutter_athome_position:
-  min: 0
-  max: 100
-  step: 5
-  initial: 100
-  mode: slider
-  name: Posizione In Casa
-  icon: mdi:window-shutter
-rollershutter_notathome_position:
-  min: 0
-  max: 100
-  step: 5
-  initial: 0
-  mode: slider
-  name: Posizione Fuori Casa
-  icon: mdi:window-shutter-open
 manual_heating_temp:
-  min: 16
-  max: 31
-  step: 0.5
+  <<: &heating-temp
+    min: 18
+    max: 30
+    step: 0.5
   initial: 31
   mode: slider
   name: Temperatura Per Riscaldamento Manuale
   icon: mdi:thermometer
+#TODO Rename to PROGRAM
+temperature_period1:
+  <<: *heating-temp
+temperature_period2:
+  <<: *heating-temp
+temperature_period3:
+  <<: *heating-temp
+temperature_period4:
+  <<: *heating-temp
+temperature_zn100_period1:
+  <<: *heating-temp
+temperature_zn101_period1:
+  <<: *heating-temp
+temperature_zn102_period1:
+  <<: *heating-temp
+temperature_zn103_period1:
+  <<: *heating-temp
+temperature_zn104_period1:
+  <<: *heating-temp
+temperature_zn200_period1:
+  <<: *heating-temp
+temperature_zn201_period1:
+  <<: *heating-temp
+temperature_zn202_period1:
+  <<: *heating-temp
+temperature_zn203_period1:
+  <<: *heating-temp
+temperature_zn100_period2:
+  <<: *heating-temp
+temperature_zn101_period2:
+  <<: *heating-temp
+temperature_zn102_period2:
+  <<: *heating-temp
+temperature_zn103_period2:
+  <<: *heating-temp
+temperature_zn104_period2:
+  <<: *heating-temp
+temperature_zn200_period2:
+  <<: *heating-temp
+temperature_zn201_period2:
+  <<: *heating-temp
+temperature_zn202_period2:
+  <<: *heating-temp
+temperature_zn203_period2:
+  <<: *heating-temp
+temperature_zn100_period3:
+  <<: *heating-temp
+temperature_zn101_period3:
+  <<: *heating-temp
+temperature_zn102_period3:
+  <<: *heating-temp
+temperature_zn103_period3:
+  <<: *heating-temp
+temperature_zn104_period3:
+  <<: *heating-temp
+temperature_zn200_period3:
+  <<: *heating-temp
+temperature_zn201_period3:
+  <<: *heating-temp
+temperature_zn202_period3:
+  <<: *heating-temp
+temperature_zn203_period3:
+  <<: *heating-temp
+temperature_zn100_period4:
+  <<: *heating-temp
+temperature_zn101_period4:
+  <<: *heating-temp
+temperature_zn102_period4:
+  <<: *heating-temp
+temperature_zn103_period4:
+  <<: *heating-temp
+temperature_zn104_period4:
+  <<: *heating-temp
+temperature_zn200_period4:
+  <<: *heating-temp
+temperature_zn201_period4:
+  <<: *heating-temp
+temperature_zn202_period4:
+  <<: *heating-temp
+temperature_zn203_period4:
+  <<: *heating-temp
+rollershutter_athome_position:
+  <<: &rollers-slider
+    min: 0
+    max: 100
+    step: 5
+    initial: 100
+    mode: slider
+  name: Posizione In Casa
+  icon: mdi:window-shutter
+rollershutter_notathome_position:
+  <<: *rollers-slider
+  name: Posizione Fuori Casa
+  icon: mdi:window-shutter-open

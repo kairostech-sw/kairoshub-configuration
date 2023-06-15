@@ -145,7 +145,6 @@
         - automation.comfort_temp_reached
         - automation.low_tv_battery_notification
         - automation.low_th_battery_notification
-        - automation.copy_program_timers
         - automation.calibrate_trvs
 - alias: ROLLER INTEGRATION
   trigger:

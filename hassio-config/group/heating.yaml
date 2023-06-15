@@ -3,6 +3,11 @@ heater_program1:
   entities:
     - group.heater_zn100_program1
     - group.heater_zn200_program1
+heater_program1_on:
+  name: Programma 1 Attivo
+  entities:
+    - group.heater_zn100_program1_on
+    - group.heater_zn200_program1_on
 heater_zn100_program1:
   name: Zona Notte Programma 1
   entities:
@@ -45,6 +50,11 @@ heater_program2:
   entities:
     - group.heater_zn100_program2
     - group.heater_zn200_program2
+heater_program2_on:
+  name: Programma 2 Attivo
+  entities:
+    - group.heater_zn100_program2_on
+    - group.heater_zn200_program2_on
 heater_zn100_program2:
   name: Zona Notte Programma 2
   entities:
@@ -87,6 +97,11 @@ heater_program3:
   entities:
     - group.heater_zn100_program3
     - group.heater_zn200_program3
+heater_program3_on:
+  name: Programma 3 Attivo
+  entities:
+    - group.heater_zn100_program3_on
+    - group.heater_zn200_program3_on
 heater_zn100_program3:
   name: Zona Notte Programma 3
   entities:
@@ -129,6 +144,11 @@ heater_program4:
   entities:
     - group.heater_zn100_program4
     - group.heater_zn200_program4
+heater_program4_on:
+  name: Programma 4 Attivo
+  entities:
+    - group.heater_zn100_program4_on
+    - group.heater_zn200_program4_on
 heater_zn100_program4:
   name: Zona Notte Programma 4
   entities:

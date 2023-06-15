@@ -1,11 +1,9 @@
 type: "custom:button-card"
-template: clima_detail_page
+template: detail_page
 custom_fields:
   header:
     card:
       type: "custom:button-card"
-      entity: binary_sensor.heater_auto
-      layout: vertical
       template: header_page_text
       icon: "mdi:thermometer"
       name: "CLIMA"

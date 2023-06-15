@@ -1,78 +1,55 @@
 thermostat_on_period1:
-  name: Accensione
-  has_date: false
-  has_time: true
+  <<: &no-date-on
+    name: Accensione
+    has_date: false
+    has_time: true
 thermostat_off_period1:
-  name: Spegnimento
-  has_date: false
-  has_time: true
+  <<: &no-date-off
+    name: Spegnimento
+    has_date: false
+    has_time: true
 thermostat_on_period2:
-  name: Accensione
-  has_date: false
-  has_time: true
+  <<: *no-date-on
 thermostat_off_period2:
-  name: Spegnimento
-  has_date: false
-  has_time: true
+  <<: *no-date-off
 thermostat_on_period3:
-  name: Accensione
-  has_date: false
-  has_time: true
+  <<: *no-date-on
 thermostat_off_period3:
-  name: Spegnimento
-  has_date: false
-  has_time: true
+  <<: *no-date-off
 thermostat_on_period4:
-  name: Accensione
-  has_date: false
-  has_time: true
+  <<: *no-date-on
 thermostat_off_period4:
-  name: Spegnimento
-  has_date: false
-  has_time: true
+  <<: *no-date-off
 
 ####################
 # Lights Nightzone
 ####################
 lights_nightzone_on_program1:
-  name: Accensione
-  has_date: false
-  has_time: true
+  <<: *no-date-on
 lights_nightzone_off_program1:
-  name: Spegnimento
-  has_date: false
-  has_time: true
+  <<: *no-date-off
 ####################
 # Lights Dayzone
 ####################
 lights_dayzone_on_program1:
-  name: Accensione
-  has_date: false
-  has_time: true
+  <<: *no-date-on
 lights_dayzone_off_program1:
-  name: Spegnimento
-  has_date: false
-  has_time: true
+  <<: *no-date-off
 ####################
 # Lights Outdoor
 ####################
 lights_outdoor_on_program1:
-  name: Accensione
-  has_date: false
-  has_time: true
+  <<: *no-date-on
 lights_outdoor_off_program1:
-  name: Spegnimento
-  has_date: false
-  has_time: true
+  <<: *no-date-off
 light_offset_sunset:
+  <<: *no-date-off
   name: Orario Spegnimento Luci Dopo Il Tramonto
-  has_time: true
+
 ##########
 # Scenes
 ##########
 scene_day_on:
-  name: Accensione
-  has_time: true
+  <<: *no-date-on
 scene_day_off:
-  name: Spegnimento
-  has_time: true
+  <<: *no-date-off

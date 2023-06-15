@@ -415,7 +415,7 @@ button_go_back:
 # CLIMA ############
 ####################
 
-clima_detail_page:
+detail_page:
   template: grid_style
   card_mod:
     style: |
@@ -676,31 +676,43 @@ clima_dayzone_expander:
 
 clima_detail:
   icon: "[[[return variables.icon]]]"
-  name: "[[[return states[`input_text.zn${variables.zoneId}`].state;]]]"
   template: no_background
   styles:
     card:
       - padding: 1%
     grid:
-      - grid-template-areas: '"i n humidity temp" "lastupdate lastupdate info info"'
+      - grid-template-areas: '"i name . temp" "lastupdate info . humidity"'
       - grid-template-columns: 50px 1fr auto
       - grid-template-rows: 50px 30px
       - column-gap: 5px
-    name:
-      - font-weight: bold
-      - font-size: 16px
-      - align-self: middle
-      - justify-self: start
-      - padding-bottom: 4px
-      - padding-right: 5px
-      - padding-top: 5px
     img_cell:
       - justify-content: start
       - align-items: start
       - margin: none
     icon:
       - width: 70%
+      - color: >
+          [[[
+            var color = "#000000"
+            var input = `input_boolean.heater_zn${variables.zoneId}_program`;
+            if ((""+variables.zoneId).endsWith("00"))
+              input = input.replace("input_boolean", "group");
+            for (var i=1; i<5; i++) {
+              if (states[input+`${i}_on`].state === "on") {
+                color = "var(--command-state-active-color)";
+              }
+            }
+            return color;
+          ]]]
     custom_fields:
+      name:
+        - font-weight: bold
+        - font-size: 16px
+        - align-self: middle
+        - justify-self: start
+        - padding-bottom: 4px
+        - padding-right: 5px
+        - padding-top: 5px
       lastupdate:
         - justify-self: start
       humidity:
@@ -712,7 +724,9 @@ clima_detail:
       alert:
         - justify-self: end
       info:
-        - justify-self: end
+        - justify-self: start
+        - align-self: flex-end
+        - margin-left: 50px
   custom_fields:
     temp: >
       [[[
@@ -759,34 +773,31 @@ clima_detail:
         template: clima_infos
         variables:
           zoneId: "[[[return variables.zoneId;]]]"
-
-clima_infos:
-  template: no_background
-  styles:
-    grid:
-      - grid-template-areas: '"alert active"'
-      - grid-template-columns: auto
-  custom_fields:
-    active: >
+    name: >
       [[[
-        var color = "#000000";
-        var state = "DISATTIVO";
+        var name = states[`input_text.zn${variables.zoneId}`].state;
+        var label = "";
         var input = `input_boolean.heater_zn${variables.zoneId}_program`;
         if ((""+variables.zoneId).endsWith("00"))
           input = input.replace("input_boolean", "group");
         for (var i=1; i<5; i++) {
           if (states[input+`${i}_on`].state === "on") {
-            color = "var(--command-state-active-color)";
-            state = "ATTIVO";
+            label = "ATTIVO";
           }
         }
-        return `<div style="display: flex; align-items: center;">
-          <ha-icon icon="mdi:power" style="width: 24px; color: ${color}; margin-right: 5px;"></ha-icon>
-          <label>
-            ${state}
-          </label>
+        return `<div style="display: flex; flex-direction: column; align-items: flex-start;">
+          <span>${name}</span>
+          <span style="font-size: 10px;">${label}</span>
           </div>`;
       ]]]
+
+clima_infos:
+  template: no_background
+  styles:
+    grid:
+      - grid-template-areas: '"alert"'
+      - grid-template-columns: auto
+  custom_fields:
     alert: >
       [[[
         if (states[`input_boolean.zn${variables.zoneId}_alert`].state === "on")
@@ -868,7 +879,6 @@ temperature_ctrl_minus:
     service: input_number.decrement
     service_data:
       entity_id: "[[[ return variables.entity; ]]]"
-
 # TODO: Check if can be changed
 heating_program_ctrl:
   icon: mdi:power
@@ -973,31 +983,6 @@ scenes_program:
       time:
         - margin-top: 10px
         - margin-left: 60px
-
-# TODO: Can be removed
-program_page_grid:
-  styles:
-    card:
-      - "--mdc-ripple-press-opacity": 0
-    grid:
-      - grid-template-areas: '"header" "days" "commands"'
-      - grid-template-columns: 1fr
-      - grid-template-rows: min-content min-content min-content
-      - justify-items: center
-      - row-gap: 10px
-    name:
-      - font-weight: bold
-      - font-size: 16px
-    custom_fields:
-      header:
-        - justify-self: start
-      commands:
-        - width: 100%
-        - align-self: middle
-      days:
-        - margin-left: 3px
-        - margin-right: 3px
-        - "--mdc-ripple-press-opacity": 0.2
 
 # TODO: Check if can be changed
 button_grid_settings:
@@ -1778,3 +1763,261 @@ heating_program_expander_room:
               size: 50%
               variables:
                 entity: "[[[return `input_number.temperature_${variables.zone}_period${variables.progId}`]]]"
+
+lights_label:
+  layout: icon_name
+  icon: "mdi:lightbulb-outline"
+  state:
+    - value: "off"
+      color: black
+    - value: "on"
+      styles:
+        icon:
+          - color: >
+              [[[
+                console.log(variables);
+                if (states["input_select.light_type"].state == "color")
+                {
+                  var light = `light.group_lz${variables.zone}`
+                  if (states[light].state) {
+                    if (states[light].attributes.rgb_color != undefined) {
+                    var color = states[light].attributes.rgb_color
+                    return "rgb("+color[0]+","+color[1]+","+color[2]+")";
+                    }
+                  }
+                }
+                return "#DCA200";
+              ]]]
+  styles:
+    card:
+      - box-shadow: none
+
+lights_detail:
+  template: no_background
+  styles:
+    card:
+      - padding: 1%
+    grid:
+      - grid-template-areas: '"label"'
+      - grid-template-columns: 200px
+      - grid-template-rows: 50px
+      - column-gap: 5px
+    custom_fields:
+      label:
+        - display: flex
+        - justify-content: start
+  custom_fields:
+    label:
+      card:
+        type: "custom:button-card"
+        template:
+          - no_background
+          - lights_label
+        entity: "[[[return `light.group_lz${variables.zone}`]]]"
+        name: "[[[return states[`input_text.zn${variables.zone}`].state;]]]"
+        styles:
+          name:
+            - justify-self: start
+        variables:
+          zone: "[[[return variables.zone;]]]"
+        tap_action:
+          action: call-service
+          service: light.toggle
+          service_data:
+            entity_id: entity
+
+lights_detail_room:
+  icon: "[[[return variables.icon]]]"
+  template:
+    - no_background
+    - lights_detail
+  styles:
+    grid:
+      - grid-template-areas: '"label control"'
+      - grid-template-columns: 170px 1fr
+      - grid-template-rows: 50px
+      - column-gap: 5px
+    custom_fields:
+      control:
+        - width: 40px
+  custom_fields:
+    control:
+      card:
+        type: "custom:button-card"
+        template: no_background
+        icon: "mdi:palette-outline"
+        color: var(--active-color)
+        size: 80%
+        tap_action:
+          action: navigate
+          navigation_path: "[[[return '/lovelace-kairoshub/'+ variables.navigation_path]]]"
+
+lights_expander_nightzone:
+  template: expander_template
+  custom_fields:
+    expander:
+      card:
+        <<: *expander-card-style
+        title-card:
+          type: "custom:button-card"
+          template: lights_detail
+          variables:
+            zone: 100
+        cards:
+          - <<: *divider-4px
+          - <<: *mod-card-room
+            card:
+              type: grid
+              columns: 2
+              square: false
+              cards:
+                - type: conditional
+                  conditions:
+                    - entity: binary_sensor.lz101_state
+                      state_not: "off"
+                  card:
+                    type: "custom:button-card"
+                    template: lights_detail_room
+                    variables:
+                      navigation_path: "lights-nightzone-room1"
+                      zone: 101
+                - type: conditional
+                  conditions:
+                    - entity: binary_sensor.lz102_state
+                      state_not: "off"
+                  card:
+                    type: "custom:button-card"
+                    template: lights_detail_room
+                    variables:
+                      navigation_path: "lights-nightzone-room2"
+                      zone: 102
+                - type: conditional
+                  conditions:
+                    - entity: binary_sensor.lz103_state
+                      state_not: "off"
+                  card:
+                    type: "custom:button-card"
+                    template: lights_detail_room
+                    variables:
+                      navigation_path: "lights-nightzone-room3"
+                      zone: 103
+                - type: conditional
+                  conditions:
+                    - entity: binary_sensor.lz104_state
+                      state_not: "off"
+                  card:
+                    type: "custom:button-card"
+                    template: lights_detail_room
+                    variables:
+                      navigation_path: "lights-nightzone-room4"
+                      zone: 104
+
+lights_expander_dayzone:
+  template: expander_template
+  custom_fields:
+    expander:
+      card:
+        <<: *expander-card-style
+        title-card:
+          type: "custom:button-card"
+          template: lights_detail
+          variables:
+            zone: 200
+        cards:
+          - <<: *divider-4px
+          - <<: *mod-card-room
+            card:
+              type: grid
+              columns: 2
+              square: false
+              cards:
+                - type: conditional
+                  conditions:
+                    - entity: binary_sensor.lz201_state
+                      state_not: "off"
+                  card:
+                    type: "custom:button-card"
+                    template: lights_detail_room
+                    variables:
+                      navigation_path: "lights-dayzone-room1"
+                      zone: 201
+                - type: conditional
+                  conditions:
+                    - entity: binary_sensor.lz202_state
+                      state_not: "off"
+                  card:
+                    type: "custom:button-card"
+                    template: lights_detail_room
+                    variables:
+                      navigation_path: "lights-dayzone-room1"
+                      zone: 202
+                - type: conditional
+                  conditions:
+                    - entity: binary_sensor.lz203_state
+                      state_not: "off"
+                  card:
+                    type: "custom:button-card"
+                    template: lights_detail_room
+                    variables:
+                      navigation_path: "lights-dayzone-room1"
+                      zone: 203
+
+lights_expander_outdoor:
+  template: expander_template
+  custom_fields:
+    expander:
+      card:
+        <<: *expander-card-style
+        title-card:
+          type: "custom:button-card"
+          template: lights_detail
+          variables:
+            zone: 300
+        cards:
+          - <<: *divider-4px
+          - <<: *mod-card-room
+            card:
+              type: grid
+              columns: 2
+              square: false
+              cards:
+                - type: conditional
+                  conditions:
+                    - entity: binary_sensor.lz301_state
+                      state_not: "off"
+                  card:
+                    type: "custom:button-card"
+                    template: lights_detail_room
+                    variables:
+                      navigation_path: "lights-nightzone-room1"
+                      zone: 301
+                - type: conditional
+                  conditions:
+                    - entity: binary_sensor.lz302_state
+                      state_not: "off"
+                  card:
+                    type: "custom:button-card"
+                    template: lights_detail_room
+                    variables:
+                      navigation_path: "lights-nightzone-room2"
+                      zone: 302
+                - type: conditional
+                  conditions:
+                    - entity: binary_sensor.lz303_state
+                      state_not: "off"
+                  card:
+                    type: "custom:button-card"
+                    template: lights_detail_room
+                    variables:
+                      navigation_path: "lights-nightzone-room3"
+                      zone: 303
+                - type: conditional
+                  conditions:
+                    - entity: binary_sensor.lz304_state
+                      state_not: "off"
+                  card:
+                    type: "custom:button-card"
+                    template: lights_detail_room
+                    variables:
+                      navigation_path: "lights-nightzone-room4"
+                      zone: 304

@@ -186,14 +186,6 @@ zn202_alert:
 zn203_alert:
   name: Zona Notte
 
-copy_program1:
-  name: Copia Orari Programma 1
-copy_program2:
-  name: Copia Orari Programma 2
-copy_program3:
-  name: Copia Orari Programma 3
-copy_program4:
-  name: Copia Orari Programma 4
 thermostat_monday_program1:
   name: Lunedì
 thermostat_monday_program2:
@@ -250,20 +242,7 @@ thermostat_sunday_program3:
   name: Domenica
 thermostat_sunday_program4:
   name: Domenica
-tv_01:
-  name: Ambiente 1
-tv_02:
-  name: Ambiente 2
-tv_03:
-  name: Ambiente 3
-tv_04:
-  name: Ambiente 4
-tv_05:
-  name: Ambiente 5
-tv_06:
-  name: Ambiente 6
-tv_07:
-  name: Ambiente 7
+
 light_program1:
   name: Programma 1
 copy_lights_zn101:
