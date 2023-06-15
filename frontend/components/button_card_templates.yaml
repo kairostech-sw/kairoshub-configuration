@@ -775,7 +775,6 @@ clima_infos:
         if ((""+variables.zoneId).endsWith("00"))
           input = input.replace("input_boolean", "group");
         for (var i=1; i<5; i++) {
-          console.log(input+`${i}_on`)
           if (states[input+`${i}_on`].state === "on") {
             color = "var(--command-state-active-color)";
             state = "ATTIVO";
@@ -788,6 +787,11 @@ clima_infos:
           </label>
           </div>`;
       ]]]
+    alert: >
+      [[[
+        if (states[`input_boolean.zn${variables.zoneId}_alert`].state === "on")
+          return '<ha-icon icon="mdi:alert-circle-outline" style="width: 24px; color: red; margin-right: 5px;" />';
+        return "</>";
       ]]]
 
 temperature_value:
