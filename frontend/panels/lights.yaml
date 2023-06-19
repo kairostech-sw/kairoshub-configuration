@@ -56,26 +56,6 @@ custom_fields:
         - type: conditional
           conditions:
             - entity: binary_sensor.lz100_state
-              state: "off"
-            - entity: binary_sensor.lz200_state
-              state: "off"
-            - entity: binary_sensor.lz300_state
-              state: "off"
-          card:
-            type: "custom:button-card"
-            template: no_background
-            name: >
-              [[[
-                return `
-                <ha-alert alert-type="warning" style="justify-self: center;">
-                  Non ci sono luci attive </br>
-                </ha-alert>`;
-              ]]]
-            tap_action:
-              action: none
-        - type: conditional
-          conditions:
-            - entity: binary_sensor.lz100_state
               state_not: "off"
           card:
             type: "custom:button-card"

@@ -455,6 +455,10 @@ clima_nightzone_expander:
             - input_number.temperature_zn100_period3
             - input_number.temperature_zn100_period4
             - input_boolean.zn100_alert
+            - group.heater_zn100_program1_on
+            - group.heater_zn100_program2_on
+            - group.heater_zn100_program3_on
+            - group.heater_zn100_program4_on
           variables:
             zoneId: "[[[ return variables.zoneId;]]]"
             icon: "[[[ return variables.icon;]]]"
@@ -518,6 +522,10 @@ clima_nightzone_expander:
                       - input_number.temperature_zn101_period3
                       - input_number.temperature_zn101_period4
                       - input_boolean.zn101_alert
+                      - input_boolean.heater_zn101_program1_on
+                      - input_boolean.heater_zn101_program2_on
+                      - input_boolean.heater_zn101_program3_on
+                      - input_boolean.heater_zn101_program4_on
                     variables:
                       zoneId: 101
                       icon: "mdi:bed-outline"
@@ -534,6 +542,10 @@ clima_nightzone_expander:
                       - input_number.temperature_zn102_period3
                       - input_number.temperature_zn102_period4
                       - input_boolean.zn102_alert
+                      - input_boolean.heater_zn102_program1_on
+                      - input_boolean.heater_zn102_program2_on
+                      - input_boolean.heater_zn102_program3_on
+                      - input_boolean.heater_zn102_program4_on
                     variables:
                       zoneId: 102
                       icon: "mdi:bed-outline"
@@ -550,6 +562,10 @@ clima_nightzone_expander:
                       - input_number.temperature_zn103_period3
                       - input_number.temperature_zn103_period4
                       - input_boolean.zn103_alert
+                      - input_boolean.heater_zn103_program1_on
+                      - input_boolean.heater_zn103_program2_on
+                      - input_boolean.heater_zn103_program3_on
+                      - input_boolean.heater_zn103_program4_on
                     variables:
                       zoneId: 103
                       icon: "mdi:bed-outline"
@@ -566,6 +582,10 @@ clima_nightzone_expander:
                       - input_number.temperature_zn104_period3
                       - input_number.temperature_zn104_period4
                       - input_boolean.zn104_alert
+                      - input_boolean.heater_zn103_program1_on
+                      - input_boolean.heater_zn103_program2_on
+                      - input_boolean.heater_zn103_program3_on
+                      - input_boolean.heater_zn103_program4_on
                     variables:
                       zoneId: 104
                       icon: "mdi:shower"
@@ -588,6 +608,10 @@ clima_dayzone_expander:
             - input_number.temperature_zn200_period3
             - input_number.temperature_zn200_period4
             - input_boolean.zn200_alert
+            - group.heater_zn200_program1_on
+            - group.heater_zn200_program2_on
+            - group.heater_zn200_program3_on
+            - group.heater_zn200_program4_on
           variables:
             zoneId: "[[[ return variables.zoneId;]]]"
             icon: "[[[return variables.icon;]]]"
@@ -638,6 +662,10 @@ clima_dayzone_expander:
                       - input_number.temperature_zn201_period3
                       - input_number.temperature_zn201_period4
                       - input_boolean.zn201_alert
+                      - input_boolean.heater_zn201_program1_on
+                      - input_boolean.heater_zn201_program2_on
+                      - input_boolean.heater_zn201_program3_on
+                      - input_boolean.heater_zn201_program4_on
                     variables:
                       zoneId: 201
                       icon: "mdi:sofa-outline"
@@ -654,6 +682,10 @@ clima_dayzone_expander:
                       - input_number.temperature_zn202_period3
                       - input_number.temperature_zn202_period4
                       - input_boolean.zn202_alert
+                      - input_boolean.heater_zn202_program1_on
+                      - input_boolean.heater_zn202_program2_on
+                      - input_boolean.heater_zn202_program3_on
+                      - input_boolean.heater_zn202_program4_on
                     variables:
                       zoneId: 202
                       icon: "mdi:countertop-outline"
@@ -670,6 +702,10 @@ clima_dayzone_expander:
                       - input_number.temperature_zn203_period3
                       - input_number.temperature_zn203_period4
                       - input_boolean.zn203_alert
+                      - input_boolean.heater_zn202_program1_on
+                      - input_boolean.heater_zn202_program2_on
+                      - input_boolean.heater_zn202_program3_on
+                      - input_boolean.heater_zn202_program4_on
                     variables:
                       zoneId: 203
                       icon: "mdi:toilet"
@@ -898,8 +934,8 @@ light_detail:
     action: none
   styles:
     grid:
-      - grid-template-areas: '"i n" "i n'
-      - grid-template-rows: 30px auto
+      - grid-template-areas: '"i n"'
+      - grid-template-rows: 130px
       - grid-template-columns: 55px 1fr
     card:
       - padding: 5px
@@ -1536,6 +1572,12 @@ expander_template:
       - grid-template-areas: '"expander"'
     card:
       - padding: 0px
+  card_mod:
+    style:
+      expander-card$: |
+        .expander-card {
+          min-height: 100px;
+        }
 
 heating_program_expander_nightzone:
   template: expander_template
@@ -1766,28 +1808,12 @@ heating_program_expander_room:
 
 lights_label:
   layout: icon_name
-  icon: "mdi:lightbulb-outline"
+  icon: "mdi:power"
   state:
     - value: "off"
       color: black
     - value: "on"
-      styles:
-        icon:
-          - color: >
-              [[[
-                console.log(variables);
-                if (states["input_select.light_type"].state == "color")
-                {
-                  var light = `light.group_lz${variables.zone}`
-                  if (states[light].state) {
-                    if (states[light].attributes.rgb_color != undefined) {
-                    var color = states[light].attributes.rgb_color
-                    return "rgb("+color[0]+","+color[1]+","+color[2]+")";
-                    }
-                  }
-                }
-                return "#DCA200";
-              ]]]
+      color: "#DCA200"
   styles:
     card:
       - box-shadow: none
@@ -1798,14 +1824,16 @@ lights_detail:
     card:
       - padding: 1%
     grid:
-      - grid-template-areas: '"label"'
+      - grid-template-areas: '"label" "lastupdate"'
       - grid-template-columns: 200px
       - grid-template-rows: 50px
       - column-gap: 5px
     custom_fields:
       label:
         - display: flex
-        - justify-content: start
+        - justify-self: start
+      lastupdate:
+        - justify-self: start
   custom_fields:
     label:
       card:
@@ -1816,8 +1844,23 @@ lights_detail:
         entity: "[[[return `light.group_lz${variables.zone}`]]]"
         name: "[[[return states[`input_text.zn${variables.zone}`].state;]]]"
         styles:
+          card:
+            - width: 200px
           name:
             - justify-self: start
+            - font-weight: bold
+            - font-size: 16px
+            - align-self: middle
+            - padding-bottom: 4px
+            - padding-right: 5px
+            - padding-top: 5px
+            - margin-left: -25px
+          img_cell:
+            - width: 50px
+            - margin-right: auto
+          icon:
+            - width: 70%
+            - height: 50px
         variables:
           zone: "[[[return variables.zone;]]]"
         tap_action:
@@ -1825,6 +1868,13 @@ lights_detail:
           service: light.toggle
           service_data:
             entity_id: entity
+    lastupdate: >
+      [[[
+        var datetime =  states[`light.group_lz${variables.zone}`].last_changed.split("T");
+        datetime = new Date(datetime).toLocaleString().replace(","," ");
+        var lastupdate = datetime.substring(0,datetime.length-3);
+        return `<span style="font-size: 12px;">${lastupdate }</span>`
+      ]]]
 
 lights_detail_room:
   icon: "[[[return variables.icon]]]"
@@ -1833,24 +1883,46 @@ lights_detail_room:
     - lights_detail
   styles:
     grid:
-      - grid-template-areas: '"label control"'
+      - grid-template-areas: '"label control" "lastupdate palette "'
       - grid-template-columns: 170px 1fr
       - grid-template-rows: 50px
       - column-gap: 5px
     custom_fields:
       control:
         - width: 40px
+        - margin-left: 15px
+      palette:
+        - justify-self: start
   custom_fields:
     control:
       card:
         type: "custom:button-card"
         template: no_background
         icon: "mdi:palette-outline"
-        color: var(--active-color)
+        styles:
+          icon:
+            - color: >
+                [[[
+                  if (states["input_select.light_type"].state == "color")
+                  {
+                    var light = `light.group_lz${variables.zone}`
+                    if (states[light].state) {
+                      if (states[light].attributes.rgb_color != undefined) {
+                      var color = states[light].attributes.rgb_color
+                      return "rgb("+color[0]+","+color[1]+","+color[2]+")";
+                      }
+                    }
+                  }
+                  return "#DCA200";
+                ]]]
         size: 80%
         tap_action:
           action: navigate
           navigation_path: "[[[return '/lovelace-kairoshub/'+ variables.navigation_path]]]"
+    palette: >
+      [[[
+        return `<span style="font-size: 12px;">Personalizza</span>`
+      ]]]
 
 lights_expander_nightzone:
   template: expander_template
@@ -1861,6 +1933,8 @@ lights_expander_nightzone:
         title-card:
           type: "custom:button-card"
           template: lights_detail
+          triggers_update:
+            - light.group_lz100
           variables:
             zone: 100
         cards:
@@ -1878,6 +1952,8 @@ lights_expander_nightzone:
                   card:
                     type: "custom:button-card"
                     template: lights_detail_room
+                    triggers_update:
+                      - light.group_lz101
                     variables:
                       navigation_path: "lights-nightzone-room1"
                       zone: 101
@@ -1888,6 +1964,8 @@ lights_expander_nightzone:
                   card:
                     type: "custom:button-card"
                     template: lights_detail_room
+                    triggers_update:
+                      - light.group_lz102
                     variables:
                       navigation_path: "lights-nightzone-room2"
                       zone: 102
@@ -1898,6 +1976,8 @@ lights_expander_nightzone:
                   card:
                     type: "custom:button-card"
                     template: lights_detail_room
+                    triggers_update:
+                      - light.group_lz103
                     variables:
                       navigation_path: "lights-nightzone-room3"
                       zone: 103
@@ -1908,6 +1988,8 @@ lights_expander_nightzone:
                   card:
                     type: "custom:button-card"
                     template: lights_detail_room
+                    triggers_update:
+                      - light.group_lz104
                     variables:
                       navigation_path: "lights-nightzone-room4"
                       zone: 104
@@ -1921,6 +2003,8 @@ lights_expander_dayzone:
         title-card:
           type: "custom:button-card"
           template: lights_detail
+          triggers_update:
+            - light.group_lz200
           variables:
             zone: 200
         cards:
@@ -1938,6 +2022,8 @@ lights_expander_dayzone:
                   card:
                     type: "custom:button-card"
                     template: lights_detail_room
+                    triggers_update:
+                      - light.group_lz201
                     variables:
                       navigation_path: "lights-dayzone-room1"
                       zone: 201
@@ -1948,6 +2034,8 @@ lights_expander_dayzone:
                   card:
                     type: "custom:button-card"
                     template: lights_detail_room
+                    triggers_update:
+                      - light.group_lz202
                     variables:
                       navigation_path: "lights-dayzone-room1"
                       zone: 202
@@ -1958,6 +2046,8 @@ lights_expander_dayzone:
                   card:
                     type: "custom:button-card"
                     template: lights_detail_room
+                    triggers_update:
+                      - light.group_lz203
                     variables:
                       navigation_path: "lights-dayzone-room1"
                       zone: 203
@@ -1971,6 +2061,8 @@ lights_expander_outdoor:
         title-card:
           type: "custom:button-card"
           template: lights_detail
+          triggers_update:
+            - light.group_lz300
           variables:
             zone: 300
         cards:
@@ -1988,6 +2080,8 @@ lights_expander_outdoor:
                   card:
                     type: "custom:button-card"
                     template: lights_detail_room
+                    triggers_update:
+                      - light.group_lz301
                     variables:
                       navigation_path: "lights-nightzone-room1"
                       zone: 301
@@ -1998,6 +2092,8 @@ lights_expander_outdoor:
                   card:
                     type: "custom:button-card"
                     template: lights_detail_room
+                    triggers_update:
+                      - light.group_lz302
                     variables:
                       navigation_path: "lights-nightzone-room2"
                       zone: 302
@@ -2008,6 +2104,8 @@ lights_expander_outdoor:
                   card:
                     type: "custom:button-card"
                     template: lights_detail_room
+                    triggers_update:
+                      - light.group_lz303
                     variables:
                       navigation_path: "lights-nightzone-room3"
                       zone: 303
@@ -2018,6 +2116,66 @@ lights_expander_outdoor:
                   card:
                     type: "custom:button-card"
                     template: lights_detail_room
+                    triggers_update:
+                      - light.group_lz304
                     variables:
                       navigation_path: "lights-nightzone-room4"
                       zone: 304
+
+lights_ctrl:
+  template: detail_page
+  custom_fields:
+    header:
+      card:
+        type: "custom:button-card"
+        template: header_page_text
+        icon: "mdi:lightbulb"
+        name: "LUCI"
+        label: >
+          [[[
+            var zone = variables.zone.replace(/.$/,"0")
+            var zonename = states[`input_text.zn${zone}`].state
+            var room = states[`input_text.zn${variables.zone}`].state;
+            return `Luci / ${zonename} / ${room}`;
+          ]]]
+    commandbar:
+      card:
+        type: "custom:button-card"
+        template: command_bar
+        style: |
+          ha-card.button-card-main {
+            padding: 0px !important
+          }
+          div#container {
+            justify-items: right;
+          }
+        custom_fields:
+          commands:
+            card:
+              type: horizontal-stack
+              cards:
+                - type: "custom:button-card"
+                  name: "Copia"
+                  hold_action:
+                    confirmation:
+                      text: "Vuoi copiare questa impostazione per tutte le luci di questa zona?"
+                    action: call-service
+                    service: input_boolean.turn_on
+                    service_data:
+                      entity_id: >
+                        [[[
+                          return `input_boolean.copy_lights_zn${variables.zone}`;
+                        ]]]
+                  styles:
+                    card:
+                      - background: none
+                      - color: "#f4f4f4"
+                      - box-shadow: none
+                      - width: 200px
+                      - left: -474px
+                  style: |
+                    :host {
+                      align-self: center;
+                    }
+                - type: "custom:button-card"
+                  template: button_go_back

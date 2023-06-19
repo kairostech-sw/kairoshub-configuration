@@ -1,87 +1,20 @@
 type: "custom:button-card"
-template: zones_grid
+template: lights_ctrl
+variables:
+  zone: "203"
 custom_fields:
-  header:
-    card:
-      type: "custom:button-card"
-      template:
-        - header_page_text
-      icon: "mdi:lightbulb"
-      name: "LUCI"
-      label: >
-        [[[
-          return "Luci / "+states["input_text.zn200"].state +
-            " / "+states["input_text.zn203"].state;
-        ]]]
-  commandbar:
-    card:
-      type: "custom:button-card"
-      template: command_bar
-      style: |
-        ha-card.button-card-main {
-          padding: 0px !important
-        }
-        div#container {
-          justify-items: right;
-        }
-      styles:
-        card:
-          - margin-left: -10px
-      custom_fields:
-        commands:
-          card:
-            type: horizontal-stack
-            cards:
-              - type: "custom:button-card"
-                name: "Copia"
-                hold_action:
-                  confirmation:
-                    text: "Vuoi copiare questa impostazione per tutti le luci di questa zona?"
-                  action: call-service
-                  service: input_boolean.turn_on
-                  service_data:
-                    entity_id: input_boolean.copy_lights_nightzone
-                styles:
-                  card:
-                    - background: none
-                    - color: "#f4f4f4"
-                    - box-shadow: none
-                    - width: 200px
-                    - left: -474px
-                style: |
-                  :host {
-                    align-self: center;
-                  }
-              - type: "custom:button-card"
-                template: button_go_back
-  zones:
+  content:
     card:
       type: horizontal-stack
       cards:
         - type: conditional
           conditions:
-            - entity: input_select.light_type
-              state: white
-          card:
-            type: custom:light-entity-card
-            entity: light.lwz203
-            header: >
-              [[[
-                return "Luci "+ states["input_text.zn203"].state;
-              ]]]
-            persist_features: true
-            show_slider_percent: true
-        - type: conditional
-          conditions:
-            - entity: input_select.light_type
-              state: color
+            - entity: sensor.lcz203_state
+              state_not: "unknown"
           card:
             type: custom:light-entity-card
             entity: light.lcz203
-            header: >
-              [[[
-                return "Luci "+ states["input_text.zn203"].state;
-              ]]]
+            header: '[[[ return "Luci "+ states["input_text.zn203"].state; ]]]'
             persist_features: true
             show_slider_percent: true
             style: |
@@ -91,14 +24,27 @@ custom_fields:
               }
         - type: conditional
           conditions:
-            - entity: input_select.light_type
-              state: onoff
+            - entity: sensor.lcz203_state
+              state: "unknown"
+            - entity: sensor.lwz203_state
+              state_not: "unknown"
+          card:
+            type: custom:light-entity-card
+            entity: light.lwz203
+            header: '[[[ return "Luci "+ states["input_text.zn203"].state;]]]'
+            persist_features: true
+            show_slider_percent: true
+        - type: conditional
+          conditions:
+            - entity: sensor.lcz203_state
+              state: "unknown"
+            - entity: sensor.lwz203_state
+              state: "unknown"
+            - entity: sensor.lz203_state
+              state_not: "unknown"
           card:
             type: custom:light-entity-card
             entity: light.lz203
-            header: >
-              [[[
-                return "Luci "+ states["input_text.zn203"].state;
-              ]]]
+            header: '[[[ return "Luci "+ states["input_text.zn203"].state;]]]'
             persist_features: true
             show_slider_percent: true

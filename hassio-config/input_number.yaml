@@ -7,7 +7,7 @@ metrics_frequency:
 manual_heating_temp:
   <<: &heating-temp
     min: 18
-    max: 30
+    max: 31
     step: 0.5
   initial: 31
   mode: slider
