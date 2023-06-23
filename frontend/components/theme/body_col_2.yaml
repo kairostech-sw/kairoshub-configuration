@@ -54,7 +54,7 @@ card:
           aggregate_func: avg
           points_per_hour: 1
           align_state: center
-          height: 185
+          height: 213
           line_width: 3
           hour24: true
           animate: true
