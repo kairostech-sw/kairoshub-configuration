@@ -318,9 +318,9 @@ user_notification_header:
     ]]]
   styles:
     card:
-      - padding-top: 10px
+      - padding-top: 7px
     grid:
-      - grid-template-areas: '"a"'
+      - grid-template-areas: '"a" "l"'
       - grid-template-columns: 60px
       - grid-template-rows: min-content min-content
     img_cell:
@@ -328,6 +328,10 @@ user_notification_header:
     icon:
       - width: 32px
       - height: 32px
+    label:
+      - font-size: 80%
+      - font-weight: bold
+      - color: var(--paper-item-icon-active-color)
   tap_action:
     action: navigate
     navigation_path: /lovelace-kairoshub/notification
@@ -768,22 +772,24 @@ clima_detail:
       [[[
         var zoneTemperature = states[`sensor.tz${variables.zoneId}`].state;
         var tempColor = 'var(--temperature-secondary-color)';
+        var targetTempColor = 'var(--temperature-primary-color)';
         var comfortTemp = states['input_number.manual_heating_temp'].state;
         var programTemp = `input_number.temperature_zn${variables.zoneId}_period`;
         for (var i=1; i<5; i++) {
           if (states[`input_boolean.heater_program${i}_on`].state === "on") {
             comfortTemp = states[programTemp+i].state;
-            if (zoneTemperature >= comfortTemp) {
-              tempColor = 'var(--temperature-primary-color)';
-            }
           }
+        }
+        if (zoneTemperature >= comfortTemp) {
+          tempColor = 'var(--temperature-primary-color)';
+          targetTempColor = 'var(--temperature-secondary-color)';
         }
 
         return `<div style="align-items: center; display: flex;">
-          <span style="font-size: 18px; font-weight: 600; color: ${tempColor};">${ zoneTemperature}&nbsp;</span>
-          <span style="font-size: 18px; font-weight: 600; color: var(--temperature-primary-color);">/${comfortTemp}°C </span>
+          <span style="font-size: 18px; font-weight: 600; color: ${tempColor};">${zoneTemperature}&nbsp;</span>
+          <span style="font-size: 18px; font-weight: 600; color: ${targetTempColor};">/${comfortTemp}°C </span>
           <ha-icon icon="mdi:thermometer"
-            style="color: ${tempColor}; width: 24px; padding: 5px; margin: 0px;"/>
+            style="color: ${targetTempColor}; width: 24px; padding: 5px; margin: 0px;"/>
           </div>`;
       ]]]
     humidity: >
