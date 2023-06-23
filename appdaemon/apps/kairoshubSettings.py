@@ -188,6 +188,7 @@ class KairoshubSettings(hass.Hass):
         eventData = {
             "eventType": "SYSTEM_KEY_SYNC",
             "sender": systemCode,
+            "systemCode": systemCode,
             "message": "SYSTEM KEY SYNC"
         }
 
