@@ -6,12 +6,6 @@ card_mod:
         width: 385px;
       }
     tabbed-card $:
-      .: |
-        {% if is_state("sensor.umidita", "unknown")%}
-          mwc-tab[label='Umidità'] {
-            display: none;
-          }
-        {% endif %}
       mwc-tab:
         $:
           mwc-tab-indicator $: |
@@ -19,54 +13,31 @@ card_mod:
               border-color: var(--command-state-active-color) !important;
             }
           .: |
-            .mdc-tab__text-label {
-              font-size: 0px !important;
-            }
-            .mdc-tab__text-label:after {
-              font-size: 16px;
-              text-transform: none;
-              display: block;
-            }
             .mdc-tab--active {
               background: #FFFFFF !important;
             }
         .: |
-          mwc-tab:not(:last-child) {
-            border-color: #000000;
-            border-width: 0px;
-            border-right-width: 1px;
-            border-style: solid;
-            overflow: hidden;
+          mwc-tab[id="Temperatura"] {
+              {% if (states("sensor.temperatura") | float > 24.0) %}
+                {% set COLOR = "#FF0000" %}
+              {% elif (states("sensor.temperatura") | float > 18.0) %}
+                {% set COLOR = "#FFA500" %}
+              {% else %}
+                {% set COLOR = "#2E86C1" %}
+              {% endif %}
+              background: {{COLOR+"40"}} ;
+              --mdc-theme-primary: {{COLOR}};
           }
-          mwc-tab[label="Temperatura"] {
-            {% if (states("sensor.temperatura") | float > 24.0) %}
-              --mdc-theme-primary: var(--temperature-primary-color);
-            {% elif (states("sensor.temperatura") | float > 18.0) %}
-              --mdc-theme-primary: var(--temperature-tertiary-color)
-            {% else %}
-              --mdc-theme-primary: var(--temperature-secondary-color)
-            {% endif %}
-          }
-      mwc-tab:nth-child(1) $: |
-        .mdc-tab__text-label:after {
-          content: "{{states('sensor.temperatura')}}°C";
-        }
-      mwc-tab:nth-child(2) $: |
-        .mdc-tab__text-label:after {
-          content: "{{states('sensor.umidita')}}%";
-        }
-      mwc-tab:nth-child(3) $: |
-        .mdc-tab__text-label:after {
-          content: "{{states('sensor.em_assorbimento')}}W";
-        }
 card:
   type: "custom:tabbed-card"
-  styles:
-    --mdc-typography-button-font-size: 11px
   tabs:
     - attributes:
         label: "Temperatura"
         icon: "mdi:thermometer"
+      entity: sensor.temperatura
+      suffix: "°C"
+      styles:
+        box-shadow: "0 0 2px #000000 inset"
       card:
         type: "custom:mini-graph-card"
         entities:
@@ -83,7 +54,7 @@ card:
           aggregate_func: avg
           points_per_hour: 1
           align_state: center
-          height: 160
+          height: 185
           line_width: 3
           hour24: true
           animate: true
@@ -92,31 +63,30 @@ card:
             icon: false
             name: false
             points: false
-            labels: true
+            labels: false
             extrema: true
-            fulldate: true
           tap_action:
             action: none
           card_mod:
             style: |
+              .info.flex div.info__item .info__item__time {
+                font-size: 12px;
+              }
               .info.flex {
                 margin-top: -60px;
               }
               .state {
                 margin: 0px auto;
               }
-              .graph {
-                margin-right: 0.5em;
-              }
-              .info.flex div.info__item:nth-child(2) .info__item__value,
-              .info.flex div.info__item:nth-child(2) .info__item__type {
-                color: red;
-              }
     - attributes:
         label: "Umidità"
         icon: "mdi:water-percent"
+      entity: sensor.umidita
+      suffix: "%"
       styles:
-        --mdc-theme-primary: var(--humidity-primary-color)
+        --mdc-theme-primary: "#7FB03F"
+        background: "#7FB03F40"
+        box-shadow: "0 0 2px #000000 inset"
       card:
         type: "custom:mini-graph-card"
         entities:
@@ -126,8 +96,12 @@ card:
     - attributes:
         label: "Consumi"
         icon: "mdi:lightning-bolt"
+      entity: sensor.em_assorbimento
+      suffix: "Watt"
       styles:
-        --mdc-theme-primary: "#E6C300"
+        --mdc-theme-primary: "#DCA200"
+        background: "#DCA20040"
+        box-shadow: "0 0 2px #000000 inset"
       card:
         type: "custom:mini-graph-card"
         entities:
