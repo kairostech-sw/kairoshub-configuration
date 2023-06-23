@@ -123,7 +123,7 @@ class CellFormatters {
   }
   getZone(data) {
     if (data === null) return "";
-    var zoneId = data.replace(/(^.+)(\w\d+\w)(.+$)/i, "$2");
+    var zoneId = data.replace(/^[^0-9]+(\d{3}).*$/, "$1");
     var zoneName = this.hass.states[`input_text.zn${zoneId}`].state;
     return zoneName;
   }
