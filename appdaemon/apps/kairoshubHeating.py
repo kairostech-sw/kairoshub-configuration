@@ -8,10 +8,10 @@ class KairoshubHeating(hass.Hass):
 
     file = "./kairoshubHeating.json"
     maxRetry = 5
-    lifetime_offset = 7
-    date_format = "%Y-%m-%dT"
-    time_format = "%H:%M:%S"
-    datetime_format = date_format + time_format
+    lifetimeOffset = 7
+    dateFormat = "%Y-%m-%dT"
+    timeFormat = "%H:%M:%S"
+    datetime_format = dateFormat + timeFormat
 
     def initialize(self):
         self.listen_event(self.handleHeatingProgram,"HA_MANAGE_HEATER")
@@ -19,33 +19,46 @@ class KairoshubHeating(hass.Hass):
         self.listen_event(self.handleManualHeating, "AD_HEATING_OFF")
         self.listen_event(self.turnProgramOff,"AD_PROGRAM_OFF")
 
-    def handleManualHeating(self, event_name, data, kwargs) -> None:
+    def handleManualHeating(self, event_name: str, data: dict, kwargs: dict) -> None:
         '''
             Checks first if the comfort temp was already reached.
             Otherwise, turns ON or OFF the thermostat based on the event received
         '''
-        sender = self.getSender(data)
+        self.log(f"E: {type(event_name)}\n\tD: {type(data)}\n\tK: {type(kwargs)}")
+        sender = self.getKey(data, "sender")
+        trid = self.getKey(data, "trid")
         if self.isComfortTempReached(self.get_state("sensor.temperatura")):
             comfort_temp = self.get_state("input_number.manual_heating_temp")
-            self.fire_event("AD_KAIROSHUB_NOTIFICATION", sender=sender, ncode="HEATING_TEMP_REACHED", severity="NOTICE", kwargs={"program": 0, "comfort_temp": comfort_temp})
+            notyInfo = {
+                "sender": sender,
+                "trid": trid,
+                "ncode": "HEATING_TEMP_REACHED",
+                "severity": "NOTICE",
+                "kwargs" : {
+                    "program": 0,
+                    "comfort_temp": comfort_temp
+                }
+            }
+            self.fire_event("AD_KAIROSHUB_NOTIFICATION", **notyInfo)
             return None
         if "ON" in event_name:
-            self.turnHeatingOn(0, sender)
+            self.turnHeatingOn(0, sender, trid)
         elif "OFF" in event_name:
-            self.turnHeatingOff(0, sender)
+            self.turnHeatingOff(0, sender, trid)
 
-    def handleHeatingProgram(self, event_name, data, kwargs):
+    def handleHeatingProgram(self, event_name: str, data: dict, kwargs: dict) -> None:
         '''
             Checks if the program is active and should start/end during its time range if no other program
             is already active
         '''
-        progId = self.getProgramId(data)
-        sender = self.getSender(data)
+        progId = self.getKey(data, "program")
+        sender = self.getKey(data, "sender")
+        trid = self.getKey(data, "trid")
         now = datetime.strptime(self.get_state("sensor.date_time_iso"), self.datetime_format)
         today = now.strftime("%A").lower()
 
         self.checkFile(now)
-        now = now.strftime(self.time_format)
+        now = now.strftime(self.timeFormat)
 
 
         activeProgram = self.isProgramOn(progId)
@@ -61,7 +74,7 @@ class KairoshubHeating(hass.Hass):
             self.log("Comfort Temperature was reached", level="INFO")
             if self.get_state(f"group.heater_program{progId}_on") == "on":
                 self.log("Program %s will now end", progId, level="INFO")
-                self.turnHeatingOff(progId, sender, True)
+                self.turnHeatingOff(progId, sender, trid, True)
             return None
 
         program_schedule = self.getProgramSchedule(progId)
@@ -84,7 +97,7 @@ class KairoshubHeating(hass.Hass):
             if self.get_state(f"group.heater_program{progId}_on") == "off":
                 self.log("The heating program %s is now starting", progId, level="INFO")
                 self.turn_on(f"group.heater_program{progId}_on")
-                self.turnHeatingOn(progId, sender)
+                self.turnHeatingOn(progId, sender, trid)
                 return None
             self.log("This program is already active", level="INFO")
 
@@ -93,17 +106,28 @@ class KairoshubHeating(hass.Hass):
             self.turnProgramOff(event_name, data, kwargs)
             return None
 
-    def turnProgramOff(self, event_name, data, kwargs) -> None:
-        sender = self.getSender(data)
-        progId = self.getProgramId(data)
+    def turnProgramOff(self, event_name: str, data: dict, kwargs: dict) -> None:
+        sender = self.getKey(data, "sender")
+        trid = self.getKey(data, "trid")
+        progId = self.getKey(data, "program")
 
-        self.turnHeatingOff(progId, sender)
+        self.turnHeatingOff(progId, sender, trid)
 
-    def turnHeatingOn(self, progId: int, sender: str) -> None:
+    def turnHeatingOn(self, progId: int, sender: str, trid: str) -> None:
         '''
             Turns the heating ON. Checks if TRVs valves are open otherwise sends an error notification.
             If the heating fails to start, sends an error notification
         '''
+
+        notyInfo = {
+            "sender": sender,
+            "trid": trid,
+            "ncode": "",
+            "severity": "NOTICE",
+            "kwargs" : {
+                "program": progId,
+            }
+        }
         if progId == 0 and self.isProgramOn(progId):
             self.log("A program is already active", level="INFO")
             return None
@@ -113,9 +137,10 @@ class KairoshubHeating(hass.Hass):
 
         if progId > 0:
             programTemperature = self.getProgramZoneTemperature(progId)
-            if programTemperature["allMin"]:
+            if programTemperature["noActiveZone"]:
                 self.log("No Zone is active for this program. Ending", level="WARNING")
-                self.fire_event("AD_KAIROSHUB_NOTIFICATION", sender=sender, ncode="HEATING_NO_ZONE_ERROR", severity="NOTICE", kwargs={ "program": progId })
+                notyInfo["ncode"] = "HEATING_NO_ZONE_ERROR"
+                self.fire_event("AD_KAIROSHUB_NOTIFICATION", **notyInfo)
                 self.turn_off(f"group.heater_program{progId}_on")
                 return None
         else:
@@ -135,27 +160,40 @@ class KairoshubHeating(hass.Hass):
 
         if self.checkHeaterState(1, "on", 5):
             self.log("Thermostat turned on", level="INFO")
-            self.fire_event("AD_KAIROSHUB_NOTIFICATION", sender=sender, ncode="HEATING_ON", severity="NOTICE", kwargs={ "program": progId })
+            notyInfo["ncode"] = "HEATING_ON"
+            self.fire_event("AD_KAIROSHUB_NOTIFICATION", **notyInfo)
 
             if not self.isValveOpen(trvList, 1, 10):
-                self.fire_event("AD_KAIROSHUB_NOTIFICATION", sender=sender, ncode="HEATING_VALVES_CLOSED", severity="NOTICE")
+                notyInfo["ncode"] = "HEATING_VALVES_CLOSED"
+                self.fire_event("AD_KAIROSHUB_NOTIFICATION", **notyInfo)
 
         else:
             self.log("Thermostat didn't turn on", level="INFO")
-            self.fire_event("AD_KAIROSHUB_NOTIFICATION", sender=sender, ncode="HEATING_ON_ERROR", severity="NOTICE")
+            notyInfo["ncode"] = "HEATING_ON_ERROR"
+            self.fire_event("AD_KAIROSHUB_NOTIFICATION", **notyInfo)
 
         self.fire_event("HA_ENTITY_METRICS")
 
-    def turnHeatingOff(self, progId: int, sender: str, comfort_temp=False) -> None:
+    def turnHeatingOff(self, progId: int, sender: str, trid: str, comfort_temp=False) -> None:
         '''
             Turns the heating OFF.
             If the heating fails to stop, sends an error notification
         '''
+
+        notyInfo = {
+            "sender": sender,
+            "trid": trid,
+            "ncode": "",
+            "severity": "NOTICE",
+            "kwargs" : {
+                "program": progId,
+            }
+        }
         self.log("Turning off heating", level="INFO")
         if progId > 0:
-            active_boolean=f"group.heater_program{progId}_on"
-            if self.get_state(active_boolean) == "on":
-                self.turn_off(active_boolean)
+            activeBoolean=f"group.heater_program{progId}_on"
+            if self.get_state(activeBoolean) == "on":
+                self.turn_off(activeBoolean)
                 self.log("Program %s was turned off", progId)
                 self.updateProgramStatus(progId, "not running")
         else:
@@ -168,11 +206,15 @@ class KairoshubHeating(hass.Hass):
 
         if self.checkHeaterState(1, "off", 5):
             self.log("Thermostat turned off", level="INFO")
-            self.fire_event("AD_KAIROSHUB_NOTIFICATION",sender=sender, ncode="HEATING_OFF", severity="NOTICE", kwargs = { "program": progId, "comfort_temp": comfort_temp })
+            notyInfo["ncode"] = "HEATING_OFF"
+            notyInfo["kwargs"]["comfort_temp"] = comfort_temp
+            self.fire_event("AD_KAIROSHUB_NOTIFICATION", **notyInfo)
 
         else:
             self.log("Thermostat didn't turn off", level="INFO")
-            self.fire_event("AD_KAIROSHUB_NOTIFICATION",sender=sender, ncode="HEATING_OFF_ERROR", severity="ALERT")
+            notyInfo["ncode"] = "HEATING_OFF_ERROR"
+            notyInfo["severity"] = "ALERT"
+            self.fire_event("AD_KAIROSHUB_NOTIFICATION", **notyInfo)
 
         self.fire_event("HA_ENTITY_METRICS")
 
@@ -189,14 +231,14 @@ class KairoshubHeating(hass.Hass):
         zones = self.getProgramZone(progId)
         isActive = False
         for zone in zones:
-            zone_name = zone["name"]
-            zone_id = zone["id"]
-            zone_state = f"input_boolean.heater_{zone_name}_program{progId}_on"
-            temperature = self.get_state(f"sensor.tz{zone_id}").lower()
-            is_at_comfort = self.isComfortTempReached(temperature, progId, zone_name)
-            isActive |= not is_at_comfort
-            if is_at_comfort:
-                self.turn_off(zone_state)
+            zoneName = zone["name"]
+            zoneId = zone["id"]
+            zoneState = f"input_boolean.heater_{zoneName}_program{progId}_on"
+            temperature = self.get_state(f"sensor.tz{zoneId}").lower()
+            isAtComfort = self.isComfortTempReached(temperature, progId, zoneName)
+            isActive |= not isAtComfort
+            if isAtComfort:
+                self.turn_off(zoneState)
 
         return isActive
 
@@ -233,8 +275,8 @@ class KairoshubHeating(hass.Hass):
 
         for trv in trvList:
             name = trv["name"].lower()
-            trv_pos = self.get_state(f"sensor.{name}_pos")
-            if trv_pos not in ["unknown", "unavailable"] and float(trv_pos) > 0.0 :
+            trvPos = self.get_state(f"sensor.{name}_pos")
+            if trvPos not in ["unknown", "unavailable"] and float(trvPos) > 0.0 :
                 self.log("Valve %s is open", name, level="INFO")
                 return True
 
@@ -254,9 +296,9 @@ class KairoshubHeating(hass.Hass):
             self.createSchedule(now)
 
         with open(self.file, "r") as f:
-            file_data = json.load(f)
+            fileData = json.load(f)
 
-        if "lifetime" not in file_data or datetime.strptime(file_data["lifetime"], self.date_format) < now:
+        if "lifetime" not in fileData or datetime.strptime(fileData["lifetime"], self.dateFormat) < now:
             self.createSchedule(now)
 
     def createSchedule(self, now: datetime) -> None:
@@ -265,16 +307,16 @@ class KairoshubHeating(hass.Hass):
             This is needed for time ranges that go over the next day
         '''
         self.log("Updating the heating schedule file", level="INFO")
-        lifetime = (now + timedelta(days=self.lifetime_offset)).strftime(self.date_format)
+        lifetime = (now + timedelta(days=self.lifetimeOffset)).strftime(self.dateFormat)
         schedule={ "lifetime": lifetime }
 
         for id in range(1,5):
             schedule[f"program{id}"] = {}
-            start_time = datetime.strptime(self.get_state(f"input_datetime.thermostat_on_period{id}"), self.time_format)
-            end_time = datetime.strptime(self.get_state(f"input_datetime.thermostat_off_period{id}"), self.time_format)
+            startTime = datetime.strptime(self.get_state(f"input_datetime.thermostat_on_period{id}"), self.timeFormat)
+            endTime = datetime.strptime(self.get_state(f"input_datetime.thermostat_off_period{id}"), self.timeFormat)
 
-            schedule[f"program{id}"]["start"] = start_time.strftime(self.time_format)
-            schedule[f"program{id}"]["end"] = end_time.strftime(self.time_format)
+            schedule[f"program{id}"]["start"] = startTime.strftime(self.timeFormat)
+            schedule[f"program{id}"]["end"] = endTime.strftime(self.timeFormat)
             schedule[f"program{id}"]["status"] = "not running"
 
         self.log("Programs Schedule: %s", schedule, level="DEBUG")
@@ -287,13 +329,13 @@ class KairoshubHeating(hass.Hass):
             Updates Program status on file
         '''
         with open(self.file, "r") as f:
-            program_schedule = json.load(f)
-            program_schedule[f"program{progId}"]["status"] = status
+            programSchedule = json.load(f)
+            programSchedule[f"program{progId}"]["status"] = status
 
         with open(self.file, "w") as f:
-            json.dump(program_schedule, f, indent=2)
+            json.dump(programSchedule, f, indent=2)
 
-    def getProgramSchedule(self, progId: int) -> dict:
+    def getProgramSchedule(self, progId: int) -> dict[str, str]:
         '''
             Gets program schedule and status from the file
         '''
@@ -301,31 +343,31 @@ class KairoshubHeating(hass.Hass):
             data = json.load(f)
             data = data[f"program{progId}"]
 
-        program_schedule = {
+        programSchedule = {
             "start": data["start"],
             "end": data["end"],
             "status": data["status"]
         }
-        return program_schedule
+        return programSchedule
 
-    def getZoneFromId(self, zone_id: str) -> str:
-        if zone_id == "01": return "zn101"
-        if zone_id == "02": return "zn102"
-        if zone_id == "03": return "zn103"
-        if zone_id in ["04", "05"]: return "zn201"
-        if zone_id == "06": return "zn202"
-        if zone_id == "07": return "zn203"
+    def getZoneFromId(self, zoneId: str) -> str:
+        if zoneId == "01": return "zn101"
+        if zoneId == "02": return "zn102"
+        if zoneId == "03": return "zn103"
+        if zoneId in ["04", "05"]: return "zn201"
+        if zoneId == "06": return "zn202"
+        if zoneId == "07": return "zn203"
 
-        return f"zn{zone_id[:-1]}"
+        return f"zn{zoneId[:-1]}"
 
-    def getTRVList(self) -> list:
+    def getTRVList(self) -> list[dict[str, str]]:
         '''
             Gets the list of all available TRVs
         '''
         trvList=[]
-        trvs_group = self.get_state("group.heating_valves", attribute="entity_id")
+        trvsGroup = self.get_state("group.heating_valves", attribute="entity_id")
 
-        for group in trvs_group:
+        for group in trvsGroup:
             trvs = self.get_state(group, attribute="entity_id")
 
             for trv in trvs:
@@ -341,7 +383,7 @@ class KairoshubHeating(hass.Hass):
         self.log("TRVs found: %s", trvList, level="DEBUG")
         return trvList
 
-    def getProgramZoneTemperature(self, progId: int) -> dict:
+    def getProgramZoneTemperature(self, progId: int) -> dict[str, any]:
         '''
             Gets temperature sets for every zone for this program.
             Any zone without a sensor or that is not active for the program
@@ -350,27 +392,27 @@ class KairoshubHeating(hass.Hass):
         self.log("Retrieving temperature for Program %s", progId, level="INFO")
 
         zones = self.getProgramZone(progId)
-        zonesTemperatures = {"allMin": True}
+        zonesTemperatures = {"noActiveZone": True}
 
         for zone in zones:
             roomId = zone["id"]
-            room_name = zone["name"]
-            room = f"input_boolean.heater_{room_name}_program{progId}"
+            roomName = zone["name"]
+            room = f"input_boolean.heater_{roomName}_program{progId}"
             if self.get_state(f"sensor.tz{roomId}") in ["unknown", "unavailable"]:
                 self.turn_off(room)
 
             if self.get_state(room) == "on":
                 self.turn_on(room+"_on")
-                temperature = self.get_state(f"input_number.temperature_{room_name}_period{progId}")
-                zonesTemperatures[room_name] = temperature
-                zonesTemperatures["allMin"] = False
+                temperature = self.get_state(f"input_number.temperature_{roomName}_period{progId}")
+                zonesTemperatures[roomName] = temperature
+                zonesTemperatures["noActiveZone"] = False
             else:
-                zonesTemperatures[room_name] = 4.0
+                zonesTemperatures[roomName] = 4.0
 
         self.log("Temperatures per Zone of this program: %s", zonesTemperatures, level="DEBUG")
         return zonesTemperatures
 
-    def getProgramZone(self, progId: int) -> list[dict]:
+    def getProgramZone(self, progId: int) -> list[dict[str, str]]:
         '''
             Returns a list containing name and id of every zone in the program
         '''
@@ -380,30 +422,25 @@ class KairoshubHeating(hass.Hass):
         for zone in programZones:
             rooms = self.get_state(zone, attribute="entity_id")
             for room in rooms:
-                room_name = room.split("_")[2]
-                room_info = {
-                    "name": room_name,
-                    "id": room_name[2:]
+                roomName = room.split("_")[2]
+                roomInfo = {
+                    "name": roomName,
+                    "id": roomName[2:]
                 }
-                zones.append(room_info)
+                zones.append(roomInfo)
 
         self.log("Zones of this program: %s", zones, level="DEBUG")
         return zones
 
-    def getSender(self, data) -> str:
-
-        if "event" in data:
-            event = data["event"]
-            sender =  event["sender"] if "sender" in event else None
-
-            return sender
+    def getKey(self, data: dict, key: str) -> str:
+        if "data" in data:
+            data = data["data"]
+        if key in data:
+            return data[key]
+        if "event" in data and key in data["event"]:
+            return data["event"][key]
 
         return ""
-
-    def getProgramId(self, data) -> int:
-        if "data" in data:
-            return data["data"]["program"]
-        return data["program"]
 
     def isValidTime(self, now: datetime,end: datetime) -> int:
         return now < end

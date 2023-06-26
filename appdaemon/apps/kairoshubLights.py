@@ -3,6 +3,8 @@ from datetime import datetime, timedelta
 
 class KairoshubLights(hass.Hass):
 
+    datetimeFormat = "%Y-%m-%dT%H:%M:%S"
+
     def initialize(self):
         self.listen_event(self.lightControl, "AD_LIGHT_ZONE_CONTROL")
         self.listen_event(self.copyLights, "AD_COPY_LIGHTS")
@@ -11,105 +13,117 @@ class KairoshubLights(hass.Hass):
         self.listen_event(self.lightToggle, "AD_LIGHTS_OFF")
         self.listen_event(self.lightSceneAutomation, "AD_AUTOMATIC_LIGHTS")
 
-    def turnOn(self, sender):
-        self.log("Turning Lights on", level="INFO")
-        self.turn_on("group.lights")
-        self.fire_event("AD_KAIROSHUB_NOTIFICATION", sender=sender, ncode="LIGHTS_ON", severity="NOTICE", kwargs={"zone":"all"})
+    def lightToggle(self, event_name: str, data: dict, kwargs: dict) -> None:
 
-    def turnOff(self, sender):
-        self.log("Turning Lights off", level="INFO")
-        self.turn_off("group.lights")
-        self.fire_event("AD_KAIROSHUB_NOTIFICATION", sender=sender, ncode="LIGHTS_OFF", severity="NOTICE", kwargs={"zone":"all"})
-
-    def lightToggle(self, event_name, data, kwargs):
-        sender = data["data"]["sender"] if "data" in data else data["sender"]
-
+        notyInfo = {
+            "sender": self.getKey(data, "sender"),
+            "trid": self.getKey(data, "trid"),
+            "ncode": "",
+            "severity": "NOTICE",
+            "kwargs": {
+                "zone": "all"
+            }
+        }
         if "ON" in event_name:
-            self.turnOn(sender)
+            notyInfo["ncode"] = "LIGHTS_ON"
+            self.turnOn("group.lights", notyInfo)
         elif "OFF" in event_name:
-            self.turnOff(sender)
+            notyInfo["ncode"] = "LIGHTS_OFF"
+            self.turnOff("group.lights", notyInfo)
 
-    def lightProgram(self, event_name, data, kwargs):
-        now = datetime.strptime(self.get_state("sensor.date_time_iso"),"%Y-%m-%dT%H:%M:%S")
+    def lightProgram(self, event_name: str, data: dict, kwargs: dict) -> None:
+        now = datetime.strptime(self.get_state("sensor.date_time_iso"), self.datetimeFormat)
         day = int(datetime.strftime(now,"%w"))
         date = now.strftime("%Y-%m-%dT")
-        on_time = datetime.strptime(date+data['on_time'],"%Y-%m-%dT%H:%M:%S")
-        off_time = datetime.strptime(date+data["off_time"],"%Y-%m-%dT%H:%M:%S")
-
-        if on_time > off_time:
-            off_time = now+timedelta(days=1)
-
-        zone_id = data["zone"]
+        onTime = datetime.strptime(date + data['on_time'], self.datetimeFormat)
+        offTime = datetime.strptime(date + data["off_time"], self.datetimeFormat)
+        zoneId = data["zone"]
         mode = data["mode"]
-        lights = self.get_state("light.group_lz{}".format(zone_id), attribute="entity_id")
 
-        if mode == "Feriali" and day%6 == 0: return
-        elif mode == "Festivi" and day%6 > 0: return
-        if on_time<=now<off_time:
-            self.log("Turning on lights in zone %s",zone_id)
-            self.fire_event("AD_KAIROSHUB_NOTIFICATION", sender=data["sender"], ncode="LIGHTS_ON", severity="NOTICE", kwargs={"zone": zone_id, "mode": "Programmato"})
-            for light in lights:
-                self.call_service("light/turn_on", entity_id=light)
-        elif off_time<=now and self.get_state("light.group_lz{}".format(zone_id)) == "on":
-            self.log("Turning off lights in zone %s",zone_id)
-            self.fire_event("AD_KAIROSHUB_NOTIFICATION", sender=data["sender"], ncode="LIGHTS_OFF", severity="NOTICE", kwargs={"zone": zone_id, "mode": "Programmato"})
-            for light in lights:
-                self.call_service("light/turn_off", entity_id=light)
+        if mode == "Feriali" and day % 6 == 0: return None
+        elif mode == "Festivi" and day % 6 > 0: return None
+
+        if onTime > offTime:
+            offTime = now + timedelta(days=1)
+
+        lights = f"light.group_lz{zoneId}"
+
+        notyInfo = {
+            "sender": self.getKey(data, "sender"),
+            "trid": self.getKey(data, "trid"),
+            "ncode": "",
+            "severity": "NOTICE",
+            "kwargs": {
+                "zone": zoneId,
+                "mode": "Programmato"
+            }
+        }
+
+        if onTime <= now < offTime:
+            self.log("Turning on lights in zone %s",zoneId)
+            notyInfo["ncode"] = "LIGHTS_ON"
+            self.turnOn(lights, notyInfo)
+        elif offTime <= now:
+            self.log("Turning off lights in zone %s",zoneId)
+            notyInfo["ncode"] = "LIGHTS_OFF"
+            self.turnOff(lights, notyInfo)
         else:
             self.log("The program is not active right now")
 
-    def lightControl(self, event_name, data, kwargs):
+    def lightControl(self, event_name: str, data: dict, kwargs: dict) -> None:
 
-        light = data["data"]["light"]
-        light_id = light[light.find("z")+1:]
+        light = self.getKey(data, "light")
+        lightId = light[light.find("z")+1:]
         action = self.get_state(light)
 
-        self.log("Turning %s lights in zone %s", action, light_id, level="INFO")
+        self.log("Turning %s lights in zone %s", action, lightId, level="INFO")
 
-        switch_light_topic = "shellies/LZ{}/relay/0/command".format(light_id)
-        white_light_topic = "shellies/LZ{}/white/0/command".format(light_id)
-        color_light_topic = "shellies/LZ{}/color/0/command".format(light_id)
+        switchLightTopic = f"shellies/LZ{lightId}/relay/0/command"
+        whiteLightTopic = f"shellies/LZ{lightId}/white/0/command"
+        colorLightTopic = f"shellies/LZ{lightId}/color/0/command"
 
         if action != "unavailable" or action != "unknown":
-            self.fire_event("AD_KAIROSHUB_NOTIFICATION", sender=data["data"]["sender"], ncode="LIGHTS_{}".format(action.upper()), severity="NOTICE", kwargs={"zone":light_id, "mode": None})
+            self.fire_event("AD_KAIROSHUB_NOTIFICATION", sender=self.getKey(data, "sender"), ncode=f"LIGHTS_{action.upper()}", severity="NOTICE", kwargs={ "zone": lightId, "mode": None})
 
-            self.fire_event("AD_MQTT_PUBLISH",topic=switch_light_topic,payload=action)
-            self.fire_event("AD_MQTT_PUBLISH",topic=white_light_topic,payload=action)
-            self.fire_event("AD_MQTT_PUBLISH",topic=color_light_topic,payload=action)
+            self.fire_event("AD_MQTT_PUBLISH", topic=switchLightTopic, payload=action)
+            self.fire_event("AD_MQTT_PUBLISH", topic=whiteLightTopic, payload=action)
+            self.fire_event("AD_MQTT_PUBLISH", topic=colorLightTopic, payload=action)
 
-    def copyLights(self, event_name, data, kwargs):
-
+    def copyLights(self, event_name: str, data: dict, kwargs: dict) -> None:
         zone = data["zone"]
         self.turn_off(zone)
-        zone_id = zone.split("zn")[1]
-        self.log("Copying light from Zone %s to all lights in the same zone")
+        zoneId = zone.split("zn")[1]
 
-        light_groups = self.get_state("light.group_lz{}00".format(zone_id[0]), attribute="entity_id")
-        color_rgbw = self.get_state("light.lcz{}".format(zone_id), attribute="rgbw_color")
-        color_brightness = self.get_state("light.lcz{}".format(zone_id), attribute="brightness")
+        self.log("Copying light from Zone %s to all lights in the same zone", zoneId, level="INFO")
 
-        white_brightness = self.get_state("light.lwz{}".format(zone_id), attribute="brightness")
-        self.log("color: %s", color_rgbw, level="DEBUG")
-        self.log("white: %s", white_brightness, level="DEBUG")
+        lightGroups = self.get_state(f"light.group_lz{zoneId[0]}00", attribute="entity_id")
 
-        if "rgbw_color" in color_rgbw:
-            color_payload = {"turn": "on", "red": color_rgbw[0], "green": color_rgbw[1], "blue": color_rgbw[2], "white": color_rgbw[3], "gain": color_brightness}
+        colorRGBW = self.get_state(f"light.lcz{zoneId}", attribute="rgbw_color")
+        colorBrightness = self.get_state(f"light.lcz{zoneId}", attribute="brightness")
+
+        whiteBrightness = self.get_state(f"light.lwz{zoneId}", attribute="brightness")
+
+        self.log("color: %s", colorRGBW, level="DEBUG")
+        self.log("white: %s", whiteBrightness, level="DEBUG")
+
+        if "rgbw_color" in colorRGBW:
+            colorPayload = {"turn": "on", "red": colorRGBW[0], "green": colorRGBW[1], "blue": colorRGBW[2], "white": colorRGBW[3], "gain": colorBrightness}
         else:
-            color_payload = {"turn": "off"}
-        if white_brightness:
-            white_payload = {"turn": "on", "brightness": round(white_brightness/2.55)}
+            colorPayload = {"turn": "off"}
+        if whiteBrightness:
+            whitePayload = {"turn": "on", "brightness": round(whiteBrightness/2.55)}
         else:
-            white_payload = {"turn": "off"}
+            whitePayload = {"turn": "off"}
 
-        for light_group in light_groups:
-            light_group_id = light_group.split("z")[1]
-            white_light_topic = "shellies/LZ{}/white/0/set".format(light_group_id)
-            color_light_topic = "shellies/LZ{}/color/0/set".format(light_group_id)
+        for lightGroup in lightGroups:
+            lightGroupId = lightGroup.split("z")[1]
+            whiteLightTopic = f"shellies/LZ{lightGroupId}/white/0/set"
+            colorLightTopic = f"shellies/LZ{lightGroupId}/color/0/set"
 
-            self.fire_event("AD_MQTT_PUBLISH",topic=color_light_topic,payload=str(color_payload))
-            self.fire_event("AD_MQTT_PUBLISH",topic=white_light_topic,payload=str(white_payload))
+            self.fire_event("AD_MQTT_PUBLISH", topic=colorLightTopic, payload=str(colorPayload))
+            self.fire_event("AD_MQTT_PUBLISH", topic=whiteLightTopic, payload=str(whitePayload))
 
-    def lightSceneAutomation(self, event_name, data, kwargs):
+    def lightSceneAutomation(self, event_name: str, data: dict, kwargs: dict):
       action = data["action"]
       service = f"light/turn_{action}"
       lights = self.get_state("group.lights", attribute="entity_id")
@@ -117,3 +131,23 @@ class KairoshubLights(hass.Hass):
         zoneSetting = self.get_state(f"input_select.zn{zone[-3:]}")
         if zoneSetting == "Automatico":
             self.call_service(service, entity_id="group.lights")
+
+    def turnOn(self, target: str, notyInfo: dict) -> None:
+        self.log("Turning Lights on", level="INFO")
+        self.turn_on(target)
+        self.fire_event("AD_KAIROSHUB_NOTIFICATION", **notyInfo)
+
+    def turnOff(self, target: str, notyInfo: dict) -> None:
+        self.log("Turning Lights off", level="INFO")
+        self.turn_off(target)
+        self.fire_event("AD_KAIROSHUB_NOTIFICATION", **notyInfo)
+
+    def getKey(self, data: dict, key: str) -> str:
+        if "data" in data:
+            data = data["data"]
+        if key in data:
+            return data[key]
+        if "event" in data and key in data["event"]:
+            return data["event"][key]
+
+        return ""

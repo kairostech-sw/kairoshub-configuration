@@ -19,7 +19,7 @@ class KairoshubAlexaIntegration(hass.Hass):
                           "AD_INTEGRATION_ALEXA_SUBSCRIPTION_RENEW_TOGGLE_TO_OFF")
 
     def sendIntegrationRequest(self, event_name, data, kwargs):
-        self.log("Sending request to integration event: "+event_name)
+        self.log("Sending request to integration event: " + event_name, level="INFO")
 
         eventType = event_name.replace("AD_", "")
         event_data = {
@@ -46,7 +46,7 @@ class KairoshubAlexaIntegration(hass.Hass):
             self.fire_event("AD_KAIROSHUB_NOTIFICATION",
                             sender="*", ncode=event_name.replace("AD_", ""), severity="NOTICE")
         except Exception as e:
-            self.log("Error occourred on updating integration state "+e)
+            self.log("Error occourred on updating integration state " + e)
 
     def persistIntegrationState(self, i):
 

@@ -100,7 +100,7 @@ class KairoshubMetrics(hass.Hass):
         entityMessage["heating"] = {}
         entityMessage["heating"]["state"] = int(self.get_state("switch.sw_thermostat") == "on")
 
-        active_program = kairoshubHeating.KairoshubHeating.isProgramOn(self)
+        active_program = kairoshubHeating.KairoshubHeating.isProgramOn(self, 0)
         if active_program > 0:
             entityMessage["heating"]["program"] = "program {}".format(active_program)
             entityMessage["heating"]["target"] = self.get_state("input_number.temperature_period{}".format(active_program))

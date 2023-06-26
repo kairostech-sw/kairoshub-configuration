@@ -142,19 +142,13 @@ class Notification(hass.Hass):
 
     def notification(self, event_name, data, kwargs):
 
-        ncode = data["ncode"]
-        sender = data["sender"] if "sender" in data and "" != data["sender"] else "HUB"
-        severity = data["severity"]
-        entity_id = data["entity"] if "entity" in data else None
-        extra_data = data["kwargs"] if "kwargs" in data else {}
-        extra_data["entity_id"] = entity_id
+        noty_info, extra_data = self.getNotificationData(data)
 
-        notificationToSend = self.buildNotification(
-            severity=severity, sender=sender, code=ncode, entityRef=entity_id)
+        notificationToSend = self.buildNotification(**noty_info)
 
         self.dispatchNotification(notificationToSend, extra_data)
 
-    def buildNotification(self, severity, sender, code, entityRef):
+    def buildNotification(self, severity, sender, code, trid, entityRef):
         if None == self.systemCode:
             self.systemCode = self.get_state(KAIROSHUB_SYSTEM_CODE)
         message = self.getMessage(code, entityRef)
@@ -164,6 +158,7 @@ class Notification(hass.Hass):
             "systemCode": self.systemCode,
             "sender": sender,
             "message": message,
+            "trid": trid,
         }
         self.log("Notification : %s", noty, level="DEBUG")
         return noty
@@ -240,6 +235,23 @@ class Notification(hass.Hass):
             raise
 
         self.log("File pushed", level="INFO")
+
+    def getNotificationData(self, data):
+        if "data" in data:
+            data = data["data"]
+        entity_id = data["entity"] if "entity" in data else None
+
+        noty_info = {
+            "code": data["ncode"],
+            "severity": data["severity"],
+            "sender": data["sender"] if "sender" in data and data["sender"] != "" else "HUB",
+            "trid": data["trid"] if "trid" in data else "",
+            "entityRef": entity_id,
+        }
+        extra_data = data["kwargs"] if "kwargs" in data else {}
+        extra_data["entity_id"] = entity_id
+
+        return noty_info, extra_data
 
     def sendHubNotification(self, notification, kwargs):
         self.log("Sending HUB notification")
@@ -359,7 +371,6 @@ class Notification(hass.Hass):
         self.send(label)
 
     def sendSignalNotification(self, label, entity):
-        entity = self.get_state(entity, attribute='friendly_name')
         label = label.replace("#ENTITY#", entity)
         self.send(label)
 
