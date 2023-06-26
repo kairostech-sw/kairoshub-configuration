@@ -308,7 +308,7 @@ user_notification_header:
   state:
     - value: "on"
       styles:
-        card:
+        icon:
           - animation: tilt-shaking 5s linear infinite
   entity_picture: |
     [[[
