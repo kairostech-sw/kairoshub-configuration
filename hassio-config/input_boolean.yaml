@@ -166,6 +166,13 @@ heater_zn203_program4:
 heater_zn203_program4_on:
   name: Zona Giorno 3 Attivo
 
+zn100_active:
+  name: Zona Notte Attiva
+zn200_active:
+  name: Zona Giorno Attiva
+zn300_active:
+  name: Esterno Attivo
+
 zn100_alert:
   name: Zona Notte
 zn101_alert:

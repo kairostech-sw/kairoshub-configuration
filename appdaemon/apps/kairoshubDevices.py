@@ -24,6 +24,7 @@ class KairoshubDevices(hass.Hass):
     for device in devices:
       if not device["deviceId"].isdigit():
         self.set_state("sensor."+device["deviceId"].lower(), state="idle", attributes={"friendly_name": device["deviceId"].upper()})
+        self.activateZone(device["deviceId"])
 
     self.fire_event("AD_MQTT_PUBLISH", topic="shellies/command", payload="announce")
     self.fire_event("AD_MQTT_PUBLISH", topic="shellies/command", payload="update")
@@ -105,3 +106,9 @@ class KairoshubDevices(hass.Hass):
       headers = { 'Authorization' : "Basic "+ b64encode(f"{username}:{password}".encode('utf-8')).decode("ascii")}
       connection.request("GET", url, headers=headers)
     connection.close()
+
+  def activateZone(self, deviceId):
+    zoneId = re.search("\d", deviceId).group()
+    self.log(zoneId)
+    self.turn_on(f"input_boolean.zn{zoneId}00_active")
+    return None

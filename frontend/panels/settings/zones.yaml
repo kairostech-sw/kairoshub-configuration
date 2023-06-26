@@ -1,117 +1,134 @@
-type: vertical-stack
-cards:
-  - type: "custom:button-card"
-    template: zone_table
-    custom_fields:
-      header:
-        card:
-          type: "custom:button-card"
-          entity: binary_sensor.heater_auto
-          layout: vertical
-          template:
-            - header_page_text
-          name: "IMPOSTAZIONI"
-          icon: "mdi:cog"
-          label: "Impostazioni / Zone"
-      commandbar:
-        card:
-          type: "custom:button-card"
-          template: command_bar
-          style: |
-            ha-card.button-card-main {
-              padding: 0px !important
-            }
-            div#container {
-              justify-items: right;
-            }
-          custom_fields:
-            commands:
-              card:
-                type: horizontal-stack
-                cards:
-                  - type: "custom:button-card"
-                    template: button_go_back
-                    style: |
-                      :host {
-                        align-self: center;
-                      }
-      warning:
-        card:
-          type: "custom:button-card"
-          template: no_background
-          name: >
-            [[[
-              return `
-              <ha-alert alert-type="warning" title="Attenzione">
-                I valori in questa pagina sono in sola lettura. Utilizzare l'assistente remoto per modificarli
-              </ha-alert>`;
-            ]]]
-          styles:
-            card:
-              - padding: 0px
-          tap_action:
-            action: none
-      list1:
-        card:
-          type: vertical-stack
-          cards:
-            - type: "custom:button-card"
-              template: zone_name
-              name: '[[[ return "ZN101".bold()+": "+states["input_text.zn101"].state]]]'
-              style:
-                div: |
-                  div#name {
-                    justify-self: left;
+type: "custom:button-card"
+template: detail_page
+custom_fields:
+  header:
+    card:
+      type: "custom:button-card"
+      template: header_page_text
+      name: "IMPOSTAZIONI"
+      icon: "mdi:cog"
+      label: "Impostazioni / Zone"
+  commandbar:
+    card:
+      type: "custom:button-card"
+      template: command_bar
+      style: |
+        ha-card.button-card-main {
+          padding: 0px !important
+        }
+        div#container {
+          justify-items: right;
+        }
+      custom_fields:
+        commands:
+          card:
+            type: horizontal-stack
+            cards:
+              - type: "custom:button-card"
+                template: button_go_back
+                style: |
+                  :host {
+                    align-self: center;
                   }
-            - type: "custom:button-card"
-              template: zone_name
-              name: '[[[ return "ZN102".bold()+": "+states["input_text.zn102"].state]]]'
-              style:
-                div: |
-                  div#name {
-                    justify-self: left;
-                  }
-            - type: "custom:button-card"
-              template: zone_name
-              name: '[[[ return "ZN103".bold()+": "+states["input_text.zn103"].state]]]'
-              style:
-                div: |
-                  div#name {
-                    justify-self: left;
-                  }
-            - type: "custom:button-card"
-              template: zone_name
-              name: '[[[ return "ZN104".bold()+": "+states["input_text.zn104"].state]]]'
-              style:
-                div: |
-                  div#name {
-                    justify-self: left;
-                  }
-      list2:
-        card:
-          type: vertical-stack
-          cards:
-            - type: "custom:button-card"
-              template: zone_name
-              name: '[[[ return "ZN201".bold()+": "+states["input_text.zn201"].state]]]'
-              style:
-                div: |
-                  div#name {
-                    justify-self: left;
-                  }
-            - type: "custom:button-card"
-              template: zone_name
-              name: '[[[ return `<div style="text-align: left;"><strong>ZN202</strong>: ${states["input_text.zn202"].state}</div>`]]]'
-              style:
-                div: |
-                  div#name {
-                    justify-self: left;
-                  }
-            - type: "custom:button-card"
-              template: zone_name
-              name: '[[[ return "ZN203".bold()+": "+states["input_text.zn203"].state]]]'
-              style:
-                div: |
-                  div#name {
-                    justify-self: left;
-                  }
+  content:
+    card:
+      type: vertical-stack
+      cards:
+        - type: conditional
+          conditions:
+            - entity: input_boolean.zn100_active
+              state: "on"
+          card:
+            type: "custom:expander-card"
+            title: "Zona Notte"
+            expanded: true
+            cards:
+              - type: "custom:auto-entities"
+                filter:
+                  include:
+                    - entity_id: "/sensor.*1\\d{2,4}$/"
+                    - entity_id: sensor.tv01
+                    - entity_id: sensor.tv02
+                    - entity_id: sensor.tv03
+                  exclude:
+                    - state: "unknown"
+                    - state: "unavailable"
+                    - entity_id: "/.*[^l][z]/"
+                card:
+                  <<: &table-card
+                    type: "custom:flex-table-card"
+                    clickables: false
+                    sort_by:
+                      # - alert+
+                      - rssi+
+                    card_mod:
+                      style: |
+                        ha-card {
+                          overflow: auto;
+                          max-height: 200px;
+                        }
+                        ha-card::-webkit-scrollbar {
+                          display: none !important;
+                        }
+                    columns:
+                      - data: friendly_name
+                        name: Codice
+                      - data: friendly_name
+                        name: Stanza
+                        fmt: getZone
+                      - data: battery
+                        name: Batteria
+                      - data: calibrated
+                        name: Calibrato
+                        fmt: formatBoolean
+                      - data: rssi
+                        name: Segnale
+                        fmt: signalIcon
+                    css:
+                      h1: "padding: 5px 0px 5px 15px"
+                      table+: "padding-top: 5px; padding-left: 0px;"
+                      "tbody tr:nth-child(even)": "background-color: #a2542f6;"
+                      td.left: "padding: 10px 10px 10px 10px"
+                      th.left: "padding: 0px 0px 10px 3px"
+                      thead: "position: sticky; top: 0; z-index: 100; background: white;"
+        - type: conditional
+          conditions:
+            - entity: input_boolean.zn200_active
+              state: "on"
+          card:
+            type: "custom:expander-card"
+            title: "Zona Giorno"
+            expanded: true
+            cards:
+              - type: "custom:auto-entities"
+                filter:
+                  include:
+                    - entity_id: "/sensor.*2\\d{2,4}$/"
+                    - entity_id: sensor.tv04
+                    - entity_id: sensor.tv05
+                    - entity_id: sensor.tv06
+                    - entity_id: sensor.tv07
+                  exclude:
+                    - state: "unknown"
+                    - state: "unavailable"
+                    - entity_id: "/.*[^l][z]/"
+                card:
+                  <<: *table-card
+        - type: conditional
+          conditions:
+            - entity: input_boolean.zn300_active
+              state: "on"
+          card:
+            type: "custom:expander-card"
+            title: "Esterno"
+            expanded: true
+            cards:
+              - type: "custom:auto-entities"
+                filter:
+                  include:
+                    - entity_id: "/sensor.*3\\d{2,4}$/"
+                  exclude:
+                    - state: "unknown"
+                    - state: "unavailable"
+                card:
+                  <<: *table-card
