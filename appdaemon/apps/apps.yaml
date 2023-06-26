@@ -1,9 +1,6 @@
 hello_world:
   module: hello
   class: HelloWorld
-heating_manager:
-  module: heatingManager
-  class: HeatingManager
 kairoshub_heating:
   module: kairoshubHeating
   class: KairoshubHeating
