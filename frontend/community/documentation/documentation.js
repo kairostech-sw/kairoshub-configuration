@@ -29,11 +29,7 @@ class DocumentationCard extends HTMLElement {
       <ha-card>
         <div id="header">
           <div>
-<<<<<<< Updated upstream
             <ha-icon icon="mdi:book-outline" style="width: 24px; padding:5px; color: white;"></ha-icon>
-=======
-            <ha-icon icon="mdi:help-circle-outline" style="width: 24px; padding:5px; color: white;"></ha-icon>
->>>>>>> Stashed changes
             <label style="font-weight: bold; color: white; ">Documentazione</label>
           </div>
           <button id="button" onclick="window.history.back();">Indietro</button>
