@@ -17,13 +17,16 @@ class KairoshubLights(hass.Hass):
 
         notyInfo = {
             "sender": self.getKey(data, "sender"),
-            "trid": self.getKey(data, "trid"),
             "ncode": "",
             "severity": "NOTICE",
             "kwargs": {
                 "zone": "all"
             }
         }
+        trid = self.getKey(data, "trid"),
+        if trid:
+            notyInfo["trid"] = trid
+
         if "ON" in event_name:
             notyInfo["ncode"] = "LIGHTS_ON"
             self.turnOn("group.lights", notyInfo)
@@ -50,7 +53,6 @@ class KairoshubLights(hass.Hass):
 
         notyInfo = {
             "sender": self.getKey(data, "sender"),
-            "trid": self.getKey(data, "trid"),
             "ncode": "",
             "severity": "NOTICE",
             "kwargs": {
@@ -58,6 +60,9 @@ class KairoshubLights(hass.Hass):
                 "mode": "Programmato"
             }
         }
+        trid = self.getKey(data, "trid"),
+        if trid:
+            notyInfo["trid"] = trid
 
         if onTime <= now < offTime:
             self.log("Turning on lights in zone %s",zoneId)

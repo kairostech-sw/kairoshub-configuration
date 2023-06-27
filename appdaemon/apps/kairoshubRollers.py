@@ -33,22 +33,24 @@ class KairoshubRollers(hass.Hass):
       sender = self.getKey(data, "sender") or "HUB"
       trid = self.getKey(data, "trid")
 
+      state = ("CLOSED","OPEN")["athome" == mode]
       position = int(float(self.get_state(f"input_number.rollershutter_{mode}_position")))
 
       self.log(f"Setting Rollers position at {position}%")
       self.call_service("cover/set_cover_position", entity_id="group.rollershutters", position=position)
 
-      state = ("CLOSED","OPEN")["athome" == mode]
-      noty_info = {
+      notyInfo = {
          "ncode": f"ROLLERS_{state}",
          "sender": sender,
-         "trid": trid,
          "severity": "NOTICE",
          "kwargs": {
             "pos": position
          }
       }
-      self.fire_event("AD_KAIROSHUB_NOTIFICATION", **noty_info)
+      if trid:
+          notyInfo["trid"] = trid
+
+      self.fire_event("AD_KAIROSHUB_NOTIFICATION", **notyInfo)
       self.fire_event("AD_ENTITY_METRICS")
 
     def getKey(self, data: dict, key: str) -> str:

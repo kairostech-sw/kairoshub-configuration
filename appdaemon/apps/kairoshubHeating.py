@@ -31,7 +31,6 @@ class KairoshubHeating(hass.Hass):
             comfort_temp = self.get_state("input_number.manual_heating_temp")
             notyInfo = {
                 "sender": sender,
-                "trid": trid,
                 "ncode": "HEATING_TEMP_REACHED",
                 "severity": "NOTICE",
                 "kwargs" : {
@@ -39,6 +38,8 @@ class KairoshubHeating(hass.Hass):
                     "comfort_temp": comfort_temp
                 }
             }
+            if trid:
+                notyInfo["trid"] = trid
             self.fire_event("AD_KAIROSHUB_NOTIFICATION", **notyInfo)
             return None
         if "ON" in event_name:
@@ -121,13 +122,14 @@ class KairoshubHeating(hass.Hass):
 
         notyInfo = {
             "sender": sender,
-            "trid": trid,
             "ncode": "",
             "severity": "NOTICE",
             "kwargs" : {
                 "program": progId,
             }
         }
+        if trid:
+            notyInfo["trid"] = trid
         if progId == 0 and self.isProgramOn(progId):
             self.log("A program is already active", level="INFO")
             return None

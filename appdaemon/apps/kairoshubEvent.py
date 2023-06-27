@@ -83,13 +83,13 @@ class KairoshubEvent(hass.Hass):
         eventType = data["eventType"]
         sender = data["sender"] if "sender" in data else ""
         eventValue = data["eventValue"] if "eventValue" in data else ""
-        trid = data["trid"] if "trid" in data else ""
 
         event = {
             "eventType": eventType,
             "sender": sender,
-            "trid": trid,
             "eventValue": eventValue
         }
+        if "trid" in data:
+            event["trid"] = data["trid"]
 
         return eventType, event

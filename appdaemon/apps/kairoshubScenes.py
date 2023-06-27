@@ -12,7 +12,6 @@ class KairoshubScenes(hass.Hass):
         "roller": "ATHOME",
         "ncode": "SCENE_DAY",
         "sender": self.getKey(data, "sender"),
-        "trid": self.getKey(data, "trid"),
         "severity": "NOTICE",
         "kwargs": {
           "mode": self.getKey(data, "mode"),
@@ -20,6 +19,9 @@ class KairoshubScenes(hass.Hass):
           "zones": ""
         }
       }
+      trid = self.getKey(data, "trid"),
+      if trid:
+          eventData["trid"] = trid
       state = self.getKey(data, "eventValue") or self.getKey(data, "state")
 
       if state in ["on", "night"]:

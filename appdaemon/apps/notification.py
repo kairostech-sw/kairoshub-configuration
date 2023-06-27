@@ -158,8 +158,9 @@ class Notification(hass.Hass):
             "systemCode": self.systemCode,
             "sender": sender,
             "message": message,
-            "trid": trid,
         }
+        if trid:
+            noty["trid"] = trid
         self.log("Notification : %s", noty, level="DEBUG")
         return noty
 
