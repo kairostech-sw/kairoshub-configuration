@@ -198,6 +198,7 @@
     - service: input_boolean.turn_on
       target:
         entity_id: input_boolean.light_program1
+
 - alias: LIGHT PROGRAM 1 TURN OFF
   trigger:
     - platform: state

@@ -18,16 +18,16 @@ class KairoshubHeating(hass.Hass):
         self.listen_event(self.handleManualHeating, "AD_HEATING_ON")
         self.listen_event(self.handleManualHeating, "AD_HEATING_OFF")
         self.listen_event(self.turnProgramOff,"AD_PROGRAM_OFF")
+        self.listen_event(self.comfortTempReached, "AD_MANUAL_TEMP_REACHED")
 
     def handleManualHeating(self, event_name: str, data: dict, kwargs: dict) -> None:
         '''
             Checks first if the comfort temp was already reached.
             Otherwise, turns ON or OFF the thermostat based on the event received
         '''
-        self.log(f"E: {type(event_name)}\n\tD: {type(data)}\n\tK: {type(kwargs)}")
         sender = self.getKey(data, "sender")
         trid = self.getKey(data, "trid")
-        if self.isComfortTempReached(self.get_state("sensor.temperatura")):
+        if self.isComfortTempReached(self.get_state("sensor.temperatura")) and self.get_state("switch.sw_thermostat") == "off":
             comfort_temp = self.get_state("input_number.manual_heating_temp")
             notyInfo = {
                 "sender": sender,
@@ -113,6 +113,12 @@ class KairoshubHeating(hass.Hass):
         progId = self.getKey(data, "program")
 
         self.turnHeatingOff(progId, sender, trid)
+
+    def comfortTempReached(self, event_name: str, data: dict, kwargs: dict) -> None:
+        comfort_temp = self.get_state("input_number.manual_heating_temp")
+        sender = self.getKey(data, "sender") or "HUB"
+        trid = self.getKey(data, "trid")
+        self.turnHeatingOff(0, sender, trid, comfort_temp)
 
     def turnHeatingOn(self, progId: int, sender: str, trid: str) -> None:
         '''

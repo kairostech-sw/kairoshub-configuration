@@ -13,7 +13,6 @@ manual_heating_temp:
   mode: slider
   name: Temperatura Per Riscaldamento Manuale
   icon: mdi:thermometer
-#TODO Rename to PROGRAM
 temperature_period1:
   <<: *heating-temp
 temperature_period2:

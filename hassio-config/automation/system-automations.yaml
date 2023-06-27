@@ -141,7 +141,6 @@
         - automation.heating_program_2
         - automation.heating_program_3
         - automation.heating_program_4
-        - automation.manual_heating
         - automation.comfort_temp_reached
         - automation.low_tv_battery_notification
         - automation.low_th_battery_notification
@@ -168,7 +167,6 @@
       automation.turn_{{trigger.to_state.state}}
     target:
       entity_id:
-        - automation.light_toggle
         - automation.light_zone_toggle
         - automation.copy_light_settings
         - automation.nightzone_program_1

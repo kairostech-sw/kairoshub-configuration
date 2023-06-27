@@ -6,6 +6,7 @@
     event: AD_SET_ROLLERS_POS
     event_data:
       mode: athome
+
 - alias: CLOSE ROLLERS
   trigger:
     - platform: event
@@ -14,6 +15,7 @@
     event: AD_SET_ROLLERS_POS
     event_data:
       mode: notathome
+
 - alias: CONTROL ROLLERS
   mode: restart
   trigger:
@@ -30,6 +32,7 @@
         sender: HUB
         ncode: "ROLLERS_{{ states('group.rollershutters') | upper }}"
         severity: NOTICE
+
 - alias: CALIBRATE ROLLERS
   trigger:
     - platform: event
