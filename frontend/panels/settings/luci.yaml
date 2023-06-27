@@ -1,47 +1,15 @@
 type: "custom:button-card"
-template: entities_grid
+template: setting_layout
+variables:
+  label: "Luci"
 custom_fields:
-  header:
+  content:
     card:
       type: "custom:button-card"
-      label: "Impostazioni / Luci"
-      template:
-        - header_page_text
-      name: "IMPOSTAZIONI"
-      icon: "mdi:cog"
-  commandbar:
-    card:
-      type: "custom:button-card"
-      template: command_bar
-      style: |
-        ha-card.button-card-main {
-          padding: 0px !important
-        }
-        div#container {
-          justify-items: right;
-        }
-      styles:
-        card:
-          - margin-top: 2px
-      custom_fields:
-        commands:
-          card:
-            type: horizontal-stack
-            cards:
-              - type: "custom:button-card"
-                template: button_go_back
-                style: |
-                  :host {
-                    align-self: center;
-                  }
-  entities:
-    card:
-      type: custom:button-card
       styles:
         grid:
-          - grid-template-areas: '"warning warning warning" "picker . ."'
+          - grid-template-areas: '"warning warning warning" ". picker ."'
           - grid-template-columns: auto
-          - grid-template-rows: auto
           - row-gap: 10px
         card:
           - background: none
@@ -65,20 +33,18 @@ custom_fields:
               action: none
         picker:
           card:
-            type: custom:time-picker-card
+            type: "custom:time-picker-card"
             entity: input_datetime.light_offset_sunset
             hour_mode: 24
             embedded: true
-            style: |
-              . {
-                background: red !important;
-              }
-              ha-card {
-                margin-left: 10px;
-              }
-              ha-card > .time-picker-header {
-                padding: 5px
-              }
-              ha-card > .time-picker-row {
-                padding: 0px !important
-              }
+            card_mod:
+              style: |
+                ha-card {
+                  margin-left: 10px;
+                }
+                ha-card > .time-picker-header {
+                  padding: 5px
+                }
+                ha-card > .time-picker-row {
+                  padding: 0px !important
+                }

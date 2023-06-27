@@ -1,48 +1,17 @@
 type: custom:button-card
-template: panel_grid
+template: setting_layout
+variables:
+  label: "Alexa"
 custom_fields:
-  header:
-    card:
-      type: "custom:button-card"
-      label: "Impostazioni / Alexa"
-      template:
-        - header_page_text
-      name: "IMPOSTAZIONI"
-      icon: "mdi:cog"
   commandbar:
     card:
       type: "custom:button-card"
       template: command_bar
-      style: |
-        ha-card.button-card-main {
-          padding: 0px !important;
-        }
-        div#container {
-          display: flex !important;
-          justify-content: space-between;
-        }
-      styles:
-        card:
-          - width: 800px
-          - margin-left: -10px
       custom_fields:
         commands:
           card:
-            type: custom:button-card
-            styles:
-              grid:
-                - grid-template-areas: '"integration back"'
-                - grid-template-columns: 1fr 1fr
-                - display: flex
-                - justify-content: space-between
-              card:
-                - background: none
-                - box-shadow: none
-                - width: 800px
-                - padding: 6px 0px
-              custom_fields:
-                integration:
-                  - margin-left: 20px
+            type: "custom:button-card"
+            template: alexa_command_bar
             custom_fields:
               integration:
                 card:
@@ -53,9 +22,15 @@ custom_fields:
                         - entity: input_text.alexa_auto_renew
                           state: "SI"
                       card:
-                        type: custom:button-card
-                        template: header_button_menu
-                        name: Disattiva Rinnovo
+                        type: "custom:button-card"
+                        template:
+                          - feedback_click
+                          - no_background
+                          - alexa_button_style
+                        name: "Disattiva Rinnovo"
+                        styles:
+                          card:
+                            - margin-left: 10px
                         tap_action:
                           confirmation:
                             text: "Sei sicuro di voler disattivare il rinnovo automatico?"
@@ -63,28 +38,17 @@ custom_fields:
                           service: automation.trigger
                           service_data:
                             entity_id: automation.alexa_integration_renew_toggle
-                        style: |
-                          :host {
-                            align-self: center;
-                            padding: 0px !important;
-                          }
-                        styles:
-                          card:
-                            - width: 150px
-                            - background: none
-                            - box-shadow: none
-                            - bottom: -10px
-                            - padding: 6px 0px
-                          name:
-                            - color: "#f4f4f4"
                     - type: conditional
                       conditions:
                         - entity: input_text.alexa_auto_renew
                           state: "NO"
                       card:
-                        type: custom:button-card
-                        template: header_button_menu
-                        name: Attiva Rinnovo
+                        type: "custom:button-card"
+                        template:
+                          - feedback_click
+                          - no_background
+                          - alexa_button_style
+                        name: "Attiva Rinnovo"
                         tap_action:
                           confirmation:
                             text: "Sei sicuro di voler attivare il rinnovo automatico?"
@@ -92,54 +56,18 @@ custom_fields:
                           service: automation.trigger
                           service_data:
                             entity_id: automation.alexa_integration_renew_toggle
-                        style: |
-                          :host {
-                            align-self: center;
-                            padding: 0px !important;
-                          }
-                        styles:
-                          card:
-                            - width: 150px
-                            - background: none
-                            - box-shadow: none
-                            - bottom: -10px
-                            - padding: 6px 0px
-                          name:
-                            - color: "#f4f4f4"
-              back:
-                card:
-                  type: custom:button-card
-                  template: header_button_menu
-                  name: Indietro
-                  tap_action:
-                    action: navigate
-                    navigation_path: /lovelace-kairoshub/impostazioni
-                  style: |
-                    :host {
-                      align-self: center;
-                      padding: 0px !important;
-                    }
-                  styles:
-                    card:
-                      - width: 150px
-                      - background: none
-                      - box-shadow: none
-                      - bottom: -10px
-                      - padding: 6px 0px
-                    name:
-                      - color: "#f4f4f4"
   content:
     card:
-      type: custom:integration-info-card
-      title: Integrazione Alexa
+      type: "custom:integration-info-card"
+      title: "Integrazione Alexa"
       entities:
         - entity: input_text.alexa_subscription_state
-          icon: mdi:amazon-alexa
+          icon: "mdi:amazon-alexa"
         - entity: input_text.alexa_subscription_activation_date
-          icon: mdi:calendar-check-outline
-          color: green
+          icon: "mdi:calendar-check-outline"
+          color: "green"
         - entity: input_text.alexa_subscription_renew_date
-          icon: mdi:calendar-refresh-outline
-          color: red
+          icon: "mdi:calendar-refresh-outline"
+          color: "red"
         - entity: input_text.alexa_auto_renew
-          icon: mdi:refresh-auto
+          icon: "mdi:refresh-auto"

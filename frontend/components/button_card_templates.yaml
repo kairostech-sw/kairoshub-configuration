@@ -1,68 +1,11 @@
+######################
+#### BASIC STYLES ####
+######################
 feedback_click:
   styles:
     card:
       - "--mdc-ripple-color": var(--paper-item-icon-active-color)
       - "--mdc-ripple-press-opacity": 0.2
-
-#######################
-### ACTION TEMPLATE ###
-#######################
-action_state_off:
-  state:
-    - value: "off"
-      styles:
-        icon:
-          - color: var(--disabled-text-color)
-        name:
-          - color: var(--disabled-text-color)
-
-#######################
-### BUTTON TEMPLATE ###
-#######################
-
-button_horizontal:
-  layout: icon_name
-  show_icon: true
-  styles:
-    card:
-      - height: 50px
-    name:
-      - padding-right: 5px
-
-button_text:
-  show_label: false
-  show_icon: false
-  styles:
-    card:
-      - height: 60px
-    name:
-      - font-weight: bold
-
-# TODO: Could be changed
-header_button_menu:
-  template:
-    - feedback_click
-  styles:
-    card:
-      - box-shadow: 1px 5px 8px rgba(0, 0, 0, 0.3)
-    name:
-      - color: var(--primary-text-color)
-      - font-weight: bold
-    icon:
-      - color: var(--primary-text-color)
-
-###########################
-### LABEL & EMPTY CARDS ###
-###########################
-
-row_space_10:
-  template: no_background
-  tap_action:
-    action: none
-  styles:
-    card:
-      - height: 10px
-      - padding: 0px
 
 no_background:
   styles:
@@ -79,120 +22,40 @@ width_50:
   styles:
     card:
       - width: 50px
-#######################
-### BUTTON TEMPLATE ###
-#######################
 
-# TODO: Can be deleted
-program_day_overview_theme:
-  icon: "mdi:calendar-blank-outline"
-  state:
-    - value: "on"
-      icon: "mdi:calendar-check"
-    - value: "off"
-      icon: "mdi:calendar-remove"
+row_space_10:
+  template: no_background
+  tap_action:
+    action: none
   styles:
     card:
-      - padding: 4%
-      - color: var(--primary-text-color)
-      - font-size: 10px
-      - text-transform: capitalize
-      - border-width: |
-          [[[
-          if (entity.state != 'on') return '0px';
-          return '2px';
-          ]]]
-      - border-style: double
-      - border-color: |
-          [[[
-            if (entity.state != 'on') return 'var(--paper-item-icon-color)';
-            return 'var(--active-color)';
-          ]]]
-      - box-shadow: 1px 5px 8px rgba(0, 0, 0, 0.3)
+      - height: 10px
+      - padding: 0px
+
+grid_style:
+  styles:
+    card:
+      - background: none
+      - padding-top: 15px
+      - "--mdc-ripple-press-opacity": 0
+
+expander_template:
+  styles:
     grid:
-      - grid-template-areas: '"i onoff" "n n" "start start" "stop stop"'
-      - grid-template-columns: 1fr 1fr
-      - grid-template-rows: 1fr min-content min-content min-content
-    name:
-      - font-weight: bold
-      - font-size: 16px
-      - align-self: middle
-      - justify-self: start
-      - padding-bottom: 4px
-      - padding-right: 5px
-    img_cell:
-      - justify-content: start
-      - align-items: start
-      - margin: none
-    icon:
-      - color: >
-          [[[
-            if (entity.state != 'on') return 'var(--paper-item-icon-color)';
-              return 'var(--active-color)'
-          ]]]
-      - width: 50%
-      - padding-top: 4px
-      - margin-top: -10%
-      - margin-left: 0%
-    custom_fields:
-      onoff:
-        - align-self: start
-        - justify-self: end
-        - text-transform: uppercase
-        - font-size: 20px
-        - font-weight: bold
-        - padding-right: 5px
-        - color: >
-            [[[
-              if (entity.state != 'on') return 'var(--paper-item-icon-color)';
-                return 'var(--active-color)'
-            ]]]
-      start:
-        - padding-bottom: 2px
-        - padding-right: 5px
-        - align-self: middle
-        - justify-self: start
-        - font-size: 12px
-      stop:
-        - padding-bottom: 2px
-        - align-self: middle
-        - justify-self: start
-        - padding-right: 5px
-        - font-size: 12px
-  custom_fields:
-    onoff: >
-      [[[
-        return `<ha-icon
-          icon="mdi:light"
-          style="width: 14px; height: 14px; color: var(--active-color);">
-          </ha-icon><span>${entity.state}</span>`
-      ]]]
-    start: >
-      [[[
-        return `<ha-icon
-          icon="mdi:clock"
-          style="width: 14px; height: 14px; color: var(--primary-color);">
-          </ha-icon><span> Accensione :&nbsp;&nbsp;<span style="color: var(--text-color-sensor);">${states[ variables.thermostat_period_on ].state}</span></span>`
-      ]]]
-    stop: >
-      [[[
-        return `<ha-icon
-          icon="mdi:clock"
-          style="width: 14px; height: 14px; color: var(--primary-color);">
-          </ha-icon><span> Spegnimento :&nbsp;<span style="color: var(--text-color-sensor);">${states[ variables.thermostat_period_off ].state}</span></span>`
-      ]]]
-  tap_action:
-    action: navigate
-    navigation_path: >
-      [[[
-        return '/lovelace-kairoshub/'+ variables.navigation_path
-      ]]]
+      - grid-template-areas: '"expander"'
+    card:
+      - padding: 0px
+  card_mod:
+    style:
+      expander-card$: |
+        .expander-card {
+          min-height: 100px;
+        }
 
 ####################
 ###### HEADER ######
 ####################
 
-# TODO: Check if can be changed
 header_page_text:
   type: "custom:button-card"
   template: no_background
@@ -204,25 +67,17 @@ header_page_text:
     card:
       - padding-top: 0px
     grid:
-      - grid-template-areas: '"a b" "a c"'
+      - grid-template-areas: '"i n" "i l"'
       - grid-template-columns: 60px 1fr
       - grid-template-rows: min-content min-content
-    state:
-      - font-size: 120%
-      - font-weight: bold
-      - justify-self: center
     name:
       - justify-self: left
       - font-size: 120%
       - font-weight: bold
       - color: var(--paper-item-icon-active-color)
-      - grid-area: b
     label:
       - justify-self: left
       - font-size: 80%
-      - grid-area: c
-    img_cell:
-      - grid-area: a
     icon:
       - width: 42px
       - height: 42px
@@ -230,76 +85,39 @@ header_page_text:
   tap_action:
     action: none
 
-# TODO: Check if can be changed
-user_profile_header:
-  type: "custom:button-card"
-  entity: person.utente
+header_icon_label:
   template: no_background
-  show_icon: false
-  show_label: true
   show_name: false
   show_state: false
-  show_entity_picture: true
+  show_label: true
   styles:
     card:
       - padding-top: 7px
-    grid:
-      - grid-template-areas: '"a" "b"'
-      - grid-template-columns: 60px
-      - grid-template-rows: min-content min-content
+      - width: 73px
     label:
       - font-size: 80%
       - font-weight: bold
       - color: var(--paper-item-icon-active-color)
-      - grid-area: b
-    img_cell:
-      - grid-area: a
     icon:
       - width: 32px
       - height: 32px
+
+user_profile_header:
+  type: "custom:button-card"
+  entity: person.utente
+  template: header_icon_label
+  show_icon: false
+  show_entity_picture: true
   tap_action:
     action: none
-
-icon_state_header:
-  type: "custom:button-card"
-  template: no_background
-  show_icon: true
-  show_label: true
-  show_name: false
-  show_state: false
-  show_entity_picture: true
-  styles:
-    card:
-      - padding-top: 7px
-    grid:
-      - grid-template-areas: '"a" "b" "c"'
-      - grid-template-columns: 1fr
-      - grid-template-rows: min-content min-content min-content
-    label:
-      - font-size: 80%
-      - font-weight: bold
-      - color: "#f4f4f4"
-      - grid-area: b
-    img_cell:
-      - grid-area: a
-    state:
-      - grid-area: c
-      - font-size: 90%
-      - font-weight: bold
-    icon:
-      - width: 32px
-      - height: 32px
 
 user_notification_header:
   type: "custom:button-card"
   entity: input_boolean.notification_to_read
-  template: no_background
-  show_icon: true
-  show_label: true
-  show_name: false
-  show_state: false
+  template: header_icon_label
+  show_icon: false
   show_entity_picture: true
-  extra_styles: |
+  extra_styles: >
     @keyframes tilt-shaking {
       5% { transform: rotate(10deg); }
       15% { transform: rotate(-10deg); }
@@ -310,73 +128,41 @@ user_notification_header:
       styles:
         icon:
           - animation: tilt-shaking 5s linear infinite
-  entity_picture: |
+  entity_picture: >
     [[[
       if (entity.state == 'on' ) return '/local/images/notification.png'  ;
       if (entity.state == 'off' ) return '/local/images/bell.png';
-      else return '';
+      return '';
     ]]]
-  styles:
-    card:
-      - padding-top: 7px
-    grid:
-      - grid-template-areas: '"a" "l"'
-      - grid-template-columns: 60px
-      - grid-template-rows: min-content min-content
-    img_cell:
-      - grid-area: a
-    icon:
-      - width: 32px
-      - height: 32px
-    label:
-      - font-size: 80%
-      - font-weight: bold
-      - color: var(--paper-item-icon-active-color)
   tap_action:
     action: navigate
     navigation_path: /lovelace-kairoshub/notification
 
-icon_clima:
-  icon: mdi:calendar-remove
-  state:
-    - value: "on"
-      icon: mdi:calendar-check
-      styles:
-        icon:
-          - color: var(--command-state-active-color)
-
-# TODO: Check if can be changed & removed
-header_icon_clima:
-  name: Programma caldo
-  template: icon_state_header
-  entity: binary_sensor.heater_auto
-  icon: mdi:calendar-remove
-  label: "OFF"
-  state:
-    - value: "on"
-      icon: mdi:calendar-check
-      label: "ON"
-      styles:
-        icon:
-          - color: var(--command-state-active-color)
+documentation_header:
+  template: header_icon_label
+  label: "Manuale"
+  show_icon: true
+  icon: mdi:book-outline
+  color: grey
   tap_action:
-    action: none
+    action: navigate
+    navigation_path: /lovelace-kairoshub/documentation
 
-# TODO: Check if can be changed & removed
-button_hold:
-  template: feedback_click
+icon_state_header:
+  template: header_icon_label
+  layout: name_state
+  show_icon: true
   styles:
     card:
-      - box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1)
-      - border: solid 1px rgb(0 0 0 / 10%)
+      - width: 120px
+    label:
+      - color: "#f4f4f4"
 
 ####################
 # NAVIGATION BUTTONS
 ####################
 
-# TODO: Could be changed
 button_go_to_program:
-  type: "custom:button-card"
   template: icon_state_header
   icon: '[[[ return "mdi:numeric-" + variables.progId + "-box-outline"]]]'
   state:
@@ -386,7 +172,7 @@ button_go_to_program:
       color: var(--command-state-color)
   tap_action:
     action: navigate
-    navigation_path: '[[[ return "/lovelace-kairoshub/clima-p" + variables.progId]]]'
+    navigation_path: '[[[ return "/lovelace-kairoshub/" + variables.navigation_path]]]'
   styles:
     card:
       - width: 63px
@@ -397,9 +183,8 @@ button_go_to_program:
     }
 
 button_go_back:
-  type: "custom:button-card"
-  template: header_button_menu
-  name: Indietro
+  template: feedback_click
+  name: "Indietro"
   tap_action:
     action: navigate
     navigation_path: "[[[window.history.back()]]]"
@@ -410,16 +195,17 @@ button_go_back:
       - box-shadow: none
     name:
       - color: "#f4f4f4"
+      - font-weight: bold
   style: |
     :host {
       align-self: center;
     }
 
-####################
-# CLIMA ############
-####################
+#####################
+#### PAGE LAYOUT ####
+#####################
 
-detail_page:
+basic_page_layout:
   template: grid_style
   card_mod:
     style: |
@@ -437,6 +223,129 @@ detail_page:
         - height: 300px
         - margin-top: 5px
         - overflow: auto
+
+###################
+###### CLIMA ######
+###################
+
+clima_detail:
+  icon: "[[[return variables.icon]]]"
+  template: no_background
+  styles:
+    card:
+      - padding: 1%
+    grid:
+      - grid-template-areas: '"i name . temp" "lastupdate info . humidity"'
+      - grid-template-columns: 50px 1fr auto
+      - grid-template-rows: 50px 30px
+      - column-gap: 5px
+    img_cell:
+      - justify-content: start
+      - align-items: start
+      - margin: none
+    icon:
+      - width: 70%
+      - color: >
+          [[[
+            var color = "#000000"
+            var input = `input_boolean.heater_zn${variables.zoneId}_program`;
+            if ((""+variables.zoneId).endsWith("00"))
+              input = input.replace("input_boolean", "group");
+            for (var i=1; i<5; i++) {
+              if (states[input+`${i}_on`].state === "on") {
+                color = "var(--command-state-active-color)";
+              }
+            }
+            return color;
+          ]]]
+    custom_fields:
+      name:
+        - font-weight: bold
+        - font-size: 16px
+        - align-self: middle
+        - justify-self: start
+        - padding-bottom: 4px
+        - padding-right: 5px
+        - padding-top: 5px
+      lastupdate:
+        - justify-self: start
+      humidity:
+        - justify-self: end
+      temp:
+        - justify-self: end
+      active:
+        - justify-self: end
+      alert:
+        - justify-self: end
+      info:
+        - justify-self: start
+        - align-self: flex-end
+        - margin-left: 50px
+  custom_fields:
+    temp: >
+      [[[
+        var zoneTemperature = states[`sensor.tz${variables.zoneId}`].state;
+        var tempColor = 'var(--temperature-secondary-color)';
+        var targetTempColor = 'var(--temperature-primary-color)';
+        var comfortTemp = states['input_number.manual_heating_temp'].state;
+        var programTemp = `input_number.temperature_zn${variables.zoneId}_period`;
+        for (var i=1; i<5; i++) {
+          if (states[`input_boolean.heater_program${i}_on`].state === "on") {
+            comfortTemp = states[programTemp+i].state;
+          }
+        }
+        if (zoneTemperature >= comfortTemp) {
+          tempColor = 'var(--temperature-primary-color)';
+          targetTempColor = 'var(--temperature-secondary-color)';
+        }
+
+        return `<div style="align-items: center; display: flex;">
+          <span style="font-size: 18px; font-weight: 600; color: ${tempColor};">${zoneTemperature}&nbsp;</span>
+          <span style="font-size: 18px; font-weight: 600; color: ${targetTempColor};">/${comfortTemp}°C </span>
+          <ha-icon icon="mdi:thermometer"
+            style="color: ${targetTempColor}; width: 24px; padding: 5px; margin: 0px;"/>
+          </div>`;
+      ]]]
+    humidity: >
+      [[[
+        var humidity = states[`sensor.hz${variables.zoneId}`].state;
+        if (humidity != "unknown" && humidity != "unavailable")
+          return `<div style="align-items: center; display: flex;"><span style="font-size: 18px; font-weight: 600; color: var(--humidity-primary-color);">${ humidity }%</span>
+            <ha-icon icon="mdi:water-percent"
+              style="color: var(--humidity-primary-color); width: 24px; padding: 5px; margin: 0px;"/>
+          </div>`;
+        return "</>";
+      ]]]
+    lastupdate: >
+      [[[
+        var datetime =  states[`sensor.tz${variables.zoneId}`].last_changed.split("T");
+        datetime = new Date(datetime).toLocaleString().replace(","," ");
+        var lastupdate = datetime.substring(0,datetime.length-3);
+        return `<span style="font-size: 12px;">${lastupdate }</span>`
+      ]]]
+    info:
+      card:
+        type: "custom:button-card"
+        template: clima_alert
+        variables:
+          zoneId: "[[[return variables.zoneId;]]]"
+    name: >
+      [[[
+        var name = states[`input_text.zn${variables.zoneId}`].state;
+        var label = "";
+        var input = `input_boolean.heater_zn${variables.zoneId}_program`;
+        if ((""+variables.zoneId).endsWith("00"))
+          input = input.replace("input_boolean", "group");
+        for (var i=1; i<5; i++) {
+          if (states[input+`${i}_on`].state === "on") {
+            label = "ATTIVO";
+          }
+        }
+        return `<div style="display: flex; flex-direction: column; align-items: flex-start;">
+          <span>${name}</span>
+          <span style="font-size: 10px;">${label}</span>
+          </div>`;
+      ]]]
 
 clima_nightzone_expander:
   template: expander_template
@@ -621,7 +530,7 @@ clima_dayzone_expander:
             icon: "[[[return variables.icon;]]]"
         cards:
           - <<: *divider-2px
-          - type: custom:mod-card
+          - type: "custom:mod-card"
             card_mod:
               style:
                 hui-grid-card$: |
@@ -659,7 +568,7 @@ clima_dayzone_expander:
                       state_not: "unknown"
                   card:
                     type: "custom:button-card"
-                    template: "clima_detail"
+                    template: clima_detail
                     triggers_update:
                       - input_number.temperature_zn201_period1
                       - input_number.temperature_zn201_period2
@@ -679,7 +588,7 @@ clima_dayzone_expander:
                       state_not: "unknown"
                   card:
                     type: "custom:button-card"
-                    template: "clima_detail"
+                    template: clima_detail
                     triggers_update:
                       - input_number.temperature_zn202_period1
                       - input_number.temperature_zn202_period2
@@ -699,7 +608,7 @@ clima_dayzone_expander:
                       state_not: "unknown"
                   card:
                     type: "custom:button-card"
-                    template: "clima_detail"
+                    template: clima_detail
                     triggers_update:
                       - input_number.temperature_zn203_period1
                       - input_number.temperature_zn203_period2
@@ -714,131 +623,8 @@ clima_dayzone_expander:
                       zoneId: 203
                       icon: "mdi:toilet"
 
-clima_detail:
-  icon: "[[[return variables.icon]]]"
+clima_alert:
   template: no_background
-  styles:
-    card:
-      - padding: 1%
-    grid:
-      - grid-template-areas: '"i name . temp" "lastupdate info . humidity"'
-      - grid-template-columns: 50px 1fr auto
-      - grid-template-rows: 50px 30px
-      - column-gap: 5px
-    img_cell:
-      - justify-content: start
-      - align-items: start
-      - margin: none
-    icon:
-      - width: 70%
-      - color: >
-          [[[
-            var color = "#000000"
-            var input = `input_boolean.heater_zn${variables.zoneId}_program`;
-            if ((""+variables.zoneId).endsWith("00"))
-              input = input.replace("input_boolean", "group");
-            for (var i=1; i<5; i++) {
-              if (states[input+`${i}_on`].state === "on") {
-                color = "var(--command-state-active-color)";
-              }
-            }
-            return color;
-          ]]]
-    custom_fields:
-      name:
-        - font-weight: bold
-        - font-size: 16px
-        - align-self: middle
-        - justify-self: start
-        - padding-bottom: 4px
-        - padding-right: 5px
-        - padding-top: 5px
-      lastupdate:
-        - justify-self: start
-      humidity:
-        - justify-self: end
-      temp:
-        - justify-self: end
-      active:
-        - justify-self: end
-      alert:
-        - justify-self: end
-      info:
-        - justify-self: start
-        - align-self: flex-end
-        - margin-left: 50px
-  custom_fields:
-    temp: >
-      [[[
-        var zoneTemperature = states[`sensor.tz${variables.zoneId}`].state;
-        var tempColor = 'var(--temperature-secondary-color)';
-        var targetTempColor = 'var(--temperature-primary-color)';
-        var comfortTemp = states['input_number.manual_heating_temp'].state;
-        var programTemp = `input_number.temperature_zn${variables.zoneId}_period`;
-        for (var i=1; i<5; i++) {
-          if (states[`input_boolean.heater_program${i}_on`].state === "on") {
-            comfortTemp = states[programTemp+i].state;
-          }
-        }
-        if (zoneTemperature >= comfortTemp) {
-          tempColor = 'var(--temperature-primary-color)';
-          targetTempColor = 'var(--temperature-secondary-color)';
-        }
-
-        return `<div style="align-items: center; display: flex;">
-          <span style="font-size: 18px; font-weight: 600; color: ${tempColor};">${zoneTemperature}&nbsp;</span>
-          <span style="font-size: 18px; font-weight: 600; color: ${targetTempColor};">/${comfortTemp}°C </span>
-          <ha-icon icon="mdi:thermometer"
-            style="color: ${targetTempColor}; width: 24px; padding: 5px; margin: 0px;"/>
-          </div>`;
-      ]]]
-    humidity: >
-      [[[
-        var humidity = states[`sensor.hz${variables.zoneId}`].state;
-        if (humidity != "unknown" && humidity != "unavailable")
-          return `<div style="align-items: center; display: flex;"><span style="font-size: 18px; font-weight: 600; color: var(--humidity-primary-color);">${ humidity }%</span>
-            <ha-icon icon="mdi:water-percent"
-              style="color: var(--humidity-primary-color); width: 24px; padding: 5px; margin: 0px;"/>
-          </div>`;
-        return "</>";
-      ]]]
-    lastupdate: >
-      [[[
-        var datetime =  states[`sensor.tz${variables.zoneId}`].last_changed.split("T");
-        datetime = new Date(datetime).toLocaleString().replace(","," ");
-        var lastupdate = datetime.substring(0,datetime.length-3);
-        return `<span style="font-size: 12px;">${lastupdate }</span>`
-      ]]]
-    info:
-      card:
-        type: "custom:button-card"
-        template: clima_infos
-        variables:
-          zoneId: "[[[return variables.zoneId;]]]"
-    name: >
-      [[[
-        var name = states[`input_text.zn${variables.zoneId}`].state;
-        var label = "";
-        var input = `input_boolean.heater_zn${variables.zoneId}_program`;
-        if ((""+variables.zoneId).endsWith("00"))
-          input = input.replace("input_boolean", "group");
-        for (var i=1; i<5; i++) {
-          if (states[input+`${i}_on`].state === "on") {
-            label = "ATTIVO";
-          }
-        }
-        return `<div style="display: flex; flex-direction: column; align-items: flex-start;">
-          <span>${name}</span>
-          <span style="font-size: 10px;">${label}</span>
-          </div>`;
-      ]]]
-
-clima_infos:
-  template: no_background
-  styles:
-    grid:
-      - grid-template-areas: '"alert"'
-      - grid-template-columns: auto
   custom_fields:
     alert: >
       [[[
@@ -921,355 +707,8 @@ temperature_ctrl_minus:
     service: input_number.decrement
     service_data:
       entity_id: "[[[ return variables.entity; ]]]"
-# TODO: Check if can be changed
-heating_program_ctrl:
-  icon: mdi:power
-  state:
-    - value: "on"
-      label: "Acceso"
-      color: var(--command-state-active-color)
-    - value: "off"
-      label: "Spento"
-      color: var(--command-state-color)
 
-light_detail:
-  icon: mdi:lightbulb
-  size: 75%
-  name: "[[[return states[`input_text.zn${variables.zoneId}`].state;]]]"
-  tap_action:
-    action: none
-  styles:
-    grid:
-      - grid-template-areas: '"i n"'
-      - grid-template-rows: 130px
-      - grid-template-columns: 55px 1fr
-    card:
-      - padding: 5px
-      - color: var(--primary-text-color)
-      - font-size: 10px
-      - text-transform: capitalize
-      - box-shadow: 1px 5px 8px rgba(0, 0, 0, 0.3)
-      - margin-bottom: 5px
-      - margin-right: 3px
-      - height: 90px
-      - width: 237px
-    name:
-      - font-weight: bold
-      - font-size: 16px
-      - align-self: middle
-      - justify-self: start
-      - padding-bottom: 4px
-      - padding-right: 5px
-      - padding-top: 5px
-    img_cell:
-      - justify-content: start
-      - margin-left: 10px
-      - width: 60px
-      - height: 50px
-    icon:
-      - color: "#000000"
-  state:
-    - value: "on"
-      styles:
-        icon:
-          - color: >
-              [[[
-                if (states["input_select.light_type"].state == "color")
-                {
-                  var light = `light.group_lz${variables.zoneId}`
-                  if (states[light].state) {
-                    if (states[light].attributes.rgb_color != undefined) {
-                    var color = states[light].attributes.rgb_color
-                    return "rgb("+color[0]+","+color[1]+","+color[2]+")";
-                    }
-                  }
-                }
-                return "#DCA200";
-              ]]]
-
-light_program:
-  styles:
-    grid:
-      - grid-template-areas: '"label select days time"'
-      - grid-template-columns: 160px 140px 100px 1fr
-      - align-items: self-end
-    card:
-      - height: auto
-      - width: 750px
-      - padding: 0px
-    custom_fields:
-      label:
-        - margin-top: 30px
-      select:
-        - margin-bottom: 14px
-      days:
-        - margin-bottom: 14px
-      time:
-        - margin-top: 10px
-        - margin-left: 30px
-
-scenes_program:
-  styles:
-    grid:
-      - grid-template-areas: '"label select time"'
-      - grid-template-columns: 200px 200px 1fr
-    card:
-      - height: auto
-      - width: 750px
-      - padding: 0px
-    custom_fields:
-      label:
-        - margin-top: 27px
-      select:
-        - margin-left: 10px
-      time:
-        - margin-top: 10px
-        - margin-left: 60px
-
-# TODO: Check if can be changed
-button_grid_settings:
-  template: grid_style
-  styles:
-    grid:
-      - grid-template-areas: '"header" "content"'
-      - grid-template-columns: auto
-      - grid-template-rows: min-content min-content min-content
-      - justify-items: center
-      - align-items: start
-      - column-gap: 0px
-      - row-gap: 10px
-    custom_fields:
-      header:
-        - justify-self: start
-
-# TODO: Check if can be changed
-assistance_grid:
-  template: grid_style
-  styles:
-    grid:
-      - grid-template-areas: '"header header" "system_data assistance" "system_data kairos_info"'
-      - grid-template-columns: 1fr 55%
-      - grid-template-rows: 50px min-content 145px
-      - justify-items: start
-      - align-items: start
-      - column-gap: 10px
-      - row-gap: 10px
-      - margin-right: 10px
-      - margin-left: 10px
-    custom_fields:
-      system_data:
-        - justify-self: stretch
-      assistance:
-        - display: grid
-        - justify-self: stretch
-      kairos_info:
-        - text-align: start
-
-assistance_info:
-  styles:
-    card:
-      - color: var(--primary-text-color)
-      - text-transform: capitalize
-      - padding: 12px 16px 16px
-    grid:
-      - grid-template-areas: '"i header" "content content"'
-      - grid-template-columns: 30px 1fr
-      - grid-template-rows: min-content 1fr
-    name:
-      - place-self: start
-      - grid-area: header
-      - line-height: 48px
-      - font-size: 20px
-      - font-weight: 500
-      - color: var(--ha-card-header-color)
-      - padding-left: 5px
-    img_cell:
-      - justify-content: start
-      - align-items: start
-      - margin: none
-      - grid-area: i
-    icon:
-      - color: var(--ha-card-header-color)
-      - width: 80%
-    content:
-      - font-weight: bold
-  custom_fields:
-    content: >
-      [[[
-        return `
-          <div class="assistance_content" style="text-align: left; font-size: 12px">
-
-            <div>
-              <ha-icon icon="mdi:account" style="width: 24px; padding:5px; color: var(--ha-card-header-color);"></ha-icon>
-              <label style="font-weight: bold ">Intestatario impianto:</label>
-              <span > ${ states[ variables.systemOwner ].state} </span>
-            </div>
-
-            <div>
-              <ha-icon icon="mdi:identifier" style="width: 24px; padding:5px; color: var(--ha-card-header-color);"></ha-icon>
-              <label style="font-weight: bold; ">Identificativo impianto:</label>
-              <span > ${ states[ variables.systemCode ].state} </span>
-            </div>
-
-            <div>
-              <ha-icon icon="mdi:key" style="width: 24px; padding:5px; color: var(--ha-card-header-color);"></ha-icon>
-              <label style="font-weight: bold; ">Chiave impianto:</label>
-              <span > ${ states[ variables.systemKey ].state} </span>
-            </div>
-            <br />
-
-            <div>
-              <ha-icon icon="mdi:home-assistant" style="width: 24px; padding:5px; color: var(--ha-card-header-color);"></ha-icon>
-              <label style="font-weight: bold ">Stato impianto:</label>
-              <span > ${ states[ variables.systemState ].state} </span>
-            </div>
-
-            <div>
-              <ha-icon icon="mdi:cellphone-arrow-down" style="width: 24px; padding:5px; color: var(--ha-card-header-color);"></ha-icon>
-              <label style="font-weight: bold ">Versione software:</label>
-              <span > ${ states[ variables.kairoshubSwVersion ].state} </span>
-            </div>
-
-          </div>
-        `
-      ]]]
-
-# TODO: Check if can be changed
-grid_style:
-  styles:
-    card:
-      - background: none
-      - padding-top: 15px
-      - "--mdc-ripple-press-opacity": 0
-
-entities_grid:
-  template: grid_style
-  styles:
-    grid:
-      - grid-template-areas: '"header" "entities" "commandbar'
-      - grid-template-columns: auto
-      - grid-template-row: auto
-      - align-items: start
-      - column-gap: 0px
-      - row-gap: 10px
-    custom_fields:
-      header:
-        - justify-self: start
-      entities:
-        - text-align: start
-        - height: 290px
-
-zones_grid:
-  template: grid_style
-  styles:
-    grid:
-      - grid-template-areas: '"header header" "zones zones" "commandbar commandbar"'
-      - grid-template-columns: 1fr 1fr
-      - grid-auto-rows: auto
-      - row-gap: 3px
-      - column-gap: 10px
-      - margin-left: 10px
-      - margin-right: 10px
-    custom_fields:
-      header:
-        - margin-bottom: 2px
-        - margin-left: -10px
-        - height: 46px
-      zones:
-        - height: 307px
-
-panel_grid:
-  template: grid_style
-  styles:
-    card:
-      - background: none
-      - padding-top: 15px
-    grid:
-      - grid-template-areas: '"header" "content" "commandbar"'
-      - grid-template-columns: 1fr
-      - grid-auto-rows: auto
-      - row-gap: 3px
-      - column-gap: 10px
-      - margin-left: 10px
-      - margin-right: 10px
-    custom_fields:
-      header:
-        - margin-bottom: 2px
-        - margin-left: -10px
-        - height: 46px
-      content:
-        - max-height: 300px
-        - margin-top: 5px
-
-# TODO: Check if can be changed
-zone_table:
-  template: grid_style
-  styles:
-    grid:
-      - grid-template-areas: '"header header header" "warning warning warning" "list1  list2 ." "commandbar commandbar commandbar"'
-      - grid-template-columns: auto
-      - grid-template-rows: 1fr 80px 192px min-content
-      - align-items: start
-      - row-gap: 5px
-    custom_fields:
-      warning:
-        - justify-self: stretch
-        - text-align-last: start
-      list1:
-        - margin-left: 40px
-
-# TODO: Check if can be changed
-zone_name:
-  styles:
-    card:
-      - background: none
-      - padding: 3px
-      - margin-left: 5px
-      - width: 250px
-  tap_action:
-    action: none
-
-# TODO: Check if can be changed
-graph:
-  styles:
-    custom_fields:
-      graph:
-        - overflow: unset
-    card:
-      - overflow: unset
-      - padding-top: 0px
-    grid:
-      - grid-template-areas: '"graph"'
-
-settings_card:
-  template: button_hold
-  styles:
-    card:
-      - width: 165px
-      - height: 115px
-      - box-shadow: 1px 5px 8px rgba(0, 0, 0, 0.3)
-      - margin: 5px
-
-command_bar:
-  styles:
-    grid:
-      - grid-template-areas: '"commands"'
-    card:
-      - margin-top: 0.5px
-      - margin-bottom: 0px
-      - box-shadow: 1px -1px 8px rgba(0, 0, 0, 0.3)
-      - background: "#333333"
-      - text-color: white
-      - position: fixed
-      - bottom: 0px
-      - z-index: 100
-    custom_fields:
-      commands:
-        - margin-top: 3px
-        - height: 60px
-
-# TODO: Check if can be changed
-new_heating_program_ctrl:
+heating_program_schedule:
   styles:
     card:
       - padding: 0%
@@ -1350,9 +789,14 @@ heating_program_layout:
       card:
         type: "custom:button-card"
         entity: "[[[return `input_boolean.heater_program${variables.progId}`]]]"
-        template:
-          - header_page_text
-          - icon_clima
+        template: header_page_text
+        icon: "mdi:calendar-remove"
+        state:
+          - value: "on"
+            icon: "mdi:calendar-check"
+            styles:
+              icon:
+                - color: var(--command-state-active-color)
         name: "[[[return `PROGRAMMA ${variables.progId}`]]]"
         label: "[[[return `Clima / Programma ${variables.progId}`]]]"
     commandbar:
@@ -1388,7 +832,7 @@ heating_program_content:
     program:
       card:
         type: "custom:button-card"
-        template: new_heating_program_ctrl
+        template: heating_program_schedule
         variables:
           progId: "[[[return variables.progId]]]"
     content:
@@ -1542,11 +986,18 @@ heating_command_bar:
           - type: "custom:button-card"
             template:
               - icon_state_header
-              - heating_program_ctrl
+            icon: mdi:power
+            state:
+              - value: "on"
+                label: "Acceso"
+                color: var(--command-state-active-color)
+              - value: "off"
+                label: "Spento"
+                color: var(--command-state-color)
             entity: "[[[return `input_boolean.heater_program${variables.progId}`]]]"
           - type: "custom:button-card"
             template:
-              - header_button_menu
+              - feedback_click
               - temperature_ctrl_minus
             styles:
               card:
@@ -1561,7 +1012,7 @@ heating_command_bar:
               - temperature_value
           - type: "custom:button-card"
             template:
-              - header_button_menu
+              - feedback_click
               - temperature_ctrl_plus
             styles:
               card:
@@ -1571,19 +1022,6 @@ heating_command_bar:
               entity: "[[[return `input_number.temperature_period${variables.progId}`]]]"
           - type: "custom:button-card"
             template: button_go_back
-
-expander_template:
-  styles:
-    grid:
-      - grid-template-areas: '"expander"'
-    card:
-      - padding: 0px
-  card_mod:
-    style:
-      expander-card$: |
-        .expander-card {
-          min-height: 100px;
-        }
 
 heating_program_expander_nightzone:
   template: expander_template
@@ -1812,17 +1250,9 @@ heating_program_expander_room:
               variables:
                 entity: "[[[return `input_number.temperature_${variables.zone}_period${variables.progId}`]]]"
 
-lights_label:
-  layout: icon_name
-  icon: "mdi:power"
-  state:
-    - value: "off"
-      color: black
-    - value: "on"
-      color: "#DCA200"
-  styles:
-    card:
-      - box-shadow: none
+################
+##### LUCI #####
+################
 
 lights_detail:
   template: no_background
@@ -1882,53 +1312,17 @@ lights_detail:
         return `<span style="font-size: 12px;">${lastupdate }</span>`
       ]]]
 
-lights_detail_room:
-  icon: "[[[return variables.icon]]]"
-  template:
-    - no_background
-    - lights_detail
+lights_label:
+  layout: icon_name
+  icon: "mdi:power"
+  state:
+    - value: "off"
+      color: black
+    - value: "on"
+      color: "#DCA200"
   styles:
-    grid:
-      - grid-template-areas: '"label control" "lastupdate palette "'
-      - grid-template-columns: 170px 1fr
-      - grid-template-rows: 50px
-      - column-gap: 5px
-    custom_fields:
-      control:
-        - width: 40px
-        - margin-left: 15px
-      palette:
-        - justify-self: start
-  custom_fields:
-    control:
-      card:
-        type: "custom:button-card"
-        template: no_background
-        icon: "mdi:palette-outline"
-        styles:
-          icon:
-            - color: >
-                [[[
-                  if (states["input_select.light_type"].state == "color")
-                  {
-                    var light = `light.group_lz${variables.zone}`
-                    if (states[light].state) {
-                      if (states[light].attributes.rgb_color != undefined) {
-                      var color = states[light].attributes.rgb_color
-                      return "rgb("+color[0]+","+color[1]+","+color[2]+")";
-                      }
-                    }
-                  }
-                  return "#DCA200";
-                ]]]
-        size: 80%
-        tap_action:
-          action: navigate
-          navigation_path: "[[[return '/lovelace-kairoshub/'+ variables.navigation_path]]]"
-    palette: >
-      [[[
-        return `<span style="font-size: 12px;">Personalizza</span>`
-      ]]]
+    card:
+      - box-shadow: none
 
 lights_expander_nightzone:
   template: expander_template
@@ -2128,8 +1522,56 @@ lights_expander_outdoor:
                       navigation_path: "lights-nightzone-room4"
                       zone: 304
 
+lights_detail_room:
+  icon: "[[[return variables.icon]]]"
+  template:
+    - no_background
+    - lights_detail
+  styles:
+    grid:
+      - grid-template-areas: '"label control" "lastupdate palette"'
+      - grid-template-columns: 170px 1fr
+      - grid-template-rows: 50px
+      - column-gap: 5px
+    custom_fields:
+      control:
+        - width: 40px
+        - margin-left: 15px
+      palette:
+        - justify-self: start
+  custom_fields:
+    control:
+      card:
+        type: "custom:button-card"
+        template: no_background
+        icon: "mdi:palette-outline"
+        styles:
+          icon:
+            - color: >
+                [[[
+                  if (states["input_select.light_type"].state == "color")
+                  {
+                    var light = `light.group_lz${variables.zone}`
+                    if (states[light].state) {
+                      if (states[light].attributes.rgb_color != undefined) {
+                      var color = states[light].attributes.rgb_color
+                      return "rgb("+color[0]+","+color[1]+","+color[2]+")";
+                      }
+                    }
+                  }
+                  return "#DCA200";
+                ]]]
+        size: 80%
+        tap_action:
+          action: navigate
+          navigation_path: "[[[return '/lovelace-kairoshub/'+ variables.navigation_path]]]"
+    palette: >
+      [[[
+        return `<span style="font-size: 12px;">Personalizza</span>`
+      ]]]
+
 lights_ctrl:
-  template: detail_page
+  template: basic_page_layout
   custom_fields:
     header:
       card:
@@ -2185,3 +1627,265 @@ lights_ctrl:
                     }
                 - type: "custom:button-card"
                   template: button_go_back
+
+light_program:
+  styles:
+    grid:
+      - grid-template-areas: '"label select days time"'
+      - grid-template-columns: 160px 140px 100px 1fr
+      - align-items: self-end
+    card:
+      - height: auto
+      - width: 750px
+      - padding: 0px
+    custom_fields:
+      label:
+        - margin-top: 30px
+      select:
+        - margin-bottom: 14px
+      days:
+        - margin-bottom: 14px
+      time:
+        - margin-top: 10px
+        - margin-left: 30px
+
+###############
+### SCENARI ###
+###############
+
+scenes_program:
+  styles:
+    grid:
+      - grid-template-areas: '"label select time"'
+      - grid-template-columns: 200px 200px 1fr
+    card:
+      - height: auto
+      - width: 750px
+      - padding: 0px
+    custom_fields:
+      label:
+        - margin-top: 27px
+      select:
+        - margin-left: 10px
+      time:
+        - margin-top: 10px
+        - margin-left: 60px
+
+################
+# IMPOSTAZIONI #
+################
+
+settings_grid:
+  template: grid_style
+  styles:
+    grid:
+      - grid-template-areas: '"header" "content"'
+      - grid-template-rows: min-content min-content
+      - justify-items: center
+      - row-gap: 10px
+    custom_fields:
+      header:
+        - justify-self: start
+
+settings_card:
+  template: feedback_click
+  tap_action:
+    action: navigate
+    navigation_path: "[[[return '/lovelace-kairoshub/'+ variables.navigation_path]]]"
+  styles:
+    card:
+      - width: 165px
+      - height: 115px
+      - box-shadow: 1px 5px 8px rgba(0, 0, 0, 0.3)
+      - margin: 5px
+      - border: solid 1px rgb(0 0 0 / 10%)
+
+setting_layout:
+  template: basic_page_layout
+  styles:
+    grid:
+      - align-items: start
+      - column-gap: 0px
+      - row-gap: 10px
+    custom_fields:
+      header:
+        - justify-self: start
+      content:
+        - text-align: start
+        - height: 290px
+        - overflow: visible
+  custom_fields:
+    header:
+      card:
+        type: "custom:button-card"
+        label: "[[[return 'Impostazioni / ' + variables.label]]]"
+        template: header_page_text
+        name: "IMPOSTAZIONI"
+        icon: "mdi:cog"
+    commandbar:
+      card:
+        type: "custom:button-card"
+        template: command_bar
+        style: |
+          ha-card.button-card-main {
+            padding: 0px !important
+          }
+          div#container {
+            justify-items: right;
+          }
+        custom_fields:
+          commands:
+            card:
+              type: horizontal-stack
+              cards:
+                - type: "custom:button-card"
+                  template: button_go_back
+
+alexa_button_style:
+  styles:
+    card:
+      - width: 150px
+      - bottom: -10px
+      - padding: 6px 0px
+      - font-weight: bold
+    name:
+      - color: "#f4f4f4"
+  style: |
+    :host {
+      align-self: center;
+    }
+
+################
+## ASSISTENZA ##
+################
+
+assistance_grid:
+  template: grid_style
+  styles:
+    grid:
+      - grid-template-areas: '"header header" "system_data assistance" "system_data kairos_info"'
+      - grid-template-columns: 1fr 55%
+      - grid-template-rows: 50px min-content 145px
+      - justify-items: start
+      - align-items: start
+      - column-gap: 10px
+      - row-gap: 10px
+      - margin-right: 10px
+      - margin-left: 10px
+    custom_fields:
+      system_data:
+        - justify-self: stretch
+      assistance:
+        - display: grid
+        - justify-self: stretch
+      kairos_info:
+        - text-align: start
+
+assistance_info:
+  styles:
+    card:
+      - color: var(--primary-text-color)
+      - text-transform: capitalize
+      - padding: 12px 16px 16px
+    grid:
+      - grid-template-areas: '"i n" "content content"'
+      - grid-template-columns: 30px 1fr
+      - grid-template-rows: min-content 1fr
+    name:
+      - place-self: start
+      - line-height: 48px
+      - font-size: 20px
+      - font-weight: 500
+      - color: var(--ha-card-header-color)
+      - padding-left: 5px
+    img_cell:
+      - justify-content: start
+      - align-items: start
+      - margin: none
+    icon:
+      - color: var(--ha-card-header-color)
+      - width: 80%
+  custom_fields:
+    content: >
+      [[[
+        return `
+          <div class="assistance_content" style="text-align: left; font-size: 12px">
+
+            <div>
+              <ha-icon icon="mdi:account" style="width: 24px; padding:5px; color: var(--ha-card-header-color);"></ha-icon>
+              <label style="font-weight: bold ">Intestatario impianto:</label>
+              <span > ${ states[ variables.systemOwner ].state} </span>
+            </div>
+
+            <div>
+              <ha-icon icon="mdi:identifier" style="width: 24px; padding:5px; color: var(--ha-card-header-color);"></ha-icon>
+              <label style="font-weight: bold; ">Identificativo impianto:</label>
+              <span > ${ states[ variables.systemCode ].state} </span>
+            </div>
+
+            <div>
+              <ha-icon icon="mdi:key" style="width: 24px; padding:5px; color: var(--ha-card-header-color);"></ha-icon>
+              <label style="font-weight: bold; ">Chiave impianto:</label>
+              <span > ${ states[ variables.systemKey ].state} </span>
+            </div>
+
+            <div>
+              <ha-icon icon="mdi:home-assistant" style="width: 24px; padding:5px; color: var(--ha-card-header-color);"></ha-icon>
+              <label style="font-weight: bold ">Stato impianto:</label>
+              <span > ${ states[ variables.systemState ].state} </span>
+            </div>
+
+            <div>
+              <ha-icon icon="mdi:cellphone-arrow-down" style="width: 24px; padding:5px; color: var(--ha-card-header-color);"></ha-icon>
+              <label style="font-weight: bold ">Versione software:</label>
+              <span > ${ states[ variables.kairoshubSwVersion ].state} </span>
+            </div>
+
+          </div>
+        `
+      ]]]
+
+alexa_command_bar:
+  styles:
+    grid:
+      - grid-template-areas: '"integration back"'
+      - grid-template-columns: 1fr 1fr
+      - display: flex
+      - justify-content: space-between
+      - flex-direction: row-reverse
+    card:
+      - background: none
+      - box-shadow: none
+      - width: 800px
+      - padding: 6px 0px
+  custom_fields:
+    back:
+      card:
+        type: custom:button-card
+        template: button_go_back
+        tap_action:
+          action: navigate
+          navigation_path: /lovelace-kairoshub/impostazioni
+        styles:
+          card:
+            - width: 150px
+            - bottom: -10px
+            - padding: 6px 0px
+
+command_bar:
+  styles:
+    grid:
+      - grid-template-areas: '"commands"'
+    card:
+      - margin-top: 0.5px
+      - margin-bottom: 0px
+      - box-shadow: 1px -1px 8px rgba(0, 0, 0, 0.3)
+      - background: "#333333"
+      - text-color: white
+      - position: fixed
+      - bottom: 0px
+      - z-index: 100
+    custom_fields:
+      commands:
+        - margin-top: 3px
+        - height: 60px

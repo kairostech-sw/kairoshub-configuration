@@ -13,13 +13,13 @@ custom_fields:
           template: icon_state_header
           entity: input_boolean.night
           color: var(--command-state-color)
+          icon: "mdi:weather-night"
+          label: "Notte"
           state:
-            - value: "on"
-              icon: "mdi:weather-night"
-              label: "Notte"
             - value: "off"
               icon: "mdi:weather-sunny"
               label: "Giorno"
+              color: var(--command-state-color)
           tap_action:
             action: call-service
             service: automation.trigger
@@ -55,7 +55,7 @@ custom_fields:
                   [[[
                     if (states['group.lights'].state == 'on')
                       return 'automation.light_turn_off'
-                    else if (states['group.lights'].state == 'off')
+                    if (states['group.lights'].state == 'off')
                       return 'automation.light_turn_on'
                   ]]]
         - type: conditional
@@ -148,15 +148,17 @@ custom_fields:
               state: "on"
           card:
             type: "custom:button-card"
-            template: header_icon_clima
+            template: icon_state_header
             entity: binary_sensor.heater_auto
-            show_label: true
+            icon: mdi:calendar-remove
+            label: "OFF"
             state:
-              - value: "on"
-                color: var(--command-state-active-color)
-                label: "acceso"
               - value: "off"
                 color: var(--command-state-color)
+              - value: "on"
+                color: var(--command-state-active-color)
+                icon: mdi:calendar-check
+                label: "ON"
             tap_action:
               action: navigate
               navigation_path: /lovelace-kairoshub/clima

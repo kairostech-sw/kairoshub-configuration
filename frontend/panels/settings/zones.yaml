@@ -1,5 +1,5 @@
 type: "custom:button-card"
-template: detail_page
+template: basic_page_layout
 custom_fields:
   header:
     card:

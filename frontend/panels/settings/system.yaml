@@ -1,9 +1,12 @@
 type: custom:button-card
-template: panel_grid
+template: basic_page_layout
 styles:
+  grid:
+    - row-gap: 3px
   custom_fields:
     content:
       - justify-self: center
+      - margin-top: 5px
       - overflow: auto
 card_mod:
   style: |
@@ -13,14 +16,11 @@ card_mod:
 custom_fields:
   header:
     card:
-      type: horizontal-stack
-      cards:
-        - type: custom:button-card
-          layout: vertical
-          template: header_page_text
-          icon: mdi:cog
-          name: Impostazioni
-          label: Impostazioni / Sistema
+      type: "custom:button-card"
+      template: header_page_text
+      icon: "mdi:cog"
+      name: "Impostazioni"
+      label: "Impostazioni / Sistema"
   commandbar:
     card:
       type: "custom:button-card"
@@ -32,9 +32,6 @@ custom_fields:
         div#container {
           justify-items: right;
         }
-      styles:
-        card:
-          - margin-left: -10px
       custom_fields:
         commands:
           card:
@@ -42,30 +39,26 @@ custom_fields:
             cards:
               - type: "custom:button-card"
                 template: button_go_back
-                style: |
-                  :host {
-                    align-self: center;
-                  }
   content:
     card:
       type: vertical-stack
       cards:
-        - type: custom:button-card
+        - type: "custom:button-card"
           color_type: label-card
-          name: Automazione Scenario Giorno / Notte
+          name: "Automazione Scenario Giorno / Notte"
           styles:
             card:
               - height: 35px
               - padding: 0px
-        - type: custom:button-card
+        - type: "custom:button-card"
           template: scenes_program
           custom_fields:
             label:
               card:
-                type: custom:button-card
-                name: Scenario Giorno
+                type: "custom:button-card"
+                name: "Scenario Giorno"
                 layout: icon_name
-                icon: mdi:theme-light-dark
+                icon: "mdi:theme-light-dark"
                 size: 55%
                 styles:
                   icon:
@@ -74,17 +67,18 @@ custom_fields:
               card:
                 type: vertical-stack
                 cards:
-                  - type: custom:button-card
-                    icon: mdi:chevron-up
-                    size: 13%
-                    styles:
-                      card:
-                        - padding: 0px
+                  - type: "custom:button-card"
+                    icon: "mdi:chevron-up"
                     tap_action:
                       action: call-service
                       service: input_select.select_next
                       service_data:
                         entity_id: input_select.scene_day
+                    <<: &chevron-style
+                      size: 13%
+                      styles:
+                        card:
+                          - padding: 0px
                   - type: "custom:button-card"
                     entity: input_select.scene_day
                     tap_action:
@@ -101,73 +95,47 @@ custom_fields:
                       - value: "Automatico"
                         color: "#FFB600"
                         icon: mdi:weather-sunny
-                  - type: custom:button-card
-                    icon: mdi:chevron-down
-                    size: 13%
-                    styles:
-                      card:
-                        - padding: 0px
+                  - type: "custom:button-card"
+                    icon: "mdi:chevron-down"
                     tap_action:
                       action: call-service
                       service: input_select.select_previous
                       service_data:
                         entity_id: input_select.scene_day
-
+                    <<: *chevron-style
             time:
               card:
                 type: horizontal-stack
                 cards:
-                  - type: custom:time-picker-card
+                  - type: "custom:time-picker-card"
                     entity: input_datetime.scene_day_on
-                    minute_step: 15
-                    layout:
-                      embedded: true
-                      align_controls: right
-                    style:
-                      .: |
-                        :host {
-                        {% if not is_state('input_select.scene_day', 'Programmato') %}
-                          pointer-events: none;
-                        {% endif %}
-                        }
-                        state-badge {
-                          display: none;
-                        }
-                        .time-picker-row.embedded {
-                          flex-direction: column;
-                        }
-                      time-unit:
-                        $: |
-                          .time-input {
+                    <<: &time-picker-conf
+                      minute_step: 15
+                      layout:
+                        embedded: true
+                        align_controls: right
+                      card_mod:
+                        style:
+                          .: |
+                            :host {
                             {% if not is_state('input_select.scene_day', 'Programmato') %}
                               pointer-events: none;
-                              background-color: var(--disabled-text-color) !important;
                             {% endif %}
-                          }
-                  - type: custom:time-picker-card
+                            }
+                            state-badge {
+                              display: none;
+                            }
+                            .time-picker-row.embedded {
+                              flex-direction: column;
+                            }
+                          time-unit:
+                            $: |
+                              .time-input {
+                                {% if not is_state('input_select.scene_day', 'Programmato') %}
+                                  pointer-events: none;
+                                  background-color: var(--disabled-text-color) !important;
+                                {% endif %}
+                              }
+                  - type: "custom:time-picker-card"
                     entity: input_datetime.scene_day_off
-                    minute_step: 15
-                    layout:
-                      embedded: true
-                      align_controls: right
-                    style:
-                      .: |
-                        :host {
-                        {% if not is_state('input_select.scene_day', 'Programmato') %}
-                          pointer-events: none;
-                        {% endif %}
-                        }
-                        state-badge {
-                          display: none;
-                        }
-                        .time-picker-row.embedded {
-                          flex-direction: column;
-                        }
-                      time-unit:
-                        $: |
-                          .time-input {
-                            {% if not is_state('input_select.scene_day', 'Programmato') %}
-                              pointer-events: none;
-                              background-color: var(--disabled-text-color) !important;
-                            {% endif %}
-                          }
+                    <<: *time-picker-conf

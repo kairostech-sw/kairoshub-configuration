@@ -1,5 +1,5 @@
 type: "custom:button-card"
-template: detail_page
+template: basic_page_layout
 custom_fields:
   header:
     card:
@@ -43,21 +43,25 @@ custom_fields:
                     entity: input_boolean.heater_program1
                     variables:
                       progId: "1"
+                      navigation_path: "clima-p1"
                   - type: "custom:button-card"
                     template: button_go_to_program
                     entity: input_boolean.heater_program2
                     variables:
                       progId: "2"
+                      navigation_path: "clima-p2"
                   - type: "custom:button-card"
                     template: button_go_to_program
                     entity: input_boolean.heater_program3
                     variables:
                       progId: "3"
+                      navigation_path: "clima-p3"
                   - type: "custom:button-card"
                     template: button_go_to_program
                     entity: input_boolean.heater_program4
                     variables:
                       progId: "4"
+                      navigation_path: "clima-p4"
               - type: "custom:button-card"
                 template: button_go_to_program
                 styles:

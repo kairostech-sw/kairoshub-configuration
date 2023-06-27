@@ -1,8 +1,8 @@
 kiosk_mode:
   hide_header: false
   hide_sidebar: true
-  hide_menubutton: true
-  hide_overflow: true
+  hide_menubutton: false
+  hide_overflow: false
   user_settings:
     - users:
         - kairoshub
@@ -10,8 +10,8 @@ kiosk_mode:
         - user
       hide_header: false
       hide_sidebar: true
-      hide_menubutton: true
-      hide_overflow: true
+      hide_menubutton: false
+      hide_overflow: false
 
 button_card_templates: !include hakairos-configuration/frontend/components/button_card_templates.yaml
 
@@ -32,11 +32,11 @@ views:
             cards:
               - !include hakairos-configuration/frontend/components/theme/body_col_1.yaml
               - !include hakairos-configuration/frontend/components/theme/body_col_2.yaml
-          - type: "custom:button-card"
-            color_type: blank-card
-            styles:
-              card:
-                - margin-bottom: 20px
+          # - type: "custom:button-card"
+          #   color_type: blank-card
+          #   styles:
+          #     card:
+          #       - margin-bottom: 20px
           - !include hakairos-configuration/frontend/components/theme/footer.yaml
   - title: CLIMA
     path: clima
@@ -66,6 +66,14 @@ views:
       - type: vertical-stack
         cards:
           - !include hakairos-configuration/frontend/panels/assistance.yaml
+  - title: DOCUMENTAZIONE
+    path: documentation
+    panel: true
+    visible: false
+    cards:
+      - type: vertical-stack
+        cards:
+          - !include hakairos-configuration/frontend/panels/docs.yaml
   - title: Programma 1
     path: clima-p1
     panel: true
@@ -161,13 +169,6 @@ views:
       - type: vertical-stack
         cards:
           - !include hakairos-configuration/frontend/panels/lights/programs/p1.yaml
-  - path: lights-nightzone
-    panel: true
-    visible: false
-    cards:
-      - type: vertical-stack
-        cards:
-          - !include hakairos-configuration/frontend/panels/lights/nightzone.yaml
   - path: lights-nightzone-room1
     panel: true
     visible: false
@@ -196,13 +197,6 @@ views:
       - type: vertical-stack
         cards:
           - !include hakairos-configuration/frontend/panels/lights/nightzone/room4.yaml
-  - path: lights-dayzone
-    panel: true
-    visible: false
-    cards:
-      - type: vertical-stack
-        cards:
-          - !include hakairos-configuration/frontend/panels/lights/dayzone.yaml
   - path: lights-dayzone-room1
     panel: true
     visible: false
@@ -224,13 +218,6 @@ views:
       - type: vertical-stack
         cards:
           - !include hakairos-configuration/frontend/panels/lights/dayzone/room3.yaml
-  - path: lights-outdoor
-    panel: true
-    visible: false
-    cards:
-      - type: vertical-stack
-        cards:
-          - !include hakairos-configuration/frontend/panels/lights/outdoor.yaml
   - path: lights-outdoor-room1
     panel: true
     visible: false
