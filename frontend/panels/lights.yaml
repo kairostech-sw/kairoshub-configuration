@@ -7,7 +7,7 @@ custom_fields:
       template: header_page_text
       icon: "mdi:lightbulb"
       name: "LUCI"
-      label: Luci
+      label: "Luci /"
   commandbar:
     card:
       type: "custom:button-card"
