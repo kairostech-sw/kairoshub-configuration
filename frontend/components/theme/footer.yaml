@@ -127,10 +127,12 @@ custom_fields:
               service_data:
                 entity_id: >
                   [[[
-                    if (states['switch.sw_thermostat'].state == 'on')
-                      return 'automation.manual_heating_off'
-                    else if (states['switch.sw_thermostat'].state == 'off')
-                      return 'automation.manual_heating_on'
+                    if (states['switch.sw_thermostat'] !== undefined) {
+                      if (states['switch.sw_thermostat'].state == 'on')
+                        return 'automation.manual_heating_off'
+                      if (states['switch.sw_thermostat'].state == 'off')
+                        return 'automation.manual_heating_on'
+                    }
                   ]]]
             state:
               - value: "on"
@@ -149,16 +151,17 @@ custom_fields:
           card:
             type: "custom:button-card"
             template: icon_state_header
-            entity: binary_sensor.heater_auto
+            entity: sensor.heater_auto
             icon: mdi:calendar-remove
-            label: "OFF"
             state:
               - value: "off"
                 color: var(--command-state-color)
-              - value: "on"
-                color: var(--command-state-active-color)
+                label: "OFF"
+              - operator: "!="
+                value: "off"
                 icon: mdi:calendar-check
-                label: "ON"
+                color: var(--command-state-active-color)
+                label: '[[[return states["sensor.heater_auto"].state;]]]'
             tap_action:
               action: navigate
               navigation_path: /lovelace-kairoshub/clima
