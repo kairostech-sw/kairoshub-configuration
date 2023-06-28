@@ -1299,6 +1299,7 @@ lights_detail:
             - height: 50px
         variables:
           zone: "[[[return variables.zone;]]]"
+          icon: "[[[ return variables.icon;]]]"
         tap_action:
           action: call-service
           service: light.toggle
@@ -1314,7 +1315,7 @@ lights_detail:
 
 lights_label:
   layout: icon_name
-  icon: "mdi:power"
+  icon: "[[[ return variables.icon;]]]"
   state:
     - value: "off"
       color: black
@@ -1337,6 +1338,7 @@ lights_expander_nightzone:
             - light.group_lz100
           variables:
             zone: 100
+            icon: "[[[ return variables.icon;]]]"
         cards:
           - <<: *divider-4px
           - <<: *mod-card-room
@@ -1357,6 +1359,7 @@ lights_expander_nightzone:
                     variables:
                       navigation_path: "lights-nightzone-room1"
                       zone: 101
+                      icon: "mdi:bed-outline"
                 - type: conditional
                   conditions:
                     - entity: binary_sensor.lz102_state
@@ -1369,6 +1372,7 @@ lights_expander_nightzone:
                     variables:
                       navigation_path: "lights-nightzone-room2"
                       zone: 102
+                      icon: "mdi:bed-outline"
                 - type: conditional
                   conditions:
                     - entity: binary_sensor.lz103_state
@@ -1381,6 +1385,7 @@ lights_expander_nightzone:
                     variables:
                       navigation_path: "lights-nightzone-room3"
                       zone: 103
+                      icon: "mdi:bed-outline"
                 - type: conditional
                   conditions:
                     - entity: binary_sensor.lz104_state
@@ -1393,6 +1398,7 @@ lights_expander_nightzone:
                     variables:
                       navigation_path: "lights-nightzone-room4"
                       zone: 104
+                      icon: "mdi:shower"
 
 lights_expander_dayzone:
   template: expander_template
@@ -1407,6 +1413,7 @@ lights_expander_dayzone:
             - light.group_lz200
           variables:
             zone: 200
+            icon: "[[[ return variables.icon;]]]"
         cards:
           - <<: *divider-4px
           - <<: *mod-card-room
@@ -1427,6 +1434,7 @@ lights_expander_dayzone:
                     variables:
                       navigation_path: "lights-dayzone-room1"
                       zone: 201
+                      icon: "mdi:sofa-outline"
                 - type: conditional
                   conditions:
                     - entity: binary_sensor.lz202_state
@@ -1439,6 +1447,7 @@ lights_expander_dayzone:
                     variables:
                       navigation_path: "lights-dayzone-room1"
                       zone: 202
+                      icon: "mdi:countertop-outline"
                 - type: conditional
                   conditions:
                     - entity: binary_sensor.lz203_state
@@ -1451,6 +1460,7 @@ lights_expander_dayzone:
                     variables:
                       navigation_path: "lights-dayzone-room1"
                       zone: 203
+                      icon: "mdi:toilet"
 
 lights_expander_outdoor:
   template: expander_template
@@ -1465,6 +1475,7 @@ lights_expander_outdoor:
             - light.group_lz300
           variables:
             zone: 300
+            icon: "[[[ return variables.icon;]]]"
         cards:
           - <<: *divider-4px
           - <<: *mod-card-room
@@ -1485,6 +1496,7 @@ lights_expander_outdoor:
                     variables:
                       navigation_path: "lights-nightzone-room1"
                       zone: 301
+                      icon: "mdi:outdoor-lamp"
                 - type: conditional
                   conditions:
                     - entity: binary_sensor.lz302_state
@@ -1497,6 +1509,7 @@ lights_expander_outdoor:
                     variables:
                       navigation_path: "lights-nightzone-room2"
                       zone: 302
+                      icon: "mdi:outdoor-lamp"
                 - type: conditional
                   conditions:
                     - entity: binary_sensor.lz303_state
@@ -1509,6 +1522,7 @@ lights_expander_outdoor:
                     variables:
                       navigation_path: "lights-nightzone-room3"
                       zone: 303
+                      icon: "mdi:outdoor-lamp"
                 - type: conditional
                   conditions:
                     - entity: binary_sensor.lz304_state
@@ -1521,9 +1535,9 @@ lights_expander_outdoor:
                     variables:
                       navigation_path: "lights-nightzone-room4"
                       zone: 304
+                      icon: "mdi:outdoor-lamp"
 
 lights_detail_room:
-  icon: "[[[return variables.icon]]]"
   template:
     - no_background
     - lights_detail

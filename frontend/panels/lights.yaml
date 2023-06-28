@@ -55,6 +55,7 @@ custom_fields:
             template: lights_expander_nightzone
             variables:
               zoneId: 100
+              icon: "mdi:weather-night"
         - type: conditional
           conditions:
             - entity: binary_sensor.lz200_state
@@ -64,6 +65,7 @@ custom_fields:
             template: lights_expander_dayzone
             variables:
               zoneId: 200
+              icon: "mdi:weather-sunny"
         - type: conditional
           conditions:
             - entity: binary_sensor.lz300_state
@@ -73,3 +75,4 @@ custom_fields:
             template: lights_expander_outdoor
             variables:
               zoneId: 300
+              icon: "mdi:fence"
