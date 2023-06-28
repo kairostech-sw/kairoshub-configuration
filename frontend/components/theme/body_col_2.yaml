@@ -18,14 +18,14 @@ card_mod:
             }
         .: |
           mwc-tab[id="Temperatura"] {
-              {% if (states("sensor.temperatura") | float > 24.0) %}
+              {% if (states("sensor.temperatura") | float(0) > 24.0) %}
                 {% set COLOR = "#FF0000" %}
-              {% elif (states("sensor.temperatura") | float > 18.0) %}
+              {% elif (states("sensor.temperatura") | float(0) > 18.0) %}
                 {% set COLOR = "#FFA500" %}
               {% else %}
                 {% set COLOR = "#2E86C1" %}
               {% endif %}
-              background: {{COLOR+"40"}} ;
+              background: {{COLOR+"25"}} ;
               --mdc-theme-primary: {{COLOR}};
           }
 card:
@@ -37,7 +37,7 @@ card:
       entity: sensor.temperatura
       suffix: "°C"
       styles:
-        box-shadow: "0 0 2px #000000 inset"
+        box-shadow: "0 0 2px #00000080 inset"
       card:
         type: "custom:mini-graph-card"
         entities:
@@ -85,8 +85,8 @@ card:
       suffix: "%"
       styles:
         --mdc-theme-primary: "#7FB03F"
-        background: "#7FB03F40"
-        box-shadow: "0 0 2px #000000 inset"
+        background: "#7FB03F25"
+        box-shadow: "0 0 2px #00000080 inset"
       card:
         type: "custom:mini-graph-card"
         entities:
@@ -100,8 +100,8 @@ card:
       suffix: "Watt"
       styles:
         --mdc-theme-primary: "#DCA200"
-        background: "#DCA20040"
-        box-shadow: "0 0 2px #000000 inset"
+        background: "#DCA20025"
+        box-shadow: "0 0 2px #00000080 inset"
       card:
         type: "custom:mini-graph-card"
         entities:
