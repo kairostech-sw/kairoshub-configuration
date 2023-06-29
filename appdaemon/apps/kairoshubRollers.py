@@ -8,24 +8,39 @@ class KairoshubRollers(hass.Hass):
 
     def rollersControl(self, event_name: str, data: dict, kwargs: dict) -> None:
 
-      services = {
-         "open": "cover/close_cover",
-         "closed": "cover/open_cover",
-         "moving": "cover/stop_cover"
-      }
-      groupState = self.get_state("group.rollershutters")
-      groupAttributes = self.get_state("group.rollershutters", attribute="attributes")
-      service = services[groupState]
+      if "entity" in data:
+        zone = f"rs{data['entity']}"
+        pos = f"rz{data['entity']}"
+        self.select_option(f"input_select.{zone}", "idle")
+      else:
+        zone = "rollershutters"
+        pos = "temperatura"
+
+      entity = f"group.{zone}"
+      coverState = self.get_state(entity)
+      service = self.getService(coverState, zone, data)
 
       self.log("Sending Command %s", service, level="INFO")
-      self.call_service(service, entity_id="group.rollershutters")
-      state = "moving"
+      self.call_service(f"cover/{service}", entity_id=entity)
+      moving = "moving"
 
-      if groupState != state:
-        self.set_state("group.rollershutters", state=state, attributes=groupAttributes)
+      attributes = self.get_state(entity, attribute="attributes")
+      if coverState != moving:
+        self.set_state(entity, state=moving, attributes=attributes)
       else:
-        state = ("closed","open")[float(self.get_state("sensor.tapparelle")) > 0.0]
-        self.set_state("group.rollershutters", state=state, attributes=groupAttributes)
+        state = ("closed", "open")[float(self.get_state(f"sensor.{pos}")) > 0.0]
+        self.set_state(entity, state=state, attributes=attributes)
+
+    def getService(self, state: str, entity: str, data: dict) -> str:
+      services = {
+          "open": "close_cover",
+          "closed": "open_cover",
+          "moving": "stop_cover"
+      }
+      if entity == "rollershutters":
+         return services[state]
+
+      return data["action"]
 
     def setRollersPosition(self, event_name: str, data: dict, kwargs: dict) -> None:
 

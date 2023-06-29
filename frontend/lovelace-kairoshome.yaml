@@ -40,6 +40,13 @@ views:
       - type: vertical-stack
         cards:
           - !include hakairos-configuration/frontend/panels/clima.yaml
+  - title: TAPPARELLE
+    path: tapparelle
+    panel: true
+    cards:
+      - type: vertical-stack
+        cards:
+          - !include hakairos-configuration/frontend/panels/rollers.yaml
   - title: LUCI
     path: luci
     panel: true
@@ -157,6 +164,13 @@ views:
       - type: vertical-stack
         cards:
           - !include hakairos-configuration/frontend/panels/settings/system.yaml
+  - path: rollers-program1
+    panel: true
+    visible: false
+    cards:
+      - type: vertical-stack
+        cards:
+          - !include hakairos-configuration/frontend/panels/rollers/p1.yaml
   - path: lights-program1
     panel: true
     visible: false

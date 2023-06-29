@@ -8,6 +8,78 @@
         {% else %}
           off
         {% endif %}
+    rs100_state:
+      friendly_name: "Stato Luci Zona Notte"
+      value_template: >-
+        {% if is_state('binary_sensor.rs101_state', 'on') or is_state('binary_sensor.rs102_state', 'on') or is_state('binary_sensor.rs103_state', 'on') or is_state('binary_sensor.rs104_state', 'on') %}
+          on
+        {% else %}
+          off
+        {% endif %}
+    rs101_state:
+      friendly_name: "Stato Tapparelle Zona 101"
+      value_template: >-
+        {% if is_state('sensor.rs1011', 'unknown') and is_state('sensor.rs1012', 'unknown') and is_state('sensor.rs01', 'unknown') %}
+          off
+        {% else %}
+          on
+        {% endif %}
+    rs102_state:
+      friendly_name: "Stato Tapparelle Zona 102"
+      value_template: >-
+        {% if is_state('sensor.rs1021', 'unknown') and is_state('sensor.rs1022', 'unknown') and is_state('sensor.rs02', 'unknown') %}
+          off
+        {% else %}
+          on
+        {% endif %}
+    rs103_state:
+      friendly_name: "Stato Tapparelle Zona 103"
+      value_template: >-
+        {% if is_state('sensor.rs1031', 'unknown') and is_state('sensor.rs1032', 'unknown') and is_state('sensor.rs03', 'unknown') %}
+          off
+        {% else %}
+          on
+        {% endif %}
+    rs104_state:
+      friendly_name: "Stato Tapparelle Zona 104"
+      value_template: >-
+        {% if is_state('sensor.rs1041', 'unknown') and is_state('sensor.rs1042', 'unknown') %}
+          off
+        {% else %}
+          on
+        {% endif %}
+    rs200_state:
+      friendly_name: "Stato Luci Zona Giorno"
+      value_template: >-
+        {% if is_state('binary_sensor.rs201_state', 'on') or is_state('binary_sensor.rs202_state', 'on') or is_state('binary_sensor.rs203_state', 'on') %}
+          on
+        {% else %}
+          off
+        {% endif %}
+    rs201_state:
+      friendly_name: "Stato Tapparelle Zona 201"
+      value_template: >-
+        {% if is_state('sensor.rs2011', 'unknown') and is_state('sensor.rs2012', 'unknown') and is_state('sensor.rs04', 'unknown') and is_state('sensor.rs05', 'unknown') %}
+          off
+        {% else %}
+          on
+        {% endif %}
+    rs202_state:
+      friendly_name: "Stato Tapparelle Zona 202"
+      value_template: >-
+        {% if is_state('sensor.rs2021', 'unknown') and is_state('sensor.rs2022', 'unknown') and is_state('sensor.rs06', 'unknown') %}
+          off
+        {% else %}
+          on
+        {% endif %}
+    rs203_state:
+      friendly_name: "Stato Tapparelle Zona 203"
+      value_template: >-
+        {% if is_state('sensor.rs2031', 'unknown') and is_state('sensor.rs2032', 'unknown') %}
+          off
+        {% else %}
+          on
+        {% endif %}
     lz100_state:
       friendly_name: "Stato Luci Zona Notte"
       value_template: >-

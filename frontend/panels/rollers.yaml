@@ -1,0 +1,68 @@
+type: "custom:button-card"
+template: basic_page_layout
+custom_fields:
+  header:
+    card:
+      type: "custom:button-card"
+      template: header_page_text
+      icon: "mdi:window-shutter"
+      name: "TAPPARELLE"
+      label: "Tapparelle /"
+  commandbar:
+    card:
+      type: "custom:button-card"
+      template: command_bar
+      style: |
+        ha-card.button-card-main {
+          padding: 0px !important
+        }
+      custom_fields:
+        commands:
+          card:
+            type: horizontal-stack
+            cards:
+              - type: "custom:button-card"
+                name: Programmazione<br>Tapparelle
+                styles:
+                  card:
+                    - background: none
+                    - color: "#f4f4f4"
+                    - box-shadow: none
+                    - margin-left: 10px
+                    - width: 200px
+                style: |
+                  :host {
+                    align-self: center;
+                  }
+                tap_action:
+                  action: none
+              - type: "custom:button-card"
+                template: button_go_to_program
+                entity: input_boolean.rollers_program1
+                variables:
+                  progId: "1"
+                  navigation_path: "rollers-program1"
+  content:
+    card:
+      type: vertical-stack
+      cards:
+        - type: conditional
+          conditions:
+            - entity: binary_sensor.rs100_state
+              state_not: "off"
+          card:
+            type: "custom:button-card"
+            template: rollers_nightzone_expander
+            variables:
+              zone: 100
+              icon: "mdi:weather-night"
+        - type: conditional
+          conditions:
+            - entity: binary_sensor.rs200_state
+              state_not: "off"
+          card:
+            type: "custom:button-card"
+            template: rollers_dayzone_expander
+            variables:
+              zone: 200
+              icon: "mdi:weather-sunny"

@@ -1251,6 +1251,287 @@ heating_program_expander_room:
                 entity: "[[[return `input_number.temperature_${variables.zone}_period${variables.progId}`]]]"
 
 ################
+## TAPPARELLE ##
+################
+
+rollers_detail:
+  icon: "[[[ return variables.icon;]]]"
+  template: no_background
+  styles:
+    card:
+      - padding: 1%
+    grid:
+      - grid-template-areas: '"i name . control" "lastupdate . . ."'
+      - grid-template-columns: 50px 1fr auto
+      - grid-template-rows: 50px 30px
+      - column-gap: 5px
+      - background: none
+      - justify-content: space-between
+    img_cell:
+      - justify-content: start
+      - align-items: start
+      - margin: none
+    icon:
+      - width: 70%
+      - color: >
+          [[[
+            var color = "#000000"
+            if (states[`sensor.rz${variables.zone}`].state > 0.0)
+              color = "var(--command-state-active-color)"
+            return color;
+          ]]]
+    custom_fields:
+      name:
+        - font-weight: bold
+        - font-size: 16px
+        - align-self: middle
+        - justify-self: start
+        - padding-bottom: 4px
+        - padding-right: 5px
+        - padding-top: 5px
+      control:
+        - justify-self: end
+      lastupdate:
+        - justify-self: start
+  custom_fields:
+    name: >
+      [[[
+        var name = states[`input_text.zn${variables.zone}`].state;
+        var label = "CHIUSE";
+        var state = states[`sensor.rz${variables.zone}`].state;
+        if (state == 100.0) label = "APERTE"
+        if (state > 0.0 && state < 100.0) label = `APERTE AL ${~~state}%`
+        return `<div
+          style="display: flex;
+          flex-direction: column;
+          align-items: flex-start;">
+            <span>${name}</span>
+            <span style="font-size: 10px;">${label}</span>
+          </div>`;
+      ]]]
+    control:
+      card:
+        type: horizontal-stack
+        cards:
+          - type: "custom:button-card"
+            template: rollers_ctrl
+            icon: "mdi:arrow-down"
+            variables:
+              zone: "[[[return variables.zone]]]"
+              option: "close_cover"
+          - type: "custom:button-card"
+            template: rollers_ctrl
+            icon: "mdi:pause-octagon-outline"
+            entity: "[[[return `group.rs${variables.zone}`]]]"
+            extra_styles: |
+              @keyframes blink-alert {
+                0% {
+                  opacity: 0.3;
+                }
+                50% {
+                  opacity: 1;
+                }
+                100% {
+                  opacity: 0.3;
+                }
+              }
+            state:
+              - value: "moving"
+                icon: mdi:pause-octagon-outline
+                styles:
+                  icon:
+                    - animation: blink-alert 2s ease infinite
+            variables:
+              zone: "[[[return variables.zone]]]"
+              option: "stop_cover"
+          - type: "custom:button-card"
+            template: rollers_ctrl
+            icon: "mdi:arrow-up"
+            variables:
+              zone: "[[[return variables.zone]]]"
+              option: "open_cover"
+    lastupdate: >
+      [[[
+        var datetime =  states[`group.rs${variables.zone}`].last_changed.split("T");
+        datetime = new Date(datetime).toLocaleString().replace(","," ");
+        var lastupdate = datetime.substring(0,datetime.length-3);
+        return `<span style="font-size: 12px;">${lastupdate}</span>`
+      ]]]
+
+rollers_label:
+  state:
+    - value: "closed"
+      color: black
+      state: "Chiuse"
+    - value: "open"
+      color: var(--command-state-active-color)
+  styles:
+    card:
+      - box-shadow: none
+
+rollers_nightzone_expander:
+  template: expander_template
+  custom_fields:
+    expander:
+      card:
+        <<: *expander-card-style
+        title-card:
+          type: "custom:button-card"
+          template: rollers_detail
+          triggers_update:
+            - group.rs100
+          variables:
+            zone: "[[[ return variables.zone;]]]"
+            icon: "[[[ return variables.icon;]]]"
+        cards:
+          - <<: *divider-2px
+          - type: custom:mod-card
+            card_mod:
+              style:
+                hui-grid-card$: |
+                  div#root {
+                    background: var(--primary-background-color);
+                  }
+            card:
+              type: grid
+              columns: 2
+              square: false
+              cards:
+                - type: conditional
+                  conditions:
+                    - entity: binary_sensor.rs101_state
+                      state_not: "off"
+                  card:
+                    type: "custom:button-card"
+                    template: rollers_detail
+                    triggers_update:
+                      - group.rs101
+                    variables:
+                      zone: 101
+                      icon: "mdi:bed-outline"
+                - type: conditional
+                  conditions:
+                    - entity: binary_sensor.rs102_state
+                      state_not: "off"
+                  card:
+                    type: "custom:button-card"
+                    template: rollers_detail
+                    triggers_update:
+                      - group.rs102
+                    variables:
+                      zone: 102
+                      icon: "mdi:bed-outline"
+                - type: conditional
+                  conditions:
+                    - entity: binary_sensor.rs103_state
+                      state_not: "off"
+                  card:
+                    type: "custom:button-card"
+                    template: rollers_detail
+                    triggers_update:
+                      - group.rs103
+                    variables:
+                      zone: 103
+                      icon: "mdi:bed-outline"
+                - type: conditional
+                  conditions:
+                    - entity: binary_sensor.rs104_state
+                      state_not: "off"
+                  card:
+                    type: "custom:button-card"
+                    template: rollers_detail
+                    triggers_update:
+                      - group.rs104
+                    variables:
+                      zone: 104
+                      icon: "mdi:shower"
+
+rollers_dayzone_expander:
+  template: expander_template
+  custom_fields:
+    expander:
+      card:
+        <<: *expander-card-style
+        title-card:
+          type: "custom:button-card"
+          template: rollers_detail
+          triggers_update:
+            - group.rs200
+            - sensor.rz200
+          variables:
+            zone: "[[[ return variables.zone;]]]"
+            icon: "[[[return variables.icon;]]]"
+        cards:
+          - <<: *divider-2px
+          - type: "custom:mod-card"
+            card_mod:
+              style:
+                hui-grid-card$: |
+                  div#root {
+                    background: var(--primary-background-color);
+                  }
+            card:
+              type: grid
+              columns: 2
+              square: false
+              cards:
+                - type: conditional
+                  conditions:
+                    - entity: binary_sensor.rs201_state
+                      state_not: "off"
+                  card:
+                    type: "custom:button-card"
+                    template: rollers_detail
+                    triggers_update:
+                      - group.rs201
+                    variables:
+                      zone: 201
+                      icon: "mdi:sofa-outline"
+                - type: conditional
+                  conditions:
+                    - entity: binary_sensor.rs202_state
+                      state_not: "off"
+                  card:
+                    type: "custom:button-card"
+                    template: rollers_detail
+                    triggers_update:
+                      - group.rs202
+                    variables:
+                      zone: 202
+                      icon: "mdi:countertop-outline"
+                - type: conditional
+                  conditions:
+                    - entity: binary_sensor.rs203_state
+                      state_not: "off"
+                  card:
+                    type: "custom:button-card"
+                    template: rollers_detail
+                    triggers_update:
+                      - group.rs203
+                    variables:
+                      zone: 203
+                      icon: "mdi:toilet"
+
+rollers_ctrl:
+  show_name: false
+  show_label: false
+  size: 60%
+  styles:
+    card:
+      - background: none
+      - box-shadow: none
+      - padding-top: 4px
+      - width: 50px
+    icon:
+      - filter: opacity(0.75)
+  tap_action:
+    action: call-service
+    service: input_select.select_option
+    service_data:
+      entity_id: "[[[ return `input_select.rs${variables.zone}`; ]]]"
+      option: "[[[ return variables.option; ]]]"
+
+################
 ##### LUCI #####
 ################
 

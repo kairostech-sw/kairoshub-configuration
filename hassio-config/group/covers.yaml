@@ -1,31 +1,61 @@
 rollershutters:
   name: Tapparelle
   entities:
-    - group.rollershutters_day_zone
-    - group.rollershutters_night_zone
-rollershutters_night_zone:
+    - group.rs100
+    - group.rs200
+rs100:
   name: Tapparelle Zona Notte
   entities:
-    - cover.RS01
-    - cover.RS02
-    - cover.RS03
-    - cover.RS1011
-    - cover.RS1012
-    - cover.RS1021
-    - cover.RS1022
-    - cover.RS1031
-    - cover.RS1032
-    - cover.RS1041
-    - cover.RS1042
-rollershutters_day_zone:
+    - group.rs101
+    - group.rs102
+    - group.rs103
+    - group.rs104
+rs101:
+  name: Tapparelle Zona Notte 1
+  entities:
+    - cover.rs01
+    - cover.rs1011
+    - cover.rs1012
+rs102:
+  name: Tapparelle Zona Notte 2
+  entities:
+    - cover.rs02
+    - cover.rs1021
+    - cover.rs1022
+rs103:
+  name: Tapparelle Zona Notte 3
+  entities:
+    - cover.rs03
+    - cover.rs1031
+    - cover.rs1032
+rs104:
+  name: Tapparelle Zona Notte 4
+  entities:
+    - cover.rs1041
+    - cover.rs1042
+
+rs200:
   name: Tapparelle Zona Giorno
   entities:
-    - cover.RS04
-    - cover.RS05
-    - cover.RS06
-    - cover.RS2011
-    - cover.RS2012
-    - cover.RS2021
-    - cover.RS2022
-    - cover.RS2031
-    - cover.RS2032
+    - group.rs201
+    - group.rs202
+    - group.rs203
+
+rs201:
+  name: Tapparelle Zona Giorno 1
+  entities:
+    - cover.rs04
+    - cover.rs05
+    - cover.rs2011
+    - cover.rs2012
+rs202:
+  name: Tapparelle Zona Giorno 2
+  entities:
+    - cover.rs06
+    - cover.rs2021
+    - cover.rs2022
+rs203:
+  name: Tapparelle Zona Giorno 3
+  entities:
+    - cover.rs2031
+    - cover.rs2032

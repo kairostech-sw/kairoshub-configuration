@@ -29,3 +29,46 @@ zn300_days:
 
 scene_day:
   <<: *noname-lights-mode
+
+rs100_program1:
+  <<: *noname-lights-mode
+rs200_program1:
+  <<: *noname-lights-mode
+rs100_program1_days:
+  <<: *noname-lights-days
+rs200_program1_days:
+  <<: *noname-lights-days
+
+rs100:
+  name: Tapparelle Zona Notte
+  <<: &rollers-options
+    initial: idle
+    options:
+      - idle
+      - stop_cover
+      - open_cover
+      - close_cover
+rs101:
+  name: Tapparelle Zona Notte 1
+  <<: *rollers-options
+rs102:
+  name: Tapparelle Zona Notte 2
+  <<: *rollers-options
+rs103:
+  name: Tapparelle Zona Notte 3
+  <<: *rollers-options
+rs104:
+  name: Tapparelle Zona Notte 4
+  <<: *rollers-options
+rs200:
+  name: Tapparelle Zona Giorno
+  <<: *rollers-options
+rs201:
+  name: Tapparelle Zona Giorno 1
+  <<: *rollers-options
+rs202:
+  name: Tapparelle Zona Giorno 2
+  <<: *rollers-options
+rs203:
+  name: Tapparelle Zona Giorno 3
+  <<: *rollers-options

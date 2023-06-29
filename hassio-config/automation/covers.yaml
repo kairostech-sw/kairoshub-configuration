@@ -19,8 +19,47 @@
 - alias: CONTROL ROLLERS
   mode: restart
   trigger:
+    - platform: state
+      entity_id: input_select.rs100
+      id: "100"
+      from: "idle"
+    - platform: state
+      entity_id: input_select.rs101
+      id: "101"
+      from: "idle"
+    - platform: state
+      entity_id: input_select.rs102
+      id: "102"
+      from: "idle"
+    - platform: state
+      entity_id: input_select.rs103
+      id: "103"
+      from: "idle"
+    - platform: state
+      entity_id: input_select.rs104
+      id: "104"
+      from: "idle"
+    - platform: state
+      entity_id: input_select.rs200
+      id: "200"
+      from: "idle"
+    - platform: state
+      entity_id: input_select.rs201
+      id: "201"
+      from: "idle"
+    - platform: state
+      entity_id: input_select.rs202
+      id: "202"
+      from: "idle"
+    - platform: state
+      entity_id: input_select.rs203
+      id: "203"
+      from: "idle"
   action:
     - event: AD_ROLLERS_CONTROL
+      event_data:
+        entity: "{{ trigger.id }}"
+        action: "{{ trigger.to_state.state }}"
     - delay: 00:00:30
     - condition: state
       entity_id: group.rollershutters
@@ -39,3 +78,31 @@
       event_type: HA_CALIBRATE_ROLLERS
   action:
     event: AD_ROLLERS_RECALIBRATE
+
+- alias: ROLLERS PROGRAM 1 TURN ON
+  trigger:
+    - platform: state
+      entity_id:
+        - input_select.zn100
+        - input_select.zn200
+        - input_select.zn300
+      from: Disattivo
+      for: 00:00:10
+  action:
+    - service: input_boolean.turn_on
+      target:
+        entity_id: input_boolean.rollers_program1
+
+- alias: ROLLERS PROGRAM 1 TURN OFF
+  trigger:
+    - platform: state
+      entity_id:
+        - input_select.zn100
+        - input_select.zn200
+        - input_select.zn300
+      to: Disattivo
+      for: 00:00:10
+  action:
+    - service: input_boolean.turn_off
+      target:
+        entity_id: input_boolean.rollers_program1
