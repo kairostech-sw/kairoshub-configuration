@@ -106,3 +106,37 @@
     - service: input_boolean.turn_off
       target:
         entity_id: input_boolean.rollers_program1
+
+- alias: ROLLERS NIGHTZONE PROGRAM 1
+  trigger:
+    - platform: time_pattern
+      minutes: /15
+  condition:
+    condition: state
+    entity_id: input_select.zn100
+    state: Programmato
+  action:
+    event: AD_ROLLERS_PROGRAM
+    event_data:
+      zone: "100"
+      on_time: "{{states('input_datetime.rollers_nightzone_on_program1')}}"
+      off_time: "{{states('input_datetime.rollers_nightzone_off_program1')}}"
+      mode: "{{states('input_select.rs100_program1_days')}}"
+      sender: HUB
+
+- alias: ROLLERS DAYZONE PROGRAM 1
+  trigger:
+    - platform: time_pattern
+      minutes: /15
+  condition:
+    condition: state
+    entity_id: input_select.zn200
+    state: Programmato
+  action:
+    event: AD_ROLLERS_PROGRAM
+    event_data:
+      zone: "200"
+      on_time: "{{states('input_datetime.rollers_dayzone_on_program1')}}"
+      off_time: "{{states('input_datetime.rollers_dayzone_off_program1')}}"
+      mode: "{{states('input_select.rs200_program1_days')}}"
+      sender: HUB

@@ -44,8 +44,8 @@ class KairoshubScenes(hass.Hass):
 
       rollers = self.get_state(f"input_number.rollershutter_{data['roller'].lower()}_position")
       position = int(float(rollers))
+      self.fire_event("AD_AUTOMATIC_ROLLERS", position=position)
 
-      self.call_service("cover/set_cover_position", entity_id="group.rollershutters", position=position)
 
       data["kwargs"]["rollers"] = rollers
       data["kwargs"]["zones"] = zones
