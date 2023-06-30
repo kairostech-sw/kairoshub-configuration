@@ -11,34 +11,41 @@ class KairoshubRollers(hass.Hass):
       if "entity" in data:
         zone = f"rs{data['entity']}"
         pos = f"rz{data['entity']}"
+        action = data["action"]
+        reverse = False
         self.select_option(f"input_select.{zone}", "idle")
       else:
         zone = "rollershutters"
         pos = "tapparelle"
+        action = self.get_state(f"group.{zone}")
+        reverse = True
 
       entity = f"group.{zone}"
-      coverState = self.get_state(entity)
-      service = self.getService(coverState, zone, data)
+      service = self.getService(action, reverse)
+
+      pos = float(self.get_state(f"sensor.{pos}"))
+      if (pos == 0.0 and service == "close_cover") or (pos == 100.0 and service == "open_cover"):
+        self.log(f"The roller {zone} is already at the maximum position")
+        return None
 
       self.log("Sending Command %s", service, level="INFO")
       self.call_service(f"cover/{service}", entity_id=entity)
-      moving = "moving"
+      moving = "stop"
 
       attributes = self.get_state(entity, attribute="attributes")
-      if coverState != moving:
+      if action != moving:
         self.set_state(entity, state=moving, attributes=attributes)
       else:
-        state = ("closed", "open")[float(self.get_state(f"sensor.{pos}")) > 0.0]
+        state = ("closed", "open")[pos > 0.0]
         self.set_state(entity, state=state, attributes=attributes)
 
-    def getService(self, state: str, entity: str, data: dict) -> str:
-      services = {
-          "open": "close_cover",
-          "closed": "open_cover",
-          "moving": "stop_cover",
-          "stop": "stop_cover"
-      }
-      return services[state]
+    def getService(self, state: str, reverse: bool) -> str:
+      services = ["open", "stop", "close"]
+      if state == "closed": state = state[:-1]
+      index = services.index(state)
+      if reverse: index = -index - 1
+
+      return f"{services[index]}_cover"
 
     def setRollersPosition(self, event_name: str, data: dict, kwargs: dict) -> None:
 

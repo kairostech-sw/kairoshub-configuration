@@ -123,7 +123,7 @@ custom_fields:
                 - value: "closed"
                   icon: mdi:window-shutter
                   label: Chiuse
-                - value: "moving"
+                - value: "stop"
                   icon: mdi:pause-octagon-outline
                   color: "#FF1500"
                   label: Ferma

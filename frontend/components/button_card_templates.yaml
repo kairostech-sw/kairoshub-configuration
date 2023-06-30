@@ -1322,7 +1322,7 @@ rollers_detail:
             icon: "mdi:arrow-down"
             variables:
               zone: "[[[return variables.zone]]]"
-              option: "close"
+              option: "closed"
           - type: "custom:button-card"
             template: rollers_ctrl
             icon: "mdi:pause-octagon-outline"
@@ -1340,11 +1340,12 @@ rollers_detail:
                 }
               }
             state:
-              - value: "moving"
+              - value: "stop"
                 icon: mdi:pause-octagon-outline
                 styles:
                   icon:
                     - animation: blink-alert 2s ease infinite
+                    - color: "#FF1500"
             variables:
               zone: "[[[return variables.zone]]]"
               option: "stop"
