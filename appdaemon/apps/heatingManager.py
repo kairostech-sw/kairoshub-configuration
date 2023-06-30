@@ -4,7 +4,7 @@ from os import path
 import json, time
 
 
-class KairoshubHeating(hass.Hass):
+class HeatingManager(hass.Hass):
 
     file = "./kairoshubHeating.json"
     maxRetry = 5
