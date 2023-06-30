@@ -119,6 +119,9 @@ custom_fields:
       tap_action:
         action: none
       style: |
+        h1 {
+          padding: 8px;
+        }
         ha-card {
           text-align-last: start ;
         }

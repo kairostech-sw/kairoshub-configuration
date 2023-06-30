@@ -150,6 +150,13 @@ custom_fields:
                       styles:
                         card:
                           - padding: 0px
+                      card_mod:
+                        style: |
+                          :host {
+                            {% if not is_state('input_select.zn100', 'Programmato') %}
+                              pointer-events: none;
+                            {% endif %}
+                          }
                       tap_action:
                         action: call-service
                         service: input_select.select_next
@@ -174,6 +181,13 @@ custom_fields:
                       styles:
                         card:
                           - padding: 0px
+                      card_mod:
+                        style: |
+                          :host {
+                            {% if not is_state('input_select.zn100', 'Programmato') %}
+                              pointer-events: none;
+                            {% endif %}
+                          }
                       tap_action:
                         action: call-service
                         service: input_select.select_previous
@@ -322,6 +336,13 @@ custom_fields:
                       styles:
                         card:
                           - padding: 0px
+                      card_mod:
+                        style: |
+                          :host {
+                            {% if not is_state('input_select.zn200', 'Programmato') %}
+                              pointer-events: none;
+                            {% endif %}
+                          }
                       tap_action:
                         action: call-service
                         service: input_select.select_next
@@ -346,6 +367,13 @@ custom_fields:
                       styles:
                         card:
                           - padding: 0px
+                      card_mod:
+                        style: |
+                          :host {
+                            {% if not is_state('input_select.zn200', 'Programmato') %}
+                              pointer-events: none;
+                            {% endif %}
+                          }
                       tap_action:
                         action: call-service
                         service: input_select.select_previous
@@ -494,6 +522,13 @@ custom_fields:
                       styles:
                         card:
                           - padding: 0px
+                      card_mod:
+                        style: |
+                          :host {
+                            {% if not is_state('input_select.zn300', 'Programmato') %}
+                              pointer-events: none;
+                            {% endif %}
+                          }
                       tap_action:
                         action: call-service
                         service: input_select.select_next
@@ -525,6 +560,13 @@ custom_fields:
                       styles:
                         card:
                           - padding: 0px
+                      card_mod:
+                        style: |
+                          :host {
+                            {% if not is_state('input_select.zn300', 'Programmato') %}
+                              pointer-events: none;
+                            {% endif %}
+                          }
                       tap_action:
                         action: call-service
                         service: input_select.select_previous

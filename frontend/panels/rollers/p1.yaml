@@ -131,6 +131,13 @@ custom_fields:
                       styles:
                         card:
                           - padding: 0px
+                      card_mod:
+                        style: |
+                          :host {
+                            {% if not is_state('input_select.rs100_program1', 'Programmato') %}
+                              pointer-events: none;
+                            {% endif %}
+                          }
                       tap_action:
                         action: call-service
                         service: input_select.select_next
@@ -145,7 +152,7 @@ custom_fields:
                       icon: mdi:calendar
                       color: >
                         [[[
-                          if (states['input_select.rs100_program1_days'].state == "Programmato")
+                          if (states['input_select.rs100_program1'].state == "Programmato")
                             return "#009213";
                           return "var(--disabled-text-color)";
                         ]]]
@@ -155,6 +162,13 @@ custom_fields:
                       styles:
                         card:
                           - padding: 0px
+                      card_mod:
+                        style: |
+                          :host {
+                            {% if not is_state('input_select.rs100_program1', 'Programmato') %}
+                              pointer-events: none;
+                            {% endif %}
+                          }
                       tap_action:
                         action: call-service
                         service: input_select.select_previous
@@ -292,6 +306,13 @@ custom_fields:
                       styles:
                         card:
                           - padding: 0px
+                      card_mod:
+                        style: |
+                          :host {
+                            {% if not is_state('input_select.rs200_program1', 'Programmato') %}
+                              pointer-events: none;
+                            {% endif %}
+                          }
                       tap_action:
                         action: call-service
                         service: input_select.select_next
@@ -316,6 +337,13 @@ custom_fields:
                       styles:
                         card:
                           - padding: 0px
+                      card_mod:
+                        style: |
+                          :host {
+                            {% if not is_state('input_select.rs200_program1', 'Programmato') %}
+                              pointer-events: none;
+                            {% endif %}
+                          }
                       tap_action:
                         action: call-service
                         service: input_select.select_previous

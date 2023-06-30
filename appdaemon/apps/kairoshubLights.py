@@ -67,10 +67,12 @@ class KairoshubLights(hass.Hass):
         if onTime <= now < offTime:
             self.log("Turning on lights in zone %s",zoneId)
             notyInfo["ncode"] = "LIGHTS_ON"
+            self.turn_on("input_boolean.light_program1_on")
             self.turnOn(lights, notyInfo)
         elif offTime <= now:
             self.log("Turning off lights in zone %s",zoneId)
             notyInfo["ncode"] = "LIGHTS_OFF"
+            self.turn_off("input_boolean.light_program1_on")
             self.turnOff(lights, notyInfo)
         else:
             self.log("The program is not active right now")
