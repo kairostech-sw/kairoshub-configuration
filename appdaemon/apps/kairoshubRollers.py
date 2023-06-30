@@ -14,7 +14,7 @@ class KairoshubRollers(hass.Hass):
         self.select_option(f"input_select.{zone}", "idle")
       else:
         zone = "rollershutters"
-        pos = "temperatura"
+        pos = "tapparelle"
 
       entity = f"group.{zone}"
       coverState = self.get_state(entity)
@@ -35,12 +35,10 @@ class KairoshubRollers(hass.Hass):
       services = {
           "open": "close_cover",
           "closed": "open_cover",
-          "moving": "stop_cover"
+          "moving": "stop_cover",
+          "stop": "stop_cover"
       }
-      if entity == "rollershutters":
-         return services[state]
-
-      return data["action"]
+      return services[state]
 
     def setRollersPosition(self, event_name: str, data: dict, kwargs: dict) -> None:
 

@@ -22,6 +22,21 @@ thermostat_off_period4:
   <<: *no-date-off
 
 ####################
+# Rollers Nightzone
+####################
+rollers_nightzone_on_program1:
+  <<: *no-date-on
+rollers_nightzone_off_program1:
+  <<: *no-date-off
+####################
+# Rollers Dayzone
+####################
+rollers_dayzone_on_program1:
+  <<: *no-date-on
+rollers_dayzone_off_program1:
+  <<: *no-date-off
+
+####################
 # Lights Nightzone
 ####################
 lights_nightzone_on_program1:

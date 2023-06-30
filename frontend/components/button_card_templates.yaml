@@ -1318,7 +1318,7 @@ rollers_detail:
             icon: "mdi:arrow-down"
             variables:
               zone: "[[[return variables.zone]]]"
-              option: "close_cover"
+              option: "close"
           - type: "custom:button-card"
             template: rollers_ctrl
             icon: "mdi:pause-octagon-outline"
@@ -1343,13 +1343,13 @@ rollers_detail:
                     - animation: blink-alert 2s ease infinite
             variables:
               zone: "[[[return variables.zone]]]"
-              option: "stop_cover"
+              option: "stop"
           - type: "custom:button-card"
             template: rollers_ctrl
             icon: "mdi:arrow-up"
             variables:
               zone: "[[[return variables.zone]]]"
-              option: "open_cover"
+              option: "open"
     lastupdate: >
       [[[
         var datetime =  states[`group.rs${variables.zone}`].last_changed.split("T");

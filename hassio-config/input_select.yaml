@@ -45,9 +45,9 @@ rs100:
     initial: idle
     options:
       - idle
-      - stop_cover
-      - open_cover
-      - close_cover
+      - stop
+      - open
+      - close
 rs101:
   name: Tapparelle Zona Notte 1
   <<: *rollers-options
