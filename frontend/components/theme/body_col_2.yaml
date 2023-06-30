@@ -30,6 +30,10 @@ card_mod:
           }
 card:
   type: "custom:tabbed-card"
+  styles:
+    --mdc-tab-stacked-height: 55px
+  attributes:
+    stacked: true
   tabs:
     - attributes:
         label: "Temperatura"
@@ -54,7 +58,7 @@ card:
           aggregate_func: avg
           points_per_hour: 1
           align_state: center
-          height: 213
+          height: 203
           line_width: 3
           hour24: true
           animate: true

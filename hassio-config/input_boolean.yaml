@@ -248,6 +248,8 @@ thermostat_sunday_program4:
 
 light_program1:
   name: Programma 1
+light_program1_on:
+  name: Programma 1 Attivo
 copy_lights_zn101:
   name: Copia Luci Zona
 copy_lights_zn102:
@@ -273,3 +275,5 @@ copy_lights_zn304:
 
 rollers_program1:
   name: Programma 1 Tapparelle
+rollers_program1_on:
+  name: Programma 1 Tapparelle Attivo

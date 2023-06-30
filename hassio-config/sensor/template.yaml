@@ -20,7 +20,7 @@
       value_template: >
         {% set isOff = namespace(value=1) %}
         {% for state in range(1,5) -%}
-          {% if is_state(('group.heater_program', state, '_on') | join, 'on') %}
+          {% if is_state(('input_boolean.heater_program', state, '_on') | join, 'on') %}
             {{('Programma ', state) | join}}
             {% set isOff.value = 0 %}
           {%- endif %}

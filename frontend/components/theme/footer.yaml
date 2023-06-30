@@ -7,162 +7,165 @@ template: command_bar
 custom_fields:
   commands:
     card:
-      type: horizontal-stack
-      cards:
-        - type: "custom:button-card"
-          template: icon_state_header
-          entity: input_boolean.night
-          color: var(--command-state-color)
-          icon: "mdi:weather-night"
-          label: "Notte"
-          state:
-            - value: "off"
-              icon: "mdi:weather-sunny"
-              label: "Giorno"
-              color: var(--command-state-color)
-          tap_action:
-            action: call-service
-            service: automation.trigger
-            service_data:
-              entity_id: automation.day_night_scene_manual
-          <<: &footer_padding
-            styles:
-              card:
-                - padding-top: 3px
-        - type: conditional
-          conditions:
-            - entity: input_boolean.light_integration
-              state: "on"
-          card:
-            type: custom:button-card
+      type: "custom:mod-card"
+      card_mod:
+        style:
+          hui-horizontal-stack-card$: |
+            #root {
+              justify-content: space-evenly !important;
+            }
+            #root > * {
+              max-width: 80px;
+              min-width: 80px;
+            }
+      card:
+        type: horizontal-stack
+        cards:
+          - type: "custom:button-card"
             template: icon_state_header
-            name: Luci
-            entity: group.lights
-            icon: mdi:lightbulb
-            state:
-              - value: "on"
-                label: Accese
-                color: var(--command-state-active-color)
-              - value: "off"
-                label: Spente
-                color: var(--command-state-color)
-            <<: *footer_padding
-            tap_action:
-              action: call-service
-              service: automation.trigger
-              service_data:
-                entity_id: >
-                  [[[
-                    if (states['group.lights'].state == 'on')
-                      return 'automation.light_turn_off'
-                    if (states['group.lights'].state == 'off')
-                      return 'automation.light_turn_on'
-                  ]]]
-        - type: conditional
-          conditions:
-            - entity: input_boolean.roller_integration
-              state: "on"
-          card:
-            name: Tapparelle aperte
-            type: "custom:button-card"
-            template: icon_state_header
-            label: "Aperte"
-            entity: group.rollershutters
+            entity: input_boolean.night
             color: var(--command-state-color)
-            extra_styles: |
-              @keyframes blink-alert {
-                0% { opacity: 0.3; }
-                50% { opacity: 1; }
-                100% { opacity: 0.3; }
-              }
-            tap_action:
-              action: call-service
-              service: automation.trigger
-              service_data:
-                entity_id: automation.control_rollers
+            icon: "mdi:weather-night"
+            label: "Notte"
             state:
-              - value: "open"
-                icon: mdi:window-shutter-open
-                label: Aperte
-              - value: "closed"
-                icon: mdi:window-shutter
-                label: Chiuse
-              - value: "moving"
-                icon: mdi:pause-octagon-outline
-                color: "#FF1500"
-                label: Ferma
-                styles:
-                  icon:
-                    - animation: blink-alert 2s ease infinite
-            <<: *footer_padding
-        - type: "custom:button-card"
-          entity: input_boolean.at_home
-          template: icon_state_header
-          icon: "mdi:home"
-          tap_action:
-            action: call-service
-            service: input_boolean.toggle
-            service_data:
-              entity_id: input_boolean.at_home
-          state:
-            - value: "on"
-              label: "In Casa"
-              color: var(--command-state-active-color)
-            - value: "off"
-              label: "Fuori Casa"
-              color: var(--command-state-color)
-          <<: *footer_padding
-        - type: conditional
-          conditions:
-            - entity: input_boolean.heating_integration
-              state: "on"
-          card:
-            type: custom:button-card
-            entity: "switch.sw_thermostat"
-            template: icon_state_header
-            name: Riscaldamento
+              - value: "off"
+                icon: "mdi:weather-sunny"
+                label: "Giorno"
+                color: var(--command-state-color)
             tap_action:
               action: call-service
               service: automation.trigger
               service_data:
-                entity_id: >
-                  [[[
-                    if (states['switch.sw_thermostat'] !== undefined) {
-                      if (states['switch.sw_thermostat'].state == 'on')
-                        return 'automation.manual_heating_off'
-                      if (states['switch.sw_thermostat'].state == 'off')
-                        return 'automation.manual_heating_on'
-                    }
-                  ]]]
+                entity_id: automation.day_night_scene_manual
+            <<: &footer_padding
+              styles:
+                card:
+                  - padding-top: 3px
+          - type: conditional
+            conditions:
+              - entity: input_boolean.light_integration
+                state: "on"
+            card:
+              type: custom:button-card
+              template: icon_state_header
+              name: Luci
+              entity: group.lights
+              icon: mdi:lightbulb
+              state:
+                - value: "on"
+                  label: >
+                    [[[
+                      var label = "Acceso"
+                      var prog = states["input_boolean.light_program1_on"].state;
+                      if (prog === "on")
+                        label = "Programma 1"
+                      return label;
+                    ]]]
+                  color: var(--command-state-active-color)
+                - value: "off"
+                  label: Spente
+                  color: var(--command-state-color)
+              <<: *footer_padding
+              tap_action:
+                action: call-service
+                service: automation.trigger
+                service_data:
+                  entity_id: >
+                    [[[
+                      if (states['group.lights'].state == 'on')
+                        return 'automation.light_turn_off'
+                      if (states['group.lights'].state == 'off')
+                        return 'automation.light_turn_on'
+                    ]]]
+          - type: "custom:button-card"
+            entity: input_boolean.at_home
+            template: icon_state_header
+            icon: "mdi:home"
+            tap_action:
+              action: call-service
+              service: input_boolean.toggle
+              service_data:
+                entity_id: input_boolean.at_home
             state:
               - value: "on"
-                icon: mdi:radiator
-                label: "Acceso"
+                label: "In Casa"
                 color: var(--command-state-active-color)
               - value: "off"
-                icon: mdi:radiator-off
-                label: "Spento"
+                label: "Fuori Casa"
                 color: var(--command-state-color)
             <<: *footer_padding
-        - type: conditional
-          conditions:
-            - entity: input_boolean.heating_integration
-              state: "on"
-          card:
-            type: "custom:button-card"
-            template: icon_state_header
-            entity: sensor.heater_auto
-            icon: mdi:calendar-remove
-            state:
-              - value: "off"
-                color: var(--command-state-color)
-                label: "OFF"
-              - operator: "!="
-                value: "off"
-                icon: mdi:calendar-check
-                color: var(--command-state-active-color)
-                label: '[[[return states["sensor.heater_auto"].state;]]]'
-            tap_action:
-              action: navigate
-              navigation_path: /lovelace-kairoshub/clima
-            <<: *footer_padding
+          - type: conditional
+            conditions:
+              - entity: input_boolean.roller_integration
+                state: "on"
+            card:
+              name: Tapparelle aperte
+              type: "custom:button-card"
+              template: icon_state_header
+              label: "Aperte"
+              entity: group.rollershutters
+              color: var(--command-state-color)
+              extra_styles: |
+                @keyframes blink-alert {
+                  0% { opacity: 0.3; }
+                  50% { opacity: 1; }
+                  100% { opacity: 0.3; }
+                }
+              tap_action:
+                action: call-service
+                service: automation.trigger
+                service_data:
+                  entity_id: automation.control_rollers
+              state:
+                - value: "open"
+                  icon: mdi:window-shutter-open
+                  label: Aperte
+                - value: "closed"
+                  icon: mdi:window-shutter
+                  label: Chiuse
+                - value: "moving"
+                  icon: mdi:pause-octagon-outline
+                  color: "#FF1500"
+                  label: Ferma
+                  styles:
+                    icon:
+                      - animation: blink-alert 2s ease infinite
+              <<: *footer_padding
+          - type: conditional
+            conditions:
+              - entity: input_boolean.heating_integration
+                state: "on"
+            card:
+              type: custom:button-card
+              entity: "switch.sw_thermostat"
+              template: icon_state_header
+              tap_action:
+                action: call-service
+                service: automation.trigger
+                service_data:
+                  entity_id: >
+                    [[[
+                      if (states['switch.sw_thermostat'] !== undefined) {
+                        if (states['switch.sw_thermostat'].state == 'on')
+                          return 'automation.manual_heating_off'
+                        if (states['switch.sw_thermostat'].state == 'off')
+                          return 'automation.manual_heating_on'
+                      }
+                    ]]]
+              state:
+                - value: "on"
+                  icon: mdi:radiator
+                  label: >
+                    [[[
+                      var label = "Acceso"
+                      var prog = states["sensor.heater_auto"].state;
+                      if (prog !== 'off')
+                        label = prog
+                      return label;
+                    ]]]
+                  color: var(--command-state-active-color)
+                - value: "off"
+                  icon: mdi:radiator-off
+                  label: "Spento"
+                  color: var(--command-state-color)
+              <<: *footer_padding
