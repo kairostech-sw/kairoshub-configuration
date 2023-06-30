@@ -41,7 +41,6 @@ custom_fields:
           card:
             type: "custom:expander-card"
             title: "Zona Notte"
-            expanded: true
             cards:
               - type: "custom:auto-entities"
                 filter:
@@ -63,10 +62,6 @@ custom_fields:
                       - rssi+
                     card_mod:
                       style: |
-                        ha-card {
-                          overflow: auto;
-                          max-height: 200px;
-                        }
                         ha-card::-webkit-scrollbar {
                           display: none !important;
                         }
@@ -98,7 +93,6 @@ custom_fields:
           card:
             type: "custom:expander-card"
             title: "Zona Giorno"
-            expanded: true
             cards:
               - type: "custom:auto-entities"
                 filter:
@@ -121,7 +115,6 @@ custom_fields:
           card:
             type: "custom:expander-card"
             title: "Esterno"
-            expanded: true
             cards:
               - type: "custom:auto-entities"
                 filter:
