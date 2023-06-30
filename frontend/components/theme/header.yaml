@@ -32,14 +32,13 @@ cards:
     cards:
       - type: horizontal-stack
         cards:
-          - type: 'custom:button-card'
-            template: row_space_10
           - type: "custom:button-card"
             template: row_space_10
           - type: "custom:button-card"
             template: row_space_10
-          - type: 'custom:button-card'
+          - type: "custom:button-card"
             template: user_notification_header
+            label: "Notifiche"
           - type: "custom:button-card"
             template: user_profile_header
             label: Online

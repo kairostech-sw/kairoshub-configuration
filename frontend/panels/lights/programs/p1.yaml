@@ -1,10 +1,9 @@
 type: custom:button-card
-template: panel_grid
+template: basic_page_layout
 styles:
   custom_fields:
     content:
-      - justify-self: center
-      - overflow: auto
+      - margin: 0px auto
 card_mod:
   style: |
     #content::-webkit-scrollbar {
@@ -13,16 +12,14 @@ card_mod:
 custom_fields:
   header:
     card:
-      type: 'custom:button-card'
-      layout: vertical
-      template:
-        - header_page_text
-      icon: 'mdi:lightbulb'
-      name: 'LUCI'
-      label: Luci
+      type: "custom:button-card"
+      template: header_page_text
+      icon: "mdi:lightbulb"
+      name: "LUCI"
+      label: "Luci / Programma 1"
   commandbar:
     card:
-      type: 'custom:button-card'
+      type: "custom:button-card"
       template: command_bar
       style: |
         ha-card.button-card-main {
@@ -31,21 +28,13 @@ custom_fields:
         div#container {
           justify-items: right;
         }
-      styles:
-        card:
-          - width: 800px
-          - margin-left: -10px
       custom_fields:
         commands:
           card:
             type: horizontal-stack
             cards:
-              - type: 'custom:button-card'
+              - type: "custom:button-card"
                 template: button_go_back
-                style: |
-                  :host {
-                    align-self: center;
-                  }
   content:
     card:
       type: vertical-stack
@@ -59,7 +48,7 @@ custom_fields:
             - entity: binary_sensor.lz300_state
               state: "off"
           card:
-            type: 'custom:button-card'
+            type: "custom:button-card"
             template: no_background
             name: >
               [[[
@@ -69,7 +58,7 @@ custom_fields:
                 </ha-alert>`;
               ]]]
             tap_action:
-                action: none
+              action: none
         - type: conditional
           conditions:
             - entity: binary_sensor.lz100_state
@@ -87,9 +76,9 @@ custom_fields:
                   entity: light.group_lz100
                   size: 75%
                   state:
-                    - value: 'off'
+                    - value: "off"
                       color: black
-                    - value: 'on'
+                    - value: "on"
                       color: >
                         [[[
                           if (states["input_select.light_type"].state == "color")
@@ -97,7 +86,7 @@ custom_fields:
                             if (states["light.group_lz100"].attributes.rgb_color != undefined) {
                             var color = states["light.group_lz100"].attributes.rgb_color
                             return "rgb("+color[0]+","+color[1]+","+color[2]+")";
-                            } 
+                            }
                           }
                           else return "#DCA200";
                         ]]]
@@ -124,20 +113,20 @@ custom_fields:
                         service: input_select.select_next
                         service_data:
                           entity_id: input_select.zn100
-                    - type: 'custom:button-card'
+                    - type: "custom:button-card"
                       entity: input_select.zn100
                       tap_action:
                         action: none
                       show_state: true
                       size: 17%
                       state:
-                        - value: 'Disattivo'
+                        - value: "Disattivo"
                           color: "#F32000"
                           icon: mdi:close-circle-outline
-                        - value: 'Programmato'
+                        - value: "Programmato"
                           color: "#009213"
                           icon: mdi:alarm
-                        - value: 'Automatico'
+                        - value: "Automatico"
                           color: "#FFB600"
                           icon: mdi:weather-sunny
                     - type: custom:button-card
@@ -161,12 +150,19 @@ custom_fields:
                       styles:
                         card:
                           - padding: 0px
+                      card_mod:
+                        style: |
+                          :host {
+                            {% if not is_state('input_select.zn100', 'Programmato') %}
+                              pointer-events: none;
+                            {% endif %}
+                          }
                       tap_action:
                         action: call-service
                         service: input_select.select_next
                         service_data:
                           entity_id: input_select.zn100_days
-                    - type: 'custom:button-card'
+                    - type: "custom:button-card"
                       entity: input_select.zn100_days
                       tap_action:
                         action: none
@@ -185,6 +181,13 @@ custom_fields:
                       styles:
                         card:
                           - padding: 0px
+                      card_mod:
+                        style: |
+                          :host {
+                            {% if not is_state('input_select.zn100', 'Programmato') %}
+                              pointer-events: none;
+                            {% endif %}
+                          }
                       tap_action:
                         action: call-service
                         service: input_select.select_previous
@@ -200,7 +203,7 @@ custom_fields:
                       layout:
                         embedded: true
                         align_controls: right
-                      style: 
+                      style:
                         .: |
                           :host {
                           {% if not is_state('input_select.zn100', 'Programmato') %}
@@ -213,13 +216,13 @@ custom_fields:
                           .time-picker-row.embedded {
                             flex-direction: column;
                           }
-                        time-unit: 
+                        time-unit:
                           $: |
                             .time-input {
                               {% if not is_state('input_select.zn100', 'Programmato') %}
                                 pointer-events: none;
-                                background-color: var(--disabled-text-color) !important; 
-                              {% endif %} 
+                                background-color: var(--disabled-text-color) !important;
+                              {% endif %}
                             }
                     - type: custom:time-picker-card
                       entity: input_datetime.lights_nightzone_off_program1
@@ -227,7 +230,7 @@ custom_fields:
                       layout:
                         embedded: true
                         align_controls: right
-                      style: 
+                      style:
                         .: |
                           :host {
                           {% if not is_state('input_select.zn100', 'Programmato') %}
@@ -240,13 +243,13 @@ custom_fields:
                           .time-picker-row.embedded {
                             flex-direction: column;
                           }
-                        time-unit: 
+                        time-unit:
                           $: |
                             .time-input {
                               {% if not is_state('input_select.zn100', 'Programmato') %}
                                 pointer-events: none;
-                                background-color: var(--disabled-text-color) !important; 
-                              {% endif %} 
+                                background-color: var(--disabled-text-color) !important;
+                              {% endif %}
                             }
         - type: conditional
           conditions:
@@ -265,9 +268,9 @@ custom_fields:
                   entity: light.group_lz200
                   size: 75%
                   state:
-                    - value: 'off'
+                    - value: "off"
                       color: black
-                    - value: 'on'
+                    - value: "on"
                       color: >
                         [[[
                           if (states["input_select.light_type"].state == "color")
@@ -275,7 +278,7 @@ custom_fields:
                             if (states["light.group_lz200"].attributes.rgb_color != undefined) {
                             var color = states["light.group_lz200"].attributes.rgb_color
                             return "rgb("+color[0]+","+color[1]+","+color[2]+")";
-                            } 
+                            }
                           }
                           else return "#DCA200";
                         ]]]
@@ -296,20 +299,20 @@ custom_fields:
                         service: input_select.select_next
                         service_data:
                           entity_id: input_select.zn200
-                    - type: 'custom:button-card'
+                    - type: "custom:button-card"
                       entity: input_select.zn200
                       tap_action:
                         action: none
                       show_state: true
                       size: 17%
                       state:
-                        - value: 'Disattivo'
+                        - value: "Disattivo"
                           color: "#F32000"
                           icon: mdi:close-circle-outline
-                        - value: 'Programmato'
+                        - value: "Programmato"
                           color: "#009213"
                           icon: mdi:alarm
-                        - value: 'Automatico'
+                        - value: "Automatico"
                           color: "#FFB600"
                           icon: mdi:weather-sunny
                     - type: custom:button-card
@@ -333,12 +336,19 @@ custom_fields:
                       styles:
                         card:
                           - padding: 0px
+                      card_mod:
+                        style: |
+                          :host {
+                            {% if not is_state('input_select.zn200', 'Programmato') %}
+                              pointer-events: none;
+                            {% endif %}
+                          }
                       tap_action:
                         action: call-service
                         service: input_select.select_next
                         service_data:
                           entity_id: input_select.zn200_days
-                    - type: 'custom:button-card'
+                    - type: "custom:button-card"
                       entity: input_select.zn200_days
                       tap_action:
                         action: none
@@ -357,6 +367,13 @@ custom_fields:
                       styles:
                         card:
                           - padding: 0px
+                      card_mod:
+                        style: |
+                          :host {
+                            {% if not is_state('input_select.zn200', 'Programmato') %}
+                              pointer-events: none;
+                            {% endif %}
+                          }
                       tap_action:
                         action: call-service
                         service: input_select.select_previous
@@ -372,7 +389,7 @@ custom_fields:
                       layout:
                         embedded: true
                         align_controls: right
-                      style: 
+                      style:
                         .: |
                           :host {
                           {% if not is_state('input_select.zn200', 'Programmato') %}
@@ -385,13 +402,13 @@ custom_fields:
                           .time-picker-row.embedded {
                             flex-direction: column;
                           }
-                        time-unit: 
+                        time-unit:
                           $: |
                             .time-input {
                               {% if not is_state('input_select.zn200', 'Programmato') %}
                                 pointer-events: none;
-                                background-color: var(--disabled-text-color) !important; 
-                              {% endif %} 
+                                background-color: var(--disabled-text-color) !important;
+                              {% endif %}
                             }
                     - type: custom:time-picker-card
                       entity: input_datetime.lights_dayzone_off_program1
@@ -399,7 +416,7 @@ custom_fields:
                       layout:
                         embedded: true
                         align_controls: right
-                      style: 
+                      style:
                         .: |
                           :host {
                           {% if not is_state('input_select.zn200', 'Programmato') %}
@@ -412,13 +429,13 @@ custom_fields:
                           .time-picker-row.embedded {
                             flex-direction: column;
                           }
-                        time-unit: 
+                        time-unit:
                           $: |
                             .time-input {
                               {% if not is_state('input_select.zn200', 'Programmato') %}
                                 pointer-events: none;
-                                background-color: var(--disabled-text-color) !important; 
-                              {% endif %} 
+                                background-color: var(--disabled-text-color) !important;
+                              {% endif %}
                             }
         - type: conditional
           conditions:
@@ -437,9 +454,9 @@ custom_fields:
                   entity: light.group_lz300
                   size: 75%
                   state:
-                    - value: 'off'
+                    - value: "off"
                       color: black
-                    - value: 'on'
+                    - value: "on"
                       color: >
                         [[[
                           if (states["input_select.light_type"].state == "color")
@@ -447,7 +464,7 @@ custom_fields:
                             if (states["light.group_lz300"].attributes.rgb_color != undefined) {
                             var color = states["light.group_lz300"].attributes.rgb_color
                             return "rgb("+color[0]+","+color[1]+","+color[2]+")";
-                            } 
+                            }
                           }
                           else return "#DCA200";
                         ]]]
@@ -468,20 +485,20 @@ custom_fields:
                         service: input_select.select_next
                         service_data:
                           entity_id: input_select.zn300
-                    - type: 'custom:button-card'
+                    - type: "custom:button-card"
                       entity: input_select.zn300
                       tap_action:
                         action: none
                       show_state: true
                       size: 17%
                       state:
-                        - value: 'Disattivo'
+                        - value: "Disattivo"
                           color: "#F32000"
                           icon: mdi:close-circle-outline
-                        - value: 'Programmato'
+                        - value: "Programmato"
                           color: "#009213"
                           icon: mdi:alarm
-                        - value: 'Automatico'
+                        - value: "Automatico"
                           color: "#FFB600"
                           icon: mdi:weather-sunny
                     - type: custom:button-card
@@ -505,19 +522,26 @@ custom_fields:
                       styles:
                         card:
                           - padding: 0px
+                      card_mod:
+                        style: |
+                          :host {
+                            {% if not is_state('input_select.zn300', 'Programmato') %}
+                              pointer-events: none;
+                            {% endif %}
+                          }
                       tap_action:
                         action: call-service
                         service: input_select.select_next
                         service_data:
                           entity_id: input_select.zn300_days
-                      style: 
+                      style:
                         .: |
                           :host {
                           {% if not is_state('input_select.zn300', 'Programmato') %}
                             pointer-events: none;
                           {% endif %}
                           }
-                    - type: 'custom:button-card'
+                    - type: "custom:button-card"
                       entity: input_select.zn300_days
                       tap_action:
                         action: none
@@ -536,12 +560,19 @@ custom_fields:
                       styles:
                         card:
                           - padding: 0px
+                      card_mod:
+                        style: |
+                          :host {
+                            {% if not is_state('input_select.zn300', 'Programmato') %}
+                              pointer-events: none;
+                            {% endif %}
+                          }
                       tap_action:
                         action: call-service
                         service: input_select.select_previous
                         service_data:
                           entity_id: input_select.zn300_days
-                      style: 
+                      style:
                         .: |
                           :host {
                           {% if not is_state('input_select.zn300', 'Programmato') %}
@@ -558,7 +589,7 @@ custom_fields:
                       layout:
                         embedded: true
                         align_controls: right
-                      style: 
+                      style:
                         .: |
                           :host {
                           {% if not is_state('input_select.zn300', 'Programmato') %}
@@ -571,13 +602,13 @@ custom_fields:
                           .time-picker-row.embedded {
                             flex-direction: column;
                           }
-                        time-unit: 
+                        time-unit:
                           $: |
                             .time-input {
                               {% if not is_state('input_select.zn300', 'Programmato') %}
                                 pointer-events: none;
-                                background-color: var(--disabled-text-color) !important; 
-                              {% endif %} 
+                                background-color: var(--disabled-text-color) !important;
+                              {% endif %}
                             }
                     - type: custom:time-picker-card
                       entity: input_datetime.lights_outdoor_off_program1
@@ -585,7 +616,7 @@ custom_fields:
                       layout:
                         embedded: true
                         align_controls: right
-                      style: 
+                      style:
                         .: |
                           :host {
                           {% if not is_state('input_select.zn300', 'Programmato') %}
@@ -598,11 +629,11 @@ custom_fields:
                           .time-picker-row.embedded {
                             flex-direction: column;
                           }
-                        time-unit: 
+                        time-unit:
                           $: |
                             .time-input {
                               {% if not is_state('input_select.zn300', 'Programmato') %}
                                 pointer-events: none;
-                                background-color: var(--disabled-text-color) !important; 
-                              {% endif %} 
+                                background-color: var(--disabled-text-color) !important;
+                              {% endif %}
                             }

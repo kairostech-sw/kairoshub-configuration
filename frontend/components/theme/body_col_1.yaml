@@ -1,43 +1,12 @@
-type: vertical-stack
-cards:
-  # - type: 'custom:button-card'
-  #   name: CLIMA
-  #   template: label_center
-  #   styles:
-  #     name: 
-  #       - font-size: 15px
-  #       - font-weight: bold
-  # - type: horizontal-stack
-  #   cards:
-  #     - name: In Casa
-  #       template: on_off_buttoncard
-  #       entity: input_boolean.at_home
-  #       icon: 'mdi:home'
-  #       color: auto
-  #       tap_action:
-  #         action: call-service
-  #         service: input_boolean.toggle
-  #         service_data:
-  #           entity_id: input_boolean.at_home
-  #       type: 'custom:button-card'
-  #     - name: Buonanotte
-  #       template: on_off_buttoncard
-  #       entity: input_boolean.night
-  #       icon: 'mdi:weather-night'
-  #       tap_action:
-  #         action: call-service
-  #         service: input_boolean.toggle
-  #         service_data:
-  #           entity_id: input_boolean.night
-  #       type: 'custom:button-card'
-- type: custom:weather-card
-  entity: weather.casa
-  current: true
-  details: false
-  forecast: true
-  hourly_forecast: false
-  number_of_forecasts: 5
-  style: |
-    :host ::slotted(.card-content) {
-      padding: 0px
+type: custom:weather-card
+entity: weather.casa
+current: true
+details: false
+forecast: true
+hourly_forecast: false
+number_of_forecasts: 5
+style:
+  .: |
+    ha-card {
+      margin-left: 10px;
     }

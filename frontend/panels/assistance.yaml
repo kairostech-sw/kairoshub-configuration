@@ -4,18 +4,16 @@ custom_fields:
   header:
     card:
       type: "custom:button-card"
-      layout: vertical
-      template:
-        - header_page_text
+      template: header_page_text
       name: "ASSISTENZA"
       label: "Assistenza /"
-      icon: mdi:lifebuoy
+      icon: "mdi:lifebuoy"
   system_data:
     card:
       type: "custom:button-card"
       icon: "mdi:information-outline"
       template: assistance_info
-      name: Dati Impianto
+      name: "Dati Impianto"
       entity: "sensor.system_state"
       variables:
         systemCode: input_text.system_code

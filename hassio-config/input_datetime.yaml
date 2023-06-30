@@ -1,290 +1,77 @@
-###############################################
-#           Monday
-###############################################
-thermostat_monday_on_period1:
-  name: Accensione
-  has_date: false
-  has_time: true
-thermostat_monday_off_period1:
-  name: Spegnimento
-  has_date: false
-  has_time: true
-thermostat_monday_on_period2:
-  name: Accensione
-  has_date: false
-  has_time: true
-thermostat_monday_off_period2:
-  name: Spegnimento
-  has_date: false
-  has_time: true
-thermostat_monday_on_period3:
-  name: Accensione
-  has_date: false
-  has_time: true
-thermostat_monday_off_period3:
-  name: Spegnimento
-  has_date: false
-  has_time: true
-thermostat_monday_on_period4:
-  name: Accensione
-  has_date: false
-  has_time: true
-thermostat_monday_off_period4:
-  name: Spegnimento
-  has_date: false
-  has_time: true
-###############################################
-#           Tuesday
-###############################################
-thermostat_tuesday_on_period1:
-  name: Accensione
-  has_date: false
-  has_time: true
-thermostat_tuesday_off_period1:
-  name: Spegnimento
-  has_date: false
-  has_time: true
-thermostat_tuesday_on_period2:
-  name: Accensione
-  has_date: false
-  has_time: true
-thermostat_tuesday_off_period2:
-  name: Spegnimento
-  has_date: false
-  has_time: true
-thermostat_tuesday_on_period3:
-  name: Accensione
-  has_date: false
-  has_time: true
-thermostat_tuesday_off_period3:
-  name: Spegnimento
-  has_date: false
-  has_time: true
-thermostat_tuesday_on_period4:
-  name: Accensione
-  has_date: false
-  has_time: true
-thermostat_tuesday_off_period4:
-  name: Spegnimento
-  has_date: false
-  has_time: true
-###############################################
-#           Wednesday
-###############################################
-thermostat_wednesday_on_period1:
-  name: Accensione
-  has_date: false
-  has_time: true
-thermostat_wednesday_off_period1:
-  name: Spegnimento
-  has_date: false
-  has_time: true
-thermostat_wednesday_on_period2:
-  name: Accensione
-  has_date: false
-  has_time: true
-thermostat_wednesday_off_period2:
-  name: Spegnimento
-  has_date: false
-  has_time: true
-thermostat_wednesday_on_period3:
-  name: Accensione
-  has_date: false
-  has_time: true
-thermostat_wednesday_off_period3:
-  name: Spegnimento
-  has_date: false
-  has_time: true
-thermostat_wednesday_on_period4:
-  name: Accensione
-  has_date: false
-  has_time: true
-thermostat_wednesday_off_period4:
-  name: Spegnimento
-  has_date: false
-  has_time: true
-###############################################
-#           Thursday
-###############################################
-thermostat_thursday_on_period1:
-  name: Accensione
-  has_date: false
-  has_time: true
-thermostat_thursday_off_period1:
-  name: Spegnimento
-  has_date: false
-  has_time: true
-thermostat_thursday_on_period2:
-  name: Accensione
-  has_date: false
-  has_time: true
-thermostat_thursday_off_period2:
-  name: Spegnimento
-  has_date: false
-  has_time: true
-thermostat_thursday_on_period3:
-  name: Accensione
-  has_date: false
-  has_time: true
-thermostat_thursday_off_period3:
-  name: Spegnimento
-  has_date: false
-  has_time: true
-thermostat_thursday_on_period4:
-  name: Accensione
-  has_date: false
-  has_time: true
-thermostat_thursday_off_period4:
-  name: Spegnimento
-  has_date: false
-  has_time: true
-###############################################
-#           Friday
-###############################################
-thermostat_friday_on_period1:
-  name: Accensione
-  has_date: false
-  has_time: true
-thermostat_friday_off_period1:
-  name: Spegnimento
-  has_date: false
-  has_time: true
-thermostat_friday_on_period2:
-  name: Accensione
-  has_date: false
-  has_time: true
-thermostat_friday_off_period2:
-  name: Spegnimento
-  has_date: false
-  has_time: true
-thermostat_friday_on_period3:
-  name: Accensione
-  has_date: false
-  has_time: true
-thermostat_friday_off_period3:
-  name: Spegnimento
-  has_date: false
-  has_time: true
-thermostat_friday_on_period4:
-  name: Accensione
-  has_date: false
-  has_time: true
-thermostat_friday_off_period4:
-  name: Spegnimento
-  has_date: false
-  has_time: true
-###############################################
-#           Saturday
-###############################################
-thermostat_saturday_on_period1:
-  name: Accensione
-  has_date: false
-  has_time: true
-thermostat_saturday_off_period1:
-  name: Spegnimento
-  has_date: false
-  has_time: true
-thermostat_saturday_on_period2:
-  name: Accensione
-  has_date: false
-  has_time: true
-thermostat_saturday_off_period2:
-  name: Spegnimento
-  has_date: false
-  has_time: true
-thermostat_saturday_on_period3:
-  name: Accensione
-  has_date: false
-  has_time: true
-thermostat_saturday_off_period3:
-  name: Spegnimento
-  has_date: false
-  has_time: true
-thermostat_saturday_on_period4:
-  name: Accensione
-  has_date: false
-  has_time: true
-thermostat_saturday_off_period4:
-  name: Spegnimento
-  has_date: false
-  has_time: true
-###############################################
-#           Sunday
-###############################################
-thermostat_sunday_on_period1:
-  name: Accensione
-  has_date: false
-  has_time: true
-thermostat_sunday_off_period1:
-  name: Spegnimento
-  has_date: false
-  has_time: true
-thermostat_sunday_on_period2:
-  name: Accensione
-  has_date: false
-  has_time: true
-thermostat_sunday_off_period2:
-  name: Spegnimento
-  has_date: false
-  has_time: true
-thermostat_sunday_on_period3:
-  name: Accensione
-  has_date: false
-  has_time: true
-thermostat_sunday_off_period3:
-  name: Spegnimento
-  has_date: false
-  has_time: true
-thermostat_sunday_on_period4:
-  name: Accensione
-  has_date: false
-  has_time: true
-thermostat_sunday_off_period4:
-  name: Spegnimento
-  has_date: false
-  has_time: true
+thermostat_on_period1:
+  <<: &no-date-on
+    name: Accensione
+    has_date: false
+    has_time: true
+thermostat_off_period1:
+  <<: &no-date-off
+    name: Spegnimento
+    has_date: false
+    has_time: true
+thermostat_on_period2:
+  <<: *no-date-on
+thermostat_off_period2:
+  <<: *no-date-off
+thermostat_on_period3:
+  <<: *no-date-on
+thermostat_off_period3:
+  <<: *no-date-off
+thermostat_on_period4:
+  <<: *no-date-on
+thermostat_off_period4:
+  <<: *no-date-off
+
+####################
+# Rollers Nightzone
+####################
+rollers_nightzone_on_program1:
+  <<: &rollers-program-up
+    name: Apertura
+    has_date: false
+    has_time: true
+rollers_nightzone_off_program1:
+  <<: &rollers-program-down
+    name: Chiusura
+    has_date: false
+    has_time: true
+####################
+# Rollers Dayzone
+####################
+rollers_dayzone_on_program1:
+  <<: *rollers-program-up
+rollers_dayzone_off_program1:
+  <<: *rollers-program-down
+
 ####################
 # Lights Nightzone
 ####################
 lights_nightzone_on_program1:
-  name: Accensione
-  has_date: false
-  has_time: true
+  <<: *no-date-on
 lights_nightzone_off_program1:
-  name: Spegnimento
-  has_date: false
-  has_time: true
+  <<: *no-date-off
 ####################
 # Lights Dayzone
 ####################
 lights_dayzone_on_program1:
-  name: Accensione
-  has_date: false
-  has_time: true
+  <<: *no-date-on
 lights_dayzone_off_program1:
-  name: Spegnimento
-  has_date: false
-  has_time: true
+  <<: *no-date-off
 ####################
 # Lights Outdoor
 ####################
 lights_outdoor_on_program1:
-  name: Accensione
-  has_date: false
-  has_time: true
+  <<: *no-date-on
 lights_outdoor_off_program1:
-  name: Spegnimento
-  has_date: false
-  has_time: true
+  <<: *no-date-off
 light_offset_sunset:
   name: Orario Spegnimento Luci Dopo Il Tramonto
+  has_date: false
   has_time: true
+
 ##########
 # Scenes
 ##########
 scene_day_on:
-  name: Accensione
-  has_time: true
+  <<: *no-date-on
 scene_day_off:
-  name: Spegnimento
-  has_time: true
+  <<: *no-date-off

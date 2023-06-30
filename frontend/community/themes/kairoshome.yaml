@@ -7,6 +7,11 @@ kairoshome - light:
           display: none;
         }
       {% endif %}
+      {% if  is_state("input_boolean.roller_integration", "off") %}
+        paper-tab[aria-label='TAPPARELLE'] {
+          display: none;
+        }
+      {% endif %}
       {% if  is_state("input_boolean.light_integration", "off") %}
         paper-tab[aria-label='LUCI'] {
           display: none;
@@ -28,8 +33,8 @@ kairoshome - light:
 
   #sizes
   header-height: "40px"
-  
-  #toolbar 
+
+  #toolbar
   app-toolbar-height: "40px"
 
   ### Main Interface Colors ###
@@ -78,13 +83,14 @@ kairoshome - light:
   paper-toggle-button-unchecked-button-color: "#4284F4"
   paper-toggle-button-unchecked-bar-color: "#c1c1c1"
   ### Graph Colors ###
-  temperature-primary-color: '#FF0000'
-  temperature-secondary-color: '#2E86C1'
-  humidity-primary-color: '#7FB03F'
-  energy-consume-primary-color: '#FFD700'
+  temperature-primary-color: "#FF0000"
+  temperature-secondary-color: "#2E86C1"
+  temperature-tertiary-color: "#FFA500"
+  humidity-primary-color: "#7FB03F"
+  energy-consume-primary-color: "#FFD700"
   ### Command Bar ###
-  command-state-color: '#FFFFFF'
-  command-state-active-color: '#DCA200'
+  command-state-color: "#FFFFFF"
+  command-state-active-color: "#DCA200"
 
   ### Dialog ###
   paper-dialog-background-color: "#ffffff"
@@ -134,7 +140,7 @@ kairoshome - dark:
   sidebar-selected-background-color: var(--primary-background-color)
   sidebar-selected-icon-color: "#4284F4"
   sidebar-selected-text-color: var(--sidebar-selected-icon-color)
-  ### States and Badges ### 
+  ### States and Badges ###
   state-icon-color: "#ffffff"
   state-icon-active-color: var(--active-color)
   state-icon-unavailable-color: var(--disabled-text-color)

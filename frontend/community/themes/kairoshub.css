@@ -1,8 +1,12 @@
 .tvblock_temperature {
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--active-color);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--active-color);
 }
 body {
-    overflow-y: hidden !important;
+  max-height: 480px;
+  overflow-x: hidden;
+}
+body::-webkit-scrollbar {
+  display: none !important;
 }

@@ -50,14 +50,145 @@ heater_program3_on:
   name: Programma 3 Attivo
 heater_program4_on:
   name: Programma 4 Attivo
-copy_program1:
-  name: Copia Orari Programma 1
-copy_program2:
-  name: Copia Orari Programma 2
-copy_program3:
-  name: Copia Orari Programma 3
-copy_program4:
-  name: Copia Orari Programma 4
+heater_zn101_program1:
+  name: Zona Notte 1
+heater_zn101_program1_on:
+  name: Zona Notte 1 Attivo
+heater_zn102_program1:
+  name: Zona Notte 2
+heater_zn102_program1_on:
+  name: Zona Notte 2 Attivo
+heater_zn103_program1:
+  name: Zona Notte 3
+heater_zn103_program1_on:
+  name: Zona Notte 3 Attivo
+heater_zn104_program1:
+  name: Zona Notte 4
+heater_zn104_program1_on:
+  name: Zona Notte 4 Attivo
+heater_zn201_program1:
+  name: Zona Giorno 1
+heater_zn201_program1_on:
+  name: Zona Giorno 1 Attivo
+heater_zn202_program1:
+  name: Zona Giorno 2
+heater_zn202_program1_on:
+  name: Zona Giorno 2 Attivo
+heater_zn203_program1:
+  name: Zona Giorno 3
+heater_zn203_program1_on:
+  name: Zona Giorno 3 Attivo
+
+heater_zn101_program2:
+  name: Zona Notte 1
+heater_zn101_program2_on:
+  name: Zona Notte 1 Attivo
+heater_zn102_program2:
+  name: Zona Notte 2
+heater_zn102_program2_on:
+  name: Zona Notte 2 Attivo
+heater_zn103_program2:
+  name: Zona Notte 3
+heater_zn103_program2_on:
+  name: Zona Notte 3 Attivo
+heater_zn104_program2:
+  name: Zona Notte 4
+heater_zn104_program2_on:
+  name: Zona Notte 4 Attivo
+heater_zn201_program2:
+  name: Zona Giorno 1
+heater_zn201_program2_on:
+  name: Zona Giorno 1 Attivo
+heater_zn202_program2:
+  name: Zona Giorno 2
+heater_zn202_program2_on:
+  name: Zona Giorno 2 Attivo
+heater_zn203_program2:
+  name: Zona Giorno 3
+heater_zn203_program2_on:
+  name: Zona Giorno 3 Attivo
+
+heater_zn101_program3:
+  name: Zona Notte 1
+heater_zn101_program3_on:
+  name: Zona Notte 1 Attivo
+heater_zn102_program3:
+  name: Zona Notte 2
+heater_zn102_program3_on:
+  name: Zona Notte 2 Attivo
+heater_zn103_program3:
+  name: Zona Notte 3
+heater_zn103_program3_on:
+  name: Zona Notte 3 Attivo
+heater_zn104_program3:
+  name: Zona Notte 4
+heater_zn104_program3_on:
+  name: Zona Notte 4 Attivo
+heater_zn201_program3:
+  name: Zona Giorno 1
+heater_zn201_program3_on:
+  name: Zona Giorno 1 Attivo
+heater_zn202_program3:
+  name: Zona Giorno 2
+heater_zn202_program3_on:
+  name: Zona Giorno 2 Attivo
+heater_zn203_program3:
+  name: Zona Giorno 3
+heater_zn203_program3_on:
+  name: Zona Giorno 3 Attivo
+
+heater_zn101_program4:
+  name: Zona Notte 1
+heater_zn101_program4_on:
+  name: Zona Notte 1 Attivo
+heater_zn102_program4:
+  name: Zona Notte 2
+heater_zn102_program4_on:
+  name: Zona Notte 2 Attivo
+heater_zn103_program4:
+  name: Zona Notte 3
+heater_zn103_program4_on:
+  name: Zona Notte 3 Attivo
+heater_zn104_program4:
+  name: Zona Notte 4
+heater_zn104_program4_on:
+  name: Zona Notte 4 Attivo
+heater_zn201_program4:
+  name: Zona Giorno 1
+heater_zn201_program4_on:
+  name: Zona Giorno 1 Attivo
+heater_zn202_program4:
+  name: Zona Giorno 2
+heater_zn202_program4_on:
+  name: Zona Giorno 2 Attivo
+heater_zn203_program4:
+  name: Zona Giorno 3
+heater_zn203_program4_on:
+  name: Zona Giorno 3 Attivo
+
+zn100_active:
+  name: Zona Notte Attiva
+zn200_active:
+  name: Zona Giorno Attiva
+zn300_active:
+  name: Esterno Attivo
+
+zn101_alert:
+  name: Zona Notte
+zn102_alert:
+  name: Zona Notte
+zn103_alert:
+  name: Zona Notte
+zn104_alert:
+  name: Zona Notte
+
+zn201_alert:
+  name: Zona Notte
+zn202_alert:
+  name: Zona Notte
+zn203_alert:
+  name: Zona Notte
+
 thermostat_monday_program1:
   name: Lunedì
 thermostat_monday_program2:
@@ -114,22 +245,11 @@ thermostat_sunday_program3:
   name: Domenica
 thermostat_sunday_program4:
   name: Domenica
-tv_01:
-  name: Ambiente 1
-tv_02:
-  name: Ambiente 2
-tv_03:
-  name: Ambiente 3
-tv_04:
-  name: Ambiente 4
-tv_05:
-  name: Ambiente 5
-tv_06:
-  name: Ambiente 6
-tv_07:
-  name: Ambiente 7
+
 light_program1:
   name: Programma 1
+light_program1_on:
+  name: Programma 1 Attivo
 copy_lights_zn101:
   name: Copia Luci Zona
 copy_lights_zn102:
@@ -152,3 +272,8 @@ copy_lights_zn303:
   name: Copia Luci Zona
 copy_lights_zn304:
   name: Copia Luci Zona
+
+rollers_program1:
+  name: Programma 1 Tapparelle
+rollers_program1_on:
+  name: Programma 1 Tapparelle Attivo

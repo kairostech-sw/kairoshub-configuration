@@ -1,650 +1,27 @@
-########################
-### PICTURE ELEMENTS ###
-########################
-
-pic_label_stato_operativo:
-  template:
-    - no_background
-  show_icon: false
-  show_state: false
-  styles:
-    name:
-      - justify-self: start
-      - font-size: 120%
-    card:
-      - border-radius: 0px
-      - padding: 0px
-  state:
-    - value: 'on'
-      name: IN FUNZIONE
-      styles:
-        name:
-          - color: var(--paper-item-icon-active-color)
-          - font-weight: bold
-    - value: 'off'
-      name: SPENTA
-      styles:
-        name:
-          - color: var(--secondary-text-color)
-
-pic_icon_stato_operativo_lavatrice:
-  template:
-    - no_background
-  show_name: false
-  show_state: false
-  show_icon: true
-  styles:
-    card:
-      - border-radius: 0px
-  state:
-    - value: 'on'
-      icon: 'mdi:washing-machine'
-      styles:
-        icon:
-          - color: var(--paper-item-icon-active-color)
-    - value: 'off'
-      icon: 'mdi:washing-machine-off'
-      styles:
-        icon:
-          - color: var(--secondary-text-color)
-
-pic_icon_stato_operativo_lavastoviglie:
-  template:
-    - no_background
-  show_name: false
-  show_state: false
-  show_icon: true
-  styles:
-    card:
-      - border-radius: 0px
-  state:
-    - value: 'on'
-      icon: 'mdi:dishwasher'
-      styles:
-        icon:
-          - color: var(--paper-item-icon-active-color)
-    - value: 'off'
-      icon: 'mdi:dishwasher-off'
-      styles:
-        icon:
-          - color: var(--secondary-text-color)
-
-pic_icon_stato_operativo_asciugatrice:
-  template:
-    - no_background
-  show_name: false
-  show_state: false
-  show_icon: true
-  styles:
-    card:
-      - border-radius: 0px
-  state:
-    - value: 'on'
-      icon: 'mdi:tumble-dryer'
-      styles:
-        icon:
-          - color: var(--paper-item-icon-active-color)
-    - value: 'off'
-      icon: 'mdi:tumble-dryer-off'
-      styles:
-        icon:
-          - color: var(--secondary-text-color)
-
-pic_label_fase_operativa:
-  show_icon: false
-  template: no_background
-  name: Riscaldamento Acqua
-  styles:
-    name:
-      - font-size: 110%
-      - justify-self: start
-
-    card:
-      - border-radius: 0px
-      - padding: 0px
-
-pic_label_tempo_ciclo:
-  template: no_background
-  show_icon: false
-  show_state: true
-  show_name: false
-  styles:
-    card:
-      - border-radius: 0px
-      - padding: 0px
-    state:
-      - justify-self: start
-      - font-size: 110%
-      - font-weight: bold
-
-pic_label_consumo:
-  template: no_background
-  show_icon: false
-  show_state: true
-  show_name: false
-  styles:
-    card:
-      - border-radius: 0px
-      - padding: 0px
-    state:
-      - justify-self: start
-      - font-size: 95%
-
+######################
+#### BASIC STYLES ####
+######################
 feedback_click:
   styles:
     card:
-      - '--mdc-ripple-color': var(--paper-item-icon-active-color)
-      - '--mdc-ripple-press-opacity': 0.2
+      - "--mdc-ripple-color": var(--paper-item-icon-active-color)
+      - "--mdc-ripple-press-opacity": 0.2
 
-#######################
-### ACTION TEMPLATE ###
-#######################
+no_background:
+  styles:
+    card:
+      - background-color: "rgba(0, 0, 0, 0.0)"
+      - box-shadow: none
 
-action_var:
-  entity: var.spotify_var_room
+grey_background:
   styles:
     card:
-      - height: 80px
-    name:
-      - margin-bottom: 5px
-  tap_action:
-    action: call-service
-    service: script.spotify_set_room
-    service_data:
-      room: '[[[ return variables.room ]]]'
-  state:
-    - value: '[[[ return variables.room ]]]'
-      styles:
-        icon:
-          - color: var(--paper-item-icon-active-color)
-          - font-weight: bold
-        name:
-          - color: var(--paper-item-icon-active-color)
-          - font-weight: bold
+      - background: var(--primary-background-color)
 
-action_var_echo_entity:
-  entity: var.alexa_echo_entity
+width_50:
   styles:
     card:
-      - height: 80px
-    name:
-      - margin-bottom: 5px
-  tap_action:
-    action: call-service
-    service: var.set
-    service_data:
-      entity_id: var.alexa_echo_entity
-      value: '[[[ return variables.echo_entity ]]]'
-  state:
-    - value: '[[[ return variables.echo_entity ]]]'
-      styles:
-        icon:
-          - color: var(--paper-item-icon-active-color)
-          - font-weight: bold
-        name:
-          - color: var(--paper-item-icon-active-color)
-          - font-weight: bold
-
-action_state_numeric:
-  state:
-    - value: 0
-      operator: '>'
-      styles:
-        icon:
-          - color: var(--paper-item-icon-active-color)
-
-action_turn_off:
-  state:
-    - value: 'off'
-      styles:
-        icon:
-          - color: var(--disabled-text-color)
-        name:
-          - color: var(--disabled-text-color)
-  icon: 'mdi:power'
-  tap_action:
-    action: call-service
-    service: homeassistant.turn_off
-    service_data:
-      entity_id: '[[[ return entity.entity_id ]]]'
-action_state_off:
-  state:
-    - value: 'off'
-      styles:
-        icon:
-          - color: var(--disabled-text-color)
-        name:
-          - color: var(--disabled-text-color)
-action_state_number_off:
-  state:
-    - value: 0
-      styles:
-        icon:
-          - color: var(--disabled-text-color)
-        name:
-          - color: var(--disabled-text-color)
-    - value: 0
-      operator: '>'
-      styles:
-        icon:
-          - color: red
-action_turn_scene:
-  template: feedback_click
-  tap_action:
-    action: call-service
-    service: scene.turn_on
-    service_data:
-      entity_id: '[[[ return entity.entity_id ]]]'
-
-#######################
-### BUTTON TEMPLATE ###
-#######################
-
-button_home:
-  template: feedback_click
-  layout: icon_name
-  name: GO TO HOME
-  styles:
-    card:
-      - height: 70px
-    name:
-      - justify-self: left
-  icon: 'phu:routinesComingHome'
-  tap_action:
-    action: navigate
-    navigation_path: /lovelace-tablet/home
-button_footer:
-  template: feedback_click
-  layout: icon_name
-  styles:
-    card:
-      - height: 70px
-    name:
-      - justify-self: left
-button_icon_square:
-  template: feedback_click
-  size: 60%
-  show_name: false
-  aspect_ratio: 1/1
-button_text_square:
-  template: feedback_click
-  size: 60%
-  show_icon: false
-  aspect_ratio: 1/1
-button_horizontal:
-  layout: icon_name
-  show_icon: true
-  styles:
-    card:
-      - height: 50px
-    name:
-      - padding-right: 5px
-button_routine_home:
-  template:
-    - button_horizontal
-    - feedback_click
-  size: 50%
-  styles:
-    grid:
-      - grid-template-columns: 30% 1fr
-    name:
-      - color: var(--secondary-text-color)
-    icon:
-      - color: var(--secondary-text-color)
-    tap_action:
-      action: call-service
-      service: '[[[ return entity.entity_id ]]]'
-button_channel:
-  template: no_background
-  show_icon: false
-  show_name: false
-  size: 70%
-  show_entity_picture: true
-  styles:
-    card:
-      - height: 90px
-  entity_picture: '[[[ return "/local/tv_logos/" + variables.picture_name ]]]'
-  tap_action:
-    action: call-service
-    service: '[[[ return "script.harmony_channel_" + variables.activity ]]]'
-    service_data:
-      canale: '[[[ return variables.channel ]]]'
-button_radio:
-  template: no_background
-  show_icon: false
-  show_name: false
-  size: 60%
-  show_entity_picture: true
-  styles:
-    card:
-      - height: 90px
-  entity_picture: '[[[ return "/local/radio_logos/" + variables.picture_name ]]]'
-  tap_action:
-    action: call-service
-    service: media_player.play_media
-    service_data:
-      entity_id: '[[[ return "media_player." + states["var.alexa_echo_entity"].state ]]]'
-      media_content_id: '[[[ return variables.stazione ]]]'
-      media_content_type: TUNEIN
-button_number_channel:
-  template:
-    - action_state_off
-    - feedback_click
-  entity: sensor.command_device
-  show_name: false
-  styles:
-    card:
-      - height: 60px
-    icon:
-      - width: 40px
-  icon: '[[[ return "mdi:numeric-" + variables.number + "-circle" ]]]'
-  tap_action:
-    action: call-service
-    service: script.harmony_command
-    service_data:
-      comando: '[[[ return variables.number ]]]'
-button_text_label:
-  template: feedback_click
-  show_label: true
-  show_icon: false
-  styles:
-    card:
-      - height: 60px
-    name:
-      - font-size: 90%
-      - color: var(--secondary-text-color)
-      - margin-bottom: 2px
-    label:
-      - margin-top: 2px
-      - font-weight: bold
-button_icon_label:
-  show_label: true
-  show_state: false
-  show_name: true
-  styles:
-    grid:
-      - grid-template-areas: '"i l" "i n"'
-      - grid-template-columns: 30% 1fr
-      - grid-template-rows: 1fr 1fr
-    card:
-      - height: 60px
-    label:
-      - font-size: 90%
-      - color: var(--secondary-text-color)
-    name:
-      - font-weight: bold
-button_text:
-  show_label: false
-  show_icon: false
-  styles:
-    card:
-      - height: 60px
-    name:
-      - font-weight: bold
-button_menu:
-  template:
-    - button_text
-    - feedback_click
-  icon: 'mdi:power'
-  styles:
-    card:
-      - background: 'rgba(25, 25, 25, 1)'
-    name:
-      - color: var(--secondary-text-color)
-    icon:
-      - color: var(--secondary-text-color)
-header_button_menu:
-  template:
-    - feedback_click
-  styles:
-    card:
-      # - background: "#DCDCDC"
-      - box-shadow: 1px 5px 8px rgba(0, 0, 0, 0.3)
-    name:
-      - color: var(--primary-text-color)
-      - font-weight: bold
-    icon:
-      - color: var(--primary-text-color)
-button_light:
-  color: auto
-  styles:
-    name:
-      - margin-top: 5px
-    label:
-      - margin-top: 5px
-      - font-size: 80%
-      - color: var(--secondary-text-color)
-  state:
-    - value: 'off'
-      styles:
-        icon:
-          - color: var(--disabled-text-color)
-        label:
-          - color: var(--disabled-text-color)
-        name:
-          - color: var(--secondary-text-color)
-    - value: 'on'
-      styles:
-        name:
-          - font-weight: bold
-button_light_brightness:
-  show_label: true
-  label: |
-    [[[
-      if (entity.state === 'on' && entity.attributes.brightness)
-      {
-        const brightness = Math.round(entity.attributes.brightness / 2.54);
-        return brightness + '<span style="font-size: 80%;">%</span>';
-      } else {
-        return '0%';
-      }
-    ]]]
-
-######################
-### POPUP TEMPLATE ###
-######################
-
-popup_light:
-  hold_action:
-    action: fire-dom-event
-    browser_mod:
-      command: popup
-      title: '[[[ return entity.attributes.friendly_name ]]]'
-      hide_header: true
-      auto_close: false
-      style:
-        $: |
-          .mdc-dialog .mdc-dialog__container {
-            width: 100%;
-          }
-          .mdc-dialog .mdc-dialog__container .mdc-dialog__surface {
-            width:100%;
-            box-shadow:none;
-          }
-        .: |
-          :host {
-            --mdc-theme-surface: rgba(0,0,0,0);
-            --secondary-background-color: rgba(0,0,0,0);
-            --ha-card-background: rgba(0,0,0,0);
-            --mdc-dialog-scrim-color: rgba(0,0,0,0.8);
-            --mdc-dialog-min-height: 100%;
-            --mdc-dialog-min-width: 100%;
-            --mdc-dialog-max-width: 100%;
-          }
-          mwc-icon-button {
-            color: #FFF;
-          }
-      card:
-        type: 'custom:light-popup-card'
-        entity: '[[[ return entity.entity_id ]]]'
-        icon: 'mdi:led-strip'
-        actionSize: 60px
-        actions:
-          - service: light.turn_on
-            service_data:
-              entity_id: '[[[ return entity.entity_id ]]]'
-              color_temp: 153
-            color: '#d8d9e1'
-          - service: light.turn_on
-            service_data:
-              entity_id: '[[[ return entity.entity_id ]]]'
-              color_temp: 326
-            color: '#d5b08d'
-          - service: light.turn_on
-            service_data:
-              entity_id: '[[[ return entity.entity_id ]]]'
-              color_temp: 500
-            color: '#ce944b'
-popup_light_rgb:
-  hold_action:
-    action: fire-dom-event
-    browser_mod:
-      command: popup
-      title: '[[[ return entity.attributes.friendly_name ]]]'
-      hide_header: true
-      auto_close: false
-      style:
-        $: |
-          .mdc-dialog .mdc-dialog__container {
-            width: 100%;
-          }
-          .mdc-dialog .mdc-dialog__container .mdc-dialog__surface {
-            width:100%;
-            box-shadow:none;
-          }
-        .: |
-          :host {
-            --mdc-theme-surface: rgba(0,0,0,0);
-            --secondary-background-color: rgba(0,0,0,0);
-            --ha-card-background: rgba(0,0,0,0);
-            --mdc-dialog-scrim-color: rgba(0,0,0,0.8);
-            --mdc-dialog-min-height: 100%;
-            --mdc-dialog-min-width: 100%;
-            --mdc-dialog-max-width: 100%;
-          }
-          mwc-icon-button {
-            color: #FFF;
-          }
-      card:
-        type: 'custom:light-popup-card'
-        entity: '[[[ return entity.entity_id ]]]'
-        icon: 'mdi:led-strip'
-        actionSize: 60px
-        settings:
-          openButton: RGB
-          closeButton: CHIUDI
-        settingsCard:
-          type: 'custom:light-entity-card'
-          cardOptions:
-            entity: '[[[ return entity.entity_id ]]]'
-            brightness: false
-            full_width_sliders: true
-            hide_header: true
-            show_slider_percent: true
-            smooth_color_wheel: true
-            consolidate_entities: true
-        actions:
-          - service: light.turn_on
-            service_data:
-              entity_id: '[[[ return entity.entity_id ]]]'
-              color_temp: 153
-            color: '#d8d9e1'
-          - service: light.turn_on
-            service_data:
-              entity_id: '[[[ return entity.entity_id ]]]'
-              color_temp: 326
-            color: '#d5b08d'
-          - service: light.turn_on
-            service_data:
-              entity_id: '[[[ return entity.entity_id ]]]'
-              color_temp: 500
-            color: '#ce944b'
-
-#######################
-### SENSOR TEMPLATE ###
-#######################
-
-sensor_card:
-  layout: icon_name_state2nd
-  show_state: true
-  styles:
-    card:
-      - padding-top: 2%
-      - padding-bottom: 2%
-    state:
-      - font-size: 140%
-      - font-weight: bold
-      - justify-self: start
-      - align-self: center
-    name:
-      - font-size: 85%
-      - justify-self: start
-      - color: var(--secondary-text-color)
-  tap_action:
-    action: none
-sensor_card_text:
-  show_icon: false
-  show_state: true
-  styles:
-    card:
-      - height: 60px
-    name:
-      - font-size: 80%
-      - color: var(--secondary-text-color)
-    state:
-      - font-size: 120%
-      - font-weight: bold
-  tap_action:
-    action: none
-sensor_person:
-  label: Online
-  layout: icon_name_state2nd
-  show_icon: false
-  show_entity_picture: true
-  show_name: true
-  show_state: true
-  show_label: true
-  styles:
-
-    state:
-      - font-size: 120%
-    name:
-      - font-size: 14px
-      - font-weight: 500
-      - color: var(--secondary-text-color)
-    label:
-      - margin-top: 8px
-      - color: var(--secondary-text-color)
-      - font-size: 80%
-    entity_picture:
-      - border-radius: 50%
-      - width: 40px
-  state:
-    - value: home
-      operator: '!='
-      styles:
-        state:
-          - color: var(--paper-item-icon-active-color)
-
-###########################
-### LABEL & EMPTY CARDS ###
-###########################
-
-card_header:
-  styles:
-    card:
-      - height: 80px
-empty_card:
-  template: no_background
-  color_type: blank-card
-row_space_5:
-  template: no_background
-  tap_action:
-    action: none
-  styles:
-    card:
-      - height: 5px
-      - padding: 0px
+      - width: 50px
 
 row_space_10:
   template: no_background
@@ -655,253 +32,31 @@ row_space_10:
       - height: 10px
       - padding: 0px
 
-row_space_15:
-  template: no_background
-  tap_action:
-    action: none
+grid_style:
   styles:
     card:
-      - height: 15px
-      - padding: 0px
-row_space_20:
-  template: no_background
-  tap_action:
-    action: none
-  styles:
-    card:
-      - height: 20px
-      - padding: 0px
-row_space_25:
-  template: no_background
-  tap_action:
-    action: none
-  styles:
-    card:
-      - height: 25px
-      - padding: 0px
-row_space_30:
-  template: no_background
-  tap_action:
-    action: none
-  styles:
-    card:
-      - height: 30px
-      - padding: 0px
-row_space_35:
-  template: no_background
-  tap_action:
-    action: none
-  styles:
-    card:
-      - height: 35px
-      - padding: 0px
-row_space_40:
-  template: no_background
-  tap_action:
-    action: none
-  styles:
-    card:
-      - height: 40px
-      - padding: 0px
-row_space_80:
-  template: no_background
-  tap_action:
-    action: none
-  styles:
-    card:
-      - height: 80px
-      - padding: 0px
-no_background:
-  styles:
-    card:
-      - background-color: 'rgba(0, 0, 0, 0.0)'
-      - box-shadow: none
+      - background: none
+      - padding-top: 15px
+      - "--mdc-ripple-press-opacity": 0
 
-clima_template:
-  styles:
-    card:
-      - background-color: 'rgba(0, 0, 0, 0.0)'
-      - box-shadow: none
-    states:
-      - padding: 0px
-
-label_left:
-  styles:
-    card:
-      - padding: 5px 5px
-      - margin-left: 4px
-      - border-radius: 0px
-    name:
-      - justify-self: left
-      - font-size: 120%
-      - color: var(--secondary-text-color)
-  template: no_background
-  tap_action:
-    action: none
-label_center:
-  styles:
-    card:
-      - padding: 5px 5px
-    name:
-      - justify-self: center
-      - font-size: 120%
-      - color: var(--secondary-text-color)
-  template: no_background
-  tap_action:
-    action: none
-
-on_off_buttoncard:
-  template:
-    - button_horizontal
-    - feedback_click
-  size: 50%
+expander_template:
   styles:
     grid:
-      - grid-template-columns: 30% 1fr
+      - grid-template-areas: '"expander"'
     card:
-      - margin-top: 5px !important
-      - height: 50px !important
-      - box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1)
-      - transition: all 0.3s ease 0s
-    name:
-      - color: var(--secondary-text-color)
-      - font-size: 15px
-    tap_action:
-      action: call-service
-      service: '[[[ return entity.entity_id ]]]'
-  state:
-    - value: 'on'
-      styles:
-        icon:
-          - color: var(--active-color)
+      - padding: 0px
+  card_mod:
+    style:
+      expander-card$: |
+        .expander-card {
+          min-height: 100px;
+        }
 
-#######################
-### BUTTON TEMPLATE ###
-#######################
+####################
+###### HEADER ######
+####################
 
-clima_timepicker_template:
-  hour_mode: 12
-  embedded: true
-  hide:
-    name: false
-  style: |
-    ha-card > .time-picker-header {
-      padding: 5px
-    }
-
-    ha-card > .time-picker-row {
-      padding: 0px !important
-    }
-
-program_day_overview_theme:
-  icon: 'mdi:calendar-blank-outline'
-  state:
-    - value: 'on'
-      icon: 'mdi:calendar-check'
-    - value: 'off'
-      icon: 'mdi:calendar-remove'
-  styles:
-    card:
-      - padding: 4%
-      - color: var(--primary-text-color)
-      - font-size: 10px
-      - text-transform: capitalize
-      - border-width: |
-          [[[
-          if (entity.state != 'on') return '0px';
-          return '2px';
-          ]]]
-      - border-style: double
-      - border-color: |
-          [[[
-            if (entity.state != 'on') return 'var(--paper-item-icon-color)';
-            return 'var(--active-color)';
-          ]]]
-      - box-shadow: 1px 5px 8px rgba(0, 0, 0, 0.3)
-    grid:
-      - grid-template-areas: '"i onoff" "n n" "start start" "stop stop"'
-      - grid-template-columns: 1fr 1fr
-      - grid-template-rows: 1fr min-content min-content min-content
-    name:
-      - font-weight: bold
-      - font-size: 16px
-      - align-self: middle
-      - justify-self: start
-      - padding-bottom: 4px
-      - padding-right: 5px
-    img_cell:
-      - justify-content: start
-      - align-items: start
-      - margin: none
-    icon:
-      - color: >
-          [[[
-            if (entity.state != 'on') return 'var(--paper-item-icon-color)';
-              return 'var(--active-color)'
-          ]]]
-      - width: 50%
-      - padding-top: 4px
-      - margin-top: -10%
-      - margin-left: 0%
-    custom_fields:
-      onoff:
-        - align-self: start
-        - justify-self: end
-        - text-transform: uppercase
-        - font-size: 20px
-        - font-weight: bold
-        - padding-right: 5px
-        - color: >
-            [[[
-              if (entity.state != 'on') return 'var(--paper-item-icon-color)';
-                return 'var(--active-color)'
-            ]]]
-      start:
-        - padding-bottom: 2px
-        - padding-right: 5px
-        - align-self: middle
-        - justify-self: start
-        - font-size: 12px
-      stop:
-        - padding-bottom: 2px
-        - align-self: middle
-        - justify-self: start
-        - padding-right: 5px
-        - font-size: 12px
-  custom_fields:
-    onoff: >
-      [[[
-        return `<ha-icon
-          icon="mdi:light"
-          style="width: 14px; height: 14px; color: var(--active-color);">
-          </ha-icon><span>${entity.state}</span>`
-      ]]]
-    start: >
-            [[[
-              return `<ha-icon
-                icon="mdi:clock"
-                style="width: 14px; height: 14px; color: var(--primary-color);">
-                </ha-icon><span> Accensione :&nbsp;&nbsp;<span style="color: var(--text-color-sensor);">${states[ variables.thermostat_period_on ].state}</span></span>`
-            ]]]
-    stop: >
-            [[[
-              return `<ha-icon
-                icon="mdi:clock"
-                style="width: 14px; height: 14px; color: var(--primary-color);">
-                </ha-icon><span> Spegnimento :&nbsp;<span style="color: var(--text-color-sensor);">${states[ variables.thermostat_period_off ].state}</span></span>`
-            ]]]
-  tap_action:
-    action: navigate
-    navigation_path: >
-      [[[
-        return '/lovelace-kairoshub/'+ variables.navigation_path
-      ]]]
-
-
-###################
-# HEADER
 header_page_text:
-  type: 'custom:button-card'
   template: no_background
   show_icon: true
   show_label: true
@@ -911,25 +66,17 @@ header_page_text:
     card:
       - padding-top: 0px
     grid:
-      - grid-template-areas: '"a b" "a c"'
+      - grid-template-areas: '"i n" "i l"'
       - grid-template-columns: 60px 1fr
       - grid-template-rows: min-content min-content
-    state:
-      - font-size: 120%
-      - font-weight: bold
-      - justify-self: center
     name:
       - justify-self: left
       - font-size: 120%
       - font-weight: bold
       - color: var(--paper-item-icon-active-color)
-      - grid-area: b
     label:
       - justify-self: left
       - font-size: 80%
-      - grid-area: c
-    img_cell:
-      - grid-area: a
     icon:
       - width: 42px
       - height: 42px
@@ -937,76 +84,39 @@ header_page_text:
   tap_action:
     action: none
 
-user_profile_header:
-  type: 'custom:button-card'
-  entity: person.utente
+header_icon_label:
   template: no_background
-  show_icon: false
-  show_label: true
   show_name: false
   show_state: false
-  show_entity_picture: true
+  show_label: true
   styles:
     card:
       - padding-top: 7px
-    grid:
-      - grid-template-areas: '"a" "b"'
-      - grid-template-columns: 60px
-      - grid-template-rows: min-content min-content
+      - width: 73px
     label:
-
       - font-size: 80%
       - font-weight: bold
       - color: var(--paper-item-icon-active-color)
-      - grid-area: b
-    img_cell:
-      - grid-area: a
     icon:
       - width: 32px
       - height: 32px
+
+user_profile_header:
+  type: "custom:button-card"
+  entity: person.utente
+  template: header_icon_label
+  show_icon: false
+  show_entity_picture: true
   tap_action:
     action: none
 
-icon_state_header:
-  type: 'custom:button-card'
-  template: no_background
-  show_icon: true
-  show_label: true
-  show_name: false
-  show_state: false
-  show_entity_picture: true
-  styles:
-    card:
-      - padding-top: 7px
-    grid:
-      - grid-template-areas: '"a" "b" "c"'
-      - grid-template-columns: 1fr
-      - grid-template-rows: min-content min-content min-content
-    label:
-      - font-size: 80%
-      - font-weight: bold
-      - color: '#f4f4f4'
-      - grid-area: b
-    img_cell:
-      - grid-area: a
-    state:
-      - grid-area: c
-      - font-size: 90%
-      - font-weight: bold
-    icon:
-      - width: 32px
-      - height: 32px
-
 user_notification_header:
-  type: 'custom:button-card'
+  type: "custom:button-card"
   entity: input_boolean.notification_to_read
-  template: no_background
-  show_icon: true
-  show_label: true
-  show_name: false
-  show_state: false
+  template: header_icon_label
+  show_icon: false
   show_entity_picture: true
-  extra_styles: |
+  extra_styles: >
     @keyframes tilt-shaking {
       5% { transform: rotate(10deg); }
       15% { transform: rotate(-10deg); }
@@ -1015,371 +125,1808 @@ user_notification_header:
   state:
     - value: "on"
       styles:
-        card:
+        icon:
           - animation: tilt-shaking 5s linear infinite
-  entity_picture: |
-   [[[
-     if (entity.state == 'on' ) return '/local/images/notification.png'  ;
-     if (entity.state == 'off' ) return '/local/images/bell.png';
-     else return '';
-   ]]]
-  styles:
-    card:
-      - padding-top: 10px
-    # label:
-    #   - justify-content: end
-    grid:
-      - grid-template-areas: '"a"'
-      - grid-template-columns: 60px
-      - grid-template-rows: min-content min-content
-    img_cell:
-      - grid-area: a
-      # - justify-content: end
-    icon:
-      - width: 32px
-      - height: 32px
+  entity_picture: >
+    [[[
+      if (entity.state == 'on' ) return '/local/images/notification.png'  ;
+      if (entity.state == 'off' ) return '/local/images/bell.png';
+      return '';
+    ]]]
   tap_action:
     action: navigate
     navigation_path: /lovelace-kairoshub/notification
 
-icon_clima:
-  icon: 'mdi:calendar-check'
-  state:
-    - value: 'on'
-      icon: mdi:calendar-check
-      label: 'ON'
-      color: var(--command-state-active-color)
-    - value: 'off'
-      icon: mdi:calendar-remove
-      label: 'OFF'
-      color: var(--command-state-color)
-
-header_icon_clima:
-  name: Programma caldo
-  template:
-    - icon_state_header
-    - icon_clima
-  entity: binary_sensor.heater_auto
-  color: auto
+documentation_header:
+  template: header_icon_label
+  label: "Manuale"
+  show_icon: true
+  icon: mdi:book-outline
+  color: grey
   tap_action:
-    action: none
+    action: navigate
+    navigation_path: /lovelace-kairoshub/documentation
 
-button_hold:
-  template: feedback_click
+icon_state_header:
+  template: header_icon_label
+  layout: name_state
+  show_icon: true
   styles:
     card:
-      - box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1)
-      - border: solid 1px rgb(0 0 0 / 10%)
-
+      - width: 80px
+      - font-size: 90%
+    label:
+      - color: "#f4f4f4"
 
 ####################
 # NAVIGATION BUTTONS
 ####################
 
-# button_return_to_clima:
-#   type: 'custom:button-card'
-#   template: header_button_menu
-#   name: Indietro
-#   tap_action:
-#     action: navigate
-#     navigation_path: /lovelace-kairoshub/clima
-
 button_go_to_program:
-  type: 'custom:button-card'
   template: icon_state_header
   icon: '[[[ return "mdi:numeric-" + variables.progId + "-box-outline"]]]'
-  # label: '[[[ return "Prog " + variables.progId]]]'
-  # color: auto
+  state:
+    - value: "on"
+      color: var(--command-state-active-color)
+    - value: "off"
+      color: var(--command-state-color)
   tap_action:
     action: navigate
-    navigation_path: '[[[ return "/lovelace-kairoshub/clima-p" + variables.progId]]]'
+    navigation_path: '[[[ return "/lovelace-kairoshub/" + variables.navigation_path]]]'
   styles:
     card:
-      # - box-shadow: 1px 5px 8px rgba(0, 0, 0, 0.3)
-      # - padding: 5px
       - width: 63px
-      # - border-right: solid 3px
-      # - border-color: var(--primary-background-color)
       - background: none
+  style: |
+    :host {
+      align-self: center;
+    }
 
-# button_go_to_prog1:
-#   type: 'custom:button-card'
-#   template: icon_state_header
-#   entity: input_boolean.heater_program1
-#   icon: mdi:numeric-1-box-outline
-#   label: Prog 1
-#   color: auto
-#   tap_action:
-#     action: navigate
-#     navigation_path: /lovelace-kairoshub/clima-p1
-#   styles:
-#     card:
-#       - box-shadow: 1px 5px 8px rgba(0, 0, 0, 0.3)
-#       - padding: 5px
-#       - width: 63px
-#       - background: rgb(255, 255, 255)
-
-# button_go_to_prog2:
-#   type: 'custom:button-card'
-#   template: icon_state_header
-#   entity: input_boolean.heater_program2
-#   icon: mdi:numeric-2-box-outline
-#   label: Prog 2
-#   color: auto
-#   tap_action:
-#     action: navigate
-#     navigation_path: /lovelace-kairoshub/clima-p2
-#   styles:
-#     card:
-#       - box-shadow: 1px 5px 8px rgba(0, 0, 0, 0.3)
-#       - padding: 5px
-#       - width: 63px
-#       - background: rgb(255, 255, 255)
-
-# button_go_to_prog3:
-#   type: 'custom:button-card'
-#   template: icon_state_header
-#   entity: input_boolean.heater_program3
-#   icon: mdi:numeric-3-box-outline
-#   label: Prog 3
-#   color: auto
-#   tap_action:
-#     action: navigate
-#     navigation_path: /lovelace-kairoshub/clima-p3
-#   styles:
-#     card:
-#       - box-shadow: 1px 5px 8px rgba(0, 0, 0, 0.3)
-#       - padding: 5px
-#       - width: 63px
-#       - background: rgb(255, 255, 255)
-
-# button_go_to_prog4:
-  # type: 'custom:button-card'
-  # template: icon_state_header
-  # entity: input_boolean.heater_program4
-  # icon: mdi:numeric-4-box-outline
-  # label: Prog 4
-  # color: auto
-  # tap_action:
-  #   action: navigate
-  #   navigation_path: /lovelace-kairoshub/clima-p4
-  # styles:
-  #   card:
-  #     - box-shadow: 1px 5px 8px rgba(0, 0, 0, 0.3)
-  #     - padding: 5px
-  #     - width: 63px
-  #     - background: rgb(255, 255, 255)
-
-button_return_to_program:
-  type: 'custom:button-card'
-  template: button_go_back
-  tap_action:
-    action: navigate
-    navigation_path: '[[[window.history.back()]]]'
-
-# button_return_to_program1:
-#   type: 'custom:button-card'
-#   template: header_button_menu
-#   name: Indietro
-#   tap_action:
-#     action: navigate
-#     navigation_path: /lovelace-kairoshub/clima-p1
-
-# button_return_to_program2:
-#   type: 'custom:button-card'
-#   template: header_button_menu
-#   name: Indietro
-#   tap_action:
-#     action: navigate
-#     navigation_path: /lovelace-kairoshub/clima-p2
-
-# button_return_to_program3:
-#   type: 'custom:button-card'
-#   template: header_button_menu
-#   name: Indietro
-#   tap_action:
-#     action: navigate
-#     navigation_path: /lovelace-kairoshub/clima-p3
-
-# button_return_to_program4:
-#   type: 'custom:button-card'
-#   template: header_button_menu
-#   name: Indietro
-#   tap_action:
-#     action: navigate
-#     navigation_path: /lovelace-kairoshub/clima-p4
-
-button_return_to_settings:
-  type: 'custom:button-card'
-  template: button_go_back
-  tap_action:
-    action: navigate
-    navigation_path: '[[[window.history.back()]]]'
 button_go_back:
-  type: 'custom:button-card'
-  template: header_button_menu
-  name: Indietro
+  template: feedback_click
+  name: "Indietro"
   tap_action:
     action: navigate
-    navigation_path: '[[[window.history.back()]]]'
+    navigation_path: "[[[window.history.back()]]]"
   styles:
     card:
       - width: 150px
       - background: none
       - box-shadow: none
     name:
-      - color: '#f4f4f4'
-button_go_to_zone:
-  type: 'custom:button-card'
-  show_label: true
-  tap_action:
-    action: navigate
-    navigation_path: '[[[return "/lovelace-kairoshub/"+ variables.navigation_path]]]'
-  styles:
-    card:
-      - box-shadow: 1px 5px 8px rgba(0, 0, 0, 0.3)
-      - height: 50px
-      - width: 125px
-
-####################
-# CLIMA
-clima_tv_detail:
-  type: 'custom:button-card'
-  icon: 'mdi:texture-box'
-  tap_action:
-    action: none
-  styles:
-    card:
-      # - display: >
-      #     [[[
-      #       if ( `${states[ variables.visibility ].state}` != 'on') return 'none !important';
-      #         return 'flex';
-      #     ]]]
-      # - background: rgb(245,245,245)
-      - padding: 5px
-      - color: var(--primary-text-color)
-      - font-size: 10px
-      - text-transform: capitalize
-      - box-shadow: 1px 5px 8px rgba(0, 0, 0, 0.3)
-      - margin-bottom: 5px
-      - margin-right: 3px
-      - height: 140px
-      # - border-width: 2px
-      # - border-style: double
-      # - border-color: >
-      #     [[[
-      #       if (variables.state != 'online') return 'var(--error-color)';
-      #         return 'var(--active-color)';
-      #     ]]]
-    grid:
-      - grid-template-areas: '"i header temp icon1" "content content humidity icon2 " "graph graph graph graph"'
-      - grid-template-columns: 30px 2fr 1fr 30px
-      - grid-template-rows: 45px 25px min-content
-    name:
+      - color: "#f4f4f4"
       - font-weight: bold
-      - font-size: 16px
-      - align-self: middle
-      - justify-self: start
-      - padding-bottom: 4px
-      - padding-right: 5px
-      - padding-top: 5px
-      - grid-area: header
+  style: |
+    :host {
+      align-self: center;
+    }
+
+#####################
+#### PAGE LAYOUT ####
+#####################
+
+basic_page_layout:
+  template: grid_style
+  card_mod:
+    style: |
+      #content::-webkit-scrollbar {
+        display: none !important;
+      }
+  styles:
+    grid:
+      - grid-template-areas: '"header" "content" "commandbar"'
+    custom_fields:
+      header:
+        - margin-bottom: 2px
+        - height: 46px
+      content:
+        - height: 300px
+        - margin-top: 5px
+        - overflow: auto
+
+###################
+###### CLIMA ######
+###################
+
+clima_detail:
+  icon: "[[[return variables.icon]]]"
+  template: no_background
+  triggers_update:
+    - input_boolean.heater_program1_on
+    - input_boolean.heater_program2_on
+    - input_boolean.heater_program3_on
+    - input_boolean.heater_program4_on
+  styles:
+    card:
+      - padding: 1%
+    grid:
+      - grid-template-areas: '"i name . temp" "lastupdate info . humidity"'
+      - grid-template-columns: 50px 1fr auto
+      - grid-template-rows: 50px 30px
+      - column-gap: 5px
     img_cell:
       - justify-content: start
       - align-items: start
       - margin: none
-      - grid-area: i
     icon:
-      - color: var(--paper-item-icon-color)
-          # [[[
-          #   if (entity.state != '0') return 'var(--paper-item-icon-color)';
-          #     return 'var(--active-color)'
-          # ]]]
-      - width: 80%
+      - width: 70%
+      - color: >
+          [[[
+            var color = "#000000"
+            var input = `input_boolean.heater_zn${variables.zoneId}_program`;
+            if ((""+variables.zoneId).endsWith("00"))
+              input = input.replace("input_boolean", "group");
+            for (var i=1; i<5; i++) {
+              if (states[input+`${i}_on`].state === "on") {
+                color = "var(--command-state-active-color)";
+              }
+            }
+            return color;
+          ]]]
     custom_fields:
-      temp:
-        - justify-self: end
+      name:
+        - font-weight: bold
+        - font-size: 16px
         - align-self: middle
-      humidity:
-        - justify-self: end
-        - align-self: middle
-      content:
         - justify-self: start
-        - align-self: middle
-      graph:
-        - margin-top: 2px
-  custom_fields:
-      temp: >
-        [[[
-          return `<div style="align-items: center; display: flex;">
-            <span style="font-size: 18px; font-weight: 600; color: ${variables.temp_color};">${ variables.temperature }°C</span>
-            <br />
-            </div>
-          `
-        ]]]
-      humidity: >
-        [[[
-          if (variables.humidity != "unknown" && variables.humidity != "unavailable")
-            {return `<div style="align-items: center; display: flex;"><span style="font-size: 18px; font-weight: 600; color: var(--humidity-primary-color);">${ variables.humidity }%</span>
-            <br />
-            </div>`;}
-          else return;
-        ]]]
-      content: >
-        [[[
-          return `<span style="font-size: 12px;">${ variables.lastupdate }</span>`
-        ]]]
-
-clima_zones_detail:
-  type: 'custom:button-card'
-  template: clima_tv_detail
-  styles:
-    card:
-      - height: 100px
-      - '--mdc-ripple-press-opacity': 0.2
-    grid:
-      - grid-template-areas: '"i header temp icon1" "content content humidity icon2"'
-      - grid-template-columns: 30px 2fr 1fr 30px
-      - grid-template-rows: auto
-    custom_fields:
-      temp:
-        - justify-self: end
+        - padding-bottom: 4px
+        - padding-right: 5px
+        - padding-top: 5px
+      lastupdate:
+        - justify-self: start
       humidity:
         - justify-self: end
+      temp:
+        - justify-self: end
+      active:
+        - justify-self: end
+      alert:
+        - justify-self: end
+      info:
+        - justify-self: start
+        - align-self: flex-end
+        - margin-left: 50px
+  custom_fields:
+    temp: >
+      [[[
+        var zoneTemperature = states[`sensor.tz${variables.zoneId}`].state;
+        var tempColor = 'var(--temperature-secondary-color)';
+        var targetTempColor = 'var(--temperature-tertiary-color)';
+        var comfortTemp = states['input_number.manual_heating_temp'].state;
+        var programTemp = `input_number.temperature_zn${variables.zoneId}_period`;
+        for (var i=1; i<5; i++) {
+          if (states[`input_boolean.heater_program${i}_on`].state === "on") {
+            comfortTemp = states[programTemp+i].state;
+          }
+        }
+        if (zoneTemperature >= comfortTemp) {
+          tempColor = 'var(--temperature-primary-color)';
+        }
 
-light_detail:
-  icon: mdi:lightbulb
-  size: 75%
+        return `<div style="align-items: center; display: flex;">
+          <span style="font-size: 18px; font-weight: 600; color: ${tempColor};">${zoneTemperature}&nbsp;</span>
+          <span style="font-size: 18px; font-weight: 600; color: ${targetTempColor};">/ ${comfortTemp}°C </span>
+          <ha-icon icon="mdi:thermometer"
+            style="color: ${targetTempColor}; width: 24px; padding: 5px; margin: 0px;"/>
+          </div>`;
+      ]]]
+    humidity: >
+      [[[
+        var humidity = states[`sensor.hz${variables.zoneId}`].state;
+        if (humidity != "unknown" && humidity != "unavailable")
+          return `<div style="align-items: center; display: flex;"><span style="font-size: 18px; font-weight: 600; color: var(--humidity-primary-color);">${ humidity }%</span>
+            <ha-icon icon="mdi:water-percent"
+              style="color: var(--humidity-primary-color); width: 24px; padding: 5px; margin: 0px;"/>
+          </div>`;
+        return "</>";
+      ]]]
+    lastupdate: >
+      [[[
+        var datetime =  states[`sensor.tz${variables.zoneId}`].last_changed.split("T");
+        datetime = new Date(datetime).toLocaleString().replace(","," ");
+        var lastupdate = datetime.substring(0,datetime.length-3);
+        return `<span style="font-size: 12px;">${lastupdate }</span>`
+      ]]]
+    info:
+      card:
+        type: "custom:button-card"
+        template: no_background
+        custom_fields:
+          alert: >
+            [[[
+              var input = `input_boolean.zn${variables.zoneId}_alert`;
+              if ((""+variables.zoneId).endsWith("00"))
+                input = input.replace("input_boolean", "group");
+              if (states[input].state === "on")
+                return '<ha-icon icon="mdi:alert-circle-outline" style="width: 24px; color: red; margin-right: 5px;" />';
+              return "</>";
+            ]]]
+        variables:
+          zoneId: "[[[return variables.zoneId;]]]"
+    name: >
+      [[[
+        var name = states[`input_text.zn${variables.zoneId}`].state;
+        var label = "";
+        var input = `input_boolean.heater_zn${variables.zoneId}_program`;
+        if ((""+variables.zoneId).endsWith("00"))
+          input = input.replace("input_boolean", "group");
+        for (var i=1; i<5; i++) {
+          if (states[input+`${i}_on`].state === "on") {
+            label = "ATTIVO";
+          }
+        }
+        return `<div style="display: flex; flex-direction: column; align-items: flex-start;">
+          <span>${name}</span>
+          <span style="font-size: 10px;">${label}</span>
+          </div>`;
+      ]]]
+
+clima_nightzone_expander:
+  template: expander_template
+  custom_fields:
+    expander:
+      card:
+        <<: &expander-card-style
+          type: "custom:expander-card"
+          padding: 10px
+          gap: 1px
+        title-card:
+          type: "custom:button-card"
+          template: clima_detail
+          triggers_update:
+            - sensor.tz100
+            - sensor.hz100
+            - input_text.zn100
+            - input_number.temperature_zn100_period1
+            - input_number.temperature_zn100_period2
+            - input_number.temperature_zn100_period3
+            - input_number.temperature_zn100_period4
+            - group.zn100_alert
+            - group.heater_zn100_program1_on
+            - group.heater_zn100_program2_on
+            - group.heater_zn100_program3_on
+            - group.heater_zn100_program4_on
+          variables:
+            zoneId: "[[[ return variables.zoneId;]]]"
+            icon: "[[[ return variables.icon;]]]"
+        cards:
+          - <<: &divider-2px
+              type: entities
+              card_mod:
+                style: |
+                  div.card-content {
+                    padding: 0px;
+                  }
+              entities:
+                - type: divider
+                  style:
+                    background-color: "#000000"
+                    height: 2px
+          - type: custom:mod-card
+            card_mod:
+              style:
+                hui-grid-card$: |
+                  div#root {
+                    background: var(--primary-background-color);
+                  }
+            card:
+              type: grid
+              columns: 2
+              square: false
+              cards:
+                - type: conditional
+                  conditions:
+                    - entity: sensor.tz101
+                      state: unknown
+                    - entity: sensor.tz102
+                      state: unknown
+                    - entity: sensor.tz103
+                      state: unknown
+                    - entity: sensor.tz104
+                      state: unknown
+                  card:
+                    type: "custom:button-card"
+                    template: no_background
+                    name: >
+                      [[[
+                        return `
+                        <ha-alert alert-type="warning" style="justify-self: center;">
+                          Non ci sono zone attive </br>
+                        </ha-alert>`;
+                      ]]]
+                    tap_action:
+                      action: none
+                - type: conditional
+                  conditions:
+                    - entity: sensor.tz101
+                      state_not: "unknown"
+                  card:
+                    type: "custom:button-card"
+                    template: clima_detail
+                    triggers_update:
+                      - input_number.temperature_zn101_period1
+                      - input_number.temperature_zn101_period2
+                      - input_number.temperature_zn101_period3
+                      - input_number.temperature_zn101_period4
+                      - input_boolean.zn101_alert
+                      - input_boolean.heater_zn101_program1_on
+                      - input_boolean.heater_zn101_program2_on
+                      - input_boolean.heater_zn101_program3_on
+                      - input_boolean.heater_zn101_program4_on
+                    variables:
+                      zoneId: 101
+                      icon: "mdi:bed-outline"
+                - type: conditional
+                  conditions:
+                    - entity: sensor.tz102
+                      state_not: "unknown"
+                  card:
+                    type: "custom:button-card"
+                    template: clima_detail
+                    triggers_update:
+                      - input_number.temperature_zn102_period1
+                      - input_number.temperature_zn102_period2
+                      - input_number.temperature_zn102_period3
+                      - input_number.temperature_zn102_period4
+                      - input_boolean.zn102_alert
+                      - input_boolean.heater_zn102_program1_on
+                      - input_boolean.heater_zn102_program2_on
+                      - input_boolean.heater_zn102_program3_on
+                      - input_boolean.heater_zn102_program4_on
+                    variables:
+                      zoneId: 102
+                      icon: "mdi:bed-outline"
+                - type: conditional
+                  conditions:
+                    - entity: sensor.tz103
+                      state_not: "unknown"
+                  card:
+                    type: "custom:button-card"
+                    template: clima_detail
+                    triggers_update:
+                      - input_number.temperature_zn103_period1
+                      - input_number.temperature_zn103_period2
+                      - input_number.temperature_zn103_period3
+                      - input_number.temperature_zn103_period4
+                      - input_boolean.zn103_alert
+                      - input_boolean.heater_zn103_program1_on
+                      - input_boolean.heater_zn103_program2_on
+                      - input_boolean.heater_zn103_program3_on
+                      - input_boolean.heater_zn103_program4_on
+                    variables:
+                      zoneId: 103
+                      icon: "mdi:bed-outline"
+                - type: conditional
+                  conditions:
+                    - entity: sensor.tz103
+                      state_not: "unknown"
+                  card:
+                    type: "custom:button-card"
+                    template: clima_detail
+                    triggers_update:
+                      - input_number.temperature_zn104_period1
+                      - input_number.temperature_zn104_period2
+                      - input_number.temperature_zn104_period3
+                      - input_number.temperature_zn104_period4
+                      - input_boolean.zn104_alert
+                      - input_boolean.heater_zn103_program1_on
+                      - input_boolean.heater_zn103_program2_on
+                      - input_boolean.heater_zn103_program3_on
+                      - input_boolean.heater_zn103_program4_on
+                    variables:
+                      zoneId: 104
+                      icon: "mdi:shower"
+
+clima_dayzone_expander:
+  template: expander_template
+  custom_fields:
+    expander:
+      card:
+        <<: *expander-card-style
+        title-card:
+          type: "custom:button-card"
+          template: clima_detail
+          triggers_update:
+            - sensor.tz200
+            - sensor.hz200
+            - input_text.zn200
+            - input_number.temperature_zn200_period1
+            - input_number.temperature_zn200_period2
+            - input_number.temperature_zn200_period3
+            - input_number.temperature_zn200_period4
+            - group.zn200_alert
+            - group.heater_zn200_program1_on
+            - group.heater_zn200_program2_on
+            - group.heater_zn200_program3_on
+            - group.heater_zn200_program4_on
+          variables:
+            zoneId: "[[[ return variables.zoneId;]]]"
+            icon: "[[[return variables.icon;]]]"
+        cards:
+          - <<: *divider-2px
+          - type: "custom:mod-card"
+            card_mod:
+              style:
+                hui-grid-card$: |
+                  div#root {
+                    background: var(--primary-background-color);
+                  }
+            card:
+              type: grid
+              columns: 2
+              square: false
+              cards:
+                - type: conditional
+                  conditions:
+                    - entity: sensor.tz201
+                      state: unknown
+                    - entity: sensor.tz202
+                      state: unknown
+                    - entity: sensor.tz203
+                      state: unknown
+                  card:
+                    type: "custom:button-card"
+                    template: no_background
+                    name: >
+                      [[[
+                        return `
+                        <ha-alert alert-type="warning" style="justify-self: center;">
+                          Non ci sono zone attive </br>
+                        </ha-alert>`;
+                      ]]]
+                    tap_action:
+                      action: none
+                - type: conditional
+                  conditions:
+                    - entity: sensor.tz201
+                      state_not: "unknown"
+                  card:
+                    type: "custom:button-card"
+                    template: clima_detail
+                    triggers_update:
+                      - input_number.temperature_zn201_period1
+                      - input_number.temperature_zn201_period2
+                      - input_number.temperature_zn201_period3
+                      - input_number.temperature_zn201_period4
+                      - input_boolean.zn201_alert
+                      - input_boolean.heater_zn201_program1_on
+                      - input_boolean.heater_zn201_program2_on
+                      - input_boolean.heater_zn201_program3_on
+                      - input_boolean.heater_zn201_program4_on
+                    variables:
+                      zoneId: 201
+                      icon: "mdi:sofa-outline"
+                - type: conditional
+                  conditions:
+                    - entity: sensor.tz202
+                      state_not: "unknown"
+                  card:
+                    type: "custom:button-card"
+                    template: clima_detail
+                    triggers_update:
+                      - input_number.temperature_zn202_period1
+                      - input_number.temperature_zn202_period2
+                      - input_number.temperature_zn202_period3
+                      - input_number.temperature_zn202_period4
+                      - input_boolean.zn202_alert
+                      - input_boolean.heater_zn202_program1_on
+                      - input_boolean.heater_zn202_program2_on
+                      - input_boolean.heater_zn202_program3_on
+                      - input_boolean.heater_zn202_program4_on
+                    variables:
+                      zoneId: 202
+                      icon: "mdi:countertop-outline"
+                - type: conditional
+                  conditions:
+                    - entity: sensor.tz203
+                      state_not: "unknown"
+                  card:
+                    type: "custom:button-card"
+                    template: clima_detail
+                    triggers_update:
+                      - input_number.temperature_zn203_period1
+                      - input_number.temperature_zn203_period2
+                      - input_number.temperature_zn203_period3
+                      - input_number.temperature_zn203_period4
+                      - input_boolean.zn203_alert
+                      - input_boolean.heater_zn202_program1_on
+                      - input_boolean.heater_zn202_program2_on
+                      - input_boolean.heater_zn202_program3_on
+                      - input_boolean.heater_zn202_program4_on
+                    variables:
+                      zoneId: 203
+                      icon: "mdi:toilet"
+
+temperature_value:
+  icon: "mdi:thermometer"
+  show_state: true
+  show_icon: false
+  show_name: false
+  show_label: false
+  size: 20%
+  state:
+    - value: "20.0"
+      operator: <=
+      color: var(--temperature-secondary-color)
+      styles:
+        state:
+          - color: var(--temperature-secondary-color)
+    - value: "24.0"
+      operator: <
+      color: orange
+      styles:
+        state:
+          - color: orange
+    - value: "24.0"
+      operator: ">="
+      color: var(--temperature-primary-color)
+      styles:
+        state:
+          - color: var(--temperature-primary-color)
   tap_action:
     action: none
   styles:
-    grid:
-      - grid-template-areas: '"i n" "i n'
-      - grid-template-rows: 30px auto
-      - grid-template-columns: 55px 1fr
-    card:
-      - padding: 5px
-      - color: var(--primary-text-color)
-      - font-size: 10px
-      - text-transform: capitalize
-      - box-shadow: 1px 5px 8px rgba(0, 0, 0, 0.3)
-      - margin-bottom: 5px
-      - margin-right: 3px
-      - height: 90px
-      - width: 237px
-    name:
+    state:
+      - font-size: 26px
       - font-weight: bold
-      - font-size: 16px
-      - align-self: middle
-      - justify-self: start
-      - padding-bottom: 4px
-      - padding-right: 5px
-      - padding-top: 5px
+    icon:
+      - size: 20%
+    card:
+      - box-shadow: none
+  style: |
+    :host {
+      align-self: center;
+    }
+
+temperature_ctrl_plus:
+  icon: mdi:thermometer-plus
+  size: 30%
+  styles:
+    card:
+      - background: none
+      - box-shadow: none
+      - padding-top: 4px
+    icon:
+      - color: var(--temperature-primary-color)
+      - filter: opacity(0.75)
+  tap_action:
+    action: call-service
+    service: input_number.increment
+    service_data:
+      entity_id: "[[[ return variables.entity; ]]]"
+
+temperature_ctrl_minus:
+  icon: "mdi:thermometer-minus"
+  size: 30%
+  styles:
+    card:
+      - align-self: center
+      - background: none
+      - box-shadow: none
+      - padding-top: 4px
+    icon:
+      - color: var(--temperature-secondary-color)
+  tap_action:
+    action: call-service
+    service: input_number.decrement
+    service_data:
+      entity_id: "[[[ return variables.entity; ]]]"
+
+heating_program_schedule:
+  styles:
+    card:
+      - padding: 0%
+    grid:
+      - grid-template-areas: '"days time"'
+      - grid-template-columns: 1fr 1fr
+      - height: 170px
+    custom_fields:
+      days:
+        - display: flex
+        - justify-content: space-evenly
+        - box-shadow: none
+        - margin-bottom: 32px
+      time:
+        - box-shadow: none
+        - padding: 10px
+  custom_fields:
+    days:
+      card:
+        type: "custom:button-card"
+        template: heating_week
+        variables:
+          progId: "[[[return variables.progId;]]]"
+    time:
+      card:
+        type: "custom:button-card"
+        template: heating_time_picker
+        variables:
+          progId: "[[[return variables.progId;]]]"
+
+heating_program_label:
+  layout: icon_name
+  icon: "mdi:power"
+  size: 65%
+  state:
+    - value: "off"
+      color: black
+    - value: "on"
+      color: "#DCA200"
+  styles:
+    card:
+      - box-shadow: none
+
+heating_program_layout:
+  template: grid_style
+  card_mod:
+    style: |
+      #content::-webkit-scrollbar {
+        display: none !important;
+      }
+  styles:
+    card:
+      - background: none
+      - padding-top: 15px
+      - padding-bottom: 0px
+    grid:
+      - grid-template-areas: |
+          "header"
+          "content"
+          "commandbar"
+      - grid-template-columns: 1fr
+      - grid-auto-rows: auto
+      - row-gap: 3px
+      - column-gap: 10px
+      - margin-left: 10px
+      - margin-right: 10px
+    custom_fields:
+      header:
+        - margin-bottom: 2px
+        - margin-left: -10px
+        - height: 46px
+      content:
+        - height: 300px
+        - margin-top: 5px
+        - overflow: auto
+  custom_fields:
+    header:
+      card:
+        type: "custom:button-card"
+        entity: "[[[return `input_boolean.heater_program${variables.progId}`]]]"
+        template: header_page_text
+        icon: "mdi:calendar-remove"
+        state:
+          - value: "on"
+            icon: "mdi:calendar-check"
+            styles:
+              icon:
+                - color: var(--command-state-active-color)
+        name: "[[[return `PROGRAMMA ${variables.progId}`]]]"
+        label: "[[[return `Clima / Programma ${variables.progId}`]]]"
+    commandbar:
+      card:
+        type: "custom:button-card"
+        template: heating_command_bar
+        variables:
+          progId: "[[[return variables.progId]]]"
+    content:
+      card:
+        type: "custom:button-card"
+        template: heating_program_content
+        variables:
+          progId: "[[[return variables.progId]]]"
+        styles:
+          card:
+            - padding: 0px
+
+heating_program_content:
+  template: grid_style
+  styles:
+    card:
+      - background: none
+      - padding-top: 15px
+      - padding-bottom: 0px
+    grid:
+      - grid-template-areas: |
+          "program"
+          "content"
+      - grid-template-columns: 1fr
+      - row-gap: 10px
+  custom_fields:
+    program:
+      card:
+        type: "custom:button-card"
+        template: heating_program_schedule
+        variables:
+          progId: "[[[return variables.progId]]]"
+    content:
+      card:
+        type: vertical-stack
+        cards:
+          - type: conditional
+            conditions:
+              - entity: sensor.tz100
+                state_not: "unknown"
+            card:
+              type: "custom:button-card"
+              template: heating_program_expander_nightzone
+              variables:
+                progId: "[[[return variables.progId]]]"
+          - type: conditional
+            conditions:
+              - entity: sensor.tz200
+                state_not: "unknown"
+            card:
+              type: "custom:button-card"
+              template: heating_program_expander_dayzone
+              variables:
+                progId: "[[[return variables.progId]]]"
+
+heating_program_day:
+  color_type: card
+  state:
+    - value: "on"
+      color: var(--command-state-active-color)
+      styles:
+        card:
+          - border-color: var(--command-state-active-color)
+          - color: white
+  styles:
+    card:
+      - border-color: var(--paper-item-icon-color)
+      - border-style: double
+      - border-width: 2px
+      - height: 30px
+      - width: 60px
+
+heating_week:
+  styles:
+    grid:
+      - grid-template-areas: '"days"'
+    card:
+      - box-shadow: none
+  custom_fields:
+    days:
+      card:
+        type: vertical-stack
+        cards:
+          - type: "custom:button-card"
+            template: no_background
+            name: "Giorni"
+            styles:
+              card:
+                - padding-top: 0px
+              name:
+                - margin: 0px auto
+                - font-size: large
+          - type: grid
+            columns: 4
+            square: false
+            cards:
+              - type: custom:button-card
+                template: heating_program_day
+                entity: "[[[return `input_boolean.thermostat_monday_program${variables.progId}`]]]"
+                name: LUN
+              - type: custom:button-card
+                template: heating_program_day
+                entity: "[[[return `input_boolean.thermostat_tuesday_program${variables.progId}`]]]"
+                name: MAR
+              - type: custom:button-card
+                template: heating_program_day
+                entity: "[[[return `input_boolean.thermostat_wednesday_program${variables.progId}`]]]"
+                name: MER
+              - type: custom:button-card
+                template: heating_program_day
+                entity: "[[[return `input_boolean.thermostat_thursday_program${variables.progId}`]]]"
+                name: GIO
+              - type: custom:button-card
+                template: heating_program_day
+                entity: "[[[return `input_boolean.thermostat_friday_program${variables.progId}`]]]"
+                name: VEN
+              - type: custom:button-card
+                template: heating_program_day
+                entity: "[[[return `input_boolean.thermostat_saturday_program${variables.progId}`]]]"
+                name: SAB
+              - type: custom:button-card
+                template: heating_program_day
+                entity: "[[[return `input_boolean.thermostat_sunday_program${variables.progId}`]]]"
+                name: DOM
+              - type: "custom:button-card"
+                template: heating_program_label
+                entity: "[[[return `group.program${variables.progId}_days`]]]"
+                layout: icon_name
+                name: "Tutti"
+                size: 100%
+                show_label: false
+                show_name: true
+                styles:
+                  card:
+                    - height: 30px
+                    - width: 60px
+
+heating_time_picker:
+  styles:
+    grid:
+      - grid-template-areas: '"time"'
+    card:
+      - box-shadow: none
+  custom_fields:
+    time:
+      card:
+        type: horizontal-stack
+        cards:
+          - entity: "[[[return `input_datetime.thermostat_on_period${variables.progId}`]]]"
+            <<: &timepicker_style
+              type: custom:time-picker-card
+              minute_step: 5
+              layout:
+                embedded: true
+                align_controls: right
+              style: |
+                state-badge {
+                  display: none;
+                }
+                .time-picker-row.embedded {
+                  flex-direction: column;
+                }
+          - entity: "[[[return `input_datetime.thermostat_off_period${variables.progId}`]]]"
+            <<: *timepicker_style
+
+heating_command_bar:
+  type: "custom:button-card"
+  template: command_bar
+  style: |
+    ha-card.button-card-main {
+      padding: 0px !important
+    }
+  styles:
+    card:
+      - margin-left: -10px
+  custom_fields:
+    commands:
+      card:
+        type: horizontal-stack
+        cards:
+          - type: "custom:button-card"
+            template:
+              - icon_state_header
+            icon: mdi:power
+            state:
+              - value: "on"
+                label: "Acceso"
+                color: var(--command-state-active-color)
+              - value: "off"
+                label: "Spento"
+                color: var(--command-state-color)
+            entity: "[[[return `input_boolean.heater_program${variables.progId}`]]]"
+          - type: "custom:button-card"
+            template:
+              - feedback_click
+              - temperature_ctrl_minus
+            styles:
+              card:
+                - left: 60px
+                - bottom: -5px
+            variables:
+              entity: "[[[return `input_number.temperature_period${variables.progId}`]]]"
+          - type: "custom:button-card"
+            entity: "[[[return `input_number.temperature_period${variables.progId}`]]]"
+            template:
+              - no_background
+              - temperature_value
+          - type: "custom:button-card"
+            template:
+              - feedback_click
+              - temperature_ctrl_plus
+            styles:
+              card:
+                - left: -60px
+                - bottom: -5px
+            variables:
+              entity: "[[[return `input_number.temperature_period${variables.progId}`]]]"
+          - type: "custom:button-card"
+            template: button_go_back
+
+heating_program_expander_nightzone:
+  template: expander_template
+  custom_fields:
+    expander:
+      card:
+        <<: *expander-card-style
+        title-card:
+          type: "custom:button-card"
+          template: heating_program_expander_zone
+          variables:
+            progId: "[[[return variables.progId]]]"
+            zone: zn100
+        cards:
+          - <<: &divider-4px
+              type: entities
+              card_mod:
+                style: |
+                  div.card-content {
+                    padding: 0px;
+                  }
+              entities:
+                - type: divider
+                  style:
+                    background-color: "#000000"
+                    height: 4px
+          - <<: &mod-card-room
+              type: custom:mod-card
+              card_mod:
+                style:
+                  hui-grid-card$: |
+                    div#root {
+                      background: var(--primary-background-color);
+                    }
+            card:
+              type: grid
+              columns: 2
+              square: false
+              cards:
+                - type: conditional
+                  conditions:
+                    - entity: sensor.tz101
+                      state_not: "unknown"
+                  card:
+                    type: "custom:button-card"
+                    template: heating_program_expander_room
+                    variables:
+                      progId: "[[[return variables.progId]]]"
+                      zone: zn101
+                - type: conditional
+                  conditions:
+                    - entity: sensor.tz102
+                      state_not: "unknown"
+                  card:
+                    type: "custom:button-card"
+                    template: heating_program_expander_room
+                    variables:
+                      progId: "[[[return variables.progId]]]"
+                      zone: zn102
+                - type: conditional
+                  conditions:
+                    - entity: sensor.tz103
+                      state_not: "unknown"
+                  card:
+                    type: "custom:button-card"
+                    template: heating_program_expander_room
+                    variables:
+                      progId: "[[[return variables.progId]]]"
+                      zone: zn103
+                - type: conditional
+                  conditions:
+                    - entity: sensor.tz104
+                      state_not: "unknown"
+                  card:
+                    type: "custom:button-card"
+                    template: heating_program_expander_room
+                    variables:
+                      progId: "[[[return variables.progId]]]"
+                      zone: zn104
+
+heating_program_expander_dayzone:
+  template: expander_template
+  custom_fields:
+    expander:
+      card:
+        <<: *expander-card-style
+        title-card:
+          type: "custom:button-card"
+          template: heating_program_expander_zone
+          variables:
+            progId: "[[[return variables.progId]]]"
+            zone: zn200
+        cards:
+          - <<: *divider-4px
+          - <<: *mod-card-room
+            card:
+              type: grid
+              columns: 2
+              square: false
+              cards:
+                - type: conditional
+                  conditions:
+                    - entity: sensor.tz201
+                      state_not: "unknown"
+                  card:
+                    type: "custom:button-card"
+                    template: heating_program_expander_room
+                    variables:
+                      progId: "[[[return variables.progId]]]"
+                      zone: zn201
+                - type: conditional
+                  conditions:
+                    - entity: sensor.tz202
+                      state_not: "unknown"
+                  card:
+                    type: "custom:button-card"
+                    template: heating_program_expander_room
+                    variables:
+                      progId: "[[[return variables.progId]]]"
+                      zone: zn202
+                - type: conditional
+                  conditions:
+                    - entity: sensor.tz203
+                      state_not: "unknown"
+                  card:
+                    type: "custom:button-card"
+                    template: heating_program_expander_room
+                    variables:
+                      progId: "[[[return variables.progId]]]"
+                      zone: zn203
+
+heating_program_expander_zone:
+  styles:
+    grid:
+      - grid-template-areas: '"label temp"'
+      - background: none
+      - display: flex
+      - justify-content: space-between
+    card:
+      - padding: 0px
+      - box-shadow: none
+    custom_fields:
+      temp:
+        - width: 200px
+  custom_fields:
+    label:
+      card:
+        type: "custom:button-card"
+        template: heating_program_label
+        size: 50%
+        entity: "[[[return `group.heater_${variables.zone}_program${variables.progId}`]]]"
+        name: "[[[return states[`input_text.${variables.zone}`].state;]]]"
+    temp:
+      card:
+        type: horizontal-stack
+        cards:
+          - type: custom:button-card
+            template: temperature_ctrl_minus
+            icon: mdi:minus
+            size: 40%
+            variables:
+              entity: "[[[return `input_number.temperature_${variables.zone}_period${variables.progId}`]]]"
+          - type: "custom:button-card"
+            entity: "[[[return `input_number.temperature_${variables.zone}_period${variables.progId}`]]]"
+            template: temperature_value
+          - type: custom:button-card
+            template: temperature_ctrl_plus
+            icon: mdi:plus
+            size: 40%
+            variables:
+              entity: "[[[return `input_number.temperature_${variables.zone}_period${variables.progId}`]]]"
+
+heating_program_expander_room:
+  styles:
+    grid:
+      - grid-template-areas: '"label temp"'
+      - background: none
+    card:
+      - box-shadow: none
+      - background: var(--primary-background-color)
+    custom_fields:
+      temp:
+        - width: 160px
+  custom_fields:
+    label:
+      card:
+        type: "custom:button-card"
+        template:
+          - heating_program_label
+          - grey_background
+        entity: "[[[return `input_boolean.heater_${variables.zone}_program${variables.progId}`]]]"
+        name: "[[[return states[`input_text.${variables.zone}`].state;]]]"
+        size: 45%
+    temp:
+      card:
+        type: custom:mod-card
+        card_mod:
+          style:
+            hui-horizontal-stack-card:
+              $: |
+                #root > * {
+                  margin: 0px !important;
+                }
+        card:
+          type: horizontal-stack
+          cards:
+            - type: custom:button-card
+              template:
+                - temperature_ctrl_minus
+                - width_50
+              icon: mdi:minus
+              size: 50%
+              variables:
+                entity: "[[[return `input_number.temperature_${variables.zone}_period${variables.progId}`]]]"
+            - type: "custom:button-card"
+              template:
+                - temperature_value
+                - grey_background
+              entity: "[[[return `input_number.temperature_${variables.zone}_period${variables.progId}`]]]"
+            - type: custom:button-card
+              template:
+                - temperature_ctrl_plus
+                - width_50
+              icon: mdi:plus
+              size: 50%
+              variables:
+                entity: "[[[return `input_number.temperature_${variables.zone}_period${variables.progId}`]]]"
+
+################
+## TAPPARELLE ##
+################
+
+rollers_detail:
+  icon: "[[[ return variables.icon;]]]"
+  template: no_background
+  styles:
+    card:
+      - padding: 1%
+    grid:
+      - grid-template-areas: '"i name . control" "lastupdate . . ."'
+      - grid-template-columns: 50px 1fr auto
+      - grid-template-rows: 50px 30px
+      - column-gap: 5px
+      - background: none
+      - justify-content: space-between
     img_cell:
       - justify-content: start
-      - margin-left: 10px
-      - width: 60px
-      - height: 50px
+      - align-items: start
+      - margin: none
+    icon:
+      - width: 70%
+      - color: >
+          [[[
+            var color = "#000000"
+            if (states[`sensor.rz${variables.zone}`].state > 0.0)
+              color = "var(--command-state-active-color)"
+            return color;
+          ]]]
+    custom_fields:
+      name:
+        - font-weight: bold
+        - font-size: 16px
+        - align-self: middle
+        - justify-self: start
+        - padding-bottom: 4px
+        - padding-right: 5px
+        - padding-top: 5px
+      control:
+        - justify-self: end
+      lastupdate:
+        - justify-self: start
+  custom_fields:
+    name: >
+      [[[
+        var name = states[`input_text.zn${variables.zone}`].state;
+        var label = "CHIUSE";
+        var state = states[`sensor.rz${variables.zone}`].state;
+        if (state == 100.0) label = "APERTE"
+        if (state > 0.0 && state < 100.0) label = `APERTE AL ${~~state}%`
+        return `<div
+          style="display: flex;
+          flex-direction: column;
+          align-items: flex-start;">
+            <span>${name}</span>
+            <span style="font-size: 10px;">${label}</span>
+          </div>`;
+      ]]]
+    control:
+      card:
+        type: horizontal-stack
+        cards:
+          - type: "custom:button-card"
+            template: rollers_ctrl
+            icon: "mdi:arrow-down"
+            variables:
+              zone: "[[[return variables.zone]]]"
+              option: "closed"
+          - type: "custom:button-card"
+            template: rollers_ctrl
+            icon: "mdi:pause-octagon-outline"
+            entity: "[[[return `group.rs${variables.zone}`]]]"
+            extra_styles: |
+              @keyframes blink-alert {
+                0% {
+                  opacity: 0.3;
+                }
+                50% {
+                  opacity: 1;
+                }
+                100% {
+                  opacity: 0.3;
+                }
+              }
+            state:
+              - value: "stop"
+                icon: mdi:pause-octagon-outline
+                styles:
+                  icon:
+                    - animation: blink-alert 2s ease infinite
+                    - color: "#FF1500"
+            variables:
+              zone: "[[[return variables.zone]]]"
+              option: "stop"
+          - type: "custom:button-card"
+            template: rollers_ctrl
+            icon: "mdi:arrow-up"
+            variables:
+              zone: "[[[return variables.zone]]]"
+              option: "open"
+    lastupdate: >
+      [[[
+        var datetime =  states[`group.rs${variables.zone}`].last_changed.split("T");
+        datetime = new Date(datetime).toLocaleString().replace(","," ");
+        var lastupdate = datetime.substring(0,datetime.length-3);
+        return `<span style="font-size: 12px;">${lastupdate}</span>`
+      ]]]
+
+rollers_label:
+  state:
+    - value: "closed"
+      color: black
+      state: "Chiuse"
+    - value: "open"
+      color: var(--command-state-active-color)
+  styles:
+    card:
+      - box-shadow: none
+
+rollers_nightzone_expander:
+  template: expander_template
+  custom_fields:
+    expander:
+      card:
+        <<: *expander-card-style
+        title-card:
+          type: "custom:button-card"
+          template: rollers_detail
+          triggers_update:
+            - group.rs100
+          variables:
+            zone: "[[[ return variables.zone;]]]"
+            icon: "[[[ return variables.icon;]]]"
+        cards:
+          - <<: *divider-2px
+          - type: custom:mod-card
+            card_mod:
+              style:
+                hui-grid-card$: |
+                  div#root {
+                    background: var(--primary-background-color);
+                  }
+            card:
+              type: grid
+              columns: 2
+              square: false
+              cards:
+                - type: conditional
+                  conditions:
+                    - entity: binary_sensor.rs101_state
+                      state_not: "off"
+                  card:
+                    type: "custom:button-card"
+                    template: rollers_detail
+                    triggers_update:
+                      - group.rs101
+                    variables:
+                      zone: 101
+                      icon: "mdi:bed-outline"
+                - type: conditional
+                  conditions:
+                    - entity: binary_sensor.rs102_state
+                      state_not: "off"
+                  card:
+                    type: "custom:button-card"
+                    template: rollers_detail
+                    triggers_update:
+                      - group.rs102
+                    variables:
+                      zone: 102
+                      icon: "mdi:bed-outline"
+                - type: conditional
+                  conditions:
+                    - entity: binary_sensor.rs103_state
+                      state_not: "off"
+                  card:
+                    type: "custom:button-card"
+                    template: rollers_detail
+                    triggers_update:
+                      - group.rs103
+                    variables:
+                      zone: 103
+                      icon: "mdi:bed-outline"
+                - type: conditional
+                  conditions:
+                    - entity: binary_sensor.rs104_state
+                      state_not: "off"
+                  card:
+                    type: "custom:button-card"
+                    template: rollers_detail
+                    triggers_update:
+                      - group.rs104
+                    variables:
+                      zone: 104
+                      icon: "mdi:shower"
+
+rollers_dayzone_expander:
+  template: expander_template
+  custom_fields:
+    expander:
+      card:
+        <<: *expander-card-style
+        title-card:
+          type: "custom:button-card"
+          template: rollers_detail
+          triggers_update:
+            - group.rs200
+            - sensor.rz200
+          variables:
+            zone: "[[[ return variables.zone;]]]"
+            icon: "[[[return variables.icon;]]]"
+        cards:
+          - <<: *divider-2px
+          - type: "custom:mod-card"
+            card_mod:
+              style:
+                hui-grid-card$: |
+                  div#root {
+                    background: var(--primary-background-color);
+                  }
+            card:
+              type: grid
+              columns: 2
+              square: false
+              cards:
+                - type: conditional
+                  conditions:
+                    - entity: binary_sensor.rs201_state
+                      state_not: "off"
+                  card:
+                    type: "custom:button-card"
+                    template: rollers_detail
+                    triggers_update:
+                      - group.rs201
+                    variables:
+                      zone: 201
+                      icon: "mdi:sofa-outline"
+                - type: conditional
+                  conditions:
+                    - entity: binary_sensor.rs202_state
+                      state_not: "off"
+                  card:
+                    type: "custom:button-card"
+                    template: rollers_detail
+                    triggers_update:
+                      - group.rs202
+                    variables:
+                      zone: 202
+                      icon: "mdi:countertop-outline"
+                - type: conditional
+                  conditions:
+                    - entity: binary_sensor.rs203_state
+                      state_not: "off"
+                  card:
+                    type: "custom:button-card"
+                    template: rollers_detail
+                    triggers_update:
+                      - group.rs203
+                    variables:
+                      zone: 203
+                      icon: "mdi:toilet"
+
+rollers_ctrl:
+  show_name: false
+  show_label: false
+  size: 60%
+  styles:
+    card:
+      - background: none
+      - box-shadow: none
+      - padding-top: 4px
+      - width: 50px
+    icon:
+      - filter: opacity(0.75)
+  tap_action:
+    action: call-service
+    service: input_select.select_option
+    service_data:
+      entity_id: "[[[ return `input_select.rs${variables.zone}`; ]]]"
+      option: "[[[ return variables.option; ]]]"
+
+################
+##### LUCI #####
+################
+
+lights_detail:
+  template: no_background
+  styles:
+    card:
+      - padding: 1%
+    grid:
+      - grid-template-areas: '"label" "lastupdate"'
+      - grid-template-columns: 200px
+      - grid-template-rows: 50px
+      - column-gap: 5px
+    custom_fields:
+      label:
+        - display: flex
+        - justify-self: start
+      lastupdate:
+        - justify-self: start
+  custom_fields:
+    label:
+      card:
+        type: "custom:button-card"
+        template:
+          - no_background
+          - lights_label
+        entity: "[[[return `light.group_lz${variables.zone}`]]]"
+        name: "[[[return states[`input_text.zn${variables.zone}`].state;]]]"
+        styles:
+          card:
+            - width: 200px
+          name:
+            - justify-self: start
+            - font-weight: bold
+            - font-size: 16px
+            - align-self: middle
+            - padding-bottom: 4px
+            - padding-right: 5px
+            - padding-top: 5px
+            - margin-left: -25px
+          img_cell:
+            - width: 50px
+            - margin-right: auto
+          icon:
+            - width: 70%
+            - height: 50px
+        variables:
+          zone: "[[[return variables.zone;]]]"
+          icon: "[[[ return variables.icon;]]]"
+        tap_action:
+          action: call-service
+          service: light.toggle
+          service_data:
+            entity_id: entity
+    lastupdate: >
+      [[[
+        var datetime =  states[`light.group_lz${variables.zone}`].last_changed.split("T");
+        datetime = new Date(datetime).toLocaleString().replace(","," ");
+        var lastupdate = datetime.substring(0,datetime.length-3);
+        return `<span style="font-size: 12px;">${lastupdate }</span>`
+      ]]]
+
+lights_label:
+  layout: icon_name
+  icon: "[[[ return variables.icon;]]]"
+  state:
+    - value: "off"
+      color: black
+    - value: "on"
+      color: "#DCA200"
+  styles:
+    card:
+      - box-shadow: none
+
+lights_expander_nightzone:
+  template: expander_template
+  custom_fields:
+    expander:
+      card:
+        <<: *expander-card-style
+        title-card:
+          type: "custom:button-card"
+          template: lights_detail
+          triggers_update:
+            - light.group_lz100
+          variables:
+            zone: 100
+            icon: "[[[ return variables.icon;]]]"
+        cards:
+          - <<: *divider-4px
+          - <<: *mod-card-room
+            card:
+              type: grid
+              columns: 2
+              square: false
+              cards:
+                - type: conditional
+                  conditions:
+                    - entity: binary_sensor.lz101_state
+                      state_not: "off"
+                  card:
+                    type: "custom:button-card"
+                    template: lights_detail_room
+                    triggers_update:
+                      - light.group_lz101
+                    variables:
+                      navigation_path: "lights-nightzone-room1"
+                      zone: 101
+                      icon: "mdi:bed-outline"
+                - type: conditional
+                  conditions:
+                    - entity: binary_sensor.lz102_state
+                      state_not: "off"
+                  card:
+                    type: "custom:button-card"
+                    template: lights_detail_room
+                    triggers_update:
+                      - light.group_lz102
+                    variables:
+                      navigation_path: "lights-nightzone-room2"
+                      zone: 102
+                      icon: "mdi:bed-outline"
+                - type: conditional
+                  conditions:
+                    - entity: binary_sensor.lz103_state
+                      state_not: "off"
+                  card:
+                    type: "custom:button-card"
+                    template: lights_detail_room
+                    triggers_update:
+                      - light.group_lz103
+                    variables:
+                      navigation_path: "lights-nightzone-room3"
+                      zone: 103
+                      icon: "mdi:bed-outline"
+                - type: conditional
+                  conditions:
+                    - entity: binary_sensor.lz104_state
+                      state_not: "off"
+                  card:
+                    type: "custom:button-card"
+                    template: lights_detail_room
+                    triggers_update:
+                      - light.group_lz104
+                    variables:
+                      navigation_path: "lights-nightzone-room4"
+                      zone: 104
+                      icon: "mdi:shower"
+
+lights_expander_dayzone:
+  template: expander_template
+  custom_fields:
+    expander:
+      card:
+        <<: *expander-card-style
+        title-card:
+          type: "custom:button-card"
+          template: lights_detail
+          triggers_update:
+            - light.group_lz200
+          variables:
+            zone: 200
+            icon: "[[[ return variables.icon;]]]"
+        cards:
+          - <<: *divider-4px
+          - <<: *mod-card-room
+            card:
+              type: grid
+              columns: 2
+              square: false
+              cards:
+                - type: conditional
+                  conditions:
+                    - entity: binary_sensor.lz201_state
+                      state_not: "off"
+                  card:
+                    type: "custom:button-card"
+                    template: lights_detail_room
+                    triggers_update:
+                      - light.group_lz201
+                    variables:
+                      navigation_path: "lights-dayzone-room1"
+                      zone: 201
+                      icon: "mdi:sofa-outline"
+                - type: conditional
+                  conditions:
+                    - entity: binary_sensor.lz202_state
+                      state_not: "off"
+                  card:
+                    type: "custom:button-card"
+                    template: lights_detail_room
+                    triggers_update:
+                      - light.group_lz202
+                    variables:
+                      navigation_path: "lights-dayzone-room1"
+                      zone: 202
+                      icon: "mdi:countertop-outline"
+                - type: conditional
+                  conditions:
+                    - entity: binary_sensor.lz203_state
+                      state_not: "off"
+                  card:
+                    type: "custom:button-card"
+                    template: lights_detail_room
+                    triggers_update:
+                      - light.group_lz203
+                    variables:
+                      navigation_path: "lights-dayzone-room1"
+                      zone: 203
+                      icon: "mdi:toilet"
+
+lights_expander_outdoor:
+  template: expander_template
+  custom_fields:
+    expander:
+      card:
+        <<: *expander-card-style
+        title-card:
+          type: "custom:button-card"
+          template: lights_detail
+          triggers_update:
+            - light.group_lz300
+          variables:
+            zone: 300
+            icon: "[[[ return variables.icon;]]]"
+        cards:
+          - <<: *divider-4px
+          - <<: *mod-card-room
+            card:
+              type: grid
+              columns: 2
+              square: false
+              cards:
+                - type: conditional
+                  conditions:
+                    - entity: binary_sensor.lz301_state
+                      state_not: "off"
+                  card:
+                    type: "custom:button-card"
+                    template: lights_detail_room
+                    triggers_update:
+                      - light.group_lz301
+                    variables:
+                      navigation_path: "lights-nightzone-room1"
+                      zone: 301
+                      icon: "mdi:outdoor-lamp"
+                - type: conditional
+                  conditions:
+                    - entity: binary_sensor.lz302_state
+                      state_not: "off"
+                  card:
+                    type: "custom:button-card"
+                    template: lights_detail_room
+                    triggers_update:
+                      - light.group_lz302
+                    variables:
+                      navigation_path: "lights-nightzone-room2"
+                      zone: 302
+                      icon: "mdi:outdoor-lamp"
+                - type: conditional
+                  conditions:
+                    - entity: binary_sensor.lz303_state
+                      state_not: "off"
+                  card:
+                    type: "custom:button-card"
+                    template: lights_detail_room
+                    triggers_update:
+                      - light.group_lz303
+                    variables:
+                      navigation_path: "lights-nightzone-room3"
+                      zone: 303
+                      icon: "mdi:outdoor-lamp"
+                - type: conditional
+                  conditions:
+                    - entity: binary_sensor.lz304_state
+                      state_not: "off"
+                  card:
+                    type: "custom:button-card"
+                    template: lights_detail_room
+                    triggers_update:
+                      - light.group_lz304
+                    variables:
+                      navigation_path: "lights-nightzone-room4"
+                      zone: 304
+                      icon: "mdi:outdoor-lamp"
+
+lights_detail_room:
+  template:
+    - no_background
+    - lights_detail
+  styles:
+    grid:
+      - grid-template-areas: '"label control" "lastupdate palette"'
+      - grid-template-columns: 170px 1fr
+      - grid-template-rows: 50px
+      - column-gap: 5px
+    custom_fields:
+      control:
+        - width: 40px
+        - margin-left: 15px
+      palette:
+        - justify-self: start
+  custom_fields:
+    control:
+      card:
+        type: "custom:button-card"
+        template: no_background
+        icon: "mdi:palette-outline"
+        styles:
+          icon:
+            - color: >
+                [[[
+                  if (states["input_select.light_type"].state == "color")
+                  {
+                    var light = `light.group_lz${variables.zone}`
+                    if (states[light].state) {
+                      if (states[light].attributes.rgb_color != undefined) {
+                      var color = states[light].attributes.rgb_color
+                      return "rgb("+color[0]+","+color[1]+","+color[2]+")";
+                      }
+                    }
+                  }
+                  return "#DCA200";
+                ]]]
+        size: 80%
+        tap_action:
+          action: navigate
+          navigation_path: "[[[return '/lovelace-kairoshub/'+ variables.navigation_path]]]"
+    palette: >
+      [[[
+        return `<span style="font-size: 12px;">Personalizza</span>`
+      ]]]
+
+lights_ctrl:
+  template: basic_page_layout
+  custom_fields:
+    header:
+      card:
+        type: "custom:button-card"
+        template: header_page_text
+        icon: "mdi:lightbulb"
+        name: "LUCI"
+        label: >
+          [[[
+            var zone = variables.zone.replace(/.$/,"0")
+            var zonename = states[`input_text.zn${zone}`].state
+            var room = states[`input_text.zn${variables.zone}`].state;
+            return `Luci / ${zonename} / ${room}`;
+          ]]]
+    commandbar:
+      card:
+        type: "custom:button-card"
+        template: command_bar
+        style: |
+          ha-card.button-card-main {
+            padding: 0px !important
+          }
+          div#container {
+            justify-items: right;
+          }
+        custom_fields:
+          commands:
+            card:
+              type: horizontal-stack
+              cards:
+                - type: "custom:button-card"
+                  name: "Copia"
+                  hold_action:
+                    confirmation:
+                      text: "Vuoi copiare questa impostazione per tutte le luci di questa zona?"
+                    action: call-service
+                    service: input_boolean.turn_on
+                    service_data:
+                      entity_id: >
+                        [[[
+                          return `input_boolean.copy_lights_zn${variables.zone}`;
+                        ]]]
+                  styles:
+                    card:
+                      - background: none
+                      - color: "#f4f4f4"
+                      - box-shadow: none
+                      - width: 200px
+                      - left: -474px
+                  style: |
+                    :host {
+                      align-self: center;
+                    }
+                - type: "custom:button-card"
+                  template: button_go_back
 
 light_program:
   styles:
@@ -1402,6 +1949,10 @@ light_program:
         - margin-top: 10px
         - margin-left: 30px
 
+###############
+### SCENARI ###
+###############
+
 scenes_program:
   styles:
     grid:
@@ -1420,86 +1971,93 @@ scenes_program:
         - margin-top: 10px
         - margin-left: 60px
 
-icon_header:
-  layout: icon_name
-  styles:
-    card:
-      - box-shadow: 1px 5px 8px rgba(0, 0, 0, 0.3)
-    grid:
-      - grid-template-areas: '"i n"'
-      - grid-template-columns: 60px 1fr
-    name:
-      - font-weight: bold
-      - font-size: 16px
-      - justify-self: start
-      - padding-bottom: 4px
-      - padding-right: 5px
-      - padding-top: 5px
-    img_cell:
-      - justify-content: start
-      - align-items: start
-      - margin: none
-      - grid-area: i
-    icon:
-      - color: var(--paper-item-icon-color)
+################
+# IMPOSTAZIONI #
+################
 
-program_page_grid:
-  styles:
-    card:
-      - '--mdc-ripple-press-opacity': 0
-    grid:
-      - grid-template-areas: '"header" "days" "commands"'
-      - grid-template-columns: 1fr
-      - grid-template-rows: min-content min-content min-content
-      - justify-items: center
-      - row-gap: 10px
-    name:
-      - font-weight: bold
-      - font-size: 16px
-    custom_fields:
-      header:
-        - justify-self: start
-      commands:
-        - width: 100%
-        - align-self: middle
-      days:
-        - margin-left: 3px
-        - margin-right: 3px
-        - '--mdc-ripple-press-opacity': 0.2
-
-button_grid_2:
-  styles:
-    grid:
-      - grid-template-areas: '"i n n n" "b1 b1 b2 b2"'
-      - grid-template-columns: 1fr 1fr 1fr 1fr
-      - grid-template-rows: min-content min-content
-      - justify-items: center
-      - row-gap: 10px
-    name:
-      - font-weight: bold
-      - font-size: 16px
-    img_cell:
-      - justify-content: start
-      - align-items: start
-      - margin: none
-      - grid-area: i
-    icon:
-      - color: var(--paper-item-icon-color)
-
-button_grid_settings:
+settings_grid:
   template: grid_style
   styles:
     grid:
       - grid-template-areas: '"header" "content"'
-      - grid-template-columns: auto
-      - grid-template-rows: min-content min-content min-content
+      - grid-template-rows: min-content min-content
       - justify-items: center
+      - row-gap: 10px
+    custom_fields:
+      header:
+        - justify-self: start
+
+settings_card:
+  template: feedback_click
+  tap_action:
+    action: navigate
+    navigation_path: "[[[return '/lovelace-kairoshub/'+ variables.navigation_path]]]"
+  styles:
+    card:
+      - width: 165px
+      - height: 115px
+      - box-shadow: 1px 5px 8px rgba(0, 0, 0, 0.3)
+      - margin: 5px
+      - border: solid 1px rgb(0 0 0 / 10%)
+
+setting_layout:
+  template: basic_page_layout
+  styles:
+    grid:
       - align-items: start
       - column-gap: 0px
       - row-gap: 10px
     custom_fields:
       header:
         - justify-self: start
+      content:
+        - text-align: start
+        - height: 290px
+        - overflow: visible
+  custom_fields:
+    header:
+      card:
+        type: "custom:button-card"
+        label: "[[[return 'Impostazioni / ' + variables.label]]]"
+        template: header_page_text
+        name: "IMPOSTAZIONI"
+        icon: "mdi:cog"
+    commandbar:
+      card:
+        type: "custom:button-card"
+        template: command_bar
+        style: |
+          ha-card.button-card-main {
+            padding: 0px !important
+          }
+          div#container {
+            justify-items: right;
+          }
+        custom_fields:
+          commands:
+            card:
+              type: horizontal-stack
+              cards:
+                - type: "custom:button-card"
+                  template: button_go_back
+
+alexa_button_style:
+  styles:
+    card:
+      - width: 150px
+      - bottom: -10px
+      - padding: 6px 0px
+      - font-weight: bold
+    name:
+      - color: "#f4f4f4"
+  style: |
+    :host {
+      align-self: center;
+    }
+
+################
+## ASSISTENZA ##
+################
 
 assistance_grid:
   template: grid_style
@@ -1530,12 +2088,11 @@ assistance_info:
       - text-transform: capitalize
       - padding: 12px 16px 16px
     grid:
-      - grid-template-areas: '"i header" "content content"'
+      - grid-template-areas: '"i n" "content content"'
       - grid-template-columns: 30px 1fr
       - grid-template-rows: min-content 1fr
     name:
       - place-self: start
-      - grid-area: header
       - line-height: 48px
       - font-size: 20px
       - font-weight: 500
@@ -1545,12 +2102,9 @@ assistance_info:
       - justify-content: start
       - align-items: start
       - margin: none
-      - grid-area: i
     icon:
       - color: var(--ha-card-header-color)
       - width: 80%
-    content:
-      - font-weight: bold
   custom_fields:
     content: >
       [[[
@@ -1574,7 +2128,6 @@ assistance_info:
               <label style="font-weight: bold; ">Chiave impianto:</label>
               <span > ${ states[ variables.systemKey ].state} </span>
             </div>
-            <br />
 
             <div>
               <ha-icon icon="mdi:home-assistant" style="width: 24px; padding:5px; color: var(--ha-card-header-color);"></ha-icon>
@@ -1592,119 +2145,32 @@ assistance_info:
         `
       ]]]
 
-grid_style:
-  styles:
-    card:
-      - background: none
-      - padding-top: 15px
-      - '--mdc-ripple-press-opacity': 0
-
-entities_grid:
-  template: grid_style
+alexa_command_bar:
   styles:
     grid:
-      - grid-template-areas: '"header" "entities" "commandbar'
-      - grid-template-columns: auto
-      - grid-template-row: auto
-      - align-items: start
-      - column-gap: 0px
-      - row-gap: 10px
-    custom_fields:
-      header:
-        - justify-self: start
-      entities:
-        - text-align: start
-        - height: 290px
-
-clima_zone_grid:
-  template: grid_style
-  styles:
-    grid:
-      - grid-template-areas: '"header header" "zones zones" "commandbar commandbar"'
+      - grid-template-areas: '"integration back"'
       - grid-template-columns: 1fr 1fr
-      - grid-auto-rows: auto
-      - row-gap: 3px
-      - column-gap: 10px
-      - margin-left: 10px
-      - margin-right: 10px
-    custom_fields:
-      header:
-        - margin-bottom: 2px
-        - margin-left: -10px
-        - height: 46px
-      zones:
-        - height: 307px
-
-panel_grid:
-  template: grid_style
-  styles:
+      - display: flex
+      - justify-content: space-between
+      - flex-direction: row-reverse
     card:
       - background: none
-      - padding-top: 15px
-    grid:
-      - grid-template-areas: '"header header" "content content" "commandbar commandbar"'
-      - grid-template-columns: 1fr 1fr
-      - grid-auto-rows: auto
-      - row-gap: 3px
-      - column-gap: 10px
-      - margin-left: 10px
-      - margin-right: 10px
-    custom_fields:
-      header:
-        - margin-bottom: 2px
-        - margin-left: -10px
-        - height: 46px
-      content:
-        - height: 302px
-        - margin-top: 5px
-
-zone_table:
-  template: grid_style
-  styles:
-    grid:
-      - grid-template-areas: '"header header header" "warning warning warning" "list1  list2 ." "commandbar commandbar commandbar"'
-      - grid-template-columns: auto
-      - grid-template-rows: 1fr 80px 192px min-content
-      - align-items: start
-      - row-gap: 5px
-    custom_fields:
-      warning:
-        - justify-self: stretch
-        - text-align-last: start
-      list1:
-        - margin-left: 40px
-
-zone_name:
-  styles:
-    card:
-      - background: none
-      - padding: 3px
-      - margin-left: 5px
-      - width: 250px
-  tap_action:
-    action: none
-
-graph:
-  styles:
-    custom_fields:
-      graph:
-        - overflow: unset
-    card:
-      - overflow: unset
-      - padding-top: 0px
-    grid:
-      - grid-template-areas: '"n" "graph"'
-      - grid-template-columns: 1fr
-      - grid-template-rows: auto auto
-
-settings_card:
-  template: button_hold
-  styles:
-    card:
-      - width: 165px
-      - height: 115px
-      - box-shadow: 1px 5px 8px rgba(0, 0, 0, 0.3)
-      - margin: 5px
+      - box-shadow: none
+      - width: 800px
+      - padding: 6px 0px
+  custom_fields:
+    back:
+      card:
+        type: custom:button-card
+        template: button_go_back
+        tap_action:
+          action: navigate
+          navigation_path: /lovelace-kairoshub/impostazioni
+        styles:
+          card:
+            - width: 150px
+            - bottom: -10px
+            - padding: 6px 0px
 
 command_bar:
   styles:
@@ -1713,12 +2179,12 @@ command_bar:
     card:
       - margin-top: 0.5px
       - margin-bottom: 0px
-      # - justify-content: space-evenly
       - box-shadow: 1px -1px 8px rgba(0, 0, 0, 0.3)
-      - background: '#333333'
+      - background: "#333333"
       - text-color: white
-      # - border-top: solid 1px #3377b5
-      # - border-style: rgb(210,210,210)
+      - position: fixed
+      - bottom: 0px
+      - z-index: 100
     custom_fields:
       commands:
         - margin-top: 3px

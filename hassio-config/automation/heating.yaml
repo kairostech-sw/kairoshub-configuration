@@ -9,46 +9,21 @@
         entity_id: input_boolean.heater_program1
         state: "on"
       - condition: state
-        entity_id: input_boolean.heater_program2_on
+        entity_id: group.heater_program2_on
         state: "off"
       - condition: state
-        entity_id: input_boolean.heater_program3_on
+        entity_id: group.heater_program3_on
         state: "off"
       - condition: state
-        entity_id: input_boolean.heater_program4_on
+        entity_id: group.heater_program4_on
         state: "off"
   action:
     - event: HA_MANAGE_HEATER
       event_data:
         data:
+          program: 1
           event:
-            eventType: HA_MANAGE_HEATER
             sender: HUB
-          program: prog1
-          temperature: "{{states('sensor.temperatura')}}"
-          on_off_heater: "{{states('switch.sw_thermostat')}}"
-          target_temp: "{{states('input_number.temperature_period1')}}"
-          on_off_time_monday:
-            on_time: "{{states('input_datetime.thermostat_monday_on_period1')}}"
-            off_time: "{{states('input_datetime.thermostat_monday_off_period1')}}"
-          on_off_time_tuesday:
-            on_time: "{{states('input_datetime.thermostat_tuesday_on_period1')}}"
-            off_time: "{{states('input_datetime.thermostat_tuesday_off_period1')}}"
-          on_off_time_wednesday:
-            on_time: "{{states('input_datetime.thermostat_wednesday_on_period1')}}"
-            off_time: "{{states('input_datetime.thermostat_wednesday_off_period1')}}"
-          on_off_time_thursday:
-            on_time: "{{states('input_datetime.thermostat_thursday_on_period1')}}"
-            off_time: "{{states('input_datetime.thermostat_thursday_off_period1')}}"
-          on_off_time_friday:
-            on_time: "{{states('input_datetime.thermostat_friday_on_period1')}}"
-            off_time: "{{states('input_datetime.thermostat_friday_off_period1')}}"
-          on_off_time_saturday:
-            on_time: "{{states('input_datetime.thermostat_saturday_on_period1')}}"
-            off_time: "{{states('input_datetime.thermostat_saturday_off_period1')}}"
-          on_off_time_sunday:
-            on_time: "{{states('input_datetime.thermostat_sunday_on_period1')}}"
-            off_time: "{{states('input_datetime.thermostat_sunday_off_period1')}}"
 
 - alias: HEATING PROGRAM 2
   trigger:
@@ -61,47 +36,22 @@
         entity_id: input_boolean.heater_program2
         state: "on"
       - condition: state
-        entity_id: input_boolean.heater_program1_on
+        entity_id: group.heater_program1_on
         state: "off"
       - condition: state
-        entity_id: input_boolean.heater_program3_on
+        entity_id: group.heater_program3_on
         state: "off"
       - condition: state
-        entity_id: input_boolean.heater_program4_on
+        entity_id: group.heater_program4_on
         state: "off"
   action:
     - delay: "00:00:10"
     - event: HA_MANAGE_HEATER
       event_data:
         data:
+          program: 2
           event:
-            eventType: HA_MANAGE_HEATER
             sender: HUB
-          program: prog2
-          temperature: "{{states('sensor.temperatura')}}"
-          on_off_heater: "{{states('switch.sw_thermostat')}}"
-          target_temp: "{{states('input_number.temperature_period2')}}"
-          on_off_time_monday:
-            on_time: "{{states('input_datetime.thermostat_monday_on_period2')}}"
-            off_time: "{{states('input_datetime.thermostat_monday_off_period2')}}"
-          on_off_time_tuesday:
-            on_time: "{{states('input_datetime.thermostat_tuesday_on_period2')}}"
-            off_time: "{{states('input_datetime.thermostat_tuesday_off_period2')}}"
-          on_off_time_wednesday:
-            on_time: "{{states('input_datetime.thermostat_wednesday_on_period2')}}"
-            off_time: "{{states('input_datetime.thermostat_wednesday_off_period2')}}"
-          on_off_time_thursday:
-            on_time: "{{states('input_datetime.thermostat_thursday_on_period2')}}"
-            off_time: "{{states('input_datetime.thermostat_thursday_off_period2')}}"
-          on_off_time_friday:
-            on_time: "{{states('input_datetime.thermostat_friday_on_period2')}}"
-            off_time: "{{states('input_datetime.thermostat_friday_off_period2')}}"
-          on_off_time_saturday:
-            on_time: "{{states('input_datetime.thermostat_saturday_on_period2')}}"
-            off_time: "{{states('input_datetime.thermostat_saturday_off_period2')}}"
-          on_off_time_sunday:
-            on_time: "{{states('input_datetime.thermostat_sunday_on_period2')}}"
-            off_time: "{{states('input_datetime.thermostat_sunday_off_period2')}}"
 
 - alias: HEATING PROGRAM 3
   trigger:
@@ -114,47 +64,22 @@
         entity_id: input_boolean.heater_program3
         state: "on"
       - condition: state
-        entity_id: input_boolean.heater_program1_on
+        entity_id: group.heater_program1_on
         state: "off"
       - condition: state
-        entity_id: input_boolean.heater_program2_on
+        entity_id: group.heater_program2_on
         state: "off"
       - condition: state
-        entity_id: input_boolean.heater_program4_on
+        entity_id: group.heater_program4_on
         state: "off"
   action:
     - delay: "00:00:20"
     - event: HA_MANAGE_HEATER
       event_data:
         data:
+          program: 3
           event:
-            eventType: HA_MANAGE_HEATER
             sender: HUB
-          program: prog3
-          temperature: "{{states('sensor.temperatura')}}"
-          on_off_heater: "{{states('switch.sw_thermostat')}}"
-          target_temp: "{{states('input_number.temperature_period3')}}"
-          on_off_time_monday:
-            on_time: "{{states('input_datetime.thermostat_monday_on_period3')}}"
-            off_time: "{{states('input_datetime.thermostat_monday_off_period3')}}"
-          on_off_time_tuesday:
-            on_time: "{{states('input_datetime.thermostat_tuesday_on_period3')}}"
-            off_time: "{{states('input_datetime.thermostat_tuesday_off_period3')}}"
-          on_off_time_wednesday:
-            on_time: "{{states('input_datetime.thermostat_wednesday_on_period3')}}"
-            off_time: "{{states('input_datetime.thermostat_wednesday_off_period3')}}"
-          on_off_time_thursday:
-            on_time: "{{states('input_datetime.thermostat_thursday_on_period3')}}"
-            off_time: "{{states('input_datetime.thermostat_thursday_off_period3')}}"
-          on_off_time_friday:
-            on_time: "{{states('input_datetime.thermostat_friday_on_period3')}}"
-            off_time: "{{states('input_datetime.thermostat_friday_off_period3')}}"
-          on_off_time_saturday:
-            on_time: "{{states('input_datetime.thermostat_saturday_on_period3')}}"
-            off_time: "{{states('input_datetime.thermostat_saturday_off_period3')}}"
-          on_off_time_sunday:
-            on_time: "{{states('input_datetime.thermostat_sunday_on_period3')}}"
-            off_time: "{{states('input_datetime.thermostat_sunday_off_period3')}}"
 
 - alias: HEATING PROGRAM 4
   trigger:
@@ -167,47 +92,22 @@
         entity_id: input_boolean.heater_program4
         state: "on"
       - condition: state
-        entity_id: input_boolean.heater_program1_on
+        entity_id: group.heater_program1_on
         state: "off"
       - condition: state
-        entity_id: input_boolean.heater_program2_on
+        entity_id: group.heater_program2_on
         state: "off"
       - condition: state
-        entity_id: input_boolean.heater_program3_on
+        entity_id: group.heater_program3_on
         state: "off"
   action:
     - delay: "00:00:30"
     - event: HA_MANAGE_HEATER
       event_data:
         data:
+          program: 4
           event:
-            eventType: HA_MANAGE_HEATER
             sender: HUB
-          program: prog4
-          temperature: "{{states('sensor.temperatura')}}"
-          on_off_heater: "{{states('switch.sw_thermostat')}}"
-          target_temp: "{{states('input_number.temperature_period4')}}"
-          on_off_time_monday:
-            on_time: "{{states('input_datetime.thermostat_monday_on_period4')}}"
-            off_time: "{{states('input_datetime.thermostat_monday_off_period4')}}"
-          on_off_time_tuesday:
-            on_time: "{{states('input_datetime.thermostat_tuesday_on_period4')}}"
-            off_time: "{{states('input_datetime.thermostat_tuesday_off_period4')}}"
-          on_off_time_wednesday:
-            on_time: "{{states('input_datetime.thermostat_wednesday_on_period4')}}"
-            off_time: "{{states('input_datetime.thermostat_wednesday_off_period4')}}"
-          on_off_time_thursday:
-            on_time: "{{states('input_datetime.thermostat_thursday_on_period4')}}"
-            off_time: "{{states('input_datetime.thermostat_thursday_off_period4')}}"
-          on_off_time_friday:
-            on_time: "{{states('input_datetime.thermostat_friday_on_period4')}}"
-            off_time: "{{states('input_datetime.thermostat_friday_off_period4')}}"
-          on_off_time_saturday:
-            on_time: "{{states('input_datetime.thermostat_saturday_on_period4')}}"
-            off_time: "{{states('input_datetime.thermostat_saturday_off_period4')}}"
-          on_off_time_sunday:
-            on_time: "{{states('input_datetime.thermostat_sunday_on_period4')}}"
-            off_time: "{{states('input_datetime.thermostat_sunday_off_period4')}}"
 
 - alias: PROGRAM TURN OFF
   trigger:
@@ -226,7 +126,7 @@
   action:
     - event: AD_PROGRAM_OFF
       event_data:
-        program: "{{ trigger.entity_id }}"
+        program: "{{ trigger.entity_id[-1] }}"
 
 - alias: MANUAL HEATING ON
   trigger:
@@ -234,9 +134,8 @@
     - event: AD_HEATING_ON
       event_data:
         data:
-          program: prog0
+          program: 0
           event:
-            eventType: AD_HEATING_ON
             sender: HUB
 
 - alias: MANUAL HEATING OFF
@@ -245,9 +144,8 @@
     - event: AD_HEATING_OFF
       event_data:
         data:
-          program: prog0
+          program: 0
           event:
-            eventType: AD_HEATING_OFF
             sender: HUB
 
 - alias: COMFORT TEMP REACHED
@@ -262,45 +160,19 @@
         entity_id: switch.sw_thermostat
         state: "on"
       - condition: state
-        entity_id: input_boolean.heater_program1_on
+        entity_id: group.heater_program1_on
         state: "off"
       - condition: state
-        entity_id: input_boolean.heater_program2_on
+        entity_id: group.heater_program2_on
         state: "off"
       - condition: state
-        entity_id: input_boolean.heater_program3_on
+        entity_id: group.heater_program3_on
         state: "off"
       - condition: state
-        entity_id: input_boolean.heater_program4_on
+        entity_id: group.heater_program4_on
         state: "off"
   action:
-    - event: AD_PROGRAM_OFF
-      event_data:
-        program: prog0
-        comfort_temp: "{{ states('input_number.manual_heating_temp') }}"
-
-- alias: COPY PROGRAM TIMERS
-  trigger:
-    - platform: state
-      entity_id: input_boolean.copy_program1
-      from: 'off'
-      to: 'on'
-    - platform: state
-      entity_id: input_boolean.copy_program2
-      from: 'off'
-      to: 'on'
-    - platform: state
-      entity_id: input_boolean.copy_program3
-      from: 'off'
-      to: 'on'
-    - platform: state
-      entity_id: input_boolean.copy_program4
-      from: 'off'
-      to: 'on'
-  action:
-    event: AD_COPY_PROGRAMS
-    event_data:
-      program: "{{trigger.entity_id}}"
+    - event: AD_MANUAL_TEMP_REACHED
 
 - alias: CALIBRATE TRVS
   trigger:
@@ -308,3 +180,171 @@
       event_type: HA_CALIBRATE_TRVS
   action:
     event: AD_TRVS_RECALIBRATE
+
+- alias: PROGRAM 1 TEMPERATURE CHANGE
+  trigger:
+    - platform: state
+      entity_id: input_number.temperature_period1
+  action:
+    service: input_number.set_value
+    target:
+      entity_id:
+        - input_number.temperature_zn100_period1
+        - input_number.temperature_zn200_period1
+    data:
+      value: "{{ trigger.to_state.state }}"
+
+- alias: PROGRAM 1 NIGHTZONE TEMPERATURE CHANGE
+  trigger:
+    - platform: state
+      entity_id: input_number.temperature_zn100_period1
+  action:
+    service: input_number.set_value
+    target:
+      entity_id:
+        - input_number.temperature_zn101_period1
+        - input_number.temperature_zn102_period1
+        - input_number.temperature_zn103_period1
+        - input_number.temperature_zn104_period1
+    data:
+      value: "{{ trigger.to_state.state }}"
+
+- alias: PROGRAM 1 DAYZONE TEMPERATURE CHANGE
+  trigger:
+    - platform: state
+      entity_id: input_number.temperature_zn200_period1
+  action:
+    service: input_number.set_value
+    target:
+      entity_id:
+        - input_number.temperature_zn201_period1
+        - input_number.temperature_zn202_period1
+        - input_number.temperature_zn203_period1
+    data:
+      value: "{{ trigger.to_state.state }}"
+
+- alias: PROGRAM 2 TEMPERATURE CHANGE
+  trigger:
+    - platform: state
+      entity_id: input_number.temperature_period2
+  action:
+    service: input_number.set_value
+    target:
+      entity_id:
+        - input_number.temperature_zn100_period2
+        - input_number.temperature_zn200_period2
+    data:
+      value: "{{ trigger.to_state.state }}"
+
+- alias: PROGRAM 2 NIGHTZONE TEMPERATURE CHANGE
+  trigger:
+    - platform: state
+      entity_id: input_number.temperature_zn100_period2
+  action:
+    service: input_number.set_value
+    target:
+      entity_id:
+        - input_number.temperature_zn101_period2
+        - input_number.temperature_zn102_period2
+        - input_number.temperature_zn103_period2
+        - input_number.temperature_zn104_period2
+    data:
+      value: "{{ trigger.to_state.state }}"
+
+- alias: PROGRAM 2 DAYZONE TEMPERATURE CHANGE
+  trigger:
+    - platform: state
+      entity_id: input_number.temperature_zn200_period2
+  action:
+    service: input_number.set_value
+    target:
+      entity_id:
+        - input_number.temperature_zn201_period2
+        - input_number.temperature_zn202_period2
+        - input_number.temperature_zn203_period2
+    data:
+      value: "{{ trigger.to_state.state }}"
+
+- alias: PROGRAM 3 TEMPERATURE CHANGE
+  trigger:
+    - platform: state
+      entity_id: input_number.temperature_period3
+  action:
+    service: input_number.set_value
+    target:
+      entity_id:
+        - input_number.temperature_zn100_period3
+        - input_number.temperature_zn200_period3
+    data:
+      value: "{{ trigger.to_state.state }}"
+
+- alias: PROGRAM 3 NIGHTZONE TEMPERATURE CHANGE
+  trigger:
+    - platform: state
+      entity_id: input_number.temperature_zn100_period3
+  action:
+    service: input_number.set_value
+    target:
+      entity_id:
+        - input_number.temperature_zn101_period3
+        - input_number.temperature_zn102_period3
+        - input_number.temperature_zn103_period3
+        - input_number.temperature_zn104_period3
+    data:
+      value: "{{ trigger.to_state.state }}"
+
+- alias: PROGRAM 3 DAYZONE TEMPERATURE CHANGE
+  trigger:
+    - platform: state
+      entity_id: input_number.temperature_zn200_period3
+  action:
+    service: input_number.set_value
+    target:
+      entity_id:
+        - input_number.temperature_zn201_period3
+        - input_number.temperature_zn202_period3
+        - input_number.temperature_zn203_period3
+    data:
+      value: "{{ trigger.to_state.state }}"
+
+- alias: PROGRAM 4 TEMPERATURE CHANGE
+  trigger:
+    - platform: state
+      entity_id: input_number.temperature_period4
+  action:
+    service: input_number.set_value
+    target:
+      entity_id:
+        - input_number.temperature_zn100_period4
+        - input_number.temperature_zn200_period4
+    data:
+      value: "{{ trigger.to_state.state }}"
+
+- alias: PROGRAM 4 NIGHTZONE TEMPERATURE CHANGE
+  trigger:
+    - platform: state
+      entity_id: input_number.temperature_zn100_period4
+  action:
+    service: input_number.set_value
+    target:
+      entity_id:
+        - input_number.temperature_zn101_period4
+        - input_number.temperature_zn102_period4
+        - input_number.temperature_zn103_period4
+        - input_number.temperature_zn104_period4
+    data:
+      value: "{{ trigger.to_state.state }}"
+
+- alias: PROGRAM 4 DAYZONE TEMPERATURE CHANGE
+  trigger:
+    - platform: state
+      entity_id: input_number.temperature_zn200_period4
+  action:
+    service: input_number.set_value
+    target:
+      entity_id:
+        - input_number.temperature_zn201_period4
+        - input_number.temperature_zn202_period4
+        - input_number.temperature_zn203_period4
+    data:
+      value: "{{ trigger.to_state.state }}"

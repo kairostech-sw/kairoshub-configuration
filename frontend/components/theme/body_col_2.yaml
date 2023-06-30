@@ -1,0 +1,114 @@
+type: "custom:mod-card"
+card_mod:
+  style:
+    .: |
+      ha-card {
+        width: 385px;
+      }
+    tabbed-card $:
+      mwc-tab:
+        $:
+          mwc-tab-indicator $: |
+            .mdc-tab-indicator__content--underline {
+              border-color: var(--command-state-active-color) !important;
+            }
+          .: |
+            .mdc-tab--active {
+              background: #FFFFFF !important;
+            }
+        .: |
+          mwc-tab[id="Temperatura"] {
+              {% if (states("sensor.temperatura") | float(0) > 24.0) %}
+                {% set COLOR = "#FF0000" %}
+              {% elif (states("sensor.temperatura") | float(0) > 18.0) %}
+                {% set COLOR = "#FFA500" %}
+              {% else %}
+                {% set COLOR = "#2E86C1" %}
+              {% endif %}
+              background: {{COLOR+"25"}} ;
+              --mdc-theme-primary: {{COLOR}};
+          }
+card:
+  type: "custom:tabbed-card"
+  styles:
+    --mdc-tab-stacked-height: 55px
+  attributes:
+    stacked: true
+  tabs:
+    - attributes:
+        label: "Temperatura"
+        icon: "mdi:thermometer"
+      entity: sensor.temperatura
+      suffix: "°C"
+      styles:
+        box-shadow: "0 0 2px #00000080 inset"
+      card:
+        type: "custom:mini-graph-card"
+        entities:
+          - sensor.temperatura
+        color_thresholds_transition: hard
+        color_thresholds:
+          - value: 18
+            color: var(--temperature-secondary-color)
+          - "#FFA500"
+          - value: 25
+            color: var(--temperature-primary-color)
+        <<: &graph-config
+          hours_to_show: 24
+          aggregate_func: avg
+          points_per_hour: 1
+          align_state: center
+          height: 203
+          line_width: 3
+          hour24: true
+          animate: true
+          decimals: 1
+          show:
+            icon: false
+            name: false
+            points: false
+            labels: false
+            extrema: true
+          tap_action:
+            action: none
+          card_mod:
+            style: |
+              .info.flex div.info__item .info__item__time {
+                font-size: 12px;
+              }
+              .info.flex {
+                margin-top: -60px;
+              }
+              .state {
+                margin: 0px auto;
+              }
+    - attributes:
+        label: "Umidità"
+        icon: "mdi:water-percent"
+      entity: sensor.umidita
+      suffix: "%"
+      styles:
+        --mdc-theme-primary: "#7FB03F"
+        background: "#7FB03F25"
+        box-shadow: "0 0 2px #00000080 inset"
+      card:
+        type: "custom:mini-graph-card"
+        entities:
+          - sensor.umidita
+        line_color: var(--humidity-primary-color)
+        <<: *graph-config
+    - attributes:
+        label: "Consumi"
+        icon: "mdi:lightning-bolt"
+      entity: sensor.em_assorbimento
+      suffix: "Watt"
+      styles:
+        --mdc-theme-primary: "#DCA200"
+        background: "#DCA20025"
+        box-shadow: "0 0 2px #00000080 inset"
+      card:
+        type: "custom:mini-graph-card"
+        entities:
+          - sensor.em_assorbimento
+        line_color: var(--energy-consume-primary-color)
+        <<: *graph-config
