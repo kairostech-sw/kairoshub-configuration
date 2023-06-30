@@ -185,3 +185,17 @@ program4_days:
     - input_boolean.thermostat_friday_program4
     - input_boolean.thermostat_saturday_program4
     - input_boolean.thermostat_sunday_program4
+
+zn100_alert:
+  name: Zona Notte
+  entities:
+    - input_boolean.zn101_alert
+    - input_boolean.zn102_alert
+    - input_boolean.zn103_alert
+    - input_boolean.zn104_alert
+zn200_alert:
+  name: Zona Notte
+  entities:
+    - input_boolean.zn201_alert
+    - input_boolean.zn202_alert
+    - input_boolean.zn203_alert

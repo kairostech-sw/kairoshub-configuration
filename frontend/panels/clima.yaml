@@ -1,5 +1,10 @@
 type: "custom:button-card"
 template: basic_page_layout
+triggers_update:
+  - input_boolean.heater_program1_on
+  - input_boolean.heater_program2_on
+  - input_boolean.heater_program3_on
+  - input_boolean.heater_program4_on
 custom_fields:
   header:
     card:
@@ -9,7 +14,7 @@ custom_fields:
       label: "Clima /"
       name: >
         [[[
-          var input = `group.heater_program`;
+          var input = `input_boolean.heater_program`;
           var label = "CLIMA"
           for (var i=1; i<5; i++) {
             if (states[input+`${i}_on`].state === "on") {

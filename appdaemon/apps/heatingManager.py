@@ -73,7 +73,7 @@ class HeatingManager(hass.Hass):
 
         if not self.checkTemperature(progId):
             self.log("Comfort Temperature was reached", level="INFO")
-            if self.get_state(f"group.heater_program{progId}_on") == "on":
+            if self.get_state(f"input_boolean.heater_program{progId}_on") == "on":
                 self.log("Program %s will now end", progId, level="INFO")
                 self.turnHeatingOff(progId, sender, trid, True)
             return None
@@ -95,9 +95,9 @@ class HeatingManager(hass.Hass):
             return None
 
         if validTime:
-            if self.get_state(f"group.heater_program{progId}_on") == "off":
+            if self.get_state(f"input_boolean.heater_program{progId}_on") == "off":
                 self.log("The heating program %s is now starting", progId, level="INFO")
-                self.turn_on(f"group.heater_program{progId}_on")
+                self.turn_on(f"input_boolean.heater_program{progId}_on")
                 self.turnHeatingOn(progId, sender, trid)
                 return None
             self.log("This program is already active", level="INFO")
@@ -199,14 +199,16 @@ class HeatingManager(hass.Hass):
         }
         self.log("Turning off heating", level="INFO")
         if progId > 0:
-            activeBoolean=f"group.heater_program{progId}_on"
+            activeBoolean = f"input_boolean.heater_program{progId}_on"
             if self.get_state(activeBoolean) == "on":
                 self.turn_off(activeBoolean)
+                self.turn_off(f"group.heater_program{progId}_on")
                 self.log("Program %s was turned off", progId)
                 self.updateProgramStatus(progId, "not running")
         else:
             activeProgram = self.isProgramOn(progId)
             if activeProgram:
+                self.turn_off(f"input_boolean.heater_program{activeProgram}_on")
                 self.turn_off(f"group.heater_program{activeProgram}_on")
                 self.updateProgramStatus(activeProgram, "manual off")
 
@@ -343,7 +345,7 @@ class HeatingManager(hass.Hass):
         with open(self.file, "w") as f:
             json.dump(programSchedule, f, indent=2)
 
-    def getProgramSchedule(self, progId: int) -> dict[str, str]:
+    def getProgramSchedule(self, progId: int) -> dict:
         '''
             Gets program schedule and status from the file
         '''
@@ -368,7 +370,7 @@ class HeatingManager(hass.Hass):
 
         return f"zn{zoneId[:-1]}"
 
-    def getTRVList(self) -> list[dict[str, str]]:
+    def getTRVList(self) -> list:
         '''
             Gets the list of all available TRVs
         '''
@@ -391,7 +393,7 @@ class HeatingManager(hass.Hass):
         self.log("TRVs found: %s", trvList, level="DEBUG")
         return trvList
 
-    def getProgramZoneTemperature(self, progId: int) -> dict[str, any]:
+    def getProgramZoneTemperature(self, progId: int) -> dict:
         '''
             Gets temperature sets for every zone for this program.
             Any zone without a sensor or that is not active for the program
@@ -417,10 +419,10 @@ class HeatingManager(hass.Hass):
             else:
                 zonesTemperatures[roomName] = 4.0
 
-        self.log("Temperatures per Zone of this program: %s", zonesTemperatures, level="DEBUG")
+        self.log("Temperatures per Zone of this program: %s", zonesTemperatures, level="INFO")
         return zonesTemperatures
 
-    def getProgramZone(self, progId: int) -> list[dict[str, str]]:
+    def getProgramZone(self, progId: int) -> list:
         '''
             Returns a list containing name and id of every zone in the program
         '''
@@ -450,7 +452,7 @@ class HeatingManager(hass.Hass):
 
         return ""
 
-    def isValidTime(self, now: datetime,end: datetime) -> int:
+    def isValidTime(self, now: datetime, end: datetime) -> int:
         return now < end
 
     def setTargetTemp(self, topic: str, value: float) -> None:

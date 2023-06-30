@@ -57,7 +57,6 @@ expander_template:
 ####################
 
 header_page_text:
-  type: "custom:button-card"
   template: no_background
   show_icon: true
   show_label: true
@@ -231,6 +230,11 @@ basic_page_layout:
 clima_detail:
   icon: "[[[return variables.icon]]]"
   template: no_background
+  triggers_update:
+    - input_boolean.heater_program1_on
+    - input_boolean.heater_program2_on
+    - input_boolean.heater_program3_on
+    - input_boolean.heater_program4_on
   styles:
     card:
       - padding: 1%
@@ -286,7 +290,7 @@ clima_detail:
       [[[
         var zoneTemperature = states[`sensor.tz${variables.zoneId}`].state;
         var tempColor = 'var(--temperature-secondary-color)';
-        var targetTempColor = 'var(--temperature-primary-color)';
+        var targetTempColor = 'var(--temperature-tertiary-color)';
         var comfortTemp = states['input_number.manual_heating_temp'].state;
         var programTemp = `input_number.temperature_zn${variables.zoneId}_period`;
         for (var i=1; i<5; i++) {
@@ -296,12 +300,11 @@ clima_detail:
         }
         if (zoneTemperature >= comfortTemp) {
           tempColor = 'var(--temperature-primary-color)';
-          targetTempColor = 'var(--temperature-secondary-color)';
         }
 
         return `<div style="align-items: center; display: flex;">
           <span style="font-size: 18px; font-weight: 600; color: ${tempColor};">${zoneTemperature}&nbsp;</span>
-          <span style="font-size: 18px; font-weight: 600; color: ${targetTempColor};">/${comfortTemp}°C </span>
+          <span style="font-size: 18px; font-weight: 600; color: ${targetTempColor};">/ ${comfortTemp}°C </span>
           <ha-icon icon="mdi:thermometer"
             style="color: ${targetTempColor}; width: 24px; padding: 5px; margin: 0px;"/>
           </div>`;
@@ -326,7 +329,17 @@ clima_detail:
     info:
       card:
         type: "custom:button-card"
-        template: clima_alert
+        template: no_background
+        custom_fields:
+          alert: >
+            [[[
+              var input = `input_boolean.zn${variables.zoneId}_alert`;
+              if ((""+variables.zoneId).endsWith("00"))
+                input = input.replace("input_boolean", "group");
+              if (states[input].state === "on")
+                return '<ha-icon icon="mdi:alert-circle-outline" style="width: 24px; color: red; margin-right: 5px;" />';
+              return "</>";
+            ]]]
         variables:
           zoneId: "[[[return variables.zoneId;]]]"
     name: >
@@ -367,7 +380,7 @@ clima_nightzone_expander:
             - input_number.temperature_zn100_period2
             - input_number.temperature_zn100_period3
             - input_number.temperature_zn100_period4
-            - input_boolean.zn100_alert
+            - group.zn100_alert
             - group.heater_zn100_program1_on
             - group.heater_zn100_program2_on
             - group.heater_zn100_program3_on
@@ -520,7 +533,7 @@ clima_dayzone_expander:
             - input_number.temperature_zn200_period2
             - input_number.temperature_zn200_period3
             - input_number.temperature_zn200_period4
-            - input_boolean.zn200_alert
+            - group.zn200_alert
             - group.heater_zn200_program1_on
             - group.heater_zn200_program2_on
             - group.heater_zn200_program3_on
@@ -622,16 +635,6 @@ clima_dayzone_expander:
                     variables:
                       zoneId: 203
                       icon: "mdi:toilet"
-
-clima_alert:
-  template: no_background
-  custom_fields:
-    alert: >
-      [[[
-        if (states[`input_boolean.zn${variables.zoneId}_alert`].state === "on")
-          return '<ha-icon icon="mdi:alert-circle-outline" style="width: 24px; color: red; margin-right: 5px;" />';
-        return "</>";
-      ]]]
 
 temperature_value:
   icon: "mdi:thermometer"

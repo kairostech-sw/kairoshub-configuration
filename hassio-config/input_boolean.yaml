@@ -173,8 +173,6 @@ zn200_active:
 zn300_active:
   name: Esterno Attivo
 
-zn100_alert:
-  name: Zona Notte
 zn101_alert:
   name: Zona Notte
 zn102_alert:
@@ -184,8 +182,6 @@ zn103_alert:
 zn104_alert:
   name: Zona Notte
 
-zn200_alert:
-  name: Zona Notte
 zn201_alert:
   name: Zona Notte
 zn202_alert:
