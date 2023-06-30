@@ -1,0 +1,409 @@
+type: "custom:button-card"
+template: basic_page_layout
+styles:
+  custom_fields:
+    content:
+      - margin: 0px auto
+card_mod:
+  style: |
+    #content::-webkit-scrollbar {
+      display: none !important;
+    }
+custom_fields:
+  header:
+    card:
+      type: "custom:button-card"
+      template: header_page_text
+      icon: "mdi:window-shutter"
+      name: "TAPPARELLE"
+      label: "Tapparelle / Programma 1"
+  commandbar:
+    card:
+      type: "custom:button-card"
+      template: command_bar
+      style: |
+        ha-card.button-card-main {
+          padding: 0px !important
+        }
+        div#container {
+          justify-items: right;
+        }
+      custom_fields:
+        commands:
+          card:
+            type: horizontal-stack
+            cards:
+              - type: "custom:button-card"
+                template: button_go_back
+  content:
+    card:
+      type: vertical-stack
+      cards:
+        - type: conditional
+          conditions:
+            - entity: binary_sensor.rs100_state
+              state: "off"
+            - entity: binary_sensor.rs200_state
+              state: "off"
+          card:
+            type: "custom:button-card"
+            template: no_background
+            name: >
+              [[[
+                return `
+                <ha-alert alert-type="warning" style="justify-self: center;">
+                  Non ci sono tapparelle attive </br>
+                </ha-alert>`;
+              ]]]
+            tap_action:
+              action: none
+        - type: conditional
+          conditions:
+            - entity: binary_sensor.rs100_state
+              state_not: "off"
+          card:
+            type: "custom:button-card"
+            template: light_program
+            custom_fields:
+              label:
+                card:
+                  type: "custom:button-card"
+                  name: '[[[return states["input_text.zn100"].state;]]]'
+                  layout: icon_name
+                  icon: mdi:window-shutter
+                  size: 75%
+                  state:
+                    - value: "off"
+                      color: black
+                    - value: "on"
+                      color: "#DCA200"
+                  tap_action:
+                    action: none
+              select:
+                card:
+                  type: vertical-stack
+                  cards:
+                    - type: "custom:button-card"
+                      icon: mdi:chevron-up
+                      size: 13%
+                      styles:
+                        card:
+                          - padding: 0px
+                      tap_action:
+                        action: call-service
+                        service: input_select.select_next
+                        service_data:
+                          entity_id: input_select.rs100_program1
+                    - type: "custom:button-card"
+                      entity: input_select.rs100_program1
+                      tap_action:
+                        action: none
+                      show_state: true
+                      size: 17%
+                      state:
+                        - value: "Disattivo"
+                          color: "#F32000"
+                          icon: mdi:close-circle-outline
+                        - value: "Programmato"
+                          color: "#009213"
+                          icon: mdi:alarm
+                        - value: "Automatico"
+                          color: "#FFB600"
+                          icon: mdi:weather-sunny
+                    - type: custom:button-card
+                      icon: mdi:chevron-down
+                      size: 13%
+                      styles:
+                        card:
+                          - padding: 0px
+                      tap_action:
+                        action: call-service
+                        service: input_select.select_previous
+                        service_data:
+                          entity_id: input_select.rs100_program1
+              days:
+                card:
+                  type: vertical-stack
+                  cards:
+                    - type: custom:button-card
+                      icon: mdi:chevron-up
+                      size: 18%
+                      styles:
+                        card:
+                          - padding: 0px
+                      card_mod:
+                        style: |
+                          :host {
+                            {% if not is_state('input_select.rs100_program1', 'Programmato') %}
+                              pointer-events: none;
+                            {% endif %}
+                          }
+                      tap_action:
+                        action: call-service
+                        service: input_select.select_next
+                        service_data:
+                          entity_id: input_select.rs100_program1_days
+                    - type: "custom:button-card"
+                      entity: input_select.rs100_program1_days
+                      tap_action:
+                        action: none
+                      show_state: true
+                      size: 25%
+                      icon: mdi:calendar
+                      color: >
+                        [[[
+                          if (states['input_select.rs100_program1'].state == "Programmato")
+                            return "#009213";
+                          return "var(--disabled-text-color)";
+                        ]]]
+                    - type: custom:button-card
+                      icon: mdi:chevron-down
+                      size: 18%
+                      styles:
+                        card:
+                          - padding: 0px
+                      card_mod:
+                        style: |
+                          :host {
+                            {% if not is_state('input_select.rs100_program1', 'Programmato') %}
+                              pointer-events: none;
+                            {% endif %}
+                          }
+                      tap_action:
+                        action: call-service
+                        service: input_select.select_previous
+                        service_data:
+                          entity_id: input_select.rs100_program1_days
+              time:
+                card:
+                  type: horizontal-stack
+                  cards:
+                    - type: custom:time-picker-card
+                      entity: input_datetime.rollers_nightzone_on_program1
+                      minute_step: 15
+                      layout:
+                        embedded: true
+                        align_controls: right
+                      style:
+                        .: |
+                          :host {
+                          {% if not is_state('input_select.rs100_program1', 'Programmato') %}
+                            pointer-events: none;
+                          {% endif %}
+                          }
+                          state-badge {
+                            display: none;
+                          }
+                          .time-picker-row.embedded {
+                            flex-direction: column;
+                          }
+                        time-unit:
+                          $: |
+                            .time-input {
+                              {% if not is_state('input_select.rs100_program1', 'Programmato') %}
+                                pointer-events: none;
+                                background-color: var(--disabled-text-color) !important;
+                              {% endif %}
+                            }
+                    - type: custom:time-picker-card
+                      entity: input_datetime.rollers_nightzone_off_program1
+                      minute_step: 15
+                      layout:
+                        embedded: true
+                        align_controls: right
+                      style:
+                        .: |
+                          :host {
+                          {% if not is_state('input_select.rs100_program1', 'Programmato') %}
+                            pointer-events: none;
+                          {% endif %}
+                          }
+                          state-badge {
+                            display: none;
+                          }
+                          .time-picker-row.embedded {
+                            flex-direction: column;
+                          }
+                        time-unit:
+                          $: |
+                            .time-input {
+                              {% if not is_state('input_select.rs100_program1', 'Programmato') %}
+                                pointer-events: none;
+                                background-color: var(--disabled-text-color) !important;
+                              {% endif %}
+                            }
+        - type: conditional
+          conditions:
+            - entity: binary_sensor.rs200_state
+              state_not: "off"
+          card:
+            type: "custom:button-card"
+            template: light_program
+            custom_fields:
+              label:
+                card:
+                  type: "custom:button-card"
+                  name: '[[[return states["input_text.zn200"].state;]]]'
+                  layout: icon_name
+                  icon: mdi:window-shutter
+                  size: 75%
+                  state:
+                    - value: "off"
+                      color: black
+                    - value: "on"
+                      color: "#DCA200"
+                  tap_action:
+                    action: none
+              select:
+                card:
+                  type: vertical-stack
+                  cards:
+                    - type: "custom:button-card"
+                      icon: mdi:chevron-up
+                      size: 13%
+                      styles:
+                        card:
+                          - padding: 0px
+                      tap_action:
+                        action: call-service
+                        service: input_select.select_next
+                        service_data:
+                          entity_id: input_select.rs200_program1
+                    - type: "custom:button-card"
+                      entity: input_select.rs200_program1
+                      tap_action:
+                        action: none
+                      show_state: true
+                      size: 17%
+                      state:
+                        - value: "Disattivo"
+                          color: "#F32000"
+                          icon: mdi:close-circle-outline
+                        - value: "Programmato"
+                          color: "#009213"
+                          icon: mdi:alarm
+                        - value: "Automatico"
+                          color: "#FFB600"
+                          icon: mdi:weather-sunny
+                    - type: custom:button-card
+                      icon: mdi:chevron-down
+                      size: 13%
+                      styles:
+                        card:
+                          - padding: 0px
+                      tap_action:
+                        action: call-service
+                        service: input_select.select_previous
+                        service_data:
+                          entity_id: input_select.rs200_program1
+              days:
+                card:
+                  type: vertical-stack
+                  cards:
+                    - type: "custom:button-card"
+                      icon: mdi:chevron-up
+                      size: 18%
+                      styles:
+                        card:
+                          - padding: 0px
+                      card_mod:
+                        style: |
+                          :host {
+                            {% if not is_state('input_select.rs200_program1', 'Programmato') %}
+                              pointer-events: none;
+                            {% endif %}
+                          }
+                      tap_action:
+                        action: call-service
+                        service: input_select.select_next
+                        service_data:
+                          entity_id: input_select.rs200_program1_days
+                    - type: "custom:button-card"
+                      entity: input_select.rs200_program1_days
+                      tap_action:
+                        action: none
+                      show_state: true
+                      size: 25%
+                      icon: mdi:calendar
+                      color: >
+                        [[[
+                          if (states['input_select.rs200_program1'].state == "Programmato")
+                            return "#009213";
+                          return "var(--disabled-text-color)";
+                        ]]]
+                    - type: custom:button-card
+                      icon: mdi:chevron-down
+                      size: 18%
+                      styles:
+                        card:
+                          - padding: 0px
+                      card_mod:
+                        style: |
+                          :host {
+                            {% if not is_state('input_select.rs200_program1', 'Programmato') %}
+                              pointer-events: none;
+                            {% endif %}
+                          }
+                      tap_action:
+                        action: call-service
+                        service: input_select.select_previous
+                        service_data:
+                          entity_id: input_select.rs200_program1_days
+              time:
+                card:
+                  type: horizontal-stack
+                  cards:
+                    - type: custom:time-picker-card
+                      entity: input_datetime.rollers_dayzone_on_program1
+                      minute_step: 15
+                      layout:
+                        embedded: true
+                        align_controls: right
+                      style:
+                        .: |
+                          :host {
+                          {% if not is_state('input_select.rs200_program1', 'Programmato') %}
+                            pointer-events: none;
+                          {% endif %}
+                          }
+                          state-badge {
+                            display: none;
+                          }
+                          .time-picker-row.embedded {
+                            flex-direction: column;
+                          }
+                        time-unit:
+                          $: |
+                            .time-input {
+                              {% if not is_state('input_select.rs200_program1', 'Programmato') %}
+                                pointer-events: none;
+                                background-color: var(--disabled-text-color) !important;
+                              {% endif %}
+                            }
+                    - type: custom:time-picker-card
+                      entity: input_datetime.rollers_dayzone_off_program1
+                      minute_step: 15
+                      layout:
+                        embedded: true
+                        align_controls: right
+                      style:
+                        .: |
+                          :host {
+                          {% if not is_state('input_select.rs200_program1', 'Programmato') %}
+                            pointer-events: none;
+                          {% endif %}
+                          }
+                          state-badge {
+                            display: none;
+                          }
+                          .time-picker-row.embedded {
+                            flex-direction: column;
+                          }
+                        time-unit:
+                          $: |
+                            .time-input {
+                              {% if not is_state('input_select.rs200_program1', 'Programmato') %}
+                                pointer-events: none;
+                                background-color: var(--disabled-text-color) !important;
+                              {% endif %}
+                            }

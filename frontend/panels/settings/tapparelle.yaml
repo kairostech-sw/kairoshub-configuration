@@ -1,40 +1,9 @@
-type: 'custom:button-card'
-template: entities_grid
+type: "custom:button-card"
+template: setting_layout
+variables:
+  label: "Tapparelle"
 custom_fields:
-  header:
-    card:
-      type: 'custom:button-card'
-      label: "Impostazioni / Tapparelle"
-      template:
-        - header_page_text
-      name: 'IMPOSTAZIONI'
-      icon: 'mdi:cog'
-  commandbar:
-    card:
-      type: 'custom:button-card'
-      template: command_bar
-      style: |
-        ha-card.button-card-main {
-          padding: 0px !important
-        }
-        div#container {
-          justify-items: right;
-        }
-      styles:
-        card:
-          - margin-top: 2px
-      custom_fields:
-        commands:
-          card:
-            type: horizontal-stack
-            cards:
-              - type: 'custom:button-card'
-                template: button_go_back
-                style: |
-                  :host {
-                    align-self: center;
-                  }
-  entities:
+  content:
     card:
       type: vertical-stack
       cards:
@@ -52,8 +21,8 @@ custom_fields:
                 height: 8px
             - type: button
               entity: input_boolean.calibrate_rollers
-              name: Calibra Tapparelle
-              icon: mdi:cog-outline
+              name: "Calibra Tapparelle"
+              icon: "mdi:cog-outline"
               card_mod:
                 style:
                   .flex mwc-button:

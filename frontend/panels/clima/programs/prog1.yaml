@@ -1,0 +1,4 @@
+type: "custom:button-card"
+template: heating_program_layout
+variables:
+  progId: 1

@@ -1,4 +1,4 @@
-type: custom:button-card
+type: "custom:button-card"
 styles:
   grid:
     - grid-template-areas: '"header"" notifications" "commandbar"'
@@ -6,6 +6,9 @@ styles:
   card:
     - background: none
     - padding-top: 15px
+  custom_fields:
+    notifications:
+      - align-self: start
 custom_fields:
   header:
     card:
@@ -13,6 +16,7 @@ custom_fields:
       template: header_page_text
       icon: "mdi:bell"
       name: "NOTIFICHE"
+      label: "Notifiche /"
   commandbar:
     card:
       type: "custom:button-card"
@@ -24,9 +28,6 @@ custom_fields:
         div#container {
           justify-items: right;
         }
-      styles:
-        card:
-          - width: 800px
       custom_fields:
         commands:
           card:
@@ -34,77 +35,73 @@ custom_fields:
             cards:
               - type: "custom:button-card"
                 template: button_go_back
-                style: |
-                  :host {
-                    align-self: center;
-                  }
   notifications:
     card:
-      type: custom:logbook-card
+      type: "custom:logbook-card"
       entity: input_text.notify
       title: ""
       date_format: DD/MM/YY HH:mm
       history: 5
       hidden_state:
         - ""
-      icon: mdi:warning
+      icon: "mdi:warning"
       max_items: 10
       state_map:
-        - value: "Riscaldamento Acceso*"
-          icon: mdi:radiator
-          icon_color: var(--command-state-active-color)
-        - value: "Riscaldamento*"
-          icon: mdi:radiator-off
-          icon_color: "#000000"
-        - value: "Luci Accese*"
-          icon: mdi:lightbulb
-          icon_color: var(--command-state-active-color)
-        - value: "Luci*"
-          icon: mdi:lightbulb-off
-          icon_color: "#000000"
-        - value: "Tapparelle Aperte*"
-          icon: mdi:window-shutter-open
-          icon_color: var(--command-state-active-color)
-        - value: "Tapparelle Chiuse*"
-          icon: mdi:window-shutter
-          icon_color: "#000000"
-        - value: "Sistema*"
-          icon: mdi:cog
-          icon_color: "#000000"
         - value: "*Errore*"
-          icon: mdi:alert-circle-outline
+          icon: "mdi:alert-circle-outline"
           icon_color: "#FE0000"
           flags:
             ignore_case: true
+        - value: "Riscaldamento Acceso*"
+          icon: "mdi:radiator"
+          icon_color: var(--command-state-active-color)
+        - value: "Riscaldamento*"
+          icon: "mdi:radiator-off"
+          icon_color: "#000000"
+        - value: "Luci Accese*"
+          icon: "mdi:lightbulb"
+          icon_color: var(--command-state-active-color)
+        - value: "Luci*"
+          icon: "mdi:lightbulb-off"
+          icon_color: "#000000"
+        - value: "Tapparelle Aperte*"
+          icon: "mdi:window-shutter-open"
+          icon_color: var(--command-state-active-color)
+        - value: "Tapparelle Chiuse*"
+          icon: "mdi:window-shutter"
+          icon_color: "#000000"
+        - value: "Sistema*"
+          icon: "mdi:cog"
+          icon_color: "#000000"
         - value: "Batteria*"
-          icon: mdi:battery-20
+          icon: "mdi:battery-20"
           icon_color: "#FE0000"
         - value: "Segnale Molto Basso*"
-          icon: mdi:wifi-strength-1-alert
+          icon: "mdi:wifi-strength-1-alert"
           icon_color: "#FE0000"
         - value: "Segnale Basso*"
-          icon: mdi:wifi-strength-2-alert
+          icon: "mdi:wifi-strength-2-alert"
           icon_color: "#F47A00"
         - value: "Segnale Buono*"
-          icon: mdi:wifi-strength-3
+          icon: "mdi:wifi-strength-3"
           icon_color: "#D5D232"
         - value: "Segnale Alto*"
-          icon: mdi:wifi-strength-4
+          icon: "mdi:wifi-strength-4"
           icon_color: "#00D100"
         - value: "Segnale Assente*"
-          icon: mdi:wifi-strength-alert-outline
+          icon: "mdi:wifi-strength-alert-outline"
           icon_color: "#FE0000"
         - value: "* Non Calibrato"
-          icon: mdi:alert-outline
+          icon: "mdi:alert-outline"
           icon_color: "#F47A00"
         - value: "Scenario Notte*"
-          icon: mdi:weather-night
+          icon: "mdi:weather-night"
           icon_color: "#55C1E5"
         - value: "Scenario*"
-          icon: mdi:weather-sunny
+          icon: "mdi:weather-sunny"
           icon_color: "#FFB600"
         - value: "*Alexa*"
-          icon: mdi:amazon-alexa
+          icon: "mdi:amazon-alexa"
           icon_color: "#00CAFF"
       show:
         separator: true
@@ -122,6 +119,9 @@ custom_fields:
       tap_action:
         action: none
       style: |
+        h1 {
+          padding: 8px;
+        }
         ha-card {
           text-align-last: start ;
         }

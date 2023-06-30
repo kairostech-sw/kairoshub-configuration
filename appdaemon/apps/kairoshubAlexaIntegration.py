@@ -1,52 +1,73 @@
 import hassapi as hass
 
+
 class KairoshubAlexaIntegration(hass.Hass):
 
+    def initialize(self):
+        self.listen_event(self.sendIntegrationRequest,
+                          "AD_INTEGRATION_ALEXA_REGISTRATION_REQ")
+        self.listen_event(self.sendIntegrationRequest,
+                          "AD_INTEGRATION_ALEXA_SUBSCRIPTION_RENEW_TOGGLE_REQ", skipSendNofity=True)
 
-  def initialize(self):
-    self.listen_event(self.sendRegistration, "AD_ALEXA_INTEGRATION_REQUEST")
-    self.listen_event(self.deleteAccount, "AD_INTEGRATION_ALEXA_ACCOUNT_REMOVE")
-    self.listen_event(self.deleteSubscription, "AD_ALEXA_SUB_REMOVE")
-    self.listen_event(self.setIntegrationStatus, "AD_ALEXA_INTEGRATION_DETAIL")
+        self.listen_event(self.updateIntegrationState,
+                          "AD_INTEGRATION_ALEXA_REGISTRATION_ON")
+        self.listen_event(self.updateIntegrationState,
+                          "AD_INTEGRATION_ALEXA_REGISTRATION_OFF")
+        self.listen_event(self.updateIntegrationState,
+                          "AD_INTEGRATION_ALEXA_SUBSCRIPTION_RENEW_TOGGLE_TO_ON")
+        self.listen_event(self.updateIntegrationState,
+                          "AD_INTEGRATION_ALEXA_SUBSCRIPTION_RENEW_TOGGLE_TO_OFF")
 
-  def setIntegrationStatus(self, event_name, data, kwargs):
-    data = data["data"]
-    self.log("Setting Alexa Integration status")
+    def sendIntegrationRequest(self, event_name, data, kwargs):
+        self.log("Sending request to integration event: " + event_name, level="INFO")
 
-    integration = {
-      "alexa_subscription_state": ("DISATTIVA", "ATTIVA")[data["subscription_state"]],
-      "alexa_subscription_activation_date": data["activation_date"],
-      "alexa_subscription_renew_date": data["renew_date"],
-      "alexa_linked_account": data["linked_account"],
-      "alexa_linked_device": data["linked_device"],
-      "alexa_auto_renew": ("NO","SI")[data["renew"]]
-    }
+        eventType = event_name.replace("AD_", "")
+        event_data = {
+            "eventType": eventType,
+            "sender": "*",
+            "systemCode": self.get_state("input_text.system_code"),
+            "message": event_name.replace("_", " ")
+        }
 
-    for k,v in integration.items():
-      self.log("Setting %s with state: %s",k,v)
-      attributes=self.get_state("input_text."+k, attribute="attributes")
-      self.set_state("input_text."+k, state=v, attributes=attributes)
+        self.fire_event("HAKAFKA_PRODUCER_PRODUCE",
+                        topic="TECHNICAL", message=event_data)
 
-    self.call_service("homeassistant/save_persistent_states")
+        if not ("skipSendNofity" in kwargs and kwargs["skipSendNofity"]):
+            self.fire_event("AD_KAIROSHUB_NOTIFICATION",
+                            sender="*", ncode=eventType, severity="NOTICE")
 
-  def sendRegistration(self, event_name, data, kwargs):
-    self.log("Sending request for Alexa integration")
-    self.sendEventToCloud("INTEGRATION_ALEXA_REGISTRATION_REQ")
+    def updateIntegrationState(self, event_name, data, kwargs):
+        integrations = data["data"]["integrations"]
+        try:
+            for i in integrations:
+                # persisting integration state
+                self.persistIntegrationState(i)
 
-  def deleteAccount(self, event_name, data, kwargs):
-    self.log("Deleting Alexa Account")
-    self.sendEventToCloud("INTEGRATION_ALEXA_SUBSCRIPTION_REMOVE")
+            self.fire_event("AD_KAIROSHUB_NOTIFICATION",
+                            sender="*", ncode=event_name.replace("AD_", ""), severity="NOTICE")
+        except Exception as e:
+            self.log("Error occourred on updating integration state " + e)
 
-  def deleteSubscription(self, event_name, data, kwargs):
-    self.log("Deleting Alexa Subscription")
-    self.sendEventToCloud("INTEGRATION_ALEXA_SUBSCRIPTION_REMOVE")
+    def persistIntegrationState(self, i):
 
-  def sendEventToCloud(self, event_type):
-    system_code = self.get_state("input_text.system_code")
-    event_data = {
-      "eventType": event_type,
-      "systemCode": system_code,
-      "message": event_type.replace("_", " ")
-    }
+        # ALEXA
+        if "alexa" in i["subscription_ref"]:
+            self.log("Setting Alexa Integration status")
 
-    self.fire_event("HAKAFKA_PRODUCER_PRODUCE", topic="TECHNICAL", message=event_data)
+            integration = {
+                "alexa_subscription_state": ("DISATTIVA", "ATTIVA")[i["active"] == True],
+                "alexa_subscription_activation_date": i["activation_date"],
+                "alexa_subscription_renew_date": i["renew_date"],
+                "alexa_auto_renew": ("NO", "SI")[i["renew"] == True]
+            }
+
+            for k, v in integration.items():
+                self.log("Setting %s with state: %s", k, v)
+                attributes = self.get_state(
+                    "input_text."+k, attribute="attributes")
+                self.set_state("input_text."+k, state=v,
+                               attributes=attributes)
+
+            self.call_service("homeassistant/save_persistent_states")
+
+            return integration

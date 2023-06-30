@@ -1,11 +1,15 @@
-import {marked} from "./marked.js";
+import { marked } from "./marked.js";
 
-console.info("%c DOCUMENTATION-CARD \n%c Version 1.9.3      ", "color: orange; font-weight: bold; background: black", "color: darkblue; font-weight: bold; background: white")
+console.info(
+  "%c DOCUMENTATION-CARD \n%c Version 0.1.0      ",
+  "color: orange; font-weight: bold; background: black",
+  "color: darkblue; font-weight: bold; background: white"
+);
 
-marked.setOptions({ headerIds: true, })
+marked.setOptions({ headerIds: true });
 const renderer = {
   heading(text, level) {
-    const escapedText = text.toLowerCase().replace(/[^\w]+/g, '-');
+    const escapedText = text.toLowerCase().replace(/[^\w]+/g, "-");
     return `
     <h${level}>
     <a id="${escapedText}" class="anchor" href="#${escapedText}">
@@ -13,21 +17,19 @@ const renderer = {
     </a>
     ${text}
     </h${level}>`;
-  }
+  },
 };
 marked.use({ renderer });
 
 class DocumentationCard extends HTMLElement {
-
   set hass(hass) {
-    if (this.content) return
+    if (this.content) return;
     if (!this.content) {
-      this.innerHTML =
-      `<style>${this.styles}</style>
+      this.innerHTML = `<style>${this.styles}</style>
       <ha-card>
         <div id="header">
           <div>
-            <ha-icon icon="mdi:help" style="width: 24px; padding:5px; color: white;"></ha-icon>
+            <ha-icon icon="mdi:book-outline" style="width: 24px; padding:5px; color: white;"></ha-icon>
             <label style="font-weight: bold; color: white; ">Documentazione</label>
           </div>
           <button id="button" onclick="window.history.back();">Indietro</button>
@@ -38,17 +40,16 @@ class DocumentationCard extends HTMLElement {
       </ha-card>`;
       this.content = this.querySelector("#doc");
     }
-    const filePath = "/local/"+this.config.filePath;
+    const filePath = "/local/" + this.config.filePath;
     let version = this.config.version;
     version = hass.states[version].state;
-    let [,section] = window.location.href.split("#");
+    let [, section] = window.location.href.split("#");
     if (!section) section = "";
     console.debug("File Path: ", filePath);
     console.debug("Version: ", version);
     console.debug("Section: ", section);
 
     this.readFile(filePath, this.setHtml, section);
-
   }
 
   setConfig(config) {
@@ -63,16 +64,18 @@ class DocumentationCard extends HTMLElement {
   }
 
   async readFile(path, cb, section) {
-    return await fetch(path).then(r => r.text()).then(t =>cb(t, section));
+    return await fetch(path)
+      .then((r) => r.text())
+      .then((t) => cb(t, section));
   }
 
   setHtml = (text, section) => {
     this.content.innerHTML = marked.parse(text);
     if (section) {
-      const element = this.content.querySelector("#"+section);
+      const element = this.content.querySelector("#" + section);
       element.scrollIntoView();
     }
-  }
+  };
 
   get styles() {
     return $style;
@@ -103,6 +106,6 @@ var $style = `
   font-weight: bold;
   font-size: medium;
 }
-`
+`;
 
-customElements.define('documentation-card', DocumentationCard);
+customElements.define("documentation-card", DocumentationCard);
