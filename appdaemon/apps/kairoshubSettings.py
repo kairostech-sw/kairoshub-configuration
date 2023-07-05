@@ -23,8 +23,8 @@ class KairoshubSettings(hass.Hass):
             "hub_zones": {},
             "rollers": {},
             "heating": {},
-            "light": {},
-            "scene": {}
+            # "light": {},
+            # "scene": {}
         }
         functionSettings = {}
 
@@ -48,15 +48,17 @@ class KairoshubSettings(hass.Hass):
             elif "heating" in entity:
                 domain = "heating"
             elif "light" in entity:
-                domain = "light"
+                # domain = "light"
+                continue
             elif "scene" in entity:
-                domain = "scene"
+                # domain = "scene"
+                continue
 
             userSettings[domain][entity.split(".")[1]] = self.get_state(entity)
 
         for entity in functionSettingsList:
             entityName = self.toCamelCase(entity)
-            functionSettings[entityName] = self.get_state(entity)
+            functionSettings[entityName] = self.get_state(entity) == "on"
 
         self.log("User settings: %s", userSettings, level="DEBUG")
         self.log("Functionalities: %s", functionSettings, level="DEBUG")
@@ -65,47 +67,38 @@ class KairoshubSettings(hass.Hass):
             "sensor.date_time_iso"), "%Y-%m-%dT%H:%M:%S")
 
         jsonData = {}
-        with open(file, "w") as f:
-            jsonData["userSettings"] = userSettings
-            jsonData["functionSettings"] = functionSettings
-            jsonData["lifetime"] = (
-                timestamp+timedelta(days=1)).strftime("%Y-%m-%dT%H:%M:%S")
-            json.dump(jsonData, f)
+        try:
+            self.log("Storing user settings on filesystem.", level="INFO")
+            jsonData = self.writeFileSettings(userSettings, functionSettings)
 
-        self.log("User settings stored on filesystem.", level="INFO")
-        jsonData.pop("lifetime", None)
-        eventData = {
-            "eventType": "SETTINGS_SYNC",
-            "sender": systemCode,
-            "systemCode": systemCode,
-            "message": "SETTINGS SYNC",
-            "technicalMessage": jsonData,
-            "timestamp": timestamp
-        }
+            eventData = {
+                "eventType": "SETTINGS_SYNC",
+                "sender": systemCode,
+                "systemCode": systemCode,
+                "message": "SETTINGS SYNC",
+                "technicalMessage": jsonData,
+                "timestamp": timestamp
+            }
 
-        self.log("Storing user settings on cloud", level="INFO")
-        self.fire_event("HAKAFKA_PRODUCER_PRODUCE",
-                        topic="TECHNICAL", message=eventData)
+            self.log("Storing user settings on cloud", level="INFO")
+            self.fire_event("HAKAFKA_PRODUCER_PRODUCE",
+                            topic="TECHNICAL", message=eventData)
+        except Exception as e:
+            self.log("Error on user setting filesystem store. Error: %s"+e)
 
     def restoreSettings(self, event_name, data, kwargs):
 
         userSettings = {}
         functionSettings = {}
-        systemCode = self.get_state("input_text.system_code")
 
         self.log("Retrieving user settings", level="INFO")
 
         try:
-            timestamp = self.get_state("sensor.date_time_iso")
-            with open(file) as f:
-                jsonData = json.load(f)
-                if "lifetime" not in jsonData or jsonData["lifetime"] < timestamp:
-                    self.log("User settings expired.", level="INFO")
-                    raise FileNotFoundError
-                userSettings = jsonData["userSettings"] if "userSettings" in jsonData else ""
-                functionSettings = jsonData["functionSettings"] if "functionSettings" in jsonData else ""
-                self.__updateSensors(userSettings, functionSettings)
-                self.log("User settings restored by filesystem", level="INFO")
+            jsonData = self.readFileSettings()
+            userSettings = jsonData["userSettings"] if "userSettings" in jsonData else ""
+            functionSettings = jsonData["functionSettings"] if "functionSettings" in jsonData else ""
+            self.__updateSensors(userSettings, functionSettings)
+            self.log("User settings restored by filesystem", level="INFO")
 
         except FileNotFoundError:
             self.log("User settings not found", level="WARNING")
@@ -134,16 +127,15 @@ class KairoshubSettings(hass.Hass):
 
     def pushSettings(self, event_name, data, kwargs):
 
-        self.log("Pushing settings to file. Settings provided: %s",
+        self.log("Pushing settings to file. data provided: %s",
                  data, level="INFO")
 
         jsonData = data["data"]["technicalMessage"]
         try:
-            with open(file, "w") as f:
-                json.dump(jsonData, f)
-                userSettings = jsonData["userSettings"] if "userSettings" in jsonData else ""
-                functionSettings = jsonData["functionSettings"] if "functionSettings" in jsonData else ""
-                self.__updateSensors(userSettings, functionSettings)
+            userSettings = jsonData["userSettings"] if "userSettings" in jsonData else ""
+            functionSettings = jsonData["functionSettings"] if "functionSettings" in jsonData else ""
+            self.writeFileSettings(userSettings, functionSettings)
+            self.__updateSensors(userSettings, functionSettings)
         except Exception:
             raise
 
@@ -152,18 +144,18 @@ class KairoshubSettings(hass.Hass):
     def fileCheck(self, event_name, data, kwargs):
         self.log("Checking file content. file: %s", file)
         try:
-            timestamp = self.get_state("sensor.date_time_iso")
-            with open(file) as f:
-                jsonData = json.load(f)
-                if jsonData["lifetime"] < timestamp:
-                    self.fire_event("AD_SETTINGS_RESTORE")
-                self.log("File settings content: %s", jsonData, level="INFO")
+            jsonData = self.readFileSettings()
+            self.log("File settings content: %s", jsonData, level="INFO")
 
         except FileNotFoundError:
-            self.log("File settings not found", level="WARNING")
+            self.log("File settings not found, requesting new one",
+                     level="WARNING")
+            self.fire_event("AD_SETTINGS_RESTORE")
 
     def __updateSensors(self, userSettings, functionSettings):
 
+        self.log(
+            "Updating user settings and function settings entities", level="INFO")
         for key in userSettings:
             for entity in userSettings[key]:
                 domain = self.getEntityDomain(entity)
@@ -224,3 +216,38 @@ class KairoshubSettings(hass.Hass):
     def toSnakeCase(self, text):
         return ''.join(['_'+i.lower() if i.isupper()
                         else i for i in text]).lstrip('_')
+
+    def writeFileSettings(self, userSettings, functionSettings):
+
+        currentTimestamp = datetime.strptime(self.get_state(
+            "sensor.date_time_iso"), "%Y-%m-%dT%H:%M:%S")
+        lifetime = (currentTimestamp+timedelta(days=1)
+                    ).strftime("%Y-%m-%dT%H:%M:%S")
+
+        self.log("Setting new setting faile lifetime to: %s", lifetime)
+
+        jsonData = {}
+        with open(file, "w") as f:
+            jsonData["userSettings"] = userSettings
+            jsonData["functionSettings"] = functionSettings
+            jsonData["lifetime"] = lifetime
+
+            json.dump(jsonData, f)
+
+        self.log("File settings store to fs %s", jsonData)
+        jsonData.pop("lifetime", None)
+        return jsonData
+
+    def readFileSettings(self):
+        self.log("Reading file settings")
+
+        currentTimestamp = self.get_state("sensor.date_time_iso")
+        with open(file) as f:
+            jsonData = json.load(f)
+            if "lifetime" not in jsonData or jsonData["lifetime"] < currentTimestamp:
+                self.log("File settings expired.", level="INFO")
+                raise FileNotFoundError
+            else:
+                self.log("Settings file content. %s", jsonData, level="INFO")
+                jsonData.pop("lifetime", None)
+            return jsonData
