@@ -9,6 +9,8 @@ class KairoshubSettings(hass.Hass):
     def initialize(self):
         self.listen_event(self.syncSettings, "AD_SETTINGS_SYNC")
         self.listen_event(self.restoreSettings, "AD_SETTINGS_RESTORE")
+        self.listen_event(self.forceCloudRestoreSettings,
+                          "AD_SETTINGS_RESTORE_FORCE")
         self.listen_event(self.pushSettings, "AD_SETTINGS_PUSH")
         self.listen_event(self.fileCheck, "AD_SETTINGS_FILE_CHECK")
         self.listen_event(self.__systemKeySync, "AD_SETTINGS_SYSTEM_KEY_SYNC")
@@ -109,18 +111,26 @@ class KairoshubSettings(hass.Hass):
             self.log("User settings not found", level="WARNING")
             self.log("Requesting user settings to cloud", level="INFO")
 
-            eventData = {
-                "eventType": "SETTINGS_RESTORE_REQ",
-                "sender": systemCode,
-                "systemCode": systemCode,
-                "message": "SETTINGS RESTORE REQUEST"
-            }
-
-            self.fire_event("HAKAFKA_PRODUCER_PRODUCE",
-                            topic="TECHNICAL", message=eventData)
+            self.forceCloudRestoreSettings(event_name, data, kwargs)
 
         except Exception:
             raise
+
+    def forceCloudRestoreSettings(self, event_name, data, kwargs):
+
+        systemCode = self.get_state("input_text.system_code")
+
+        self.log("Forcing cloud restore settings", level="WARNING")
+
+        eventData = {
+            "eventType": "SETTINGS_RESTORE_REQ",
+            "sender": systemCode,
+            "systemCode": systemCode,
+            "message": "SETTINGS RESTORE REQUEST"
+        }
+
+        self.fire_event("HAKAFKA_PRODUCER_PRODUCE",
+                        topic="TECHNICAL", message=eventData)
 
     def pushSettings(self, event_name, data, kwargs):
 
