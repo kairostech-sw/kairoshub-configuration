@@ -67,6 +67,7 @@ class KairoshubSettings(hass.Hass):
             "sensor.date_time_iso"), "%Y-%m-%dT%H:%M:%S")
 
         jsonData = {}
+
         try:
             self.log("Storing user settings on filesystem.", level="INFO")
             jsonData = self.writeFileSettings(userSettings, functionSettings)
@@ -136,6 +137,7 @@ class KairoshubSettings(hass.Hass):
             functionSettings = jsonData["functionSettings"] if "functionSettings" in jsonData else ""
             self.writeFileSettings(userSettings, functionSettings)
             self.__updateSensors(userSettings, functionSettings)
+
         except Exception:
             raise
 
@@ -166,7 +168,8 @@ class KairoshubSettings(hass.Hass):
 
         for entity in functionSettings:
             entityName = self.toSnakeCase(entity)
-            state = ("off", "on")[functionSettings[entity] == "true"]
+            state = ("off", "on")[
+                str(functionSettings[entity]).lower() == "true"]
             self.set_state("input_boolean."+entityName, state=state)
 
     def getEntityDomain(self, entity):
