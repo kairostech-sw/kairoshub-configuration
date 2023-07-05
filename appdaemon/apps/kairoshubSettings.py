@@ -137,7 +137,6 @@ class KairoshubSettings(hass.Hass):
             functionSettings = jsonData["functionSettings"] if "functionSettings" in jsonData else ""
             self.writeFileSettings(userSettings, functionSettings)
             self.__updateSensors(userSettings, functionSettings)
-
         except Exception:
             raise
 
