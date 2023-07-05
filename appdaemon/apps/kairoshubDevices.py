@@ -1,6 +1,5 @@
 import hassapi as hass
-import re
-import json
+import re, json
 import http.client
 from base64 import b64encode
 
