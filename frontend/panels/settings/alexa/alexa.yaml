@@ -3,7 +3,7 @@ cards:
   - type: conditional
     conditions:
       - entity: input_text.alexa_subscription_state
-        state: "DISATTIVA"
+        state_not: "ATTIVA"
     card: !include not_registered.yaml
   - type: conditional
     conditions:

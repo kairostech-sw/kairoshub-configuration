@@ -1780,7 +1780,7 @@ lights_expander_outdoor:
                     triggers_update:
                       - light.group_lz301
                     variables:
-                      navigation_path: "lights-nightzone-room1"
+                      navigation_path: "lights-outdoor-room1"
                       zone: 301
                       icon: "mdi:outdoor-lamp"
                 - type: conditional
@@ -1793,7 +1793,7 @@ lights_expander_outdoor:
                     triggers_update:
                       - light.group_lz302
                     variables:
-                      navigation_path: "lights-nightzone-room2"
+                      navigation_path: "lights-outdoor-room2"
                       zone: 302
                       icon: "mdi:outdoor-lamp"
                 - type: conditional
@@ -1806,7 +1806,7 @@ lights_expander_outdoor:
                     triggers_update:
                       - light.group_lz303
                     variables:
-                      navigation_path: "lights-nightzone-room3"
+                      navigation_path: "lights-outdoor-room3"
                       zone: 303
                       icon: "mdi:outdoor-lamp"
                 - type: conditional
@@ -1819,7 +1819,7 @@ lights_expander_outdoor:
                     triggers_update:
                       - light.group_lz304
                     variables:
-                      navigation_path: "lights-nightzone-room4"
+                      navigation_path: "lights-outdoor-room4"
                       zone: 304
                       icon: "mdi:outdoor-lamp"
 
