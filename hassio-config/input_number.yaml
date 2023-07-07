@@ -4,15 +4,30 @@ metrics_frequency:
   min: 1
   max: 24
   step: 1
-manual_heating_temp:
+
+temperature_tv100_manual:
   <<: &heating-temp
     min: 18
     max: 31
     step: 0.5
+    initial: 31
+    icon: mdi:thermometer
+    name: Temperatura Per Riscaldamento Manuale
+
+temperature_tv200_manual:
+  <<: *heating-temp
+  initial: 31
+  icon: mdi:thermometer
+  name: Temperatura Per Riscaldamento Manuale
+
+# TODO: remove
+manual_heating_temp:
+  <<: *heating-temp
   initial: 31
   mode: slider
   name: Temperatura Per Riscaldamento Manuale
   icon: mdi:thermometer
+
 temperature_period1:
   <<: *heating-temp
 temperature_period2:
@@ -93,16 +108,63 @@ temperature_zn202_period4:
   <<: *heating-temp
 temperature_zn203_period4:
   <<: *heating-temp
-rollershutter_athome_position:
+
+position_rs100_athome:
   <<: &rollers-slider
     min: 0
     max: 100
     step: 5
-    initial: 100
     mode: slider
-  name: Posizione In Casa
-  icon: mdi:window-shutter
+  <<: &scene-athome
+    initial: 100
+    name: Posizione Scenario In Casa
+    icon: "mdi:home-import-outline"
+
+position_rs200_athome:
+  <<: *rollers-slider
+  <<: *scene-athome
+
+position_rs100_notathome:
+  <<: *rollers-slider
+  <<: &scene-notathome
+    initial: 0
+    name: Posizione Scenario Fuori Casa
+    icon: "mdi:home-export-outline"
+
+position_rs200_notathome:
+  <<: *rollers-slider
+  <<: *scene-notathome
+
+position_rs100_day:
+  <<: *rollers-slider
+  <<: &scene-day
+    initial: 100
+    name: Posizione Scenario Giorno
+    icon: "mdi:weather-sunny"
+
+position_rs200_day:
+  <<: *rollers-slider
+  <<: *scene-day
+
+position_rs100_night:
+  <<: *rollers-slider
+  <<: &scene-night
+    initial: 0
+    name: Posizione Scenario Notte
+    icon: "mdi:weather-night"
+
+position_rs200_night:
+  <<: *rollers-slider
+  <<: *scene-night
+
+# TODO: remove
+rollershutter_athome_position:
+  <<: *rollers-slider
+  initial: 100
+  name: Posizione Scenario In Casa
+  icon: mdi:window-shutter-open
 rollershutter_notathome_position:
   <<: *rollers-slider
-  name: Posizione Fuori Casa
+  initial: 0
+  name: Posizione Scenario Fuori Casa
   icon: mdi:window-shutter-open

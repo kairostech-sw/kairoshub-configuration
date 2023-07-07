@@ -31,9 +31,11 @@ at_home:
 night:
   name: Notte
 calibrate_rollers:
-  name: Calibrazione Tapparelle
+  name: "Calibra Tapparelle"
+  icon: "mdi:cog-outline"
 calibrate_trvs:
-  name: Calibrazione Teste Termostatiche
+  name: "Calibra Teste Termostatiche"
+  icon: "mdi:cog-outline"
 heater_program1:
   name: Programma 1
 heater_program2:
