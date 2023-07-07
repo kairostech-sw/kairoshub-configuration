@@ -30,6 +30,12 @@ zn300_days:
 scene_day:
   <<: *noname-lights-mode
 
+scene_athome:
+  name: " "
+  options:
+    - Disattivo
+    - Automatico
+
 rs100_program1:
   <<: *noname-lights-mode
 rs200_program1:

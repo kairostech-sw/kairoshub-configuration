@@ -17,8 +17,6 @@ custom_fields:
           entities:
             - type: button
               entity: input_boolean.calibrate_rollers
-              name: "Calibra Tapparelle"
-              icon: "mdi:cog-outline"
               card_mod:
                 style:
                   .flex mwc-button:

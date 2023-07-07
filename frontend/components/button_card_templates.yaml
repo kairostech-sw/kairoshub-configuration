@@ -52,6 +52,13 @@ expander_template:
           min-height: 100px;
         }
 
+weekdays:
+  styles:
+    grid:
+      - grid-template-areas: '"days"'
+    card:
+      - box-shadow: none
+
 ####################
 ###### HEADER ######
 ####################
@@ -863,6 +870,7 @@ heating_program_content:
                 progId: "[[[return variables.progId]]]"
 
 heating_program_day:
+  entity: "[[[return `input_boolean.thermostat_monday_program${variables.progId}`]]]"
   color_type: card
   state:
     - value: "on"
@@ -880,11 +888,7 @@ heating_program_day:
       - width: 60px
 
 heating_week:
-  styles:
-    grid:
-      - grid-template-areas: '"days"'
-    card:
-      - box-shadow: none
+  template: weekdays
   custom_fields:
     days:
       card:
@@ -1954,22 +1958,227 @@ light_program:
 ###############
 
 scenes_program:
+  show_label: true
+  show_icon: true
   styles:
     grid:
-      - grid-template-areas: '"label select time"'
-      - grid-template-columns: 200px 200px 1fr
+      - grid-template-areas: '"i l . ." ". select days time"'
+      - grid-template-columns: 50px 205px 1fr
+      - grid-template-rows: 30px auto
+      - row-gap: 5px
     card:
       - height: auto
-      - width: 750px
       - padding: 0px
+    label:
+      - justify-self: start
+      - overflow: visible
+    icon:
+      - width: 100%
     custom_fields:
-      label:
-        - margin-top: 27px
       select:
-        - margin-left: 10px
-      time:
-        - margin-top: 10px
-        - margin-left: 60px
+        - margin-left: -40px
+        - margin-right: 25px
+      days:
+        - margin-right: 5px
+  custom_fields:
+    select:
+      card:
+        type: horizontal-stack
+        cards:
+          - type: "custom:button-card"
+            template: scenes_ctrl
+            icon: "mdi:chevron-left"
+            variables:
+              service: "select_previous"
+              scene: "[[[return variables.scene]]]"
+          - type: "custom:button-card"
+            entity: "[[[return `input_select.scene_${variables.scene}`]]]"
+            show_state: true
+            tap_action:
+              action: none
+            styles:
+              card:
+                - width: 120px
+            state:
+              - value: "Disattivo"
+                color: "#F32000"
+                icon: mdi:close-circle-outline
+              - value: "Programmato"
+                color: "#009213"
+                icon: mdi:alarm
+              - value: "Automatico"
+                color: "#FFB600"
+                icon: mdi:weather-sunny
+          - type: "custom:button-card"
+            template: scenes_ctrl
+            icon: "mdi:chevron-right"
+            variables:
+              service: "select_next"
+              scene: "[[[return variables.scene]]]"
+
+scene_daynight:
+  template: expander_template
+  custom_fields:
+    expander:
+      card:
+        <<: *expander-card-style
+        title-card:
+          type: "custom:button-card"
+          template: scenes_program
+          layout: icon_label
+          icon: "mdi:theme-light-dark"
+          size: 100%
+          label: "Scenario Giorno / Notte"
+          variables:
+            scene: "day"
+          custom_fields:
+            days:
+              card:
+                type: "custom:button-card"
+                template: scenes_days
+                variables:
+                  scene: "day"
+            time:
+              card:
+                type: horizontal-stack
+                cards:
+                  - type: "custom:time-picker-card"
+                    entity: input_datetime.scene_day_on
+                    <<: &time-picker-conf
+                      minute_step: 15
+                      layout:
+                        embedded: true
+                        align_controls: right
+                      card_mod:
+                        style:
+                          .: |
+                            :host {
+                            {% if not is_state('input_select.scene_day', 'Programmato') %}
+                              pointer-events: none;
+                            {% endif %}
+                            }
+                            state-badge {
+                              display: none;
+                            }
+                            .time-picker-row.embedded {
+                              flex-direction: column;
+                            }
+                          time-unit:
+                            $: |
+                              .time-input {
+                                {% if not is_state('input_select.scene_day', 'Programmato') %}
+                                  pointer-events: none;
+                                  background-color: var(--disabled-text-color) !important;
+                                {% endif %}
+                              }
+                  - type: "custom:time-picker-card"
+                    entity: input_datetime.scene_day_off
+                    <<: *time-picker-conf
+        cards:
+          - <<: *divider-2px
+          - type: grid
+            columns: 2
+            square: false
+            cards:
+              - type: entities
+                entities:
+                  - entity: input_boolean.rollers_scene_day
+              - type: entities
+                entities:
+                  - entity: input_boolean.lights_scene_day
+
+scene_athome:
+  template: expander_template
+  custom_fields:
+    expander:
+      card:
+        <<: *expander-card-style
+        title-card:
+          type: "custom:button-card"
+          template: scenes_program
+          layout: icon_label
+          icon: "mdi:theme-light-dark"
+          size: 100%
+          label: "Scenario In Casa / Fuori Casa"
+          variables:
+            scene: "athome"
+        cards:
+          - <<: *divider-2px
+          - type: grid
+            columns: 2
+            square: false
+            cards:
+              - type: entities
+                entities:
+                  - entity: input_boolean.rollers_scene_athome
+              - type: entities
+                entities:
+                  - entity: input_boolean.lights_scene_athome
+
+scenes_days:
+  template: weekdays
+  custom_fields:
+    days:
+      card:
+        type: vertical-stack
+        cards:
+          - type: "custom:button-card"
+            template: no_background
+            name: "Giorni"
+            styles:
+              card:
+                - padding-top: 0px
+              name:
+                - margin: 0px auto
+                - font-size: large
+          - type: grid
+            columns: 3
+            square: false
+            cards:
+              - type: custom:button-card
+                template: heating_program_day
+                entity: "[[[return `input_boolean.scene_monday_${variables.scene}`]]]"
+              - type: custom:button-card
+                template: heating_program_day
+                entity: "[[[return `input_boolean.scene_tuesday_${variables.scene}`]]]"
+              - type: custom:button-card
+                template: heating_program_day
+                entity: "[[[return `input_boolean.scene_wednesday_${variables.scene}`]]]"
+              - type: custom:button-card
+                template: heating_program_day
+                entity: "[[[return `input_boolean.scene_thursday_${variables.scene}`]]]"
+              - type: custom:button-card
+                template: heating_program_day
+                entity: "[[[return `input_boolean.scene_friday_${variables.scene}`]]]"
+              - type: custom:button-card
+                template: heating_program_day
+                entity: "[[[return `input_boolean.scene_saturday_${variables.scene}`]]]"
+              - type: custom:button-card
+                template: heating_program_day
+                entity: "[[[return `input_boolean.scene_sunday_${variables.scene}`]]]"
+              - type: "custom:button-card"
+                template: heating_program_label
+                entity: "[[[return `group.scene_${variables.scene}_days`]]]"
+                layout: icon_name
+                size: 100%
+                show_label: false
+                show_name: true
+                styles:
+                  card:
+                    - height: 30px
+                    - width: 60px
+
+scenes_ctrl:
+  tap_action:
+    action: call-service
+    service: "[[[return `input_select.${variables.service}`]]]"
+    service_data:
+      entity_id: "[[[ return `input_select.scene_${variables.scene}`; ]]]"
+  size: 100%
+  styles:
+    card:
+      - padding: 0px
+      - margin-top: 20px
 
 ################
 # IMPOSTAZIONI #

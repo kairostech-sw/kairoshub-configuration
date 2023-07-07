@@ -279,3 +279,34 @@ rollers_program1:
   name: Programma 1 Tapparelle
 rollers_program1_on:
   name: Programma 1 Tapparelle Attivo
+
+rollers_scene_day:
+  <<: &rollers-scene
+    icon: "mdi:window-shutter"
+    name: "Tapparelle"
+
+lights_scene_day:
+  <<: &lights-scene
+    icon: "mdi:lightbulb"
+    name: "Luci"
+
+rollers_scene_athome:
+  <<: *rollers-scene
+
+lights_scene_athome:
+  <<: *lights-scene
+
+scene_monday_day:
+  name: LUN
+scene_tuesday_day:
+  name: MAR
+scene_wednesday_day:
+  name: MER
+scene_thursday_day:
+  name: GIO
+scene_friday_day:
+  name: VEN
+scene_saturday_day:
+  name: SAB
+scene_sunday_day:
+  name: DOM
