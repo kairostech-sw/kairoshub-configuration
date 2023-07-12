@@ -1,6 +1,8 @@
 import hassapi as hass
+import json
 
 class KairoshubScenes(hass.Hass):
+
 
     def initialize(self):
       self.listen_event(self.manageScene,"AD_SCENES_DAY_NIGHT")
@@ -9,7 +11,7 @@ class KairoshubScenes(hass.Hass):
 
       eventData = {
         "action": "off",
-        "roller": "ATHOME",
+        "roller": "day",
         "ncode": "SCENE_DAY",
         "sender": self.getKey(data, "sender"),
         "severity": "NOTICE",
@@ -27,30 +29,30 @@ class KairoshubScenes(hass.Hass):
       if state in ["on", "night"]:
         eventData["ncode"] = "SCENE_NIGHT"
         eventData["action"] = "on"
-        eventData["roller"] = "NOTATHOME"
+        eventData["roller"] = "night"
 
       self.manageDayNightScene(eventData)
 
     def manageDayNightScene(self, data: dict) -> None:
       self.log("Managing Day/Night Scene", level="INFO")
-      self.fire_event(f"AD_AUTOMATIC_LIGHTS", action=data["action"])
 
-      lights = self.get_state("group.lights", attribute="entity_id")
-      zones = []
-      for light in lights:
-        zoneId = light[-3:]
-        if self.get_state(f"input_select.zn{zoneId}") == "Automatico":
-          zones.append(zoneId)
+      if self.isIntegrationActive("lights", "day"):
+        self.fire_event(f"AD_AUTOMATIC_LIGHTS", action=data["action"], scene="day")
+        data["kwargs"]["zones"] = ""
 
-      rollers = self.get_state(f"input_number.rollershutter_{data['roller'].lower()}_position")
-      position = int(float(rollers))
-      self.fire_event("AD_AUTOMATIC_ROLLERS", position=position)
+      if self.isIntegrationActive("rollers", "day"):
+        dayzone = self.get_state(f"input_number.position_rs100_{data['roller']}")
+        nightzone = self.get_state(f"input_number.position_rs200_{data['roller']}")
+        self.log(f"\n\tnightzone pos: {nightzone}\n\tdayzone pos: {dayzone}")
+        self.fire_event("AD_AUTOMATIC_ROLLERS", dayzone=dayzone, nightzone=nightzone)
+        data["kwargs"]["rollers"] = {"nightzone": nightzone, "dayzone": dayzone}
 
-
-      data["kwargs"]["rollers"] = rollers
-      data["kwargs"]["zones"] = zones
-
+      self.toggle("input_boolean.scene_day_active")
       self.fire_event("AD_KAIROSHUB_NOTIFICATION", **data)
+
+    def isIntegrationActive(self, integration: str, scene: str) -> bool:
+      entity = f"input_boolean.{integration}_scene_{scene}"
+      return self.get_state(entity) == "on"
 
     def getKey(self, data: dict, key: str) -> str:
         if "data" in data:

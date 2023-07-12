@@ -212,3 +212,96 @@
     - service: input_boolean.turn_off
       target:
         entity_id: input_boolean.light_program1
+
+- alias: LIGHT MANUAL CHANGE
+  trigger:
+    - platform: state
+      entity_id:
+        - light.group_lz100
+        - light.group_lz200
+        - light.group_lz300
+  condition:
+    - condition: template
+      value_template: >
+        {{ trigger.from_state.attributes != trigger.to_state.attributes}}
+    - condition: state
+      entity_id:
+        - input_boolean.scene_day_active
+        - input_boolean.scene_athome_active
+      state: "off"
+  action:
+    - event: "AD_MANUAL_LIGHT_CHANGE"
+
+- alias: LIGHT SCENE CHANGE
+  trigger:
+    - platform: state
+      entity_id:
+        - input_text.lcz100_day
+        - input_text.lcz101_day
+        - input_text.lcz102_day
+        - input_text.lcz103_day
+        - input_text.lcz104_day
+        - input_text.lcz200_day
+        - input_text.lcz201_day
+        - input_text.lcz202_day
+        - input_text.lcz203_day
+        - input_text.lcz300_day
+        - input_text.lcz301_day
+        - input_text.lcz302_day
+        - input_text.lcz303_day
+        - input_text.lcz304_day
+        - input_text.lwz100_day
+        - input_text.lwz101_day
+        - input_text.lwz102_day
+        - input_text.lwz103_day
+        - input_text.lwz104_day
+        - input_text.lwz200_day
+        - input_text.lwz201_day
+        - input_text.lwz202_day
+        - input_text.lwz203_day
+        - input_text.lwz300_day
+        - input_text.lwz301_day
+        - input_text.lwz302_day
+        - input_text.lwz303_day
+        - input_text.lwz304_day
+      id: "day"
+    - platform: state
+      entity_id:
+        - input_text.lcz100_athome
+        - input_text.lcz101_athome
+        - input_text.lcz102_athome
+        - input_text.lcz103_athome
+        - input_text.lcz104_athome
+        - input_text.lcz200_athome
+        - input_text.lcz201_athome
+        - input_text.lcz202_athome
+        - input_text.lcz203_athome
+        - input_text.lcz300_athome
+        - input_text.lcz301_athome
+        - input_text.lcz302_athome
+        - input_text.lcz303_athome
+        - input_text.lcz304_athome
+        - input_text.lwz100_athome
+        - input_text.lwz101_athome
+        - input_text.lwz102_athome
+        - input_text.lwz103_athome
+        - input_text.lwz104_athome
+        - input_text.lwz200_athome
+        - input_text.lwz201_athome
+        - input_text.lwz202_athome
+        - input_text.lwz203_athome
+        - input_text.lwz300_athome
+        - input_text.lwz301_athome
+        - input_text.lwz302_athome
+        - input_text.lwz303_athome
+        - input_text.lwz304_athome
+      id: "athome"
+  condition:
+    - condition: template
+      value_template: >
+        {{ trigger.from_state.attributes != trigger.to_state.attributes}}
+  action:
+    - event: "AD_SCENE_CHANGE"
+      event_data:
+        scene: "{{trigger.id}}"
+        entity: "{{trigger.entity_id}}"

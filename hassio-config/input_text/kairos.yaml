@@ -1,0 +1,8 @@
+system_code:
+  name: Identificativo Sistema
+system_name:
+  name: Casa
+system_key:
+  name: Chiave Impianto
+notify:
+  name: "Logbook card"

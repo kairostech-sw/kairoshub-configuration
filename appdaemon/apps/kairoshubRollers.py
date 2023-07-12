@@ -124,12 +124,10 @@ class KairoshubRollers(hass.Hass):
             self.log("The program is not active right now")
 
     def rollersSceneAutomation(self, event_name: str, data: dict, kwargs: dict):
-      position = data["position"]
-      rollers = self.get_state("group.rollershutters", attribute="entity_id")
-      for zone in rollers:
-        zoneSetting = self.get_state(f"input_select.rs{zone[-3:]}_program1")
-        if zoneSetting == "Automatico":
-            self.call_service("cover/set_cover_position", entity_id=zone, position=position)
+      dayzone = int(float(self.getKey(data, "dayzone")))
+      nightzone = int(float(self.getKey(data, "nightzone")))
+      self.call_service("cover/set_cover_position", entity_id="group.rs100", position=nightzone)
+      self.call_service("cover/set_cover_position", entity_id="group.rs200", position=dayzone)
 
     def getKey(self, data: dict, key: str) -> str:
       if "data" in data:

@@ -310,3 +310,8 @@ scene_saturday_day:
   name: SAB
 scene_sunday_day:
   name: DOM
+
+scene_day_active:
+  name: " "
+scene_athome_active:
+  name: " "

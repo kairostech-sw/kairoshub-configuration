@@ -7,4 +7,5 @@ class AsyncMQTTHelper(mqtt.Mqtt):
 
     def publishOnTopic(self, event_name, data, kwargs):
         self.log("event name: %s data: %s", event_name, data)
-        self.mqtt_publish(data['topic'], data['payload'])
+        retain = "retain" in data and data["retain"]
+        self.mqtt_publish(data['topic'], data['payload'], retain=retain)

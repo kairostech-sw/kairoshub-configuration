@@ -1,0 +1,9 @@
+#Alexa Integration
+alexa_subscription_state:
+  name: Stato Sottoiscrizione
+alexa_subscription_activation_date:
+  name: Data Attivazione
+alexa_subscription_renew_date:
+  name: Data Rinnovo
+alexa_auto_renew:
+  name: Rinnovo Automatico
