@@ -391,8 +391,10 @@ clima_detail:
         var zoneTemperature = states[`sensor.tz${variables.zoneId}`].state;
         var tempColor = 'var(--temperature-secondary-color)';
         var targetTempColor = 'var(--temperature-tertiary-color)';
-        var comfortTemp = states['input_number.manual_heating_temp'].state;
+        var zoneID = variables.zoneId + "";
+        var comfortTemp = states[`input_number.temperature_tv${zoneID[0]}00_manual`].state;
         var programTemp = `input_number.temperature_zn${variables.zoneId}_period`;
+
         for (var i=1; i<5; i++) {
           if (states[`input_boolean.heater_program${i}_on`].state === "on") {
             comfortTemp = states[programTemp+i].state;
