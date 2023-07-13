@@ -67,7 +67,7 @@ class KairoshubSettings(hass.Hass):
             "sensor.date_time_iso"), "%Y-%m-%dT%H:%M:%S")
 
         jsonData = {}
-        
+
         try:
             self.log("Storing user settings on filesystem.", level="INFO")
             jsonData = self.writeFileSettings(userSettings, functionSettings)
@@ -104,7 +104,7 @@ class KairoshubSettings(hass.Hass):
         except FileNotFoundError:
             self.log("User settings not found", level="WARNING")
             self.log("Requesting user settings to cloud", level="INFO")
-            
+
             self.forceCloudRestoreSettings(event_name, data, kwargs)
 
         except Exception:
@@ -128,7 +128,8 @@ class KairoshubSettings(hass.Hass):
 
     def pushSettings(self, event_name, data, kwargs):
 
-        self.log("Pushing settings to file. data provided: %s", data, level="INFO")
+        self.log("Pushing settings to file. data provided: %s",
+                 data, level="INFO")
 
         jsonData = data["data"]["technicalMessage"]
         try:
@@ -136,7 +137,6 @@ class KairoshubSettings(hass.Hass):
             functionSettings = jsonData["functionSettings"] if "functionSettings" in jsonData else ""
             self.writeFileSettings(userSettings, functionSettings)
             self.__updateSensors(userSettings, functionSettings)
-
         except Exception:
             raise
 
@@ -167,7 +167,8 @@ class KairoshubSettings(hass.Hass):
 
         for entity in functionSettings:
             entityName = self.toSnakeCase(entity)
-            state = ("off", "on")[functionSettings[entity] == "true"]
+            state = ("off", "on")[
+                str(functionSettings[entity]).lower() == "true"]
             self.set_state("input_boolean."+entityName, state=state)
 
     def getEntityDomain(self, entity):
@@ -217,7 +218,7 @@ class KairoshubSettings(hass.Hass):
     def toSnakeCase(self, text):
         return ''.join(['_'+i.lower() if i.isupper()
                         else i for i in text]).lstrip('_')
-      
+
     def writeFileSettings(self, userSettings, functionSettings):
 
         currentTimestamp = datetime.strptime(self.get_state(
@@ -252,4 +253,3 @@ class KairoshubSettings(hass.Hass):
                 self.log("Settings file content. %s", jsonData, level="INFO")
                 jsonData.pop("lifetime", None)
             return jsonData
-
