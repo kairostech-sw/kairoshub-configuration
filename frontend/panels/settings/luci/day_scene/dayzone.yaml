@@ -1,0 +1,53 @@
+type: "custom:button-card"
+template: lights_ctrl
+variables:
+  zone: "200"
+  scene: "Scenario Giorno Notte"
+custom_fields:
+  content:
+    card:
+      type: horizontal-stack
+      cards:
+        - type: conditional
+          conditions:
+            - entity: binary_sensor.lcz200_state
+              state_not: "off"
+          card:
+            type: "custom:light-entity-card"
+            entity: input_text.lcz200_day
+            header: '[[[ return "Luci "+ states["input_text.zn200"].state; ]]]'
+            persist_features: true
+            show_slider_percent: true
+            card_mod:
+              style: |
+                ha-color-picker {
+                  max-width: 230px !important;
+                  margin-top: 5px;
+                }
+        - type: conditional
+          conditions:
+            - entity: binary_sensor.lcz200_state
+              state: "off"
+            - entity: binary_sensor.lwz200_state
+              state_not: "off"
+          card:
+            type: "custom:light-entity-card"
+            entity: input_text.lwz200_day
+            header: '[[[ return "Luci "+ states["input_text.zn200"].state;]]]'
+            persist_features: true
+            show_slider_percent: true
+        - type: conditional
+          conditions:
+            - entity: binary_sensor.lcz200_state
+              state: "off"
+            - entity: binary_sensor.lwz200_state
+              state: "off"
+            - entity: binary_sensor.lz200_state
+              state_not: "off"
+          card:
+            type: "custom:light-entity-card"
+            entity: light.group_lz200
+            header: '[[[ return "Luci "+ states["input_text.zn200"].state;]]]'
+            consolidate_entities: true
+            persist_features: true
+            show_slider_percent: true

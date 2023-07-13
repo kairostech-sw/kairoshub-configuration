@@ -39,6 +39,98 @@ grid_style:
       - padding-top: 15px
       - "--mdc-ripple-press-opacity": 0
 
+program_layout:
+  card_mod:
+    style: |
+      #content::-webkit-scrollbar {
+        display: none !important;
+      }
+  styles:
+    card:
+      - background: none
+      - padding-top: 15px
+      - padding-bottom: 0px
+    grid:
+      - grid-template-areas: |
+          "header"
+          "content"
+          "commandbar"
+      - grid-template-columns: 1fr
+      - grid-auto-rows: auto
+      - row-gap: 3px
+      - column-gap: 10px
+      - margin-left: 10px
+      - margin-right: 10px
+    custom_fields:
+      header:
+        - margin-bottom: 2px
+        - margin-left: -10px
+        - height: 46px
+      content:
+        - height: 300px
+        - margin-top: 5px
+        - overflow: auto
+
+program_content:
+  styles:
+    card:
+      - background: none
+      - padding-top: 15px
+      - padding-bottom: 0px
+    grid:
+      - grid-template-areas: |
+          "program"
+          "content"
+      - grid-template-columns: 1fr
+      - row-gap: 10px
+
+program_schedule:
+  styles:
+    card:
+      - padding: 0%
+    grid:
+      - grid-template-areas: '"days time"'
+      - grid-template-columns: 1fr 1fr
+      - height: 170px
+    custom_fields:
+      days:
+        - display: flex
+        - justify-content: space-evenly
+        - box-shadow: none
+        - margin-bottom: 32px
+      time:
+        - box-shadow: none
+        - padding: 10px
+
+program_ctrl:
+  styles:
+    grid:
+      - grid-template-areas: '"label temp"'
+      - background: none
+    card:
+      - box-shadow: none
+      - background: var(--primary-background-color)
+    custom_fields:
+      temp:
+        - width: 160px
+
+time_picker:
+  styles:
+    grid:
+      - grid-template-areas: '"time"'
+    card:
+      - box-shadow: none
+
+icon_ctrl_style:
+  styles:
+    card:
+      - align-self: center
+      - background: none
+      - box-shadow: none
+      - padding-top: 4px
+    icon:
+      - color: var(--temperature-secondary-color)
+
 expander_template:
   styles:
     grid:
@@ -703,16 +795,9 @@ temperature_ctrl_plus:
       entity_id: "[[[ return variables.entity; ]]]"
 
 temperature_ctrl_minus:
+  template: icon_ctrl_style
   icon: "mdi:thermometer-minus"
   size: 30%
-  styles:
-    card:
-      - align-self: center
-      - background: none
-      - box-shadow: none
-      - padding-top: 4px
-    icon:
-      - color: var(--temperature-secondary-color)
   tap_action:
     action: call-service
     service: input_number.decrement
@@ -720,22 +805,7 @@ temperature_ctrl_minus:
       entity_id: "[[[ return variables.entity; ]]]"
 
 heating_program_schedule:
-  styles:
-    card:
-      - padding: 0%
-    grid:
-      - grid-template-areas: '"days time"'
-      - grid-template-columns: 1fr 1fr
-      - height: 170px
-    custom_fields:
-      days:
-        - display: flex
-        - justify-content: space-evenly
-        - box-shadow: none
-        - margin-bottom: 32px
-      time:
-        - box-shadow: none
-        - padding: 10px
+  template: program_schedule
   custom_fields:
     days:
       card:
@@ -764,37 +834,9 @@ heating_program_label:
       - box-shadow: none
 
 heating_program_layout:
-  template: grid_style
-  card_mod:
-    style: |
-      #content::-webkit-scrollbar {
-        display: none !important;
-      }
-  styles:
-    card:
-      - background: none
-      - padding-top: 15px
-      - padding-bottom: 0px
-    grid:
-      - grid-template-areas: |
-          "header"
-          "content"
-          "commandbar"
-      - grid-template-columns: 1fr
-      - grid-auto-rows: auto
-      - row-gap: 3px
-      - column-gap: 10px
-      - margin-left: 10px
-      - margin-right: 10px
-    custom_fields:
-      header:
-        - margin-bottom: 2px
-        - margin-left: -10px
-        - height: 46px
-      content:
-        - height: 300px
-        - margin-top: 5px
-        - overflow: auto
+  template:
+    - grid_style
+    - program_layout
   custom_fields:
     header:
       card:
@@ -827,18 +869,9 @@ heating_program_layout:
             - padding: 0px
 
 heating_program_content:
-  template: grid_style
-  styles:
-    card:
-      - background: none
-      - padding-top: 15px
-      - padding-bottom: 0px
-    grid:
-      - grid-template-areas: |
-          "program"
-          "content"
-      - grid-template-columns: 1fr
-      - row-gap: 10px
+  template:
+    - grid_style
+    - program_content
   custom_fields:
     program:
       card:
@@ -949,11 +982,7 @@ heating_week:
                     - width: 60px
 
 heating_time_picker:
-  styles:
-    grid:
-      - grid-template-areas: '"time"'
-    card:
-      - box-shadow: none
+  template: time_picker
   custom_fields:
     time:
       card:
@@ -1203,16 +1232,7 @@ heating_program_expander_zone:
               entity: "[[[return `input_number.temperature_${variables.zone}_period${variables.progId}`]]]"
 
 heating_program_expander_room:
-  styles:
-    grid:
-      - grid-template-areas: '"label temp"'
-      - background: none
-    card:
-      - box-shadow: none
-      - background: var(--primary-background-color)
-    custom_fields:
-      temp:
-        - width: 160px
+  template: program_ctrl
   custom_fields:
     label:
       card:
@@ -1567,7 +1587,10 @@ lights_detail:
         template:
           - no_background
           - lights_label
-        entity: "[[[return `light.group_lz${variables.zone}`]]]"
+        entity: >
+          [[[
+            return `light.group_lz${variables.zone}`
+          ]]]
         name: "[[[return states[`input_text.zn${variables.zone}`].state;]]]"
         styles:
           card:
@@ -1597,6 +1620,7 @@ lights_detail:
             entity_id: entity
     lastupdate: >
       [[[
+        if (!variables.zone) return `</>`;
         var datetime =  states[`light.group_lz${variables.zone}`].last_changed.split("T");
         datetime = new Date(datetime).toLocaleString().replace(","," ");
         var lastupdate = datetime.substring(0,datetime.length-3);
@@ -1881,14 +1905,19 @@ lights_ctrl:
       card:
         type: "custom:button-card"
         template: header_page_text
-        icon: "mdi:lightbulb"
-        name: "LUCI"
+        icon: "[[[return variables.scene ? 'mdi:cog' : 'mdi:lightbulb']]]"
+        name: "[[[return variables.scene ? 'IMPOSTAZIONI' : 'LUCI']]]"
         label: >
           [[[
+            var location = "Luci"
             var zone = variables.zone.replace(/.$/,"0")
             var zonename = states[`input_text.zn${zone}`].state
             var room = states[`input_text.zn${variables.zone}`].state;
-            return `Luci / ${zonename} / ${room}`;
+            if (variables.scene) {
+              room = variables.scene;
+              location = `Impostazioni / ${location}`;
+            }
+            return `${location} / ${zonename} / ${room}`;
           ]]]
     commandbar:
       card:
@@ -1925,12 +1954,166 @@ lights_ctrl:
                       - box-shadow: none
                       - width: 200px
                       - left: -474px
+                      - display: "[[[ if (variables.hideCopyBtn) return 'none';]]]"
                   style: |
                     :host {
                       align-self: center;
                     }
                 - type: "custom:button-card"
                   template: button_go_back
+
+light_program_ctrl:
+  template: lights_ctrl
+  custom_fields:
+    header:
+      card:
+        type: "custom:button-card"
+        template: header_page_text
+        entity: "[[[return `input_boolean.lights_program${variables.progId}`]]]"
+        icon: "mdi:calendar-remove"
+        state:
+          - value: "on"
+            icon: "mdi:calendar-check"
+            styles:
+              icon:
+                - color: var(--command-state-active-color)
+        name: "[[[return `PROGRAMMA ${variables.progId}`]]]"
+        label: >
+          [[[
+            var zoneName = states[`input_text.zn${variables.zone}`].state
+            return `Luci / Programma ${variables.progId} / ${zoneName}`;
+          ]]]
+
+light_program_layout:
+  template:
+    - grid_style
+    - program_layout
+  custom_fields:
+    header:
+      card:
+        type: "custom:button-card"
+        entity: "[[[return `input_boolean.lights_program${variables.progId}`]]]"
+        template: header_page_text
+        icon: "mdi:calendar-remove"
+        state:
+          - value: "on"
+            icon: "mdi:calendar-check"
+            styles:
+              icon:
+                - color: var(--command-state-active-color)
+        name: "[[[return `PROGRAMMA ${variables.progId}`]]]"
+        label: "[[[return `Luci / Programma ${variables.progId}`]]]"
+    commandbar:
+      card:
+        type: "custom:button-card"
+        template: light_command_bar
+        variables:
+          progId: "[[[return variables.progId]]]"
+    content:
+      card:
+        type: "custom:button-card"
+        template: light_program_content
+        variables:
+          progId: "[[[return variables.progId]]]"
+        styles:
+          card:
+            - padding: 0px
+
+light_program_content:
+  template:
+    - grid_style
+    - program_content
+  custom_fields:
+    program:
+      card:
+        type: "custom:button-card"
+        template: lights_program_schedule
+        variables:
+          progId: "[[[return variables.progId]]]"
+    content:
+      card:
+        type: vertical-stack
+        cards:
+          - type: conditional
+            conditions:
+              - entity: binary_sensor.lz100_state
+                state_not: "off"
+            card:
+              type: "custom:button-card"
+              template: lights_program_ctrl
+              variables:
+                progId: "[[[return variables.progId]]]"
+                zone: "zn100"
+                navigation_path: >
+                  [[[
+                    return `lights-nightzone-program${variables.progId}`;
+                  ]]]
+          - type: conditional
+            conditions:
+              - entity: binary_sensor.lz200_state
+                state_not: "off"
+            card:
+              type: "custom:button-card"
+              template: lights_program_ctrl
+              variables:
+                progId: "[[[return variables.progId]]]"
+                zone: "zn200"
+                navigation_path: >
+                  [[[
+                    return `lights-dayzone-program${variables.progId}`;
+                  ]]]
+          - type: conditional
+            conditions:
+              - entity: binary_sensor.lz300_state
+                state_not: "off"
+            card:
+              type: "custom:button-card"
+              template: lights_program_ctrl
+              variables:
+                progId: "[[[return variables.progId]]]"
+                zone: "zn300"
+                navigation_path: >
+                  [[[
+                    return `lights-dayzone-program${variables.progId}`;
+                  ]]]
+
+light_command_bar:
+  template: command_bar
+  card_mod:
+    style: |
+      ha-card.button-card-main {
+        padding: 0px !important
+      }
+  styles:
+    grid:
+      - grid-template-areas: '"program back"'
+      - grid-template-columns: 1fr 1fr
+      - display: flex
+      - justify-content: space-between
+    card:
+      - margin-left: -10px
+      - height: 63px
+  custom_fields:
+    program:
+      card:
+        type: "custom:button-card"
+        template: icon_state_header
+        entity: "[[[return `input_boolean.lights_program${variables.progId}`]]]"
+        icon: mdi:power
+        state:
+          - value: "on"
+            label: "Acceso"
+            color: var(--command-state-active-color)
+          - value: "off"
+            label: "Spento"
+            color: var(--command-state-color)
+        styles:
+          card:
+            - margin-left: 10px
+    back:
+      card:
+        type: "custom:button-card"
+        template: button_go_back
 
 light_program:
   styles:
@@ -1952,6 +2135,174 @@ light_program:
       time:
         - margin-top: 10px
         - margin-left: 30px
+
+lights_program_schedule:
+  template: program_schedule
+  custom_fields:
+    days:
+      card:
+        type: "custom:button-card"
+        template: light_week
+        variables:
+          progId: "[[[return variables.progId;]]]"
+    time:
+      card:
+        type: "custom:button-card"
+        template: light_time_picker
+        variables:
+          progId: "[[[return variables.progId;]]]"
+
+light_time_picker:
+  custom_fields:
+    time:
+      card:
+        type: horizontal-stack
+        cards:
+          - entity: "[[[return `input_datetime.lights_on_program${variables.progId}`]]]"
+            <<: *timepicker_style
+          - entity: "[[[return `input_datetime.lights_off_program${variables.progId}`]]]"
+            <<: *timepicker_style
+
+lights_program_ctrl:
+  template: program_ctrl
+  styles:
+    card:
+      - background: var(--secondary-background-color)
+    grid:
+      - display: flex
+      - justify-content: space-between
+  custom_fields:
+    label:
+      card:
+        type: "custom:button-card"
+        template: heating_program_label
+        size: 50%
+        entity: "[[[return `group.lights_${variables.zone}_program${variables.progId}`]]]"
+        name: "[[[return states[`input_text.${variables.zone}`].state;]]]"
+    temp:
+      card:
+        type: "custom:button-card"
+        template: icon_ctrl_style
+        icon: "mdi:palette-outline"
+        size: 20%
+        tap_action:
+          action: navigate
+          navigation_path: >
+            [[[
+              return `/lovelace-kairoshub/${variables.navigation_path}`;
+            ]]]
+
+light_week:
+  template: weekdays
+  custom_fields:
+    days:
+      card:
+        type: vertical-stack
+        cards:
+          - type: "custom:button-card"
+            template: no_background
+            name: "Giorni"
+            styles:
+              card:
+                - padding-top: 0px
+              name:
+                - margin: 0px auto
+                - font-size: large
+          - type: grid
+            columns: 4
+            square: false
+            cards:
+              - type: custom:button-card
+                template: heating_program_day
+                entity: "[[[return `input_boolean.lights_monday_program${variables.progId}`]]]"
+              - type: custom:button-card
+                template: heating_program_day
+                entity: "[[[return `input_boolean.lights_tuesday_program${variables.progId}`]]]"
+              - type: custom:button-card
+                template: heating_program_day
+                entity: "[[[return `input_boolean.lights_wednesday_program${variables.progId}`]]]"
+              - type: custom:button-card
+                template: heating_program_day
+                entity: "[[[return `input_boolean.lights_thursday_program${variables.progId}`]]]"
+              - type: custom:button-card
+                template: heating_program_day
+                entity: "[[[return `input_boolean.lights_friday_program${variables.progId}`]]]"
+              - type: custom:button-card
+                template: heating_program_day
+                entity: "[[[return `input_boolean.lights_saturday_program${variables.progId}`]]]"
+              - type: custom:button-card
+                template: heating_program_day
+                entity: "[[[return `input_boolean.lights_sunday_program${variables.progId}`]]]"
+              - type: "custom:button-card"
+                template: heating_program_label
+                entity: "[[[return `group.lights_program${variables.progId}_days`]]]"
+                layout: icon_name
+                name: "Tutti"
+                size: 100%
+                show_label: false
+                show_name: true
+                styles:
+                  card:
+                    - height: 30px
+                    - width: 60px
+
+lights_settings_room:
+  template: no_background
+  styles:
+    grid:
+      - grid-template-areas: '"state title control"'
+      - grid-template-columns: 40px auto 30px
+      - grid-template-rows: 40px
+    card:
+      - display: flex
+      - flex-direction: row
+      - align-items: center
+      - padding: 0px
+      - width: 735px
+      - margin-left: 15px
+    custom_fields:
+      state:
+        - flex: 0 0 40px
+        - position: relative;
+        - display: inline-block;
+        - width: 40px;
+        - height: 40px;
+        - color: var(--paper-item-icon-color);
+        - border-radius: 50%;
+        - text-align: center;
+        - background-size: cover;
+        - line-height: 40px;
+        - vertical-align: middle;
+        - box-sizing: border-box;
+      title:
+        - justify-self: start
+  custom_fields:
+    state: >
+      [[[
+        return `<ha-icon icon="${variables.icon}" style="width: 24px"></ha-icon>`
+      ]]]
+    title:
+      card:
+        type: "custom:button-card"
+        template: no_background
+        name: "[[[ return variables.name; ]]]"
+        styles:
+          card:
+            - padding: 0px
+    control:
+      card:
+        type: "custom:button-card"
+        template: no_background
+        icon: "mdi:palette-outline"
+        styles:
+          card:
+            - height: 60px
+          icon:
+            - color: "#DCA200"
+            - width: 24px
+        tap_action:
+          action: navigate
+          navigation_path: "[[[return '/lovelace-kairoshub/'+ variables.navigation_path]]]"
 
 ###############
 ### SCENARI ###

@@ -42,29 +42,17 @@ rollers_dayzone_on_program1:
 rollers_dayzone_off_program1:
   <<: *rollers-program-down
 
-####################
-# Lights Nightzone
-####################
-lights_nightzone_on_program1:
+lights_on_program1:
   <<: *no-date-on
-lights_nightzone_off_program1:
+lights_off_program1:
   <<: *no-date-off
-####################
-# Lights Dayzone
-####################
-lights_dayzone_on_program1:
+lights_on_program2:
   <<: *no-date-on
-lights_dayzone_off_program1:
+lights_off_program2:
   <<: *no-date-off
-####################
-# Lights Outdoor
-####################
-lights_outdoor_on_program1:
-  <<: *no-date-on
-lights_outdoor_off_program1:
-  <<: *no-date-off
+
 light_offset_sunset:
-  name: Orario Spegnimento Luci Dopo Il Tramonto
+  name: Durata Massima di Accensione Luci
   has_date: false
   has_time: true
 

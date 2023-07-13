@@ -38,10 +38,16 @@ custom_fields:
                   action: none
               - type: "custom:button-card"
                 template: button_go_to_program
-                entity: input_boolean.light_program1
+                entity: input_boolean.lights_program1
                 variables:
                   progId: "1"
                   navigation_path: "lights-program1"
+              - type: "custom:button-card"
+                template: button_go_to_program
+                entity: input_boolean.lights_program2
+                variables:
+                  progId: "2"
+                  navigation_path: "lights-program2"
   content:
     card:
       type: vertical-stack

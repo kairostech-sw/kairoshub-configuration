@@ -88,6 +88,22 @@
         {% else %}
           off
         {% endif %}
+    lcz100_state:
+      friendly_name: "Stato Luci Zona Notte"
+      value_template: >-
+        {% if is_state('sensor.lcz101_state', 'online') or is_state('sensor.lcz102_state', 'online') or is_state('sensor.lcz103_state', 'online') or is_state('sensor.lcz104_state', 'online') %}
+          on
+        {% else %}
+          off
+        {% endif %}
+    lwz100_state:
+      friendly_name: "Stato Luci Zona Notte"
+      value_template: >-
+        {% if is_state('sensor.lwz101_state', 'online') or is_state('sensor.lwz102_state', 'online') or is_state('sensor.lwz103_state', 'online') or is_state('sensor.lwz104_state', 'online') %}
+          on
+        {% else %}
+          off
+        {% endif %}
     lz101_state:
       friendly_name: "Stato Luci Zona 101"
       value_template: >-
@@ -128,6 +144,22 @@
         {% else %}
           off
         {% endif %}
+    lcz200_state:
+      friendly_name: "Stato Luci Zona Notte"
+      value_template: >-
+        {% if is_state('sensor.lcz201_state', 'online') or is_state('sensor.lcz202_state', 'online') or is_state('sensor.lcz203_state', 'online') %}
+          on
+        {% else %}
+          off
+        {% endif %}
+    lwz200_state:
+      friendly_name: "Stato Luci Zona Notte"
+      value_template: >-
+        {% if is_state('sensor.lwz201_state', 'online') or is_state('sensor.lwz202_state', 'online') or is_state('sensor.lwz203_state', 'online') %}
+          on
+        {% else %}
+          off
+        {% endif %}
     lz201_state:
       friendly_name: "Stato Luci Zona 201"
       value_template: >-
@@ -156,6 +188,22 @@
       friendly_name: "Stato Luci Esterno"
       value_template: >-
         {% if is_state('binary_sensor.lz301_state', 'on') or is_state('binary_sensor.lz302_state', 'on') or is_state('binary_sensor.lz303_state', 'on') or is_state('binary_sensor.lz304_state', 'on') %}
+          on
+        {% else %}
+          off
+        {% endif %}
+    lcz300_state:
+      friendly_name: "Stato Luci Zona Notte"
+      value_template: >-
+        {% if is_state('sensor.lcz301_state', 'online') or is_state('sensor.lcz302_state', 'online') or is_state('sensor.lcz303_state', 'online') or is_state('sensor.lcz304_state', 'online') %}
+          on
+        {% else %}
+          off
+        {% endif %}
+    lwz300_state:
+      friendly_name: "Stato Luci Zona Notte"
+      value_template: >-
+        {% if is_state('sensor.lwz301_state', 'online') or is_state('sensor.lwz302_state', 'online') or is_state('sensor.lwz303_state', 'online') or is_state('sensor.lwz304_state', 'online') %}
           on
         {% else %}
           off

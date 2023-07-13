@@ -15,7 +15,6 @@ custom_fields:
           title: "Zona Notte"
           cards:
             - type: entities
-
               <<: &no-shadow
                 card_mod:
                   style:

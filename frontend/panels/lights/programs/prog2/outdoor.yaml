@@ -1,0 +1,54 @@
+type: "custom:button-card"
+template: lights_ctrl
+variables:
+  zone: "300"
+  progId: "2"
+  hideCopyBtn: true
+custom_fields:
+  content:
+    card:
+      type: horizontal-stack
+      cards:
+        - type: conditional
+          conditions:
+            - entity: binary_sensor.lcz300_state
+              state_not: "off"
+          card:
+            type: "custom:light-entity-card"
+            entity: input_text.lcz300_program2
+            header: '[[[ return "Luci "+ states["input_text.zn300"].state; ]]]'
+            persist_features: true
+            show_slider_percent: true
+            card_mod:
+              style: |
+                ha-color-picker {
+                  max-width: 230px !important;
+                  margin-top: 5px;
+                }
+        - type: conditional
+          conditions:
+            - entity: binary_sensor.lcz300_state
+              state: "off"
+            - entity: binary_sensor.lwz300_state
+              state_not: "off"
+          card:
+            type: "custom:light-entity-card"
+            entity: input_text.lwz300_program2
+            header: '[[[ return "Luci "+ states["input_text.zn300"].state;]]]'
+            persist_features: true
+            show_slider_percent: true
+        - type: conditional
+          conditions:
+            - entity: binary_sensor.lcz300_state
+              state: "off"
+            - entity: binary_sensor.lwz300_state
+              state: "off"
+            - entity: binary_sensor.lz300_state
+              state_not: "off"
+          card:
+            type: "custom:light-entity-card"
+            entity: light.group_lz300
+            header: '[[[ return "Luci "+ states["input_text.zn300"].state;]]]'
+            consolidate_entities: true
+            persist_features: true
+            show_slider_percent: true

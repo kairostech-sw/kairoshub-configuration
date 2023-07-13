@@ -9340,16 +9340,32 @@ ha-labeled-slider {
           });
       }
       getActiveScene(entity) {
-        console.log(entity);
         const entityName = entity.replace("light", "input_text");
+        if (
+          entity.includes("day") ||
+          entity.includes("athome") ||
+          entity.includes("program1") ||
+          entity.includes("program2")
+        )
+          return entity;
         const day = this.__hass.states["input_boolean.scene_day_active"].state;
         const athome =
           this.__hass.states["input_boolean.scene_athome_active"].state;
+        const prog1 =
+          this.__hass.states["input_boolean.lights_program1_on"].state;
+        const prog2 =
+          this.__hass.states["input_boolean.lights_program2_on"].state;
         if (day === "on") {
-          if (!entityName.includes("day")) return `${entityName}_day`;
+          return `${entityName}_day`;
         }
         if (athome === "on") {
-          if (!entityName.includes("athome")) return `${entityName}_athome`;
+          return `${entityName}_athome`;
+        }
+        if (prog1 === "on") {
+          return `${entityName}_program1`;
+        }
+        if (prog2 === "on") {
+          return `${entityName}_program2`;
         }
 
         return entity;
@@ -9359,12 +9375,10 @@ ha-labeled-slider {
         var t = this.__hass.states[this.config.entity];
         if (!t) throw Error(`Invalid entity: ${this.config.entity}`);
         (this._isUpdating = !0),
-          (this._stateObjects = this.getEntitiesToShow(t)),
-          (t = this.__hass.states[t]),
-          console.log(t),
-          this.config.consolidate_entities
-            ? (this._shownStateObjects = [t])
-            : (this._shownStateObjects = [...this._stateObjects]);
+          (this._stateObjects = this.getEntitiesToShow(t));
+        this.config.consolidate_entities
+          ? (this._shownStateObjects = [t])
+          : (this._shownStateObjects = [...this._stateObjects]);
         const e = this._shownStateObjects.reduce(
             (t, e) => K`${t}${this.createEntityTemplate(e)}`,
             ""
@@ -9655,14 +9669,8 @@ ha-labeled-slider {
         this.callEntityService({ effect: t.detail.value }, e);
       }
       callEntityService(t, e, n) {
-        console.log(e);
         e.entity_id = this.getActiveScene(e.entity_id);
         if (this._isUpdating) return;
-        console.log(
-          `payload ${JSON.stringify(t)} \nstateobj ${JSON.stringify(
-            e
-          )} \nstate ${n}`
-        );
         let r = e.entity_id.split(".")[0];
         if (r === "input_text") {
           return this.setAttributes(t, e, n);

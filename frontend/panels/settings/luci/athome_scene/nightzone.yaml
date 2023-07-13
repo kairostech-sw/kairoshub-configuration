@@ -1,0 +1,53 @@
+type: "custom:button-card"
+template: lights_ctrl
+variables:
+  zone: "100"
+  scene: "Scenario In Casa Fuori Casa"
+custom_fields:
+  content:
+    card:
+      type: horizontal-stack
+      cards:
+        - type: conditional
+          conditions:
+            - entity: binary_sensor.lcz100_state
+              state_not: "off"
+          card:
+            type: "custom:light-entity-card"
+            entity: input_text.lcz100_athome
+            header: '[[[ return "Luci "+ states["input_text.zn100"].state; ]]]'
+            persist_features: true
+            show_slider_percent: true
+            card_mod:
+              style: |
+                ha-color-picker {
+                  max-width: 230px !important;
+                  margin-top: 5px;
+                }
+        - type: conditional
+          conditions:
+            - entity: binary_sensor.lcz100_state
+              state: "off"
+            - entity: binary_sensor.lwz100_state
+              state_not: "off"
+          card:
+            type: "custom:light-entity-card"
+            entity: input_text.lwz100_athome
+            header: '[[[ return "Luci "+ states["input_text.zn100"].state;]]]'
+            persist_features: true
+            show_slider_percent: true
+        - type: conditional
+          conditions:
+            - entity: binary_sensor.lcz100_state
+              state: "off"
+            - entity: binary_sensor.lwz100_state
+              state: "off"
+            - entity: binary_sensor.lz100_state
+              state_not: "off"
+          card:
+            type: "custom:light-entity-card"
+            entity: light.group_lz100
+            header: '[[[ return "Luci "+ states["input_text.zn100"].state;]]]'
+            consolidate_entities: true
+            persist_features: true
+            show_slider_percent: true

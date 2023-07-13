@@ -4,7 +4,9 @@ import json, re
 
 class KairoshubLights(hass.Hass):
 
-    datetimeFormat = "%Y-%m-%dT%H:%M:%S"
+    dateFormat = "%Y-%m-%dT"
+    timeFormat = "%H:%M:%S"
+    datetimeFormat = dateFormat + timeFormat
 
     def initialize(self):
         self.listen_event(self.lightControl, "AD_LIGHT_ZONE_CONTROL")
@@ -14,6 +16,7 @@ class KairoshubLights(hass.Hass):
         self.listen_event(self.lightToggle, "AD_LIGHTS_OFF")
         self.listen_event(self.lightScene, "AD_AUTOMATIC_LIGHTS")
         self.listen_event(self.lightSceneChange, "AD_SCENE_CHANGE")
+        self.listen_event(self.lightProgramChange, "AD_PROGRAM_CHANGE")
         self.listen_event(self.saveManualColor, "AD_MANUAL_LIGHT_CHANGE")
 
     def lightToggle(self, event_name: str, data: dict, kwargs: dict) -> None:
@@ -38,47 +41,61 @@ class KairoshubLights(hass.Hass):
             self.turnOff("group.lights", notyInfo)
 
     def lightProgram(self, event_name: str, data: dict, kwargs: dict) -> None:
+        progId = self.getKey(data, "progId")
+        sender = self.getKey(data, "sender")
+        trid = self.getKey(data, "trid")
+
         now = datetime.strptime(self.get_state("sensor.date_time_iso"), self.datetimeFormat)
-        day = int(datetime.strftime(now,"%w"))
-        date = now.strftime("%Y-%m-%dT")
-        onTime = datetime.strptime(date + data['on_time'], self.datetimeFormat)
-        offTime = datetime.strptime(date + data["off_time"], self.datetimeFormat)
-        zoneId = data["zone"]
-        mode = data["mode"]
-
-        if mode == "Feriali" and day % 6 == 0: return None
-        elif mode == "Festivi" and day % 6 > 0: return None
-
-        if onTime > offTime:
-            offTime = now + timedelta(days=1)
-
-        lights = f"light.group_lz{zoneId}"
+        date = now.strftime(self.dateFormat)
+        today = now.strftime("%A").lower()
+        onTime = self.get_state(f"input_datetime.lights_on_program{progId}")
+        offTime = self.get_state(f"input_datetime.lights_off_program{progId}")
+        onTime = datetime.strptime(date + onTime, self.datetimeFormat)
+        offTime = datetime.strptime(date + offTime, self.datetimeFormat)
 
         notyInfo = {
-            "sender": self.getKey(data, "sender"),
+            "sender": sender,
             "ncode": "",
             "severity": "NOTICE",
             "kwargs": {
-                "zone": zoneId,
+                "zone": "all",
                 "mode": "Programmato"
             }
         }
-        trid = self.getKey(data, "trid"),
+
         if trid:
             notyInfo["trid"] = trid
 
-        if onTime <= now < offTime:
-            self.log("Turning on lights in zone %s",zoneId)
-            notyInfo["ncode"] = "LIGHTS_ON"
-            self.turn_on("input_boolean.light_program1_on")
-            self.turnOn(lights, notyInfo)
-        elif offTime <= now:
-            self.log("Turning off lights in zone %s",zoneId)
-            notyInfo["ncode"] = "LIGHTS_OFF"
-            self.turn_off("input_boolean.light_program1_on")
-            self.turnOff(lights, notyInfo)
+        activeProgram = self.isProgramOn(progId)
+        if activeProgram > 0:
+            self.log("Another program is already active", level="INFO")
+            return None
+
+        if self.get_state(f"input_boolean.lights_{today}_program{progId}") == "off":
+            self.log("The Program is not active for today", level="INFO")
+            return None
+
+        validTime = self.isValidTime(now, offTime)
+
+        if onTime > now:
+            self.log("The program %s is not active now", progId, level="INFO")
+            return None
+
+        if validTime:
+            if self.get_state(f"input_boolean.lights_program{progId}_on") == "off":
+                self.log("The lights program %s is now starting", progId, level="INFO")
+                notyInfo["ncode"] = "LIGHTS_ON"
+                self.turnProgramOn(progId, notyInfo)
+                return None
+            self.log("This program is already active", level="INFO")
+
         else:
-            self.log("The program is not active right now")
+            self.log("The lights program {} is now ending".format(progId), level="INFO")
+            notyInfo["ncode"] = "LIGHTS_OFF"
+            self.turn_off(f"input_boolean.lights_program{progId}_on")
+            self.turnOff("group.lights", notyInfo)
+            return None
+
 
     def lightControl(self, event_name: str, data: dict, kwargs: dict) -> None:
 
@@ -144,8 +161,7 @@ class KairoshubLights(hass.Hass):
                 rooms = self.get_state(zone, attribute="entity_id")
                 for room in rooms:
                     roomId = self.getEntityId(room)
-                    self.updateScene(scene, roomId)
-
+                    self.updateDeviceColors(scene, roomId)
         else:
             self.turn_off("group.lights")
             self.turn_off(f"input_boolean.scene_{scene}_active")
@@ -156,13 +172,23 @@ class KairoshubLights(hass.Hass):
         entityId = self.getEntityId(triggerEntity)
 
         if self.get_state(f"input_boolean.scene_{scene}_active") == "on":
-            if entityId.endswith("00"):
-                for entityLight in self.get_state(f"light.group_lz{entityId}"):
-                    self.updateScene(scene, self.getEntityId(entityLight))
-            else:
-                self.updateScene(scene, entityId)
+            # if entityId.endswith("00"):
+            #     for entityLight in self.get_state(f"light.group_lz{entityId}", attribute="entity_id"):
+            #         self.updateScene(scene, self.getEntityId(entityLight))
+            # else:
+            self.updateDeviceColors(scene, entityId)
 
-    def updateScene(self, scene: str, entityId: str) -> None:
+    def lightProgramChange(self, event_name: str, data: dict, kwargs: dict) -> None:
+        program = self.getKey(data, "program")
+        triggerEntity = self.getKey(data, "entity")
+        entityId = self.getEntityId(triggerEntity)
+
+        if self.isSceneActive(): return None
+
+        if self.get_state(f"input_boolean.lights_{program}_on") == "on":
+            self.updateDeviceColors(program, entityId)
+
+    def updateDeviceColors(self, scene: str, entityId: str) -> None:
         colorEntity = f"input_text.lcz{entityId}_{scene}"
         whiteEntity = f"input_text.lwz{entityId}_{scene}"
 
@@ -176,6 +202,12 @@ class KairoshubLights(hass.Hass):
         attributes = self.getAttributes(colorState, whiteState)
 
         self.turn_on(entity_id=f"light.group_lz{entityId}", **attributes)
+
+    def isSceneActive(self) -> bool:
+        isActive = False
+        isActive |= self.get_state(f"input_boolean.scene_day_active") == "on"
+        isActive |= self.get_state(f"input_boolean.scene_athome_active") == "on"
+        return isActive
 
     def getEntityId(self, entity) -> str:
         return re.search("(\d+)", entity).group()
@@ -260,6 +292,13 @@ class KairoshubLights(hass.Hass):
         self.turn_off(target)
         self.fire_event("AD_KAIROSHUB_NOTIFICATION", **notyInfo)
 
+    def turnProgramOn(self, progId: str, notyInfo: dict) -> None:
+        self.turn_on(f"input_boolean.lights_program{progId}_on")
+        zones = self.getProgramZone(progId)
+        for zone in zones:
+            zoneId = self.getEntityId(zone)
+            self.updateDeviceColors(f"program{progId}", zoneId)
+
     def getKey(self, data: dict, key: str) -> str:
         if "data" in data:
             data = data["data"]
@@ -269,3 +308,32 @@ class KairoshubLights(hass.Hass):
             return data["event"][key]
 
         return ""
+
+    def getProgramZone(self, progId: int) -> list:
+        '''
+            Returns a list containing name and id of every zone in the program
+        '''
+        programZones = self.get_state(f"group.lights_program{progId}", attribute="entity_id")
+        zones = []
+
+        for zone in programZones:
+            rooms = self.get_state(zone, attribute="entity_id")
+            for room in rooms:
+                if self.get_state(room) == "on":
+                    zones.append(room)
+
+        self.log("Zones of this program: %s", zones, level="DEBUG")
+        return zones
+
+    def isValidTime(self, now: datetime, end: datetime) -> int:
+        return now < end
+
+    def isProgramOn(self, progId: int) -> int:
+        '''
+            Checks if there is a different program already active
+        '''
+        for id in range(1,3):
+            if id != progId and self.get_state(f"group.heater_program{id}_on") == "on":
+                return id
+
+        return 0 or self.isSceneActive()
