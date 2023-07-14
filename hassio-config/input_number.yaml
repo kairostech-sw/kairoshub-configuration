@@ -151,6 +151,43 @@ position_rs200_night:
   <<: *rollers-slider
   <<: *scene-night
 
+position_rs100_open_program1:
+  <<: *rollers-slider
+  <<: &program-open
+    initial: 100
+    name: Posizione Apertura
+    icon: "mdi:window-shutter-open"
+
+position_rs200_open_program1:
+  <<: *rollers-slider
+  <<: *program-open
+
+position_rs100_close_program1:
+  <<: *rollers-slider
+  <<: &program-close
+    initial: 0
+    name: Posizione Chiusura
+    icon: "mdi:window-shutter"
+
+position_rs200_close_program1:
+  <<: *rollers-slider
+  <<: *program-close
+
+position_rs100_open_program2:
+  <<: *rollers-slider
+  <<: *program-open
+
+position_rs200_open_program2:
+  <<: *rollers-slider
+  <<: *program-open
+
+position_rs100_close_program2:
+  <<: *rollers-slider
+  <<: *program-close
+position_rs200_close_program2:
+  <<: *rollers-slider
+  <<: *program-close
+
 # TODO: remove
 rollershutter_athome_position:
   <<: *rollers-slider

@@ -25,7 +25,7 @@ class HeatingManager(hass.Hass):
             Checks first if the comfort temp was already reached.
             Otherwise, turns ON or OFF the thermostat based on the event received
         '''
-        sender = self.getKey(data, "sender")
+        sender = self.getKey(data, "sender", "HUB")
         trid = self.getKey(data, "trid")
         if self.isComfortTempReached(self.get_state("sensor.temperatura")) and self.get_state("switch.sw_thermostat") == "off":
             comfort_temp = self.get_state("input_number.temperature_tv100_manual")
@@ -53,14 +53,13 @@ class HeatingManager(hass.Hass):
             is already active
         '''
         progId = self.getKey(data, "program")
-        sender = self.getKey(data, "sender")
+        sender = self.getKey(data, "sender", "HUB")
         trid = self.getKey(data, "trid")
         now = datetime.strptime(self.get_state("sensor.date_time_iso"), self.datetime_format)
         today = now.strftime("%A").lower()
 
         self.checkFile(now)
         now = now.strftime(self.timeFormat)
-
 
         activeProgram = self.isProgramOn(progId)
         if activeProgram > 0:
@@ -108,7 +107,10 @@ class HeatingManager(hass.Hass):
             return None
 
     def turnProgramOff(self, event_name: str, data: dict, kwargs: dict) -> None:
-        sender = self.getKey(data, "sender")
+        '''
+            Turns the heating off when a program gets turned off
+        '''
+        sender = self.getKey(data, "sender", "HUB")
         trid = self.getKey(data, "trid")
         progId = self.getKey(data, "program")
 
@@ -117,7 +119,7 @@ class HeatingManager(hass.Hass):
     def comfortTempReached(self, event_name: str, data: dict, kwargs: dict) -> None:
         zone = self.getKey(data, "zone")
         comfort_temp = self.get_state(f"input_number.temperature_tv{zone}_manual")
-        sender = self.getKey(data, "sender") or "HUB"
+        sender = self.getKey(data, "sender", "HUB")
         trid = self.getKey(data, "trid")
         self.turnZoneOff(zone, sender, trid, comfort_temp)
 
@@ -235,6 +237,10 @@ class HeatingManager(hass.Hass):
         self.fire_event("HA_ENTITY_METRICS")
 
     def turnZoneOff(self, zone: str, sender: str, trid: str, comfort_temp: str) -> None:
+        '''
+            Turns off a zone that reached its manual comfort temp.
+            If every zone is inactive, it turns off the heating
+        '''
         self.turn_off(f"input_boolean.heater_zn{zone}_manual_on")
 
         if self.get_state("group.heater_manual_on") == "off":
@@ -375,6 +381,9 @@ class HeatingManager(hass.Hass):
         return programSchedule
 
     def getZoneFromId(self, zoneId: str) -> str:
+        '''
+            Gets the zone ID of the given sensor
+        '''
         if zoneId == "01": return "zn101"
         if zoneId == "02": return "zn102"
         if zoneId == "03": return "zn103"
@@ -456,7 +465,7 @@ class HeatingManager(hass.Hass):
         self.log("Zones of this program: %s", zones, level="DEBUG")
         return zones
 
-    def getKey(self, data: dict, key: str) -> str:
+    def getKey(self, data: dict, key: str, default="") -> str:
         if "data" in data:
             data = data["data"]
         if key in data:
@@ -464,7 +473,7 @@ class HeatingManager(hass.Hass):
         if "event" in data and key in data["event"]:
             return data["event"][key]
 
-        return ""
+        return default
 
     def isValidTime(self, now: datetime, end: datetime) -> int:
         return now < end
@@ -479,7 +488,7 @@ class HeatingManager(hass.Hass):
         if value < 4.0: value = 4.0
 
         self.fire_event("AD_MQTT_PUBLISH", topic=topic, payload=value)
-        self.log("Target temperature for %s was set to: %s", topic.split("/")[1], value, level="INFO")
+        self.log("Target temperature for %s was set to: %s", topic.split("/")[1], value, level="DEBUG")
 
     def getEntityId(self, entity) -> str:
         return re.search("(\d+)", entity).group()

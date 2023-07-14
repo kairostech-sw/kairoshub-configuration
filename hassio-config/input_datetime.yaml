@@ -21,25 +21,22 @@ thermostat_on_period4:
 thermostat_off_period4:
   <<: *no-date-off
 
-####################
-# Rollers Nightzone
-####################
-rollers_nightzone_on_program1:
+#############
+# Rollers
+#############
+rollers_on_program1:
   <<: &rollers-program-up
     name: Apertura
     has_date: false
     has_time: true
-rollers_nightzone_off_program1:
+rollers_off_program1:
   <<: &rollers-program-down
     name: Chiusura
     has_date: false
     has_time: true
-####################
-# Rollers Dayzone
-####################
-rollers_dayzone_on_program1:
+rollers_on_program2:
   <<: *rollers-program-up
-rollers_dayzone_off_program1:
+rollers_off_program2:
   <<: *rollers-program-down
 
 lights_on_program1:

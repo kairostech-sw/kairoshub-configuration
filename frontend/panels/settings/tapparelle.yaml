@@ -11,8 +11,16 @@ custom_fields:
     card:
       type: vertical-stack
       cards:
-        - !include rollers/nightzone.yaml
-        - !include rollers/dayzone.yaml
+        - type: conditional
+          conditions:
+            - entity: binary_sensor.rs100_state
+              state_not: "off"
+          card: !include rollers/nightzone.yaml
+        - type: conditional
+          conditions:
+            - entity: binary_sensor.rs200_state
+              state_not: "off"
+          card: !include rollers/dayzone.yaml
         - type: entities
           entities:
             - type: button

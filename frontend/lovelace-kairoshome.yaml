@@ -157,13 +157,13 @@ views:
       - type: vertical-stack
         cards:
           - !include hakairos-configuration/frontend/panels/settings/luci.yaml
-  - path: impostazioni-sistema
+  - path: impostazioni-scenari
     panel: true
     visible: false
     cards:
       - type: vertical-stack
         cards:
-          - !include hakairos-configuration/frontend/panels/settings/system.yaml
+          - !include hakairos-configuration/frontend/panels/settings/scenes.yaml
   - path: rollers-program1
     panel: true
     visible: false

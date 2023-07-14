@@ -1400,6 +1400,360 @@ rollers_label:
     card:
       - box-shadow: none
 
+roller_program_layout:
+  template:
+    - grid_style
+    - program_layout
+  custom_fields:
+    header:
+      card:
+        type: "custom:button-card"
+        entity: "[[[return `input_boolean.rollers_program${variables.progId}`]]]"
+        template: header_page_text
+        icon: "mdi:calendar-remove"
+        state:
+          - value: "on"
+            icon: "mdi:calendar-check"
+            styles:
+              icon:
+                - color: var(--command-state-active-color)
+        name: "[[[return `PROGRAMMA ${variables.progId}`]]]"
+        label: "[[[return `Tapparelle / Programma ${variables.progId}`]]]"
+    commandbar:
+      card:
+        type: "custom:button-card"
+        template: roller_command_bar
+        variables:
+          progId: "[[[return variables.progId]]]"
+    content:
+      card:
+        type: "custom:button-card"
+        template: roller_program_content
+        variables:
+          progId: "[[[return variables.progId]]]"
+        styles:
+          card:
+            - padding: 0px
+
+roller_command_bar:
+  template: command_bar
+  card_mod:
+    style: |
+      ha-card.button-card-main {
+        padding: 0px !important
+      }
+  styles:
+    grid:
+      - grid-template-areas: '"program back"'
+      - grid-template-columns: 1fr 1fr
+      - display: flex
+      - justify-content: space-between
+    card:
+      - margin-left: -10px
+      - height: 63px
+  custom_fields:
+    program:
+      card:
+        type: "custom:button-card"
+        template: icon_state_header
+        entity: "[[[return `input_boolean.rollers_program${variables.progId}`]]]"
+        icon: mdi:power
+        state:
+          - value: "on"
+            label: "Acceso"
+            color: var(--command-state-active-color)
+          - value: "off"
+            label: "Spento"
+            color: var(--command-state-color)
+        styles:
+          card:
+            - margin-left: 10px
+    back:
+      card:
+        type: "custom:button-card"
+        template: button_go_back
+
+roller_program_content:
+  template:
+    - grid_style
+    - program_content
+  custom_fields:
+    program:
+      card:
+        type: "custom:button-card"
+        template: rollers_program_schedule
+        variables:
+          progId: "[[[return variables.progId]]]"
+    content:
+      card:
+        type: vertical-stack
+        cards:
+          - type: conditional
+            conditions:
+              - entity: binary_sensor.rs100_state
+                state_not: "off"
+            card:
+              type: "custom:button-card"
+              template: rollers_program_nightzone
+              variables:
+                progId: "[[[return variables.progId]]]"
+                zone: "zn100"
+          - type: conditional
+            conditions:
+              - entity: binary_sensor.rs200_state
+                state_not: "off"
+            card:
+              type: "custom:button-card"
+              template: rollers_program_dayzone
+              variables:
+                progId: "[[[return variables.progId]]]"
+                zone: "zn200"
+
+rollers_program_schedule:
+  template: program_schedule
+  custom_fields:
+    days:
+      card:
+        type: "custom:button-card"
+        template: roller_week
+        variables:
+          progId: "[[[return variables.progId;]]]"
+    time:
+      card:
+        type: "custom:button-card"
+        template: roller_time_picker
+        variables:
+          progId: "[[[return variables.progId;]]]"
+
+roller_week:
+  template: weekdays
+  custom_fields:
+    days:
+      card:
+        type: vertical-stack
+        cards:
+          - type: "custom:button-card"
+            template: no_background
+            name: "Giorni"
+            styles:
+              card:
+                - padding-top: 0px
+              name:
+                - margin: 0px auto
+                - font-size: large
+          - type: grid
+            columns: 4
+            square: false
+            cards:
+              - type: custom:button-card
+                template: heating_program_day
+                entity: "[[[return `input_boolean.rollers_monday_program${variables.progId}`]]]"
+              - type: custom:button-card
+                template: heating_program_day
+                entity: "[[[return `input_boolean.rollers_tuesday_program${variables.progId}`]]]"
+              - type: custom:button-card
+                template: heating_program_day
+                entity: "[[[return `input_boolean.rollers_wednesday_program${variables.progId}`]]]"
+              - type: custom:button-card
+                template: heating_program_day
+                entity: "[[[return `input_boolean.rollers_thursday_program${variables.progId}`]]]"
+              - type: custom:button-card
+                template: heating_program_day
+                entity: "[[[return `input_boolean.rollers_friday_program${variables.progId}`]]]"
+              - type: custom:button-card
+                template: heating_program_day
+                entity: "[[[return `input_boolean.rollers_saturday_program${variables.progId}`]]]"
+              - type: custom:button-card
+                template: heating_program_day
+                entity: "[[[return `input_boolean.rollers_sunday_program${variables.progId}`]]]"
+              - type: "custom:button-card"
+                template: heating_program_label
+                entity: "[[[return `group.rollers_program${variables.progId}_days`]]]"
+                layout: icon_name
+                name: "Tutti"
+                size: 100%
+                show_label: false
+                show_name: true
+                styles:
+                  card:
+                    - height: 30px
+                    - width: 60px
+
+roller_time_picker:
+  custom_fields:
+    time:
+      card:
+        type: horizontal-stack
+        cards:
+          - entity: "[[[return `input_datetime.rollers_on_program${variables.progId}`]]]"
+            <<: *timepicker_style
+          - entity: "[[[return `input_datetime.rollers_off_program${variables.progId}`]]]"
+            <<: *timepicker_style
+
+rollers_program_nightzone:
+  template: expander_template
+  custom_fields:
+    expander:
+      card:
+        <<: *expander-card-style
+        padding: 0px
+        title-card:
+          type: "custom:button-card"
+          template: rollers_program_expander_label
+          variables:
+            progId: "[[[return variables.progId]]]"
+            zone: "zn100"
+        cards:
+          - <<: *divider-4px
+          - type: entities
+            <<: &rollers-entities-style
+              card_mod:
+                style:
+                  .: |
+                    ha-card {
+                      box-shadow: none;
+                    }
+                  div.card-content:
+                    div:
+                      hui-input-number-entity-row:
+                        $:
+                          hui-generic-entity-row:
+                            div: |
+                              .state {
+                                min-width: 60px !important
+                              }
+                            $: |
+                              .info.text-content {
+                                display: flex;
+                              }
+            entities:
+              - entity: input_number.position_rs100_open_program1
+                tap_action:
+                  action: none
+                card_mod:
+                  style:
+                    hui-generic-entity-row:
+                      div: |
+                        .state {
+                          font-size: 0px;
+                        }
+                        .state:after {
+                          {% if states("input_number.position_rs100_open_program1") | float(0) == 100.0 %}
+                            {% set CONTENT = "APERTE" %}
+                          {% elif states("input_number.position_rs100_open_program1") | float(0) == 0.0 %}
+                            {% set CONTENT = "CHIUSE" %}
+                          {% else %}
+                            {% set CONTENT =  states("input_number.position_rs100_open_program1") | int | string + "%" %}
+                          {%endif%}
+                          font-size: 16px;
+                          content: '{{ CONTENT }}';
+                        }
+              - entity: input_number.position_rs100_close_program1
+                tap_action:
+                  action: none
+                card_mod:
+                  style:
+                    hui-generic-entity-row:
+                      div: |
+                        .state {
+                          font-size: 0px;
+                        }
+                        .state:after {
+                          {% if states("input_number.position_rs100_close_program1") | float(0) == 100.0 %}
+                            {% set CONTENT = "APERTE" %}
+                          {% elif states("input_number.position_rs100_close_program1") | float(0) == 0.0 %}
+                            {% set CONTENT = "CHIUSE" %}
+                          {% else %}
+                            {% set CONTENT =  states("input_number.position_rs100_close_program1") | int | string + "%" %}
+                          {%endif%}
+                          font-size: 16px;
+                          content: '{{ CONTENT }}';
+                        }
+
+rollers_program_dayzone:
+  template: expander_template
+  custom_fields:
+    expander:
+      card:
+        <<: *expander-card-style
+        padding: 0px
+        title-card:
+          type: "custom:button-card"
+          template: rollers_program_expander_label
+          variables:
+            progId: "[[[return variables.progId]]]"
+            zone: "zn200"
+        cards:
+          - <<: *divider-4px
+          - <<: *mod-card-room
+            card:
+              type: entities
+              <<: *rollers-entities-style
+              entities:
+                - entity: input_number.position_rs200_open_program1
+                  tap_action:
+                    action: none
+                  card_mod:
+                    style:
+                      hui-generic-entity-row:
+                        div: |
+                          .state {
+                            font-size: 0px;
+                          }
+                          .state:after {
+                            {% if states("input_number.position_rs200_open_program1") | float(0) == 100.0 %}
+                              {% set CONTENT = "APERTE" %}
+                            {% elif states("input_number.position_rs200_open_program1") | float(0) == 0.0 %}
+                              {% set CONTENT = "CHIUSE" %}
+                            {% else %}
+                              {% set CONTENT =  states("input_number.position_rs200_open_program1") | int | string + "%" %}
+                            {%endif%}
+                            font-size: 16px;
+                            content: '{{ CONTENT }}';
+                          }
+                - entity: input_number.position_rs200_close_program1
+                  tap_action:
+                    action: none
+                  card_mod:
+                    style:
+                      hui-generic-entity-row:
+                        div: |
+                          .state {
+                            font-size: 0px;
+                          }
+                          .state:after {
+                            {% if states("input_number.position_rs200_close_program1") | float(0) == 100.0 %}
+                              {% set CONTENT = "APERTE" %}
+                            {% elif states("input_number.position_rs200_close_program1") | float(0) == 0.0 %}
+                              {% set CONTENT = "CHIUSE" %}
+                            {% else %}
+                              {% set CONTENT =  states("input_number.position_rs200_close_program1") | int | string + "%" %}
+                            {%endif%}
+                            font-size: 16px;
+                            content: '{{ CONTENT }}';
+                          }
+
+rollers_program_expander_label:
+  styles:
+    grid:
+      - grid-template-areas: '"label"'
+      - background: none
+      - display: flex
+    card:
+      - padding: 0px
+      - box-shadow: none
+    custom_fields:
+      label:
+        - width: 200px
+  custom_fields:
+    label:
+      card:
+        type: "custom:button-card"
+        template: heating_program_label
+        size: 50%
+        entity: "[[[return `group.rollers_${variables.zone}_program${variables.progId}`]]]"
+        name: "[[[return states[`input_text.${variables.zone}`].state;]]]"
+
 rollers_nightzone_expander:
   template: expander_template
   custom_fields:
@@ -2450,7 +2804,7 @@ scene_athome:
           type: "custom:button-card"
           template: scenes_program
           layout: icon_label
-          icon: "mdi:theme-light-dark"
+          icon: "mdi:home-outline"
           size: 100%
           label: "Scenario In Casa / Fuori Casa"
           variables:

@@ -13,7 +13,7 @@ class KairoshubScenes(hass.Hass):
         "action": "off",
         "roller": "day",
         "ncode": "SCENE_DAY",
-        "sender": self.getKey(data, "sender"),
+        "sender": self.getKey(data, "sender", "HUB"),
         "severity": "NOTICE",
         "kwargs": {
           "mode": self.getKey(data, "mode"),
@@ -43,7 +43,6 @@ class KairoshubScenes(hass.Hass):
       if self.isIntegrationActive("rollers", "day"):
         dayzone = self.get_state(f"input_number.position_rs100_{data['roller']}")
         nightzone = self.get_state(f"input_number.position_rs200_{data['roller']}")
-        self.log(f"\n\tnightzone pos: {nightzone}\n\tdayzone pos: {dayzone}")
         self.fire_event("AD_AUTOMATIC_ROLLERS", dayzone=dayzone, nightzone=nightzone)
         data["kwargs"]["rollers"] = {"nightzone": nightzone, "dayzone": dayzone}
 
@@ -54,7 +53,7 @@ class KairoshubScenes(hass.Hass):
       entity = f"input_boolean.{integration}_scene_{scene}"
       return self.get_state(entity) == "on"
 
-    def getKey(self, data: dict, key: str) -> str:
+    def getKey(self, data: dict, key: str, default="") -> str:
         if "data" in data:
             data = data["data"]
         if key in data:
@@ -62,4 +61,4 @@ class KairoshubScenes(hass.Hass):
         if "event" in data and key in data["event"]:
             return data["event"][key]
 
-        return ""
+        return default

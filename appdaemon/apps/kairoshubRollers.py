@@ -1,9 +1,12 @@
 import hassapi as hass
-from datetime import datetime, timedelta
+import re
+from datetime import datetime
 
 class KairoshubRollers(hass.Hass):
 
-    datetimeFormat = "%Y-%m-%dT%H:%M:%S"
+    dateFormat = "%Y-%m-%dT"
+    timeFormat = "%H:%M:%S"
+    datetimeFormat = dateFormat + timeFormat
 
     def initialize(self):
         self.listen_event(self.rollersControl, "AD_ROLLERS_CONTROL")
@@ -13,7 +16,12 @@ class KairoshubRollers(hass.Hass):
 
 
     def rollersControl(self, event_name: str, data: dict, kwargs: dict) -> None:
+      '''
+        Checks if the rollers are already are their maximum position
+        based on the action received.
 
+        Otherwise, they will perform the action received
+      '''
       if "entity" in data:
         zone = f"rs{data['entity']}"
         pos = f"rz{data['entity']}"
@@ -46,6 +54,11 @@ class KairoshubRollers(hass.Hass):
         self.set_state(entity, state=state, attributes=attributes)
 
     def getService(self, state: str, reverse: bool) -> str:
+      '''
+        Returns the service based on the state.
+
+        If `reverse` is passed, it returns the opposite service
+      '''
       services = ["open", "stop", "close"]
       if state == "closed": state = state[:-1]
       index = services.index(state)
@@ -54,24 +67,33 @@ class KairoshubRollers(hass.Hass):
       return f"{services[index]}_cover"
 
     def setRollersPosition(self, event_name: str, data: dict, kwargs: dict) -> None:
-
+      '''
+        Sets rollers at the position of the params mode.
+      '''
       mode = self.getKey(data, "mode")
-      sender = self.getKey(data, "sender") or "HUB"
+      sender = self.getKey(data, "sender", "HUB")
       trid = self.getKey(data, "trid")
-      target = self.getKey(data, "target") or "group.rollershutters"
+      zones = self.get_state("group.rollershutters", attribute="entity_id")
+      positionNightzone = int(float(self.get_state(f"input_number.position_rs100_{mode}")))
+      positionDayzone = int(float(self.get_state(f"input_number.position_rs200_{mode}")))
 
-      state = ("CLOSED","OPEN")["athome" == mode]
-      position = int(float(self.get_state(f"input_number.rollershutter_{mode}_position")))
+      for zone in zones:
+         if self.getEntityId(zone)[0] == "1":
+          self.setPosition(zone, positionNightzone, sendNotification=False)
+         if self.getEntityId(zone)[0] == "2":
+          self.setPosition(zone, positionDayzone, sendNotification=False)
 
-      self.log(f"Setting Rollers position at {position}%")
-      self.call_service("cover/set_cover_position", entity_id=target, position=position)
-
+      #TODO noty
       notyInfo = {
-         "ncode": f"ROLLERS_{state}",
+         "ncode": f"ROLLERS_SCENE",
          "sender": sender,
          "severity": "NOTICE",
          "kwargs": {
-            "pos": position
+            "mode": mode,
+            "position": {
+               "nightzone": positionNightzone,
+               "dayzone": positionDayzone,
+            }
          }
       }
       if trid:
@@ -81,55 +103,87 @@ class KairoshubRollers(hass.Hass):
       self.fire_event("AD_ENTITY_METRICS")
 
     def rollersProgram(self, event_name: str, data: dict, kwargs: dict) -> None:
+        progId = self.getKey(data, "progId", "1")
+        sender = self.getKey(data, "sender", "HUB")
+        trid = self.getKey(data, "trid")
+
         now = datetime.strptime(self.get_state("sensor.date_time_iso"), self.datetimeFormat)
-        day = int(datetime.strftime(now,"%w"))
-        date = now.strftime("%Y-%m-%dT")
-        onTime = datetime.strptime(date + data['on_time'], self.datetimeFormat)
-        offTime = datetime.strptime(date + data["off_time"], self.datetimeFormat)
-        zoneId = data["zone"]
-        mode = data["mode"]
+        date = now.strftime(self.dateFormat)
+        today = now.strftime("%A").lower()
+        onTime = self.get_state(f"input_datetime.rollers_on_program{progId}")
+        offTime = self.get_state(f"input_datetime.rollers_off_program{progId}")
+        onTime = datetime.strptime(date + onTime, self.datetimeFormat)
+        offTime = datetime.strptime(date + offTime, self.datetimeFormat)
 
-        if mode == "Feriali" and day % 6 == 0: return None
-        elif mode == "Festivi" and day % 6 > 0: return None
+        if self.get_state(f"input_boolean.rollers_{today}_program{progId}") == "off":
+            self.log("The Program is not active for today", level="INFO")
+            return None
 
-        if onTime > offTime:
-            offTime = now + timedelta(days=1)
-
-        rollers = f"group.rs{zoneId}"
-
+        #TODO
         notyInfo = {
-            "sender": self.getKey(data, "sender"),
+            "sender": sender,
             "ncode": "",
             "severity": "NOTICE",
             "kwargs": {
-                "zone": zoneId,
+                "zone": "all",
                 "mode": "Programmato"
             }
         }
-        trid = self.getKey(data, "trid"),
+
+        programData = {
+            "mode": "",
+            "sender": sender
+        }
+
+        trid = self.getKey(data, "trid")
         if trid:
             notyInfo["trid"] = trid
+            programData["trid"] = trid
 
-        if onTime <= now < offTime:
-            self.log("Opening Rollers in zone %s",zoneId)
+        validTime = self.isValidTime(now, offTime)
+
+        if onTime > now:
+            self.log("The program %s is not active now", progId, level="INFO")
+            return None
+
+        if validTime:
+          if self.get_state(f"input_boolean.rollers_program{progId}_on") == "off":
+            self.log("Opening Rollers")
             notyInfo["ncode"] = "ROLLERS_OPEN"
-            self.turn_on("input_boolean.rollers_program1_on")
-            self.setRollersPosition(event_name ,data={"mode":"athome", "target": rollers}, kwargs=kwargs)
-        elif offTime <= now:
-            self.log("Closing Rollers in zone %s",zoneId)
-            notyInfo["ncode"] = "ROLLERS_CLOSED"
-            self.turn_off("input_boolean.rollers_program1_on")
-            self.setRollersPosition(event_name ,data={"mode":"notathome", "target": rollers}, kwargs=kwargs)
+            self.turn_on(f"input_boolean.rollers_program{progId}_on")
+            programData["mode"] = f"open_program{progId}"
+            self.setRollersPosition(event_name, data=programData, kwargs=kwargs)
+            return None
+          self.log("This program is already active", level="INFO")
+
         else:
-            self.log("The program is not active right now")
+            self.log("Closing Rollers")
+            notyInfo["ncode"] = "ROLLERS_CLOSED"
+            self.turn_off(f"input_boolean.rollers_program{progId}_on")
+            programData["mode"] = f"close_program{progId}"
+            self.setRollersPosition(event_name, data=programData, kwargs=kwargs)
+            return None
 
     def rollersSceneAutomation(self, event_name: str, data: dict, kwargs: dict):
+      '''
+        Sets the rollers at the position of scene
+      '''
       dayzone = int(float(self.getKey(data, "dayzone")))
       nightzone = int(float(self.getKey(data, "nightzone")))
-      self.call_service("cover/set_cover_position", entity_id="group.rs100", position=nightzone)
-      self.call_service("cover/set_cover_position", entity_id="group.rs200", position=dayzone)
+      self.setPosition("group.rs100", nightzone, sendNotification=False)
+      self.setPosition("group.rs200", dayzone, sendNotification=False)
+      #TODO NOTY
 
-    def getKey(self, data: dict, key: str) -> str:
+    def setPosition(self, target: str, position: int, notyInfo = {}, sendNotification = True) -> None:
+      '''
+        Sets the target roller at the specified position
+      '''
+      self.log(f"Setting {target.split('.')[1].upper()} at {position}%")
+      self.call_service("cover/set_cover_position", entity_id=target, position=position)
+      if sendNotification:
+        self.fire_event("AD_KAIROSHUB_NOTIFICATION", **notyInfo)
+
+    def getKey(self, data: dict, key: str, default="") -> str:
       if "data" in data:
           data = data["data"]
       if key in data:
@@ -137,4 +191,10 @@ class KairoshubRollers(hass.Hass):
       if "event" in data and key in data["event"]:
           return data["event"][key]
 
-      return ""
+      return default
+
+    def getEntityId(self, entity) -> str:
+        return re.search("(\d+)", entity).group()
+
+    def isValidTime(self, now: datetime, end: datetime) -> int:
+        return now < end

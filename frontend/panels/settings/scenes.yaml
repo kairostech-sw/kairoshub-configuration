@@ -1,7 +1,7 @@
 type: "custom:button-card"
 template: setting_layout
 variables:
-  label: "Sistema"
+  label: "Scenari"
 styles:
   custom_fields:
     content:

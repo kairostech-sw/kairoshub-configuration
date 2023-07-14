@@ -49,7 +49,7 @@ custom_fields:
               navigation_path: "impostazioni-luci"
         - type: "custom:button-card"
           template: settings_card
-          icon: "mdi:dots-grid"
+          icon: "mdi:home"
           name: "Zone"
           variables:
             navigation_path: "impostazioni-zone"
@@ -67,6 +67,6 @@ custom_fields:
         - type: "custom:button-card"
           template: settings_card
           icon: "mdi:cog"
-          name: "Sistema"
+          name: "Scenari"
           variables:
-            navigation_path: impostazioni-sistema
+            navigation_path: impostazioni-scenari
