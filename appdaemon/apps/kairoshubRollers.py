@@ -132,7 +132,8 @@ class KairoshubRollers(hass.Hass):
 
         programData = {
             "mode": "",
-            "sender": sender
+            "sender": sender,
+            "rollers": self.getRollers(progId)
         }
 
         trid = self.getKey(data, "trid")
@@ -152,7 +153,7 @@ class KairoshubRollers(hass.Hass):
             notyInfo["ncode"] = "ROLLERS_OPEN"
             self.turn_on(f"input_boolean.rollers_program{progId}_on")
             programData["mode"] = f"open_program{progId}"
-            self.setRollersPosition(event_name, data=programData, kwargs=kwargs)
+            self.setProgramPosition(**programData)
             return None
           self.log("This program is already active", level="INFO")
 
@@ -161,7 +162,7 @@ class KairoshubRollers(hass.Hass):
             notyInfo["ncode"] = "ROLLERS_CLOSED"
             self.turn_off(f"input_boolean.rollers_program{progId}_on")
             programData["mode"] = f"close_program{progId}"
-            self.setRollersPosition(event_name, data=programData, kwargs=kwargs)
+            self.setProgramPosition(**programData)
             return None
 
     def rollersSceneAutomation(self, event_name: str, data: dict, kwargs: dict):
@@ -173,6 +174,36 @@ class KairoshubRollers(hass.Hass):
       self.setPosition("group.rs100", nightzone, sendNotification=False)
       self.setPosition("group.rs200", dayzone, sendNotification=False)
       #TODO NOTY
+
+    def setProgramPosition(self, mode: str, sender: str, rollers: list, trid="") -> None:
+
+      positionNightzone = int(float(self.get_state(f"input_number.position_rs100_{mode}")))
+      positionDayzone = int(float(self.get_state(f"input_number.position_rs200_{mode}")))
+
+      for roller in rollers:
+         if self.getEntityId(roller)[0] == "1":
+          self.setPosition(roller, positionNightzone, sendNotification=False)
+         if self.getEntityId(roller)[0] == "2":
+          self.setPosition(roller, positionDayzone, sendNotification=False)
+
+      #TODO noty
+      notyInfo = {
+         "ncode": f"ROLLERS_SCENE",
+         "sender": sender,
+         "severity": "NOTICE",
+         "kwargs": {
+            "mode": mode,
+            "position": {
+               "nightzone": positionNightzone,
+               "dayzone": positionDayzone,
+            }
+         }
+      }
+      if trid:
+          notyInfo["trid"] = trid
+
+      self.fire_event("AD_KAIROSHUB_NOTIFICATION", **notyInfo)
+      self.fire_event("AD_ENTITY_METRICS")
 
     def setPosition(self, target: str, position: int, notyInfo = {}, sendNotification = True) -> None:
       '''
@@ -193,8 +224,16 @@ class KairoshubRollers(hass.Hass):
 
       return default
 
-    def getEntityId(self, entity) -> str:
+    def getEntityId(self, entity: str) -> str:
         return re.search("(\d+)", entity).group()
 
+    def getRollers(self, progId: int) -> list:
+      rollers = []
+      if self.get_state(f"group.rollers_zn100_program{progId}") == "on":
+        rollers.append("group.rs100")
+      if self.get_state(f"group.rollers_zn200_program{progId}") == "on":
+        rollers.append("group.rs200")
+      return rollers
+
     def isValidTime(self, now: datetime, end: datetime) -> int:
-        return now < end
+      return now < end
