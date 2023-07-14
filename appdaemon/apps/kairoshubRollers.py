@@ -14,7 +14,6 @@ class KairoshubRollers(hass.Hass):
         self.listen_event(self.rollersProgram, "AD_ROLLERS_PROGRAM")
         self.listen_event(self.rollersSceneAutomation, "AD_AUTOMATIC_ROLLERS")
 
-
     def rollersControl(self, event_name: str, data: dict, kwargs: dict) -> None:
       '''
         Checks if the rollers are already are their maximum position

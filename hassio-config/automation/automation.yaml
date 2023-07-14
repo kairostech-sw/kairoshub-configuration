@@ -6,10 +6,9 @@
       to: "off"
       for: "00:00:05"
   action:
-    - event: HA_ROLLERS_NOTATHOME_POSITION
-    - event: HA_MANAGE_HOME_ON_OFF
+    - event: AD_MANAGE_HOME_ON_OFF
       event_data:
-        state: "{{ trigger.to_state.state }}"
+        mode: "{{ trigger.to_state.state }}"
 
 - alias: HOME TO_ON
   trigger:
@@ -18,10 +17,9 @@
       from: "off"
       to: "on"
   action:
-    - event: HA_ROLLERS_ATHOME_POSITION
-    - event: HA_MANAGE_HOME_ON_OFF
+    - event: AD_MANAGE_HOME_ON_OFF
       event_data:
-        state: "{{ trigger.to_state.state }}"
+        mode: "{{ trigger.to_state.state }}"
 
 - alias: AUTOMATION_H07
   trigger:
