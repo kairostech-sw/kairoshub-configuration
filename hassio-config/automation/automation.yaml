@@ -64,9 +64,9 @@
       event_data:
         entity: "{{trigger.entity_id}}"
 
-- alias: SHELLY SIGNAL CHECK
+- alias: SHELLY STATUS CHECK
   trigger:
     - platform: time_pattern
       hours: "/1"
   action:
-    event: AD_SHELLY_SIGNAL_CHECK
+    event: AD_SHELLY_STATUS_CHECK
