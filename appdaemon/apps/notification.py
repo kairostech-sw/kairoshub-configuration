@@ -32,7 +32,7 @@ noty_message = {
         "label": "Errore Programma Riscaldamento",
         "message": "Il programma di riscaldamento #id# non è stato acceso perché non sono state impostate zone."
     },
-    "HEATING_SENSOR_BATTERY_LOW": {
+    "TV_SENSOR_BATTERY_LOW": {
         "label": "Batteria Quasi Scarica Testa Termostatica #ENTITY#",
         "message": "La testa termostatica #ENTITY# si sta scaricando. Collegala ad un carica batterie oppure ad una Powerbank. \n\nPuoi ricoscere la testa termostatica dal nome applicato nella parte sottostante."
     },
@@ -58,6 +58,10 @@ noty_message = {
     },
     "ROLLERS_CLOSED_ERROR": {
         "label": "Errore Tapparelle",
+        "message": "Si è verificato un problema nella chiusura delle tapparelle."
+    },
+    "ROLLERS_SCENE": {
+        "label": "TAPPARELLE TEST",
         "message": "Si è verificato un problema nella chiusura delle tapparelle."
     },
     "LIGHTS_ON": {
@@ -140,7 +144,7 @@ class Notification(hass.Hass):
         self.listen_event(self.notification, "AD_KAIROSHUB_NOTIFICATION")
         self.listen_event(self.pushMessage, "AD_NOTIFICATION_SYNC")
 
-    def notification(self, event_name, data, kwargs):
+    def notification(self, event_name: str, data: dict, kwargs: dict) -> None:
 
         noty_info, extra_data = self.getNotificationData(data)
 
@@ -148,7 +152,8 @@ class Notification(hass.Hass):
 
         self.dispatchNotification(notificationToSend, extra_data)
 
-    def buildNotification(self, severity, sender, code, trid, entityRef):
+    def buildNotification(self, severity: str, sender: str,
+                          code: str, trid: str, entityRef: str) -> dict:
         if None == self.systemCode:
             self.systemCode = self.get_state(KAIROSHUB_SYSTEM_CODE)
         message = self.getMessage(code, entityRef)
@@ -164,7 +169,7 @@ class Notification(hass.Hass):
         self.log("Notification : %s", noty, level="DEBUG")
         return noty
 
-    def dispatchNotification(self, notificationToSend, kwargs):
+    def dispatchNotification(self, notificationToSend: str, kwargs: dict) -> None:
 
         self.sendHubNotification(notificationToSend, kwargs)
         if (notificationToSend["sender"] == "*" or notificationToSend["sender"] != "") and notificationToSend["sender"] != "HUB":
@@ -179,7 +184,7 @@ class Notification(hass.Hass):
             # TODO: valutare se spostare nella funzione principale al fine di inviare sempre un aggiornamento
             self.fire_event("AD_ENTITY_METRICS")
 
-    def getMessage(self, code, entityRef):
+    def getMessage(self, code: str, entityRef: str) -> str:
         message = noty_message[code]["message"]
 
         if not message == "":
@@ -195,27 +200,7 @@ class Notification(hass.Hass):
         else:
             raise Exception("message not found")
 
-        # try:
-        #     with open(file) as f:
-        #         jsonData=json.load(f)
-        #     return jsonData[code]
-        # except FileNotFoundError:
-        #     self.log("File not found", level="WARNING")
-        #     self.log("Requesting notification message file to the cloud", level="INFO")
-        #     # eventData = {
-        #     #     "eventType" : "NOTIFICATION_MESSAGE_REQ",
-        #     #     "sender" : self.systemCode,
-        #     #     "message" : "NOTIFICATION MESSAGE REQUEST"
-        #     # }
-
-        #     # self.fire_event("HAKAFKA_PRODUCER_PRODUCE", topic="TECHNICAL", message=eventData)
-        #     with open(file, "w+") as f:
-        #         json.dump(noty_message, f)
-        #     self.fire_event("AD_KAIROSHUB_NOTIFICATION", sender=sender, ncode=code, type=type)
-        # except Exception:
-        #     raise
-
-    def pushMessage(self, event_name, data, kwargs):
+    def pushMessage(self, event_name: str, data: dict, kwargs: dict) -> None:
         self.log("Pushing message file", level="INFO")
 
         try:
@@ -224,20 +209,12 @@ class Notification(hass.Hass):
                 json.dump(jsonData, f)
         except FileNotFoundError:
             self.log("File not found", level="WARNING")
-        #     self.log("Requesting notification message file to the cloud", level="INFO")
-        #     # eventData = {
-        #     #     "eventType" : "NOTIFICATION_MESSAGE_REQ",
-        #     #     "sender" : self.systemCode,
-        #     #     "message" : "NOTIFICATION MESSAGE REQUEST"
-        #     # }
-
-        #     # self.fire_event("HAKAFKA_PRODUCER_PRODUCE", topic="TECHNICAL", message=eventData)
         except Exception:
             raise
 
         self.log("File pushed", level="INFO")
 
-    def getNotificationData(self, data):
+    def getNotificationData(self, data: dict) -> tuple:
         if "data" in data:
             data = data["data"]
         entity_id = data["entity"] if "entity" in data else None
@@ -249,8 +226,9 @@ class Notification(hass.Hass):
             "trid": data["trid"] if "trid" in data else "",
             "entityRef": entity_id,
         }
-        extra_data = data["kwargs"] if "kwargs" in data else {}
-        extra_data["entity_id"] = entity_id
+        extra_data = { "entity_id": entity_id }
+        if "kwargs" in data:
+            extra_data = { **extra_data, **data["kwargs"]}
 
         return noty_info, extra_data
 
@@ -320,8 +298,8 @@ class Notification(hass.Hass):
                     else:
                         extra_info = extra_info[:-2] + " e "
                         extra_info += zone
-            pos = 100-int(float(kwargs["rollers"]))
-            more_info = f"Tapparelle sono state chiuse al {pos}%"
+            # pos = 100-int(float(kwargs["rollers"]))
+            # more_info = f"Tapparelle sono state chiuse al {pos}%"
 
         if "SCENE_DAY" in code:
             label += " {}".format(kwargs["mode"])
@@ -338,8 +316,8 @@ class Notification(hass.Hass):
                     else:
                         extra_info = extra_info[:-2] + " e "
                         extra_info += zone
-            pos = int(float(kwargs["rollers"]))
-            more_info = f"Tapparelle sono state aperte al {pos}%"
+            # pos = int(float(kwargs["rollers"]))
+            # more_info = f"Tapparelle sono state aperte al {pos}%"
 
         if notification["sender"] != "HUB":
             label += " da Assistente Remoto"
@@ -364,8 +342,6 @@ class Notification(hass.Hass):
         self.send(label, extra_info)
 
     def sendBatteryNotification(self, code, label, entity):
-        entity = self.get_state(
-            entity, attribute='friendly_name').replace("_battery", "")
         if "SENSOR" in code:
             label = label.replace("#ENTITY#", entity)
 

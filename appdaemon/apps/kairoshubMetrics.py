@@ -1,5 +1,5 @@
 import hassapi as hass
-import kairoshubHeating
+import heatingManager
 
 class KairoshubMetrics(hass.Hass):
 

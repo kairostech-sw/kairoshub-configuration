@@ -157,13 +157,13 @@ views:
       - type: vertical-stack
         cards:
           - !include hakairos-configuration/frontend/panels/settings/luci.yaml
-  - path: impostazioni-sistema
+  - path: impostazioni-scenari
     panel: true
     visible: false
     cards:
       - type: vertical-stack
         cards:
-          - !include hakairos-configuration/frontend/panels/settings/system.yaml
+          - !include hakairos-configuration/frontend/panels/settings/scenes.yaml
   - path: rollers-program1
     panel: true
     visible: false
@@ -178,6 +178,13 @@ views:
       - type: vertical-stack
         cards:
           - !include hakairos-configuration/frontend/panels/lights/programs/p1.yaml
+  - path: lights-program2
+    panel: true
+    visible: false
+    cards:
+      - type: vertical-stack
+        cards:
+          - !include hakairos-configuration/frontend/panels/lights/programs/p2.yaml
   - path: lights-nightzone-room1
     panel: true
     visible: false
@@ -255,3 +262,87 @@ views:
       - type: vertical-stack
         cards:
           - !include hakairos-configuration/frontend/panels/lights/outdoor/room4.yaml
+  - path: lights-nightzone-program1
+    panel: true
+    visible: false
+    cards:
+      - type: vertical-stack
+        cards:
+          - !include hakairos-configuration/frontend/panels/lights/programs/prog1/nightzone.yaml
+  - path: lights-dayzone-program1
+    panel: true
+    visible: false
+    cards:
+      - type: vertical-stack
+        cards:
+          - !include hakairos-configuration/frontend/panels/lights/programs/prog1/dayzone.yaml
+  - path: lights-outdoor-program1
+    panel: true
+    visible: false
+    cards:
+      - type: vertical-stack
+        cards:
+          - !include hakairos-configuration/frontend/panels/lights/programs/prog1/outdoor.yaml
+  - path: lights-nightzone-program2
+    panel: true
+    visible: false
+    cards:
+      - type: vertical-stack
+        cards:
+          - !include hakairos-configuration/frontend/panels/lights/programs/prog2/nightzone.yaml
+  - path: lights-dayzone-program2
+    panel: true
+    visible: false
+    cards:
+      - type: vertical-stack
+        cards:
+          - !include hakairos-configuration/frontend/panels/lights/programs/prog2/dayzone.yaml
+  - path: lights-outdoor-program2
+    panel: true
+    visible: false
+    cards:
+      - type: vertical-stack
+        cards:
+          - !include hakairos-configuration/frontend/panels/lights/programs/prog2/outdoor.yaml
+  - path: settings-dayscene-lights-nightzone
+    panel: true
+    visible: false
+    cards:
+      - type: vertical-stack
+        cards:
+          - !include hakairos-configuration/frontend/panels/settings/luci/day_scene/nightzone.yaml
+  - path: settings-dayscene-lights-dayzone
+    panel: true
+    visible: false
+    cards:
+      - type: vertical-stack
+        cards:
+          - !include hakairos-configuration/frontend/panels/settings/luci/day_scene/dayzone.yaml
+  - path: settings-dayscene-lights-outdoor
+    panel: true
+    visible: false
+    cards:
+      - type: vertical-stack
+        cards:
+          - !include hakairos-configuration/frontend/panels/settings/luci/day_scene/outdoor.yaml
+  - path: settings-athomescene-lights-nightzone
+    panel: true
+    visible: false
+    cards:
+      - type: vertical-stack
+        cards:
+          - !include hakairos-configuration/frontend/panels/settings/luci/athome_scene/nightzone.yaml
+  - path: settings-athomescene-lights-dayzone
+    panel: true
+    visible: false
+    cards:
+      - type: vertical-stack
+        cards:
+          - !include hakairos-configuration/frontend/panels/settings/luci/athome_scene/dayzone.yaml
+  - path: settings-athomescene-lights-outdoor
+    panel: true
+    visible: false
+    cards:
+      - type: vertical-stack
+        cards:
+          - !include hakairos-configuration/frontend/panels/settings/luci/athome_scene/outdoor.yaml

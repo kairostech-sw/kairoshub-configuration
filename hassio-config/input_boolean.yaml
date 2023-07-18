@@ -31,9 +31,16 @@ at_home:
 night:
   name: Notte
 calibrate_rollers:
-  name: Calibrazione Tapparelle
+  name: "Calibra Tapparelle"
+  icon: "mdi:cog-outline"
 calibrate_trvs:
-  name: Calibrazione Teste Termostatiche
+  name: "Calibra Teste Termostatiche"
+  icon: "mdi:cog-outline"
+
+heater_zn100_manual_on:
+  name: Zona Notte Manuale Attivo
+heater_zn200_manual_on:
+  name: Zona Giorno Manuale Attivo
 heater_program1:
   name: Programma 1
 heater_program2:
@@ -50,6 +57,7 @@ heater_program3_on:
   name: Programma 3 Attivo
 heater_program4_on:
   name: Programma 4 Attivo
+
 heater_zn101_program1:
   name: Zona Notte 1
 heater_zn101_program1_on:
@@ -190,66 +198,201 @@ zn203_alert:
   name: Zona Notte
 
 thermostat_monday_program1:
-  name: Lunedì
+  <<: &monday
+    name: LUN
 thermostat_monday_program2:
-  name: Lunedì
+  <<: *monday
 thermostat_monday_program3:
-  name: Lunedì
+  <<: *monday
 thermostat_monday_program4:
-  name: Lunedì
+  <<: *monday
 thermostat_tuesday_program1:
-  name: Martedì
+  <<: &tuesday
+    name: MAR
 thermostat_tuesday_program2:
-  name: Martedì
+  <<: *tuesday
 thermostat_tuesday_program3:
-  name: Martedì
+  <<: *tuesday
 thermostat_tuesday_program4:
-  name: Martedì
+  <<: *tuesday
 thermostat_wednesday_program1:
-  name: Mercoledì
+  <<: &wednesday
+    name: MER
 thermostat_wednesday_program2:
-  name: Mercoledì
+  <<: *wednesday
 thermostat_wednesday_program3:
-  name: Mercoledì
+  <<: *wednesday
 thermostat_wednesday_program4:
-  name: Mercoledì
+  <<: *wednesday
 thermostat_thursday_program1:
-  name: Giovedì
+  <<: &thursday
+    name: GIO
 thermostat_thursday_program2:
-  name: Giovedì
+  <<: *thursday
 thermostat_thursday_program3:
-  name: Giovedì
+  <<: *thursday
 thermostat_thursday_program4:
-  name: Giovedì
+  <<: *thursday
 thermostat_friday_program1:
-  name: Venerdì
+  <<: &friday
+    name: VEN
 thermostat_friday_program2:
-  name: Venerdì
+  <<: *friday
 thermostat_friday_program3:
-  name: Venerdì
+  <<: *friday
 thermostat_friday_program4:
-  name: Venerdì
+  <<: *friday
 thermostat_saturday_program1:
-  name: Sabato
+  <<: &saturday
+    name: SAB
 thermostat_saturday_program2:
-  name: Sabato
+  <<: *saturday
 thermostat_saturday_program3:
-  name: Sabato
+  <<: *saturday
 thermostat_saturday_program4:
-  name: Sabato
+  <<: *saturday
 thermostat_sunday_program1:
-  name: Domenica
+  <<: &sunday
+    name: DOM
 thermostat_sunday_program2:
-  name: Domenica
+  <<: *sunday
 thermostat_sunday_program3:
-  name: Domenica
+  <<: *sunday
 thermostat_sunday_program4:
-  name: Domenica
+  <<: *sunday
 
-light_program1:
+lights_program1:
   name: Programma 1
-light_program1_on:
+lights_program1_on:
   name: Programma 1 Attivo
+lights_program2:
+  name: Programma 2
+lights_program2_on:
+  name: Programma 2 Attivo
+
+lights_zn101_program1:
+  name: Zona Notte 1
+lights_zn101_program1_on:
+  name: Zona Notte 1 Attivo
+lights_zn102_program1:
+  name: Zona Notte 2
+lights_zn102_program1_on:
+  name: Zona Notte 2 Attivo
+lights_zn103_program1:
+  name: Zona Notte 3
+lights_zn103_program1_on:
+  name: Zona Notte 3 Attivo
+lights_zn104_program1:
+  name: Zona Notte 4
+lights_zn104_program1_on:
+  name: Zona Notte 4 Attivo
+
+lights_zn201_program1:
+  name: Zona Giorno 1
+lights_zn201_program1_on:
+  name: Zona Giorno 1 Attivo
+lights_zn202_program1:
+  name: Zona Giorno 2
+lights_zn202_program1_on:
+  name: Zona Giorno 2 Attivo
+lights_zn203_program1:
+  name: Zona Giorno 3
+lights_zn203_program1_on:
+  name: Zona Giorno 3 Attivo
+
+lights_zn301_program1:
+  name: Zona Notte 1
+lights_zn301_program1_on:
+  name: Zona Notte 1 Attivo
+lights_zn302_program1:
+  name: Zona Notte 2
+lights_zn302_program1_on:
+  name: Zona Notte 2 Attivo
+lights_zn303_program1:
+  name: Zona Notte 3
+lights_zn303_program1_on:
+  name: Zona Notte 3 Attivo
+lights_zn304_program1:
+  name: Zona Notte 4
+lights_zn304_program1_on:
+  name: Zona Notte 4 Attivo
+
+lights_zn101_program2:
+  name: Zona Notte 1
+lights_zn101_program2_on:
+  name: Zona Notte 1 Attivo
+lights_zn102_program2:
+  name: Zona Notte 2
+lights_zn102_program2_on:
+  name: Zona Notte 2 Attivo
+lights_zn103_program2:
+  name: Zona Notte 3
+lights_zn103_program2_on:
+  name: Zona Notte 3 Attivo
+lights_zn104_program2:
+  name: Zona Notte 4
+lights_zn104_program2_on:
+  name: Zona Notte 4 Attivo
+
+lights_zn201_program2:
+  name: Zona Giorno 1
+lights_zn201_program2_on:
+  name: Zona Giorno 1 Attivo
+lights_zn202_program2:
+  name: Zona Giorno 2
+lights_zn202_program2_on:
+  name: Zona Giorno 2 Attivo
+lights_zn203_program2:
+  name: Zona Giorno 3
+lights_zn203_program2_on:
+  name: Zona Giorno 3 Attivo
+
+lights_zn301_program2:
+  name: Zona Notte 1
+lights_zn301_program2_on:
+  name: Zona Notte 1 Attivo
+lights_zn302_program2:
+  name: Zona Notte 2
+lights_zn302_program2_on:
+  name: Zona Notte 2 Attivo
+lights_zn303_program2:
+  name: Zona Notte 3
+lights_zn303_program2_on:
+  name: Zona Notte 3 Attivo
+lights_zn304_program2:
+  name: Zona Notte 4
+lights_zn304_program2_on:
+  name: Zona Notte 4 Attivo
+
+lights_monday_program1:
+  <<: *monday
+lights_monday_program2:
+  <<: *monday
+lights_tuesday_program1:
+  <<: *tuesday
+lights_tuesday_program2:
+  <<: *tuesday
+lights_wednesday_program1:
+  <<: *wednesday
+lights_wednesday_program2:
+  <<: *wednesday
+lights_thursday_program1:
+  <<: *thursday
+lights_thursday_program2:
+  <<: *thursday
+lights_friday_program1:
+  <<: *friday
+lights_friday_program2:
+  <<: *friday
+lights_saturday_program1:
+  <<: *saturday
+lights_saturday_program2:
+  <<: *saturday
+lights_sunday_program1:
+  <<: *sunday
+lights_sunday_program2:
+  <<: *sunday
+
 copy_lights_zn101:
   name: Copia Luci Zona
 copy_lights_zn102:
@@ -277,3 +420,132 @@ rollers_program1:
   name: Programma 1 Tapparelle
 rollers_program1_on:
   name: Programma 1 Tapparelle Attivo
+rollers_program2:
+  name: Programma 2 Tapparelle
+rollers_program2_on:
+  name: Programma 2 Tapparelle Attivo
+
+rollers_zn101_program1:
+  name: Zona Notte Tapparelle 1
+rollers_zn101_program1_on:
+  name: Zona Notte Tapparelle 1 Attivo
+rollers_zn102_program1:
+  name: Zona Notte Tapparelle 2
+rollers_zn102_program1_on:
+  name: Zona Notte Tapparelle 2 Attivo
+rollers_zn103_program1:
+  name: Zona Notte Tapparelle 3
+rollers_zn103_program1_on:
+  name: Zona Notte Tapparelle 3 Attivo
+rollers_zn104_program1:
+  name: Zona Notte Tapparelle 4
+rollers_zn104_program1_on:
+  name: Zona Notte Tapparelle 4 Attivo
+
+rollers_zn201_program1:
+  name: Zona Giorno Tapparelle 1
+rollers_zn201_program1_on:
+  name: Zona Giorno Tapparelle 1 Attivo
+rollers_zn202_program1:
+  name: Zona Giorno Tapparelle 2
+rollers_zn202_program1_on:
+  name: Zona Giorno Tapparelle 2 Attivo
+rollers_zn203_program1:
+  name: Zona Giorno Tapparelle 3
+rollers_zn203_program1_on:
+  name: Zona Giorno Tapparelle 3 Attivo
+
+rollers_zn101_program2:
+  name: Zona Notte Tapparelle 1
+rollers_zn101_program2_on:
+  name: Zona Notte Tapparelle 1 Attivo
+rollers_zn102_program2:
+  name: Zona Notte Tapparelle 2
+rollers_zn102_program2_on:
+  name: Zona Notte Tapparelle 2 Attivo
+rollers_zn103_program2:
+  name: Zona Notte Tapparelle 3
+rollers_zn103_program2_on:
+  name: Zona Notte Tapparelle 3 Attivo
+rollers_zn104_program2:
+  name: Zona Notte Tapparelle 4
+rollers_zn104_program2_on:
+  name: Zona Notte Tapparelle 4 Attivo
+
+rollers_zn201_program2:
+  name: Zona Giorno Tapparelle 1
+rollers_zn201_program2_on:
+  name: Zona Giorno Tapparelle 1 Attivo
+rollers_zn202_program2:
+  name: Zona Giorno Tapparelle 2
+rollers_zn202_program2_on:
+  name: Zona Giorno Tapparelle 2 Attivo
+rollers_zn203_program2:
+  name: Zona Giorno Tapparelle 3
+rollers_zn203_program2_on:
+  name: Zona Giorno Tapparelle 3 Attivo
+
+rollers_monday_program1:
+  <<: *monday
+rollers_monday_program2:
+  <<: *monday
+rollers_tuesday_program1:
+  <<: *tuesday
+rollers_tuesday_program2:
+  <<: *tuesday
+rollers_wednesday_program1:
+  <<: *wednesday
+rollers_wednesday_program2:
+  <<: *wednesday
+rollers_thursday_program1:
+  <<: *thursday
+rollers_thursday_program2:
+  <<: *thursday
+rollers_friday_program1:
+  <<: *friday
+rollers_friday_program2:
+  <<: *friday
+rollers_saturday_program1:
+  <<: *saturday
+rollers_saturday_program2:
+  <<: *saturday
+rollers_sunday_program1:
+  <<: *sunday
+rollers_sunday_program2:
+  <<: *sunday
+
+rollers_scene_day:
+  <<: &rollers-scene
+    icon: "mdi:window-shutter"
+    name: "Tapparelle"
+
+lights_scene_day:
+  <<: &lights-scene
+    icon: "mdi:lightbulb"
+    name: "Luci"
+
+rollers_scene_athome:
+  <<: *rollers-scene
+
+lights_scene_athome:
+  <<: *lights-scene
+
+scene_monday_day:
+  <<: *monday
+scene_tuesday_day:
+  <<: *tuesday
+scene_wednesday_day:
+  <<: *wednesday
+scene_thursday_day:
+  <<: *thursday
+scene_friday_day:
+  <<: *friday
+scene_saturday_day:
+  <<: *saturday
+scene_sunday_day:
+  <<: *sunday
+
+scene_day_active:
+  name: " "
+scene_athome_active:
+  name: " "

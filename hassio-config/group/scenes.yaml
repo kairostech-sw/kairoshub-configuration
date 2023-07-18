@@ -1,0 +1,10 @@
+scene_day_days:
+  name: "Tutti"
+  entities:
+    - input_boolean.scene_monday_day
+    - input_boolean.scene_tuesday_day
+    - input_boolean.scene_wednesday_day
+    - input_boolean.scene_thursday_day
+    - input_boolean.scene_friday_day
+    - input_boolean.scene_saturday_day
+    - input_boolean.scene_sunday_day

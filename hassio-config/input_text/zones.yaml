@@ -1,13 +1,4 @@
-system_code:
-  name: Identificativo Sistema
-system_name:
-  name: Casa
-system_key:
-  name: Chiave Impianto
-notify:
-  name: "Logbook card"
-
-#Stanze Zona Notte
+#Zona Notte
 zn100:
   name: ZN100
   initial: Zona Notte
@@ -23,7 +14,8 @@ zn103:
 zn104:
   name: ZN104
   initial: Bagno 1
-#Stanze Zona Giorno
+
+#Zona Giorno
 zn200:
   name: ZN200
   initial: Zona Giorno
@@ -36,6 +28,7 @@ zn202:
 zn203:
   name: ZN203
   initial: Bagno 2
+
 #Zona Esterno
 zn300:
   name: ZN300
@@ -52,13 +45,3 @@ zn303:
 zn304:
   name: ZN304
   initial: Viale
-
-#Alexa Integration
-alexa_subscription_state:
-  name: Stato Sottoiscrizione
-alexa_subscription_activation_date:
-  name: Data Attivazione
-alexa_subscription_renew_date:
-  name: Data Rinnovo
-alexa_auto_renew:
-  name: Rinnovo Automatico

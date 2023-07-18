@@ -1,3 +1,8 @@
+heater_manual_on:
+  name: Accensione Manuale
+  entities:
+    - input_boolean.heater_zn100_manual_on
+    - input_boolean.heater_zn200_manual_on
 heater_program1:
   name: Programma 1
   entities:
