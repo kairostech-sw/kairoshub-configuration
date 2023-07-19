@@ -231,6 +231,21 @@ def on_connect(client, userdata, flags, rc):
         logging.info("Current IP Address [%s]", ip.decode("utf-8").strip("\n"))
         client.publish(TOPIC_HUB_IP, ip, qos=1, retain=True)
 
+        logging.info("Copying custom configuration files")
+        try:
+            os.system(
+                "sudo cp /home/pi/workspace/hakairos-configuration/scripts/os/splash.png /usr/share/plymouth/themes/pix")
+            logging.info("Splash file copied")
+        except Exception as e:
+            logging.warning("Error on copying splash file. [%s]", (e))
+
+        try:
+            os.system(
+                "cp /home/pi/workspace/hakairos-configuration/scripts/os/kairoshub-startup.sh /home/pi")
+            logging.info("Startup file copied")
+        except Exception as e:
+            logging.warning("Error on copying splash file. [%s]", (e))
+
         logging.info("Kairoshub autoconfiguration endend.")
     except Exception as e:
         logging.warning("kairoshub autoconfiguration failed. [%s]", (e))
