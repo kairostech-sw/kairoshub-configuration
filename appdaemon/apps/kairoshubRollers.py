@@ -1,6 +1,6 @@
 import hassapi as hass
 import re
-from datetime import datetime
+from datetime import datetime, timedelta
 
 class KairoshubRollers(hass.Hass):
 
@@ -107,12 +107,7 @@ class KairoshubRollers(hass.Hass):
         trid = self.getKey(data, "trid")
 
         now = datetime.strptime(self.get_state("sensor.date_time_iso"), self.datetimeFormat)
-        date = now.strftime(self.dateFormat)
         today = now.strftime("%A").lower()
-        onTime = self.get_state(f"input_datetime.rollers_on_program{progId}")
-        offTime = self.get_state(f"input_datetime.rollers_off_program{progId}")
-        onTime = datetime.strptime(date + onTime, self.datetimeFormat)
-        offTime = datetime.strptime(date + offTime, self.datetimeFormat)
 
         if self.get_state(f"input_boolean.rollers_{today}_program{progId}") == "off":
             self.log("The Program is not active for today", level="INFO")
@@ -139,6 +134,14 @@ class KairoshubRollers(hass.Hass):
         if trid:
             notyInfo["trid"] = trid
             programData["trid"] = trid
+
+        date = now.strftime(self.dateFormat)
+        onTime = self.get_state(f"input_datetime.rollers_on_program{progId}")
+        offTime = self.get_state(f"input_datetime.rollers_off_program{progId}")
+        onTime = datetime.strptime(date + onTime, self.datetimeFormat)
+        offTime = datetime.strptime(date + offTime, self.datetimeFormat)
+        if onTime > offTime:
+            offTime = offTime + timedelta(days=1)
 
         validTime = self.isValidTime(now, offTime)
 

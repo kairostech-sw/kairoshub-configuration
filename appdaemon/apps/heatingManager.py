@@ -59,7 +59,7 @@ class HeatingManager(hass.Hass):
         today = now.strftime("%A").lower()
 
         self.checkFile(now)
-        now = now.strftime(self.timeFormat)
+        date = now.date().strftime(self.dateFormat)
 
         activeProgram = self.isProgramOn(progId)
         if activeProgram > 0:
@@ -78,9 +78,12 @@ class HeatingManager(hass.Hass):
             return None
 
         program_schedule = self.getProgramSchedule(progId)
-        start_time = program_schedule["start"]
-        end_time = program_schedule["end"]
+        start_time = datetime.strptime(date + program_schedule["start"], self.datetime_format)
+        end_time = datetime.strptime(date + program_schedule["end"], self.datetime_format)
         status = program_schedule["status"]
+        if start_time > end_time:
+            end_time = end_time + timedelta(days=1)
+
         validTime = self.isValidTime(now, end_time)
 
         if status == "manual off":
@@ -322,13 +325,23 @@ class HeatingManager(hass.Hass):
             Checks if the schedule file exits and is valid.
             If not, it creates the file
         '''
-        if not path.exists(self.file):
-            self.createSchedule(now)
+        try:
+            with open(self.file, "r") as f:
+                fileData = json.load(f)
 
-        with open(self.file, "r") as f:
-            fileData = json.load(f)
+            if "lifetime" not in fileData or datetime.strptime(fileData["lifetime"], self.dateFormat) < now:
+                self.createSchedule(now)
+                return None
 
-        if "lifetime" not in fileData or datetime.strptime(fileData["lifetime"], self.dateFormat) < now:
+            for id in range(1,5):
+                program = fileData[f"program{id}"]
+                startTime = self.get_state(f"input_datetime.thermostat_on_period{id}")
+                endTime = self.get_state(f"input_datetime.thermostat_off_period{id}")
+                if program["start"] != startTime or program["end"] != endTime:
+                    self.log("Updating Schedule to match changes", level="INFO")
+                    self.createSchedule(now)
+                    return None
+        except FileNotFoundError:
             self.createSchedule(now)
 
     def createSchedule(self, now: datetime) -> None:

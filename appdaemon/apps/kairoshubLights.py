@@ -46,12 +46,7 @@ class KairoshubLights(hass.Hass):
         trid = self.getKey(data, "trid")
 
         now = datetime.strptime(self.get_state("sensor.date_time_iso"), self.datetimeFormat)
-        date = now.strftime(self.dateFormat)
         today = now.strftime("%A").lower()
-        onTime = self.get_state(f"input_datetime.lights_on_program{progId}")
-        offTime = self.get_state(f"input_datetime.lights_off_program{progId}")
-        onTime = datetime.strptime(date + onTime, self.datetimeFormat)
-        offTime = datetime.strptime(date + offTime, self.datetimeFormat)
 
         notyInfo = {
             "sender": sender,
@@ -74,6 +69,14 @@ class KairoshubLights(hass.Hass):
         if self.get_state(f"input_boolean.lights_{today}_program{progId}") == "off":
             self.log("The Program is not active for today", level="INFO")
             return None
+
+        date = now.strftime(self.dateFormat)
+        onTime = self.get_state(f"input_datetime.lights_on_program{progId}")
+        offTime = self.get_state(f"input_datetime.lights_off_program{progId}")
+        onTime = datetime.strptime(date + onTime, self.datetimeFormat)
+        offTime = datetime.strptime(date + offTime, self.datetimeFormat)
+        if onTime > offTime:
+            offTime = offTime + timedelta(days=1)
 
         validTime = self.isValidTime(now, offTime)
 
@@ -326,6 +329,7 @@ class KairoshubLights(hass.Hass):
         return zones
 
     def isValidTime(self, now: datetime, end: datetime) -> int:
+        self.log(f"\n\tnow: {now}\n\tend: {end}")
         return now < end
 
     def isProgramOn(self, progId: int) -> int:
