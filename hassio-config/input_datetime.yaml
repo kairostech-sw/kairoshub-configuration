@@ -49,7 +49,7 @@ lights_off_program2:
   <<: *no-date-off
 
 light_offset_sunset:
-  name: Durata Massima di Accensione Luci
+  name: Spegnimento Automatico Luci Dopo
   has_date: false
   has_time: true
 

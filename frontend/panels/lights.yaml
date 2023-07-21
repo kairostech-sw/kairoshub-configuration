@@ -1,13 +1,29 @@
 type: "custom:button-card"
 template: basic_page_layout
+triggers_update:
+  - input_boolean.lights_program1_on
+  - input_boolean.lights_program2_on
+  - input_boolean.lights_program3_on
+  - input_boolean.lights_program4_on
 custom_fields:
   header:
     card:
       type: "custom:button-card"
       template: header_page_text
       icon: "mdi:lightbulb"
-      name: "LUCI"
       label: "Luci /"
+      name: >
+        [[[
+          var input = `input_boolean.lights_program`;
+          var label = "LUCI"
+          for (var i=1; i<3; i++) {
+            if (states[input+`${i}_on`].state === "on") {
+              label += ` (PROGRAMMA ${i} ATTIVO)`;
+            }
+          }
+
+          return label;
+        ]]]
   commandbar:
     card:
       type: "custom:button-card"
