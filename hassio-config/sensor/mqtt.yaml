@@ -34,6 +34,18 @@
   platform: mqtt
   state_topic: "kairostech/os_version"
 
+- name: kairoshub_netguestlink
+  platform: mqtt
+  state_topic: "kairostech/net/guestlink"
+
+- name: kairoshub_netcheckinternet
+  platform: mqtt
+  state_topic: "kairostech/net/guestlink/checkinternet"
+
+- name: kairoshub_net
+  platform: mqtt
+  state_topic: "kairostech/net"
+
 - name: kairoshub_hostname
   platform: mqtt
   state_topic: "kairostech/hostname"

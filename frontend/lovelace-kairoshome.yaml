@@ -164,6 +164,14 @@ views:
       - type: vertical-stack
         cards:
           - !include hakairos-configuration/frontend/panels/settings/scenes.yaml
+  - path: impostazioni-associa
+    panel: true
+    visible: false
+    cards:
+      - type: vertical-stack
+        cards:
+          - !include hakairos-configuration/frontend/panels/settings/associa.yaml
+
   - path: rollers-program1
     panel: true
     visible: false

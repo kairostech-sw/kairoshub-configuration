@@ -70,3 +70,17 @@ custom_fields:
           name: "Scenari"
           variables:
             navigation_path: impostazioni-scenari
+        - type: entity-filter
+          entities:
+            - entity: sensor.kairoshub_osversion
+              state_filter:
+                - operator: "in"
+                  value: "2023."
+          card:
+            type: "custom:button-card"
+            template: settings_card
+            icon: "mdi:vector-link"
+            name: "Associa"
+            variables:
+              navigation_path: impostazioni-associa
+          show_empty: false

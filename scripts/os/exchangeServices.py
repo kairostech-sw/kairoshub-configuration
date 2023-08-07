@@ -6,6 +6,8 @@ import json
 import socket
 from subprocess import check_output
 from subprocess import CalledProcessError
+from urllib.request import urlopen as url
+from threading import Thread
 
 
 TOPIC_COMMAND = "kairostech/command"
@@ -24,6 +26,11 @@ TOPIC_HUB_SSID = "kairostech/ssid"
 TOPIC_HUB_SIGNAL = "kairostech/signal"
 TOPIC_HUB_IP = "kairostech/ip_address"
 
+TOPIC_NET_GUEST_LINK = "kairostech/net/guestlink"
+TOPIC_NET_GUEST_SSID = "kairostech/net/guestlink/ssid"
+TOPIC_NET_GUEST_INTERNET_CONNECTION = "kairostech/net/guestlink/checkinternet"
+TOPIC_NET_KAIROSHUB = "kairostech/net"
+
 ASSISTANCE_START_COMMAND = "ASSISTANCE_START"
 ASSISTANCE_STOP_COMMAND = "ASSISTANCE_STOP"
 KAIROSHUB_RELEASE_COMMAND = "KAIROSHUB_RELEASE_CHECK"
@@ -38,7 +45,10 @@ logging.basicConfig(filename=KAIROSHUB_ES_LOG_FILE,
                     level=logging.INFO, format="%(asctime)s %(message)s")
 
 global vpn_pid
+global hubWifiSSID
+global hubWifiPwd
 
+hubState = "NORMAL"
 kairoshubConfigurationSwBranchRef = ""
 kairoshubSwBranchRef = ""
 
@@ -128,6 +138,7 @@ def on_message(client, userdata, msg):
 
             return
 
+        # SET CONSUMER TOPIC
         if "SET_CONSUMER_TOPIC_" in payload:
             systemCode: str = payload[-6:]
             if "00" in systemCode:
@@ -148,9 +159,74 @@ def on_message(client, userdata, msg):
                         file.write(newFileData)
                         os.system("docker restart kairoshub")
 
+        # SERVICE EXCHANGE
         if payload == "KAIROSHUB_SYSTEM_EXCHANGE_CHECK":
             client.publish(TOPIC_EXCHANGE_SERVICE_CHECK,
                            time.time(), qos=1, retain=True)
+
+        # AP MODE
+        if "AP_MODE" == payload:
+            logging.info("Entering into WIFI AP mode")
+            hostapd_setup("KAIROSHUB_AP", "kairostech!")
+
+        # AP MODE EXIT
+        if "AP_MODE_EXIT" == payload:
+            logging.info("Exiting AP mode, Entering into Router mode..")
+            hostapd_setup(hubWifiSSID, hubWifiPwd)
+
+        # WIFIAUTH
+        if "WIFIAUTH" in payload:
+            logging.info("Getting wifi auth parameters")
+            params = payload.removeprefix("WIFIAUTH_").split("_")
+
+            logging.info(
+                "Building new WIFI supplicant config file with given params")
+            with open("/home/pi/workspace/hakairos-configuration/scripts/os/kairoshub-wpa-supplicant.conf", 'r') as file:
+                wpaSupplicant = file.read()
+                wpaSupplicant = wpaSupplicant.replace("{SSID}", params[0])
+                wpaSupplicant = wpaSupplicant.replace("{PWD}", params[1])
+
+            # give access and writing. may have to do this manually beforehand
+            os.popen("sudo chmod a+w /etc/wpa_supplicant/wpa_supplicant.conf")
+
+            # writing to file
+            with open("/etc/wpa_supplicant/wpa_supplicant.conf", "w") as wifi:
+                wifi.write(wpaSupplicant)
+
+            logging.info("Wifi config updated. Trying to connect..")
+            # refresh configs
+            os.popen("sudo wpa_cli -i wlan1 reconfigure")
+
+            time.sleep(10)
+            logging.info(
+                "checking if the interface it is connected to the target wifi")
+            connected = True
+            try:
+                if params[0] != check_output(["iwgetid", "wlan1", "-r"]).decode("utf-8").strip():
+                    connected = False
+            except CalledProcessError as e:
+                connected = False
+
+            if connected:
+                logging.info("Interface connected to the target wifi")
+                client.publish(TOPIC_NET_GUEST_LINK, "OK", qos=1, retain=True)
+                client.publish(TOPIC_NET_GUEST_SSID,
+                               params[0], qos=1, retain=True)
+
+                logging.info("Exiting AP mode, Entering into Router mode..")
+                hostapd_setup(hubWifiSSID, hubWifiPwd)
+
+            else:
+                logging.warning("interface not connected...retry")
+                client.publish(TOPIC_NET_GUEST_LINK,
+                               "FAIL", qos=1, retain=True)
+                client.publish(TOPIC_NET_GUEST_SSID, "", qos=1, retain=True)
+
+        if "CHECK_INTERNET_CONNECTION" in payload:
+            logging.info("Starting internet connection coroutine")
+            thread = Thread(target=checkInternetConnection)
+            thread.start()
+
     else:
         if msg.topic == TOPIC_KAIROSHUB_CONF_SW_BRANCH:
             logging.info("Getting kairoshub configuration sw branch info")
@@ -159,6 +235,10 @@ def on_message(client, userdata, msg):
         elif msg.topic == TOPIC_KAIROSHUB_SW_BRANCH:
             logging.info("Getting kairoshub sw branch info")
             kairoshubSwBranchRef = payload
+
+        elif msg.topic == TOPIC_STATE:
+            logging.info("Getting hub state")
+            hubState = payload
 
 
 def on_publish(client, userdata, mid):
@@ -201,6 +281,10 @@ def on_connect(client, userdata, flags, rc):
                     os.system("sudo reboot")
                 else:
                     logging.info("Hostname already set. Skipping..")
+
+                global hubWifiSSID, hubWifiPwd
+                hubWifiSSID = data["wifi_ssid"]
+                hubWifiPwd = data["wifi_pwd"]
 
             except Exception as e:
                 logging.warning("Setting hostname failed. [%s]", (e))
@@ -259,6 +343,63 @@ def on_disconnect(client, userdata, rc):
         logging.warning(
             "Unexpected MQTT disconnection. Will restart the service")
         os.system("sudo service kairoshub-assistance restart")
+
+
+def hostapd_setup(ssid, pwd):
+    logging.info("Opening kairoshub wifi configuation file")
+    try:
+        with open("/home/pi/workspace/hakairos-configuration/scripts/os/kairoshub-ap-mode.conf", 'r') as file:
+            configuration = file.read()
+            configuration = configuration.replace("{SSID}", ssid)
+            configuration = configuration.replace("{PWD}", pwd)
+
+            logging.debug("Writing hostapd file")
+            with open("/etc/hostapd/hostapd.conf", "w") as apFile:
+                apFile.write(configuration)
+
+            logging.info("Wifi config refreshed. Restarting wlan interface")
+            os.popen("sudo systemctl restart hostapd.service")
+            time.sleep(5)
+
+            hubState = "NORMAL"
+            if "KAIROSHUB_AP" == ssid:
+                hubState = "AP_MODE"
+
+            try:
+                if ssid == check_output(["iwgetid", "wlan2", "-r"]).decode("utf-8").strip():
+                    client.publish(TOPIC_NET_KAIROSHUB,
+                                   "OK (0)", qos=1, retain=True)
+
+                    client.publish(TOPIC_STATE, hubState, qos=1, retain=True)
+                else:
+                    raise CalledProcessError(-1)
+            except CalledProcessError as e:
+                client.publish(TOPIC_NET_KAIROSHUB, "FAIL", qos=1, retain=True)
+
+    except Exception as e:
+        logging.error("Error occourred [%s]", (e))
+
+
+def checkInternetConnection():
+    while (True):
+        try:
+            url('https://www.google.com/search?q=kairos+tech+domotica+risparmio+energetico', timeout=3)
+            logging.info(
+                "Internet connection present")
+            client.publish(TOPIC_NET_GUEST_INTERNET_CONNECTION,
+                           "OK", qos=1, retain=True)
+
+            clientCount = check_output(
+                ["sudo iw dev wlan2 station dump", "| grep 'Station'", "| wc -l"]).decode("utf-8").strip()
+            client.publish(TOPIC_NET_KAIROSHUB,
+                           "OK ("+clientCount+")", qos=1, retain=True)
+
+        except ConnectionError as e:
+            logging.warning(
+                "Absent internet connection")
+            client.publish(TOPIC_NET_GUEST_INTERNET_CONNECTION,
+                           "FAIL", qos=1, retain=True)
+        time.sleep(33)
 
 
 client = paho.Client()
