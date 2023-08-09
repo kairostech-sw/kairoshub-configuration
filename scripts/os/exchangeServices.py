@@ -4,11 +4,13 @@ import paho.mqtt.client as paho
 import logging
 import json
 import socket
+import re
 from subprocess import check_output
 from subprocess import CalledProcessError
 from urllib.request import urlopen as url
 from threading import Thread
-
+import requests
+from flask import Flask
 
 TOPIC_COMMAND = "kairostech/command"
 TOPIC_KAIROSHUB_SW_BRANCH = "kairostech/kairoshub/branch"
@@ -22,14 +24,14 @@ TOPIC_HUB_OSVERSION = "kairostech/os_version"
 TOPIC_HUB_HOSTNAME = "kairostech/hostname"
 TOPIC_HUB_OWNER = "kairostech/owner"
 TOPIC_HUB_SYSTEM_CODE = "kairostech/system_code"
-TOPIC_HUB_SSID = "kairostech/ssid"
-TOPIC_HUB_SIGNAL = "kairostech/signal"
-TOPIC_HUB_IP = "kairostech/ip_address"
 
-TOPIC_NET_GUEST_LINK = "kairostech/net/guestlink"
-TOPIC_NET_GUEST_SSID = "kairostech/net/guestlink/ssid"
-TOPIC_NET_GUEST_INTERNET_CONNECTION = "kairostech/net/guestlink/checkinternet"
-TOPIC_NET_KAIROSHUB = "kairostech/net"
+TOPIC_NET_GUEST_LINK = "kairostech/network/guestlink"
+TOPIC_NET_GUEST_SSID = "kairostech/network/guestlink/ssid"
+TOPIC_NET_GUEST_SIGNAL = "kairostech/network/guestlink/signal"
+TOPIC_NET_GUEST_IP = "kairostech/network/guestlink/ip"
+TOPIC_NET_GUEST_INTERNET_CONNECTION = "kairostech/network/guestlink/checkinternet"
+TOPIC_NET_KAIROSHUB = "kairostech/network/kt"
+TOPIC_NET_KAIROSHUB_SSID = "kairostech/network/kt/ssid"
 
 ASSISTANCE_START_COMMAND = "ASSISTANCE_START"
 ASSISTANCE_STOP_COMMAND = "ASSISTANCE_STOP"
@@ -42,11 +44,15 @@ KAIROSHUB_ES_LOG_FILE = "/home/pi/workspace/logs/exchange-services.log"
 KAIROSHUB_INIT_FILE = "/boot/kairoshub.json"
 
 logging.basicConfig(filename=KAIROSHUB_ES_LOG_FILE,
-                    level=logging.INFO, format="%(asctime)s %(message)s")
+                    level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
+
+flaskAPP = Flask(__name__)
 
 global vpn_pid
 global hubWifiSSID
 global hubWifiPwd
+global guestWifiSSID
+global osVersion
 
 hubState = "NORMAL"
 kairoshubConfigurationSwBranchRef = ""
@@ -59,7 +65,6 @@ def on_message(client, userdata, msg):
 
     payload = msg.payload.decode("utf-8")
     if msg.topic == TOPIC_COMMAND:
-        logging.info("Incoming command: %s on topic: %s", payload, msg.topic)
         # ASSISTANCE_START_COMMAND
         if payload == ASSISTANCE_START_COMMAND:
             # check if already exists a vpn process
@@ -166,46 +171,61 @@ def on_message(client, userdata, msg):
 
         # AP MODE
         if "AP_MODE" == payload:
+            if not re.search("(202[3-9].[0-1][0-9])", osVersion):
+                logging.warning(
+                    "Function not allowed for this os version. Skipping..")
+                return
+
             logging.info("Entering into WIFI AP mode")
+            client.publish(TOPIC_NET_KAIROSHUB, "----", qos=1, retain=True)
+            client.publish(TOPIC_NET_GUEST_INTERNET_CONNECTION,
+                           "----", qos=1, retain=True)
+            client.publish(TOPIC_NET_GUEST_LINK, "----", qos=1, retain=True)
+
             hostapd_setup("KAIROSHUB_AP", "kairostech!")
 
         # AP MODE EXIT
         if "AP_MODE_EXIT" == payload:
+            if not re.search("(202[3-9].[0-1][0-9])", osVersion):
+                logging.warning(
+                    "Function not allowed for this os version. Skipping..")
+                return
+
             logging.info("Exiting AP mode, Entering into Router mode..")
             hostapd_setup(hubWifiSSID, hubWifiPwd)
 
         # WIFIAUTH
         if "WIFIAUTH" in payload:
+            if not re.search("(202[3-9].[0-1][0-9])", osVersion):
+                logging.warning(
+                    "Function not allowed for this os version. Skipping..")
+                return
+
             logging.info("Getting wifi auth parameters")
             params = payload.removeprefix("WIFIAUTH_").split("_")
+            global guestWifiSSID
+            guestWifiSSID = params[0]
 
             logging.info(
                 "Building new WIFI supplicant config file with given params")
             with open("/home/pi/workspace/hakairos-configuration/scripts/os/kairoshub-wpa-supplicant.conf", 'r') as file:
                 wpaSupplicant = file.read()
-                wpaSupplicant = wpaSupplicant.replace("{SSID}", params[0])
+                wpaSupplicant = wpaSupplicant.replace("{SSID}", guestWifiSSID)
                 wpaSupplicant = wpaSupplicant.replace("{PWD}", params[1])
 
             # give access and writing. may have to do this manually beforehand
-            os.popen("sudo chmod a+w /etc/wpa_supplicant/wpa_supplicant.conf")
+            os.popen("sudo chmod a+w /etc/wpa_supplicant/wpa_supplicant-wlan0.conf")
 
             # writing to file
-            with open("/etc/wpa_supplicant/wpa_supplicant.conf", "w") as wifi:
+            with open("/etc/wpa_supplicant/wpa_supplicant-wlan0.conf", "w") as wifi:
                 wifi.write(wpaSupplicant)
 
             logging.info("Wifi config updated. Trying to connect..")
             # refresh configs
-            os.popen("sudo wpa_cli -i wlan1 reconfigure")
+            os.popen("sudo wpa_cli -i wlan0 reconfigure")
 
             time.sleep(10)
-            logging.info(
-                "checking if the interface it is connected to the target wifi")
-            connected = True
-            try:
-                if params[0] != check_output(["iwgetid", "wlan1", "-r"]).decode("utf-8").strip():
-                    connected = False
-            except CalledProcessError as e:
-                connected = False
+            connected = utilCheckInterfaceConnection("wlan0", params[0])
 
             if connected:
                 logging.info("Interface connected to the target wifi")
@@ -223,9 +243,11 @@ def on_message(client, userdata, msg):
                 client.publish(TOPIC_NET_GUEST_SSID, "", qos=1, retain=True)
 
         if "CHECK_INTERNET_CONNECTION" in payload:
-            logging.info("Starting internet connection coroutine")
-            thread = Thread(target=checkInternetConnection)
-            thread.start()
+            if not re.search("(202[3-9].[0-1][0-9])", osVersion):
+                logging.warning(
+                    "Function not allowed for this os version. Skipping..")
+                return
+            checkInternetConnection()
 
     else:
         if msg.topic == TOPIC_KAIROSHUB_CONF_SW_BRANCH:
@@ -239,6 +261,21 @@ def on_message(client, userdata, msg):
         elif msg.topic == TOPIC_STATE:
             logging.info("Getting hub state")
             hubState = payload
+
+
+def checkGuestSSIDSignal():
+    signal = check_output(
+        "iwconfig wlan0 | grep 'Signal' | awk '{print $4}' | awk -F\\= '{print $2}'", shell=True).decode("utf-8").strip("\n")
+    logging.info("Connection Signal to Guest network: [%s]", signal)
+    client.publish(TOPIC_NET_GUEST_SIGNAL, signal, qos=1, retain=True)
+
+
+def checkGuestIpAddress():
+    ip = check_output(
+        "ifconfig wlan0 | grep 'inet' | awk '/inet / {print $2}'", shell=True)
+    logging.info("IP Address on Guest network: [%s]", ip.decode(
+        "utf-8").strip("\n"))
+    client.publish(TOPIC_NET_GUEST_IP, ip, qos=1, retain=True)
 
 
 def on_publish(client, userdata, mid):
@@ -263,6 +300,7 @@ def on_connect(client, userdata, flags, rc):
     try:
         logging.info("Kairoshub autoconfiguration started.")
         if data:
+            global hubWifiSSID, hubWifiPwd, osVersion
             try:
                 logging.info("checking hostaname name.. ")
                 currentHostname = socket.gethostname()
@@ -282,7 +320,6 @@ def on_connect(client, userdata, flags, rc):
                 else:
                     logging.info("Hostname already set. Skipping..")
 
-                global hubWifiSSID, hubWifiPwd
                 hubWifiSSID = data["wifi_ssid"]
                 hubWifiPwd = data["wifi_pwd"]
 
@@ -292,6 +329,7 @@ def on_connect(client, userdata, flags, rc):
             logging.info("Setting OS Version [%s]", data["osVersion"])
             client.publish(TOPIC_HUB_OSVERSION,
                            data["osVersion"], qos=1, retain=True)
+            osVersion = data["osVersion"]
 
             logging.info("Setting Owner [%s]", data["owner"])
             client.publish(TOPIC_HUB_OWNER, data["owner"], qos=1, retain=True)
@@ -299,21 +337,6 @@ def on_connect(client, userdata, flags, rc):
             logging.info("Setting System Code [%s]", data["systemCode"])
             client.publish(TOPIC_HUB_SYSTEM_CODE,
                            data["systemCode"], qos=1, retain=True)
-
-        ssid = check_output(
-            "iwconfig wlan0 | grep 'ESSID' | awk '{print $4}' | awk -F\\\" '{print $2}'", shell=True).decode("utf-8").strip("\n")
-        logging.info("Connected SSID [%s]", ssid)
-        client.publish(TOPIC_HUB_SSID, ssid, qos=1, retain=True)
-
-        signal = check_output(
-            "iwconfig wlan0 | grep 'Signal' | awk '{print $4}' | awk -F\\= '{print $2}'", shell=True).decode("utf-8").strip("\n")
-        logging.info("Connection Signal [%s]", signal)
-        client.publish(TOPIC_HUB_SIGNAL, signal, qos=1, retain=True)
-
-        ip = check_output(
-            "ifconfig wlan0 | grep 'inet' | awk '/inet / {print $2}'", shell=True)
-        logging.info("Current IP Address [%s]", ip.decode("utf-8").strip("\n"))
-        client.publish(TOPIC_HUB_IP, ip, qos=1, retain=True)
 
         logging.info("Copying custom configuration files")
         try:
@@ -337,6 +360,28 @@ def on_connect(client, userdata, flags, rc):
     logging.info("Setting state service in ONLINE.")
     client.publish(TOPIC_EXCHANGE_SERVICE_STATE, "ONLINE", qos=1, retain=True)
 
+    logging.info("Starting network checks")
+    if not re.search("(202[3-9].[0-1][0-9])", osVersion):
+        ssid = check_output(
+            "iwconfig wlan0 | grep 'ESSID' | awk '{print $4}' | awk -F\\\" '{print $2}'", shell=True).decode("utf-8").strip("\n")
+        logging.info("Connected SSID [%s]", ssid)
+        client.publish(TOPIC_NET_GUEST_SSID, ssid, qos=1, retain=True)
+
+        if ssid != "" or ssid != None:
+            client.publish(TOPIC_NET_GUEST_LINK, "OK", qos=1, retain=True)
+
+        checkGuestSSIDSignal()
+        checkGuestIpAddress()
+
+    else:
+        logging.info("Starting network check thread")
+        if not checkKairosNetworkThread.is_alive():
+            checkKairosNetworkThread.start()
+
+    logging.info("Starting internet check thread")
+    if not checkInternetConnectionThread.is_alive():
+        checkInternetConnectionThread.start()
+
 
 def on_disconnect(client, userdata, rc):
     if rc != 0:
@@ -344,9 +389,10 @@ def on_disconnect(client, userdata, rc):
             "Unexpected MQTT disconnection. Will restart the service")
         os.system("sudo service kairoshub-assistance restart")
 
+    logging.info("Opening kairoshub wifi configuation file")
+
 
 def hostapd_setup(ssid, pwd):
-    logging.info("Opening kairoshub wifi configuation file")
     try:
         with open("/home/pi/workspace/hakairos-configuration/scripts/os/kairoshub-ap-mode.conf", 'r') as file:
             configuration = file.read()
@@ -359,49 +405,164 @@ def hostapd_setup(ssid, pwd):
 
             logging.info("Wifi config refreshed. Restarting wlan interface")
             os.popen("sudo systemctl restart hostapd.service")
-            time.sleep(5)
+            time.sleep(2)
 
             hubState = "NORMAL"
             if "KAIROSHUB_AP" == ssid:
                 hubState = "AP_MODE"
 
-            try:
-                if ssid == check_output(["iwgetid", "wlan2", "-r"]).decode("utf-8").strip():
-                    client.publish(TOPIC_NET_KAIROSHUB,
-                                   "OK (0)", qos=1, retain=True)
+            maxAttempts = 3
+            connected = False
+            while (maxAttempts > 0):
+                logging.info(
+                    "Checking interface network. Attempts remaining: [%s]", maxAttempts)
+                connected = utilCheckInterfaceConnection("wlan1", ssid)
 
+                if connected:
+                    logging.info(
+                        "Interface network setup properly to the target network [%s]", ssid)
                     client.publish(TOPIC_STATE, hubState, qos=1, retain=True)
-                else:
-                    raise CalledProcessError(-1)
-            except CalledProcessError as e:
-                client.publish(TOPIC_NET_KAIROSHUB, "FAIL", qos=1, retain=True)
+                    if "AP_MODE" != hubState:
+                        client.publish(TOPIC_NET_KAIROSHUB_SSID,
+                                       ssid, qos=1, retain=True)
+                        utilCheckKairosNetworkDevices()
+
+                    return
+
+                maxAttempts -= 1
+                time.sleep(5)
+
+            logging.critical(
+                "Impossibile to setup the interface to the target network [%s]", ssid)
+            client.publish(TOPIC_NET_KAIROSHUB, "FAIL", qos=1, retain=True)
 
     except Exception as e:
         logging.error("Error occourred [%s]", (e))
 
 
+def utilCheckInterfaceConnection(interface, ssid):
+    logging.info(
+        "checking if the interface [%s] it is connected to the target wifi [%s]", interface, ssid)
+    connected = True
+    try:
+        if ssid != check_output(["iwgetid", interface, "-r"]).decode("utf-8").strip():
+            connected = False
+    except CalledProcessError as e:
+        connected = False
+
+    return connected
+
+
+def utilCheckKairosNetworkDevices():
+    logging.info("Checking devices connected to the network")
+    try:
+        clientCount = clientCount = os.popen(
+            "sudo iw dev wlan1 station dump | grep 'Station' | wc -l").read().strip()
+        client.publish(TOPIC_NET_KAIROSHUB,
+                       "OK ("+clientCount+")", qos=1, retain=True)
+    except Exception as e:
+        logging.error(
+            "error occourred on cheking kairos network devices [%s]", e)
+        client.publish(TOPIC_NET_KAIROSHUB, "FAIL", qos=1, retain=True)
+
+
 def checkInternetConnection():
+    HEADERS = {
+        'User-Agent': 'Mozilla/5.0 (iPad; CPU OS 12_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148'}
+
+    try:
+        response = requests.get(
+            'https://www.google.com/search?q=kairos+tech+domotica+risparmio+energetico', headers=HEADERS)
+        logging.info(
+            "Internet connection OK. Status code: [%d]", response.status_code)
+        client.publish(TOPIC_NET_GUEST_INTERNET_CONNECTION,
+                       "OK", qos=1, retain=True)
+    except ConnectionError as e:
+        logging.warning(
+            "Absent internet connection")
+        client.publish(TOPIC_NET_GUEST_INTERNET_CONNECTION,
+                       "FAIL", qos=1, retain=True)
+
+
+def runCheckInternetConnection():
     while (True):
-        try:
-            url('https://www.google.com/search?q=kairos+tech+domotica+risparmio+energetico', timeout=3)
-            logging.info(
-                "Internet connection present")
-            client.publish(TOPIC_NET_GUEST_INTERNET_CONNECTION,
-                           "OK", qos=1, retain=True)
+        checkInternetConnection()
+        time.sleep(60*33)
 
-            clientCount = check_output(
-                ["sudo iw dev wlan2 station dump", "| grep 'Station'", "| wc -l"]).decode("utf-8").strip()
-            client.publish(TOPIC_NET_KAIROSHUB,
-                           "OK ("+clientCount+")", qos=1, retain=True)
 
-        except ConnectionError as e:
+def runNetworkChecks():
+    while (True):
+        logging.info("Running network checks..")
+        # checking guest network connection
+        guestConnected = utilCheckInterfaceConnection("wlan0", guestWifiSSID)
+        if guestConnected:
+            logging.info("interface wlan0 connected")
+            client.publish(TOPIC_NET_GUEST_LINK, "OK", qos=1, retain=True)
+
+            checkGuestSSIDSignal()
+            checkGuestIpAddress()
+        else:
+            client.publish(TOPIC_NET_GUEST_LINK, "FAIL", qos=1, retain=True)
             logging.warning(
-                "Absent internet connection")
-            client.publish(TOPIC_NET_GUEST_INTERNET_CONNECTION,
-                           "FAIL", qos=1, retain=True)
-        time.sleep(33)
+                "interface wlan0 not connected. Trying to reconnect..")
+
+            os.popen("sudo wpa_cli -i wlan0 reconfigure")
+            time.sleep(5)
+            guestConnected = utilCheckInterfaceConnection(
+                "wlan0", guestWifiSSID)
+            if guestConnected:
+                logging.info("Interface wlan0 reconnected to the network")
+                client.publish(TOPIC_NET_GUEST_LINK, "OK", qos=1, retain=True)
+
+                checkGuestSSIDSignal()
+                checkGuestIpAddress()
+            else:
+                logging.critical(
+                    "Impossible to enstabilish a new connection to the network.  interface: wlan0, SSID: [%s]", guestWifiSSID)
+
+        # checking KT network
+        ktnetConnected = utilCheckInterfaceConnection("wlan1", hubWifiSSID)
+        if ktnetConnected:
+            logging.info("interface wlan1 connected")
+            # checking KT network devices
+            utilCheckKairosNetworkDevices()
+
+        else:
+            client.publish(TOPIC_NET_KAIROSHUB, "FAIL", qos=1, retain=True)
+            logging.info(
+                "interface wlan1 not connected. Trying to reconnect..")
+            hostapd_setup(hubWifiSSID, hubWifiPwd)
+
+        time.sleep(60*10)
 
 
+################################################################################################################################
+####################################################### FLASK ZONE #############################################################
+
+
+@flaskAPP.route('/')
+def hello():
+    logging.info("Requesting / web resource")
+    return 'Hello, World!'
+
+
+@flaskAPP.route('/network/wifi/auth/<ssid>/<pwd>')
+def networkAuth(ssid, pwd):
+    logging.info("Requesting /network/wifi/auth web resource")
+    client.publish(TOPIC_COMMAND, "WIFIAUTH_" +
+                   ssid+"_"+pwd, qos=1)
+    return "OK"
+
+
+def startFlaskWS():
+    logging.info("Starting FLASK ws")
+    flaskAPP.run(debug=False, use_reloader=False, host='0.0.0.0', port=5000)
+
+
+logging.info("#################################################")
+logging.info("Starting Kairoshub assistance service utility")
+
+logging.info("Configuring MQTT client...")
 client = paho.Client()
 client.username_pw_set("mqtt_kairos", "kairos!")
 client.on_message = on_message
@@ -413,5 +574,14 @@ client.connect("localhost", 1884)
 client.subscribe(TOPIC_COMMAND)
 client.subscribe(TOPIC_KAIROSHUB_SW_BRANCH)
 client.subscribe(TOPIC_KAIROSHUB_CONF_SW_BRANCH)
+
+checkInternetConnectionThread = Thread(
+    target=runCheckInternetConnection, daemon=True, name="checkInternetConnectionThread")
+
+checkKairosNetworkThread = Thread(
+    target=runNetworkChecks, daemon=True, name="CheckKairosNetworkThread")
+
+logging.info("Configuring Flask WS")
+thread = Thread(target=startFlaskWS, daemon=True, name="FlaskWsThread").start()
 
 client.loop_forever()

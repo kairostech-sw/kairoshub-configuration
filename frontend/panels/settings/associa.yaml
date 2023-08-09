@@ -6,6 +6,7 @@ custom_fields:
   content:
     card:
       type: vertical-stack
+
       cards:
         - type: "custom:integration-info-card"
           title: "Associazione impianto"

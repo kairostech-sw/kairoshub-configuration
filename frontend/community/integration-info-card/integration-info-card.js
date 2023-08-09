@@ -82,8 +82,13 @@ class IntegrationCard extends HTMLElement {
 }
 
 var $style = `
+
+.type-custom-integration-info-card {
+  display: block
+}
+
 #card-content {
-  width: 100%;
+  
 }
 
 .int-info {

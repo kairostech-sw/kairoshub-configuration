@@ -74,8 +74,8 @@ custom_fields:
           entities:
             - entity: sensor.kairoshub_osversion
               state_filter:
-                - operator: "in"
-                  value: "2023."
+                - operator: "regex"
+                  value: "^(202[3-9].[0-1][0-9])$"
           card:
             type: "custom:button-card"
             template: settings_card
