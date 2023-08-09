@@ -361,17 +361,18 @@ def on_connect(client, userdata, flags, rc):
     client.publish(TOPIC_EXCHANGE_SERVICE_STATE, "ONLINE", qos=1, retain=True)
 
     logging.info("Starting network checks")
+    global guestWifiSSID
+    guestWifiSSID = check_output(
+        "iwconfig wlan0 | grep 'ESSID' | awk '{print $4}' | awk -F\\\" '{print $2}'", shell=True).decode("utf-8").strip("\n")
+    logging.info("Connected to SSID [%s]", guestWifiSSID)
+    client.publish(TOPIC_NET_GUEST_SSID, guestWifiSSID, qos=1, retain=True)
     if not re.search("(202[3-9].[0-1][0-9])", osVersion):
-        ssid = check_output(
-            "iwconfig wlan0 | grep 'ESSID' | awk '{print $4}' | awk -F\\\" '{print $2}'", shell=True).decode("utf-8").strip("\n")
-        logging.info("Connected SSID [%s]", ssid)
-        client.publish(TOPIC_NET_GUEST_SSID, ssid, qos=1, retain=True)
-
-        if ssid != "" or ssid != None:
+        if guestWifiSSID != "" or guestWifiSSID != None:
             client.publish(TOPIC_NET_GUEST_LINK, "OK", qos=1, retain=True)
-
-        checkGuestSSIDSignal()
-        checkGuestIpAddress()
+            checkGuestSSIDSignal()
+            checkGuestIpAddress()
+        else:
+            logging.warn("HUB not connected to guest network")
 
     else:
         logging.info("Starting network check thread")
