@@ -417,7 +417,7 @@ def hostapd_setup(ssid, pwd):
             while (maxAttempts > 0):
                 logging.info(
                     "Checking interface network. Attempts remaining: [%s]", maxAttempts)
-                connected = utilCheckInterfaceConnection("wlan1", ssid)
+                connected = utilCheckInterfaceConnection("ap@wlan0", ssid)
 
                 if connected:
                     logging.info(
@@ -458,7 +458,7 @@ def utilCheckKairosNetworkDevices():
     logging.info("Checking devices connected to the network")
     try:
         clientCount = clientCount = os.popen(
-            "sudo iw dev wlan1 station dump | grep 'Station' | wc -l").read().strip()
+            "sudo iw dev ap@wlan0 station dump | grep 'Station' | wc -l").read().strip()
         client.publish(TOPIC_NET_KAIROSHUB,
                        "OK ("+clientCount+")", qos=1, retain=True)
     except Exception as e:
@@ -522,16 +522,16 @@ def runNetworkChecks():
                     "Impossible to enstabilish a new connection to the network.  interface: wlan0, SSID: [%s]", guestWifiSSID)
 
         # checking KT network
-        ktnetConnected = utilCheckInterfaceConnection("wlan1", hubWifiSSID)
+        ktnetConnected = utilCheckInterfaceConnection("ap@wlan0", hubWifiSSID)
         if ktnetConnected:
-            logging.info("interface wlan1 connected")
+            logging.info("interface ap@wlan0 connected")
             # checking KT network devices
             utilCheckKairosNetworkDevices()
 
         else:
             client.publish(TOPIC_NET_KAIROSHUB, "FAIL", qos=1, retain=True)
             logging.info(
-                "interface wlan1 not connected. Trying to reconnect..")
+                "interface ap@wlan0 not connected. Trying to reconnect..")
             hostapd_setup(hubWifiSSID, hubWifiPwd)
 
         time.sleep(60*10)
