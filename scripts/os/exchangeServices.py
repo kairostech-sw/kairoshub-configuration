@@ -446,8 +446,14 @@ def utilCheckInterfaceConnection(interface, ssid):
         "checking if the interface [%s] it is connected to the target wifi [%s]", interface, ssid)
     connected = True
     try:
-        if ssid != check_output(["iwgetid", interface, "-r"]).decode("utf-8").strip():
-            connected = False
+        if "ap@" in interface:
+            # AP check
+            if ssid != check_output(["iw ap@wlan0 info | grep ssid | sed -e 's/^[ \t]*//' | sed 's/ssid //'"], shell=True).decode("utf-8").strip():
+                connected = False
+        else:
+            # wlan check
+            if ssid != check_output(["iwgetid", interface, "-r"]).decode("utf-8").strip():
+                connected = False
     except CalledProcessError as e:
         connected = False
 
