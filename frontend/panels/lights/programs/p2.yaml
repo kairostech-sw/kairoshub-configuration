@@ -1,0 +1,4 @@
+type: "custom:button-card"
+template: light_program_layout
+variables:
+  progId: 2

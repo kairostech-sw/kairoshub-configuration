@@ -57,158 +57,203 @@
     event_data:
       zone: "{{trigger.entity_id}}"
 
-- alias: NIGHTZONE PROGRAM 1
+- alias: LIGHTS PROGRAM 1
   trigger:
     - platform: time_pattern
       minutes: /15
   condition:
-    condition: state
-    entity_id: input_select.zn100
-    state: Programmato
+    - condition: state
+      entity_id: input_boolean.lights_program1
+      state: "on"
+    - condition: state
+      entity_id: group.lights_program2_on
+      state: "off"
   action:
     event: AD_LIGHTS_PROGRAM
     event_data:
-      zone: "100"
-      on_time: "{{states('input_datetime.lights_nightzone_on_program1')}}"
-      off_time: "{{states('input_datetime.lights_nightzone_off_program1')}}"
-      mode: "{{states('input_select.zn100_days')}}"
+      progId: 1
       sender: HUB
 
-- alias: DAYZONE PROGRAM 1
-  trigger:
-    - platform: time_pattern
-      minutes: /15
-  condition:
-    condition: state
-    entity_id: input_select.zn200
-    state: Programmato
-  action:
-    event: AD_LIGHTS_PROGRAM
-    event_data:
-      zone: "200"
-      on_time: "{{states('input_datetime.lights_dayzone_on_program1')}}"
-      off_time: "{{states('input_datetime.lights_dayzone_off_program1')}}"
-      mode: "{{states('input_select.zn200_days')}}"
-      sender: HUB
-
-- alias: OUTDOOR PROGRAM 1
-  trigger:
-    - platform: time_pattern
-      minutes: /15
-  condition:
-    condition: state
-    entity_id: input_select.zn300
-    state: Programmato
-  action:
-    event: AD_LIGHTS_PROGRAM
-    event_data:
-      zone: "300"
-      on_time: "{{states('input_datetime.lights_outdoor_on_program1')}}"
-      off_time: "{{states('input_datetime.lights_outdoor_off_program1')}}"
-      mode: "{{states('input_select.zn300_days')}}"
-      sender: HUB
-
-- alias: NIGHTZONE SUNSET TURN OFF
+- alias: LIGHTS AUTO TURN OFF
   trigger:
     - platform: state
       entity_id: group.lights
       to: "on"
       for: "{{states('input_datetime.light_offset_sunset')}}"
-  condition:
-    - condition: state
-      entity_id: sun.sun
-      state: below_horizon
-    - condition: state
-      entity_id: input_select.zn100
-      state: Automatico
   action:
     - service: light.turn_off
       target:
-        entity_id: light.group_lz100
-    - event: AD_KAIROSHUB_NOTIFICATION
-      event_data:
-        sender: HUB
-        ncode: LIGHTS_OFF
-        severity: NOTICE
-        kwargs:
-          zone: "100"
-          mode: Automatica
+        entity_id: group.lights
 
-- alias: DAYZONE SUNSET TURN OFF
-  trigger:
-    - platform: state
-      entity_id: group.lights
-      to: "on"
-      for: "{{states('input_datetime.light_offset_sunset')}}"
-  condition:
-    - condition: state
-      entity_id: sun.sun
-      state: below_horizon
-    - condition: state
-      entity_id: input_select.zn200
-      state: Automatico
-  action:
-    - service: light.turn_off
-      target:
-        entity_id: light.group_lz200
-    - event: AD_KAIROSHUB_NOTIFICATION
-      event_data:
-        sender: HUB
-        ncode: LIGHTS_OFF
-        severity: NOTICE
-        kwargs:
-          zone: "200"
-          mode: Automatica
-
-- alias: OUTDOOR SUNSET TURN OFF
-  trigger:
-    - platform: state
-      entity_id: group.lights
-      to: "on"
-      for: "{{states('input_datetime.light_offset_sunset')}}"
-  condition:
-    - condition: state
-      entity_id: sun.sun
-      state: below_horizon
-    - condition: state
-      entity_id: input_select.zn300
-      state: Automatico
-  action:
-    - service: light.turn_off
-      target:
-        entity_id: light.group_lz300
-    - event: AD_KAIROSHUB_NOTIFICATION
-      event_data:
-        sender: HUB
-        ncode: LIGHTS_OFF
-        severity: NOTICE
-        kwargs:
-          zone: "300"
-          mode: Automatica
-- alias: LIGHT PROGRAM 1 TURN ON
+- alias: LIGHT MANUAL CHANGE
   trigger:
     - platform: state
       entity_id:
-        - input_select.zn100
-        - input_select.zn200
-        - input_select.zn300
-      from: Disattivo
-      for: 00:00:10
+        - light.group_lz100
+        - light.group_lz200
+        - light.group_lz300
+  condition:
+    - condition: template
+      value_template: >
+        {{ trigger.from_state.attributes != trigger.to_state.attributes}}
+    - condition: state
+      entity_id:
+        - input_boolean.scene_day_active
+        - input_boolean.scene_athome_active
+      state: "off"
   action:
-    - service: input_boolean.turn_on
-      target:
-        entity_id: input_boolean.light_program1
+    - event: "AD_MANUAL_LIGHT_CHANGE"
 
-- alias: LIGHT PROGRAM 1 TURN OFF
+- alias: LIGHT SCENE CHANGE
   trigger:
     - platform: state
       entity_id:
-        - input_select.zn100
-        - input_select.zn200
-        - input_select.zn300
-      to: Disattivo
-      for: 00:00:10
+        - input_text.lcz100_day
+        - input_text.lcz101_day
+        - input_text.lcz102_day
+        - input_text.lcz103_day
+        - input_text.lcz104_day
+        - input_text.lcz200_day
+        - input_text.lcz201_day
+        - input_text.lcz202_day
+        - input_text.lcz203_day
+        - input_text.lcz300_day
+        - input_text.lcz301_day
+        - input_text.lcz302_day
+        - input_text.lcz303_day
+        - input_text.lcz304_day
+        - input_text.lwz100_day
+        - input_text.lwz101_day
+        - input_text.lwz102_day
+        - input_text.lwz103_day
+        - input_text.lwz104_day
+        - input_text.lwz200_day
+        - input_text.lwz201_day
+        - input_text.lwz202_day
+        - input_text.lwz203_day
+        - input_text.lwz300_day
+        - input_text.lwz301_day
+        - input_text.lwz302_day
+        - input_text.lwz303_day
+        - input_text.lwz304_day
+      id: "day"
+    - platform: state
+      entity_id:
+        - input_text.lcz100_athome
+        - input_text.lcz101_athome
+        - input_text.lcz102_athome
+        - input_text.lcz103_athome
+        - input_text.lcz104_athome
+        - input_text.lcz200_athome
+        - input_text.lcz201_athome
+        - input_text.lcz202_athome
+        - input_text.lcz203_athome
+        - input_text.lcz300_athome
+        - input_text.lcz301_athome
+        - input_text.lcz302_athome
+        - input_text.lcz303_athome
+        - input_text.lcz304_athome
+        - input_text.lwz100_athome
+        - input_text.lwz101_athome
+        - input_text.lwz102_athome
+        - input_text.lwz103_athome
+        - input_text.lwz104_athome
+        - input_text.lwz200_athome
+        - input_text.lwz201_athome
+        - input_text.lwz202_athome
+        - input_text.lwz203_athome
+        - input_text.lwz300_athome
+        - input_text.lwz301_athome
+        - input_text.lwz302_athome
+        - input_text.lwz303_athome
+        - input_text.lwz304_athome
+      id: "athome"
+  condition:
+    - condition: template
+      value_template: >
+        {{ trigger.from_state.attributes != trigger.to_state.attributes}}
   action:
-    - service: input_boolean.turn_off
-      target:
-        entity_id: input_boolean.light_program1
+    - event: "AD_SCENE_CHANGE"
+      event_data:
+        scene: "{{trigger.id}}"
+        entity: "{{trigger.entity_id}}"
+
+- alias: LIGHT PROGRAM CHANGE
+  trigger:
+    - platform: state
+      entity_id:
+        - input_text.lcz100_program1
+        - input_text.lcz101_program1
+        - input_text.lcz102_program1
+        - input_text.lcz103_program1
+        - input_text.lcz104_program1
+        - input_text.lcz200_program1
+        - input_text.lcz201_program1
+        - input_text.lcz202_program1
+        - input_text.lcz203_program1
+        - input_text.lcz300_program1
+        - input_text.lcz301_program1
+        - input_text.lcz302_program1
+        - input_text.lcz303_program1
+        - input_text.lcz304_program1
+        - input_text.lwz100_program1
+        - input_text.lwz101_program1
+        - input_text.lwz102_program1
+        - input_text.lwz103_program1
+        - input_text.lwz104_program1
+        - input_text.lwz200_program1
+        - input_text.lwz201_program1
+        - input_text.lwz202_program1
+        - input_text.lwz203_program1
+        - input_text.lwz300_program1
+        - input_text.lwz301_program1
+        - input_text.lwz302_program1
+        - input_text.lwz303_program1
+        - input_text.lwz304_program1
+      id: "program1"
+    - platform: state
+      entity_id:
+        - input_text.lcz100_program2
+        - input_text.lcz101_program2
+        - input_text.lcz102_program2
+        - input_text.lcz103_program2
+        - input_text.lcz104_program2
+        - input_text.lcz200_program2
+        - input_text.lcz201_program2
+        - input_text.lcz202_program2
+        - input_text.lcz203_program2
+        - input_text.lcz300_program2
+        - input_text.lcz301_program2
+        - input_text.lcz302_program2
+        - input_text.lcz303_program2
+        - input_text.lcz304_program2
+        - input_text.lwz100_program2
+        - input_text.lwz101_program2
+        - input_text.lwz102_program2
+        - input_text.lwz103_program2
+        - input_text.lwz104_program2
+        - input_text.lwz200_program2
+        - input_text.lwz201_program2
+        - input_text.lwz202_program2
+        - input_text.lwz203_program2
+        - input_text.lwz300_program2
+        - input_text.lwz301_program2
+        - input_text.lwz302_program2
+        - input_text.lwz303_program2
+        - input_text.lwz304_program2
+      id: "program2"
+  condition:
+    - condition: template
+      value_template: >
+        {{ trigger.from_state.attributes != trigger.to_state.attributes}}
+    - condition: state
+      entity_id: input_boolean.scene_day_active
+      state: "off"
+    - condition: state
+      entity_id: input_boolean.scene_athome_active
+      state: "off"
+  action:
+    - event: "AD_SCENE_CHANGE"
+      event_data:
+        program: "{{trigger.id}}"
+        entity: "{{trigger.entity_id}}"

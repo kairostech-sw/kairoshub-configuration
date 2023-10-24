@@ -34,6 +34,18 @@
   platform: mqtt
   state_topic: "kairostech/os_version"
 
+- name: kairoshub_netguestlink
+  platform: mqtt
+  state_topic: "kairostech/network/guestlink"
+
+- name: kairoshub_netcheckinternet
+  platform: mqtt
+  state_topic: "kairostech/network/guestlink/checkinternet"
+
+- name: kairoshub_net
+  platform: mqtt
+  state_topic: "kairostech/network/kt"
+
 - name: kairoshub_hostname
   platform: mqtt
   state_topic: "kairostech/hostname"
@@ -48,15 +60,15 @@
 
 - name: kairoshub_ssid
   platform: mqtt
-  state_topic: "kairostech/ssid"
+  state_topic: "kairostech/network/guestlink/ssid"
 
 - name: kairoshub_signal
   platform: mqtt
-  state_topic: "kairostech/signal"
+  state_topic: "kairostech/network/guestlink/signal"
 
 - name: kairoshub_ip_address
   platform: mqtt
-  state_topic: "kairostech/ip_address"
+  state_topic: "kairostech/network/guestlink/ip"
 
 - name: dayzone_temperature_0
   platform: mqtt

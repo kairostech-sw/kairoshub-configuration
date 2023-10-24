@@ -1,0 +1,109 @@
+type: "custom:expander-card"
+title: "Zona Giorno"
+child-padding: 0px
+cards:
+  - type: entities
+    card_mod:
+      style:
+        .: |
+          ha-card {
+            box-shadow: none;
+          }
+        div.card-content:
+          div:
+            hui-input-number-entity-row:
+              $:
+                hui-generic-entity-row:
+                  div: |
+                    .state {
+                      min-width: 60px !important
+                    }
+    entities:
+      - type: divider
+        style:
+          background-color: "#000000"
+          height: 2px
+      - entity: input_number.position_rs200_athome
+        tap_action:
+          action: none
+        card_mod:
+          style:
+            hui-generic-entity-row:
+              div: |
+                .state {
+                  font-size: 0px;
+                }
+                .state:after {
+                  {% if states("input_number.position_rs200_athome") | float(0) == 100.0 %}
+                    {% set CONTENT = "APERTE" %}
+                  {% elif states("input_number.position_rs200_athome") | float(0) == 0.0 %}
+                    {% set CONTENT = "CHIUSE" %}
+                  {% else %}
+                    {% set CONTENT =  states("input_number.position_rs200_athome") | int | string + "%" %}
+                  {%endif%}
+                  font-size: 16px;
+                  content: '{{ CONTENT }}';
+                }
+      - entity: input_number.position_rs200_notathome
+        tap_action:
+          action: none
+        card_mod:
+          style:
+            hui-generic-entity-row:
+              div: |
+                .state {
+                  font-size: 0px;
+                }
+                .state:after {
+                  {% if states("input_number.position_rs200_notathome") | float(0) == 100.0 %}
+                    {% set CONTENT = "APERTE" %}
+                  {% elif states("input_number.position_rs200_notathome") | float(0) == 0.0 %}
+                    {% set CONTENT = "CHIUSE" %}
+                  {% else %}
+                    {% set CONTENT =  states("input_number.position_rs200_notathome") | int | string + "%" %}
+                  {%endif%}
+                  font-size: 16px;
+                  content: '{{ CONTENT }}';
+                }
+      - entity: input_number.position_rs200_day
+        tap_action:
+          action: none
+        card_mod:
+          style:
+            hui-generic-entity-row:
+              div: |
+                .state {
+                  font-size: 0px;
+                }
+                .state:after {
+                  {% if states("input_number.position_rs200_day") | float(0) == 100.0 %}
+                    {% set CONTENT = "APERTE" %}
+                  {% elif states("input_number.position_rs200_day") | float(0) == 0.0 %}
+                    {% set CONTENT = "CHIUSE" %}
+                  {% else %}
+                    {% set CONTENT =  states("input_number.position_rs200_day") | int | string + "%" %}
+                  {%endif%}
+                  font-size: 16px;
+                  content: '{{ CONTENT }}';
+                }
+      - entity: input_number.position_rs200_night
+        tap_action:
+          action: none
+        card_mod:
+          style:
+            hui-generic-entity-row:
+              div: |
+                .state {
+                  font-size: 0px;
+                }
+                .state:after {
+                  {% if states("input_number.position_rs200_night") | float(0) == 100.0 %}
+                    {% set CONTENT = "APERTE" %}
+                  {% elif states("input_number.position_rs200_night") | float(0) == 0.0 %}
+                    {% set CONTENT = "CHIUSE" %}
+                  {% else %}
+                    {% set CONTENT =  states("input_number.position_rs200_night") | int | string + "%" %}
+                  {%endif%}
+                  font-size: 16px;
+                  content: '{{ CONTENT }}';
+                }

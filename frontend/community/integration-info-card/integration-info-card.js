@@ -1,6 +1,4 @@
-
 class IntegrationCard extends HTMLElement {
-
   constructor() {
     super();
     this.lifetime = Date.now();
@@ -8,64 +6,68 @@ class IntegrationCard extends HTMLElement {
 
   set hass(hass) {
     if (!this.content || this._shouldUpdate(this.lifetime)) {
-      this.innerHTML =
-        `<style>${this.styles}</style>
+      this.innerHTML = `<style>${this.styles}</style>
         <ha-card>
           <div id="card-content" style="padding: 16px;">
           </div>
         </ha-card>`;
-        this.content = this.querySelector("#card-content")
+      this.content = this.querySelector("#card-content");
 
-        if (this.config.title) {
-          let node = document.createElement("h3")
-          node.setAttribute("class", "header")
-          let header = document.createTextNode(this.config.title)
-          node.append(header)
-          this.content.appendChild(node)
-        }
+      if (this.config.title) {
+        let node = document.createElement("h3");
+        node.setAttribute("class", "header");
+        let header = document.createTextNode(this.config.title);
+        node.append(header);
+        this.content.appendChild(node);
+      }
       this.config.entities.forEach((e) => {
-          this.renderEntity(e, hass);
-        })
+        this.renderEntity(e, hass);
+      });
     }
-  };
+  }
 
   setConfig(config) {
     this.config = config;
   }
 
   renderEntity(e, hass) {
-    let { name, icon, color, state } = this.getEntityConfig(e, hass);
+    let { name, icon, label, color, state } = this.getEntityConfig(e, hass);
+
+    if (label == "") {
+      label = name;
+    }
 
     let icon_html = `<ha-icon icon="${icon}" style="width: 32px; padding:5px; color: ${color};"></ha-icon>`;
     let name_div = `<div class="int-info">
       ${icon_html}
-      <div id="${name}" class="state">${name}
+      <div id="${name}" class="state">${label}
       </div>
       </div>`;
     let state_div = `<div id="${name}-state" class="state" style="color:${color};">${state}</div>`;
 
-    let node = document.createElement("div")
-    node.setAttribute("class", "int-info")
-    node.innerHTML = name_div+state_div;
-    this.content.appendChild(node)
+    let node = document.createElement("div");
+    node.setAttribute("class", "int-info");
+    node.innerHTML = name_div + state_div;
+    this.content.appendChild(node);
   }
 
   _shouldUpdate(t) {
     let n = Date.now();
-    if( t + 300000<=n) {
+    if (t + 300000 <= n) {
       this.lifetime = n;
       return true;
-    };
+    }
     return false;
   }
 
   getEntityConfig(e, hass) {
     return {
       name: hass.states[e.entity].attributes.friendly_name,
+      label: e.label ?? "",
       icon: e.icon ?? "",
       color: e.color ?? "var(--paper-item-icon-color)",
       state: this.formatDate(hass.states[e.entity].state.toUpperCase()),
-    }
+    };
   }
 
   formatDate(str) {
@@ -74,12 +76,19 @@ class IntegrationCard extends HTMLElement {
     return new Date(date).toLocaleDateString();
   }
 
-  get styles() { return $style;}
+  get styles() {
+    return $style;
+  }
 }
 
 var $style = `
+
+.type-custom-integration-info-card {
+  display: block
+}
+
 #card-content {
-  width: 100%;
+  
 }
 
 .int-info {
@@ -93,6 +102,6 @@ var $style = `
   margin: 2px 2px;
   text-align: start;
 }
-`
+`;
 
-customElements.define('integration-info-card', IntegrationCard);
+customElements.define("integration-info-card", IntegrationCard);

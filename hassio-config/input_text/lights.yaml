@@ -1,0 +1,459 @@
+# Luci Manuali RGBW
+lcz100_manual:
+  name: "Luci Zona Notte"
+  initial: "off"
+lcz101_manual:
+  name: "Luci Zona Notte 1"
+  initial: "off"
+lcz102_manual:
+  name: "Luci Zona Notte 2"
+  initial: "off"
+lcz103_manual:
+  name: "Luci Zona Notte 3"
+  initial: "off"
+lcz104_manual:
+  name: "Luci Zona Notte 4"
+  initial: "off"
+
+lcz200_manual:
+  name: "Luci Zona Giorno"
+  initial: "off"
+lcz201_manual:
+  name: "Luci Zona Giorno 1"
+  initial: "off"
+lcz202_manual:
+  name: "Luci Zona Giorno 2"
+  initial: "off"
+lcz203_manual:
+  name: "Luci Zona Giorno 3"
+  initial: "off"
+
+lcz300_manual:
+  name: "Luci Esterno"
+  initial: "off"
+lcz301_manual:
+  name: "Luci Esterno 1"
+  initial: "off"
+lcz302_manual:
+  name: "Luci Esterno 2"
+  initial: "off"
+lcz303_manual:
+  name: "Luci Esterno 3"
+  initial: "off"
+lcz304_manual:
+  name: "Luci Esterno 4"
+  initial: "off"
+
+# Luci Manuali DIM
+lwz100_manual:
+  name: "Luci Zona Notte"
+  initial: "off"
+lwz101_manual:
+  name: "Luci Zona Notte 1"
+  initial: "off"
+lwz102_manual:
+  name: "Luci Zona Notte 2"
+  initial: "off"
+lwz103_manual:
+  name: "Luci Zona Notte 3"
+  initial: "off"
+lwz104_manual:
+  name: "Luci Zona Notte 4"
+  initial: "off"
+
+lwz200_manual:
+  name: "Luci Zona Giorno"
+  initial: "off"
+lwz201_manual:
+  name: "Luci Zona Giorno 1"
+  initial: "off"
+lwz202_manual:
+  name: "Luci Zona Giorno 2"
+  initial: "off"
+lwz203_manual:
+  name: "Luci Zona Giorno 3"
+  initial: "off"
+
+lwz300_manual:
+  name: "Luci Esterno"
+  initial: "off"
+lwz301_manual:
+  name: "Luci Esterno 1"
+  initial: "off"
+lwz302_manual:
+  name: "Luci Esterno 2"
+  initial: "off"
+lwz303_manual:
+  name: "Luci Esterno 3"
+  initial: "off"
+lwz304_manual:
+  name: "Luci Esterno 4"
+  initial: "off"
+
+# Luci Programma 1 RGBW
+lcz100_program1:
+  name: "Luci Zona Notte Programma 1"
+  initial: "off"
+lcz101_program1:
+  name: "Luci Zona Notte 1 Programma 1"
+  initial: "off"
+lcz102_program1:
+  name: "Luci Zona Notte 2 Programma 1"
+  initial: "off"
+lcz103_program1:
+  name: "Luci Zona Notte 3 Programma 1"
+  initial: "off"
+lcz104_program1:
+  name: "Luci Zona Notte 4 Programma 1"
+  initial: "off"
+
+lcz200_program1:
+  name: "Luci Zona Giorno Programma 1"
+  initial: "off"
+lcz201_program1:
+  name: "Luci Zona Giorno 1 Programma 1"
+  initial: "off"
+lcz202_program1:
+  name: "Luci Zona Giorno 2 Programma 1"
+  initial: "off"
+lcz203_program1:
+  name: "Luci Zona Giorno 3 Programma 1"
+  initial: "off"
+
+lcz300_program1:
+  name: "Luci Esterno Programma 1"
+  initial: "off"
+lcz301_program1:
+  name: "Luci Esterno 1 Programma 1"
+  initial: "off"
+lcz302_program1:
+  name: "Luci Esterno 2 Programma 1"
+  initial: "off"
+lcz303_program1:
+  name: "Luci Esterno 3 Programma 1"
+  initial: "off"
+lcz304_program1:
+  name: "Luci Esterno 4 Programma 1"
+  initial: "off"
+
+# Luci Programma 1 DIM
+lwz100_program1:
+  name: "Luci Zona Notte Programma 1"
+  initial: "off"
+lwz101_program1:
+  name: "Luci Zona Notte 1 Programma 1"
+  initial: "off"
+lwz102_program1:
+  name: "Luci Zona Notte 2 Programma 1"
+  initial: "off"
+lwz103_program1:
+  name: "Luci Zona Notte 3 Programma 1"
+  initial: "off"
+lwz104_program1:
+  name: "Luci Zona Notte 4 Programma 1"
+  initial: "off"
+
+lwz200_program1:
+  name: "Luci Zona Giorno Programma 1"
+  initial: "off"
+lwz201_program1:
+  name: "Luci Zona Giorno 1 Programma 1"
+  initial: "off"
+lwz202_program1:
+  name: "Luci Zona Giorno 2 Programma 1"
+  initial: "off"
+lwz203_program1:
+  name: "Luci Zona Giorno 3 Programma 1"
+  initial: "off"
+
+lwz300_program1:
+  name: "Luci Esterno Programma 1"
+  initial: "off"
+lwz301_program1:
+  name: "Luci Esterno 1 Programma 1"
+  initial: "off"
+lwz302_program1:
+  name: "Luci Esterno 2 Programma 1"
+  initial: "off"
+lwz303_program1:
+  name: "Luci Esterno 3 Programma 1"
+  initial: "off"
+lwz304_program1:
+  name: "Luci Esterno 4 Programma 1"
+  initial: "off"
+
+# Luci Programma 2 RGBW
+lcz100_program2:
+  name: "Luci Zona Notte programma 2"
+  initial: "off"
+lcz101_program2:
+  name: "Luci Zona Notte 1 programma 2"
+  initial: "off"
+lcz102_program2:
+  name: "Luci Zona Notte 2 programma 2"
+  initial: "off"
+lcz103_program2:
+  name: "Luci Zona Notte 3 programma 2"
+  initial: "off"
+lcz104_program2:
+  name: "Luci Zona Notte 4 programma 2"
+  initial: "off"
+
+lcz200_program2:
+  name: "Luci Zona Giorno programma 2"
+  initial: "off"
+lcz201_program2:
+  name: "Luci Zona Giorno 1 programma 2"
+  initial: "off"
+lcz202_program2:
+  name: "Luci Zona Giorno 2 programma 2"
+  initial: "off"
+lcz203_program2:
+  name: "Luci Zona Giorno 3 programma 2"
+  initial: "off"
+
+lcz300_program2:
+  name: "Luci Esterno programma 2"
+  initial: "off"
+lcz301_program2:
+  name: "Luci Esterno 1 programma 2"
+  initial: "off"
+lcz302_program2:
+  name: "Luci Esterno 2 programma 2"
+  initial: "off"
+lcz303_program2:
+  name: "Luci Esterno 3 programma 2"
+  initial: "off"
+lcz304_program2:
+  name: "Luci Esterno 4 programma 2"
+  initial: "off"
+
+# Luci Programma 2 DIM
+lwz100_program2:
+  name: "Luci Zona Notte programma 2"
+  initial: "off"
+lwz101_program2:
+  name: "Luci Zona Notte 1 programma 2"
+  initial: "off"
+lwz102_program2:
+  name: "Luci Zona Notte 2 programma 2"
+  initial: "off"
+lwz103_program2:
+  name: "Luci Zona Notte 3 programma 2"
+  initial: "off"
+lwz104_program2:
+  name: "Luci Zona Notte 4 programma 2"
+  initial: "off"
+
+lwz200_program2:
+  name: "Luci Zona Giorno programma 2"
+  initial: "off"
+lwz201_program2:
+  name: "Luci Zona Giorno 1 programma 2"
+  initial: "off"
+lwz202_program2:
+  name: "Luci Zona Giorno 2 programma 2"
+  initial: "off"
+lwz203_program2:
+  name: "Luci Zona Giorno 3 programma 2"
+  initial: "off"
+
+lwz300_program2:
+  name: "Luci Esterno programma 2"
+  initial: "off"
+lwz301_program2:
+  name: "Luci Esterno 1 programma 2"
+  initial: "off"
+lwz302_program2:
+  name: "Luci Esterno 2 programma 2"
+  initial: "off"
+lwz303_program2:
+  name: "Luci Esterno 3 programma 2"
+  initial: "off"
+lwz304_program2:
+  name: "Luci Esterno 4 programma 2"
+  initial: "off"
+
+# Luci Scenario Giorno / Notte RGBW
+lcz100_day:
+  name: "Luci Zona Notte Scenario Giorno / Notte"
+  initial: "off"
+lcz101_day:
+  name: "Luci Zona Notte Scenario Giorno / Notte"
+  initial: "off"
+lcz102_day:
+  name: "Luci Zona Notte Scenario Giorno / Notte"
+  initial: "off"
+lcz103_day:
+  name: "Luci Zona Notte Scenario Giorno / Notte"
+  initial: "off"
+lcz104_day:
+  name: "Luci Zona Notte Scenario Giorno / Notte"
+  initial: "off"
+
+lcz200_day:
+  name: "Luci Zona Giorno Scenario Giorno / Notte"
+  initial: "off"
+lcz201_day:
+  name: "Luci Zona Giorno Scenario Giorno / Notte"
+  initial: "off"
+lcz202_day:
+  name: "Luci Zona Giorno Scenario Giorno / Notte"
+  initial: "off"
+lcz203_day:
+  name: "Luci Zona Giorno Scenario Giorno / Notte"
+  initial: "off"
+
+lcz300_day:
+  name: "Luci Esterno Scenario Giorno / Notte"
+  initial: "off"
+lcz301_day:
+  name: "Luci Esterno Scenario Giorno / Notte"
+  initial: "off"
+lcz302_day:
+  name: "Luci Esterno Scenario Giorno / Notte"
+  initial: "off"
+lcz303_day:
+  name: "Luci Esterno Scenario Giorno / Notte"
+  initial: "off"
+lcz304_day:
+  name: "Luci Esterno Scenario Giorno / Notte"
+  initial: "off"
+
+# Luci Scenario Giorno / Notte DIM
+lwz100_day:
+  name: "Luci Zona Notte Scenario Giorno / Notte"
+  initial: "off"
+lwz101_day:
+  name: "Luci Zona Notte Scenario Giorno / Notte"
+  initial: "off"
+lwz102_day:
+  name: "Luci Zona Notte Scenario Giorno / Notte"
+  initial: "off"
+lwz103_day:
+  name: "Luci Zona Notte Scenario Giorno / Notte"
+  initial: "off"
+lwz104_day:
+  name: "Luci Zona Notte Scenario Giorno / Notte"
+  initial: "off"
+
+lwz200_day:
+  name: "Luci Zona Giorno Scenario Giorno / Notte"
+  initial: "off"
+lwz201_day:
+  name: "Luci Zona Giorno Scenario Giorno / Notte"
+  initial: "off"
+lwz202_day:
+  name: "Luci Zona Giorno Scenario Giorno / Notte"
+  initial: "off"
+lwz203_day:
+  name: "Luci Zona Giorno Scenario Giorno / Notte"
+  initial: "off"
+
+lwz300_day:
+  name: "Luci Esterno Scenario Giorno / Notte"
+  initial: "off"
+lwz301_day:
+  name: "Luci Esterno Scenario Giorno / Notte"
+  initial: "off"
+lwz302_day:
+  name: "Luci Esterno Scenario Giorno / Notte"
+  initial: "off"
+lwz303_day:
+  name: "Luci Esterno Scenario Giorno / Notte"
+  initial: "off"
+lwz304_day:
+  name: "Luci Esterno Scenario Giorno / Notte"
+  initial: "off"
+
+# Luci Scenario In Casa / Fuori Casa RGBW
+lcz100_athome:
+  name: "Luci Zona Notte Scenario In Casa / Fuori Casa"
+  initial: "off"
+lcz101_athome:
+  name: "Luci Zona Notte Scenario In Casa / Fuori Casa"
+  initial: "off"
+lcz102_athome:
+  name: "Luci Zona Notte Scenario In Casa / Fuori Casa"
+  initial: "off"
+lcz103_athome:
+  name: "Luci Zona Notte Scenario In Casa / Fuori Casa"
+  initial: "off"
+lcz104_athome:
+  name: "Luci Zona Notte Scenario In Casa / Fuori Casa"
+  initial: "off"
+
+lcz200_athome:
+  name: "Luci Zona Giorno Scenario In Casa / Fuori Casa"
+  initial: "off"
+lcz201_athome:
+  name: "Luci Zona Giorno Scenario In Casa / Fuori Casa"
+  initial: "off"
+lcz202_athome:
+  name: "Luci Zona Giorno Scenario In Casa / Fuori Casa"
+  initial: "off"
+lcz203_athome:
+  name: "Luci Zona Giorno Scenario In Casa / Fuori Casa"
+  initial: "off"
+
+lcz300_athome:
+  name: "Luci Esterno Scenario In Casa / Fuori Casa"
+  initial: "off"
+lcz301_athome:
+  name: "Luci Esterno Scenario In Casa / Fuori Casa"
+  initial: "off"
+lcz302_athome:
+  name: "Luci Esterno Scenario In Casa / Fuori Casa"
+  initial: "off"
+lcz303_athome:
+  name: "Luci Esterno Scenario In Casa / Fuori Casa"
+  initial: "off"
+lcz304_athome:
+  name: "Luci Esterno Scenario In Casa / Fuori Casa"
+  initial: "off"
+
+# Luci Scenario In Casa / Fuori Casa DIM
+lwz100_athome:
+  name: "Luci Zona Notte Scenario In Casa / Fuori Casa"
+  initial: "off"
+lwz101_athome:
+  name: "Luci Zona Notte Scenario In Casa / Fuori Casa"
+  initial: "off"
+lwz102_athome:
+  name: "Luci Zona Notte Scenario In Casa / Fuori Casa"
+  initial: "off"
+lwz103_athome:
+  name: "Luci Zona Notte Scenario In Casa / Fuori Casa"
+  initial: "off"
+lwz104_athome:
+  name: "Luci Zona Notte Scenario In Casa / Fuori Casa"
+  initial: "off"
+
+lwz200_athome:
+  name: "Luci Zona Giorno Scenario In Casa / Fuori Casa"
+  initial: "off"
+lwz201_athome:
+  name: "Luci Zona Giorno Scenario In Casa / Fuori Casa"
+  initial: "off"
+lwz202_athome:
+  name: "Luci Zona Giorno Scenario In Casa / Fuori Casa"
+  initial: "off"
+lwz203_athome:
+  name: "Luci Zona Giorno Scenario In Casa / Fuori Casa"
+  initial: "off"
+
+lwz300_athome:
+  name: "Luci Esterno Scenario In Casa / Fuori Casa"
+  initial: "off"
+lwz301_athome:
+  name: "Luci Esterno Scenario In Casa / Fuori Casa"
+  initial: "off"
+lwz302_athome:
+  name: "Luci Esterno Scenario In Casa / Fuori Casa"
+  initial: "off"
+lwz303_athome:
+  name: "Luci Esterno Scenario In Casa / Fuori Casa"
+  initial: "off"
+lwz304_athome:
+  name: "Luci Esterno Scenario In Casa / Fuori Casa"
+  initial: "off"

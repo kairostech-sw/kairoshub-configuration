@@ -152,7 +152,12 @@
   trigger:
     - platform: numeric_state
       entity_id: sensor.temperatura
-      above: input_number.manual_heating_temp
+      above: input_number.temperature_tv100_manual
+      id: "100"
+    - platform: numeric_state
+      entity_id: sensor.temperatura
+      above: input_number.temperature_tv200_manual
+      id: "200"
   condition:
     condition: and
     conditions:
@@ -173,6 +178,8 @@
         state: "off"
   action:
     - event: AD_MANUAL_TEMP_REACHED
+      event_data:
+        zone: "{{ trigger.id }}"
 
 - alias: CALIBRATE TRVS
   trigger:

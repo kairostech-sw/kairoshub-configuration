@@ -21,50 +21,35 @@ thermostat_on_period4:
 thermostat_off_period4:
   <<: *no-date-off
 
-####################
-# Rollers Nightzone
-####################
-rollers_nightzone_on_program1:
+#############
+# Rollers
+#############
+rollers_on_program1:
   <<: &rollers-program-up
     name: Apertura
     has_date: false
     has_time: true
-rollers_nightzone_off_program1:
+rollers_off_program1:
   <<: &rollers-program-down
     name: Chiusura
     has_date: false
     has_time: true
-####################
-# Rollers Dayzone
-####################
-rollers_dayzone_on_program1:
+rollers_on_program2:
   <<: *rollers-program-up
-rollers_dayzone_off_program1:
+rollers_off_program2:
   <<: *rollers-program-down
 
-####################
-# Lights Nightzone
-####################
-lights_nightzone_on_program1:
+lights_on_program1:
   <<: *no-date-on
-lights_nightzone_off_program1:
+lights_off_program1:
   <<: *no-date-off
-####################
-# Lights Dayzone
-####################
-lights_dayzone_on_program1:
+lights_on_program2:
   <<: *no-date-on
-lights_dayzone_off_program1:
+lights_off_program2:
   <<: *no-date-off
-####################
-# Lights Outdoor
-####################
-lights_outdoor_on_program1:
-  <<: *no-date-on
-lights_outdoor_off_program1:
-  <<: *no-date-off
+
 light_offset_sunset:
-  name: Orario Spegnimento Luci Dopo Il Tramonto
+  name: Spegnimento Automatico Luci Dopo
   has_date: false
   has_time: true
 

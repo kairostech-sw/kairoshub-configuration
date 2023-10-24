@@ -1,0 +1,56 @@
+type: custom:button-card
+template: setting_layout
+variables:
+  label: "Associa"
+custom_fields:
+  content:
+    card:
+      type: vertical-stack
+
+      cards:
+        - type: "custom:integration-info-card"
+          title: "Associazione impianto"
+          entities:
+            - entity: sensor.kairoshub_netguestlink
+              label: "Connesso alla rete utente"
+              icon: "mdi:check-network-outline"
+            - entity: sensor.kairoshub_netcheckinternet
+              icon: "mdi:web"
+              label: "Connessione internet"
+            - entity: sensor.kairoshub_net
+              icon: "mdi:lan"
+              label: "Rete kairos"
+        - type: conditional
+          conditions:
+            - entity: sensor.system_state
+              state_not: "AP_MODE"
+          card:
+            type: entities
+            entities:
+              - type: button
+                entity: input_boolean.calibrate_trvs
+                icon: "mdi:restart"
+                name: Avvia nuova associazione
+                card_mod:
+                  style:
+                    .flex mwc-button:
+                      $: |
+                        .mdc-button {
+                          margin-right: 10px;
+                        }
+                tap_action:
+                  action: call-service
+                  service: automation.trigger
+                  service_data:
+                    entity_id: automation.ap_mode
+        - type: conditional
+          conditions:
+            - entity: sensor.system_state
+              state: "AP_MODE"
+          card:
+            type: markdown
+            content: >-
+              E' stata avviata la procedura di associazione, in questa modalità l'HUB **non interagirà** con gli impianti. 
+              Per procedere seguire i prossimi step direttamente sull'APP nella pagina *Impostazioni, associazione impianto*.
+              Al termine della procedura sarà di nuovo possibile monitorare e comandare gli impianti.
+            title: Associazione in corso...

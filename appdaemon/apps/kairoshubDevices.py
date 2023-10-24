@@ -10,7 +10,7 @@ class KairoshubDevices(hass.Hass):
         self.listen_event(self.installedDevices, "AD_DEVICE_INSTALLED")
         self.listen_event(self.triggerAttributesUpdate, "AD_SHELLY_UPDATE")
         self.listen_event(self.setShellyAsleep, "AD_SHELLY_ASLEEP")
-        self.listen_event(self.signalNotification, "AD_SHELLY_SIGNAL_CHECK")
+        self.listen_event(self.statusCheck, "AD_SHELLY_STATUS_CHECK")
         self.listen_event(self.rollersCalibrate, "AD_ROLLERS_RECALIBRATE")
         self.listen_event(self.rollersCalibrate, "AD_ROLLERS_RECALIBRATE_ALL")
         self.listen_event(self.trvsCalibrate, "AD_TRVS_RECALIBRATE")
@@ -32,49 +32,84 @@ class KairoshubDevices(hass.Hass):
         self.fire_event("AD_MQTT_PUBLISH",
                         topic="shellies/command", payload="update")
 
-    def signalNotification(self, event_name: str, data: dict, kwargs: dict) -> None:
+    def statusCheck(self, event_name: str, data: dict, kwargs: dict) -> None:
         devices = self.get_state("sensor", copy=False)
+        signalList = []
+        batteryList = []
+        for device in devices:
+            if re.search("^sensor.*(RS|TV|TH|LZ)\d{3,4}$", device, re.IGNORECASE) and self.get_state(device) != "unknown" and self.get_state(device) != "unavailable":
+                device = device.lower()
+                signalList.append(device)
+                if device.find("tv") > -1:
+                    batteryList.append((device, "TV"))
+                if  device.find("th") > -1:
+                    batteryList.append((device, "TH"))
+
+        self.log("Signal: %s", signalList)
+        self.log("Battery: %s", batteryList)
+
+        self.signalNotification(signalList)
+        self.batteryCheck(batteryList)
+
+    def batteryCheck(self, devices: list) -> None:
+        self.log("Checking devices battery", level="INFO")
+
+        for device, domain in devices:
+            battery = self.get_state(device, attribute="battery")
+            deviceName = self.get_state(device, attribute="friendly_name")
+            notyInfo = {
+            "sender": "*",
+            "ncode": f"{domain}_SENSOR_BATTERY_LOW",
+            "severity": "ALERT",
+            "entity": device,
+            "kwargs": {
+                "entity_id": deviceName,
+            }
+            }
+            if battery not in ["unknown", "unavailable"] and int(battery) < 25:
+                self.fire_event("AD_KAIROSHUB_NOTIFICATION", **notyInfo)
+
+    def signalNotification(self, devices: list) -> None:
         self.log("Checking devices signal", level="INFO")
 
         for device in devices:
-            if re.search("^sensor.*(RS|TV|TH|LZ)\d{3,4}$", device, re.IGNORECASE) and self.get_state(device) != "unknown" and self.get_state(device) != "unavailable":
-                signal = self.get_state(device, attribute="rssi")
-                deviceName = self.get_state(device, attribute="friendly_name")
-                notyInfo = {
-                    "sender": "HUB",
-                    "ncode": "",
-                    "severity": "ALERT",
-                    "entity": device,
-                    "kwargs": {
-                        "signal": -1,
-                        "entity_id": deviceName,
-                    }
+            signal = self.get_state(device, attribute="rssi")
+            deviceName = self.get_state(device, attribute="friendly_name")
+            notyInfo = {
+                "sender": "HUB",
+                "ncode": "",
+                "severity": "ALERT",
+                "entity": device,
+                "kwargs": {
+                    "signal": -1,
+                    "entity_id": deviceName,
                 }
+            }
 
-                if signal == None:
-                    self.log("The device %s has no signal",
-                             deviceName, level="WARNING")
-                    notyInfo["ncode"] = "NO_SIGNAL"
-                    self.fire_event("AD_KAIROSHUB_NOTIFICATION", **notyInfo)
+            if signal == None:
+                self.log("The device %s has no signal",
+                            deviceName, level="WARNING")
+                notyInfo["ncode"] = "NO_SIGNAL"
+                self.fire_event("AD_KAIROSHUB_NOTIFICATION", **notyInfo)
 
-                elif signal < -80:
-                    self.log("The device %s has very low signal",
-                             deviceName, level="WARNING")
-                    notyInfo["ncode"] = "VERY_LOW_SIGNAL"
-                    notyInfo["kwargs"]["signal"] = signal
-                    self.fire_event("AD_KAIROSHUB_NOTIFICATION", **notyInfo)
+            elif signal < -80:
+                self.log("The device %s has very low signal",
+                            deviceName, level="WARNING")
+                notyInfo["ncode"] = "VERY_LOW_SIGNAL"
+                notyInfo["kwargs"]["signal"] = signal
+                self.fire_event("AD_KAIROSHUB_NOTIFICATION", **notyInfo)
 
-                elif signal >= -80 and signal < -65:
-                    self.log("The device %s has low signal",
-                             deviceName, level="INFO")
-                    notyInfo["ncode"] = "LOW_SIGNAL"
-                    notyInfo["severity"] = "NOTICE"
-                    notyInfo["kwargs"]["signal"] = signal
-                    self.fire_event("AD_KAIROSHUB_NOTIFICATION", **notyInfo)
+            elif signal >= -80 and signal < -65:
+                self.log("The device %s has low signal",
+                            deviceName, level="INFO")
+                notyInfo["ncode"] = "LOW_SIGNAL"
+                notyInfo["severity"] = "NOTICE"
+                notyInfo["kwargs"]["signal"] = signal
+                self.fire_event("AD_KAIROSHUB_NOTIFICATION", **notyInfo)
 
-                else:
-                    self.log("The device %s has good signal",
-                             deviceName, level="DEBUG")
+            else:
+                self.log("The device %s has good signal",
+                            deviceName, level="DEBUG")
 
     def triggerAttributesUpdate(self, event_name: str, data: dict, kwargs: dict) -> None:
 
@@ -140,5 +175,5 @@ class KairoshubDevices(hass.Hass):
         connection.close()
 
     def activateZone(self, deviceId: str) -> None:
-        zoneId = re.search("\d", deviceId).group()
+        zoneId = re.search("(\d)", deviceId).group()
         self.turn_on(f"input_boolean.zn{zoneId}00_active")

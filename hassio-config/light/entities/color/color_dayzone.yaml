@@ -25,10 +25,10 @@
       off
     {% endif %}
   brightness_template: "{{ value_json.gain | float | multiply(2.55) | round(0) }}"
-  red_template: '{{ value_json.red }}'
-  green_template: '{{ value_json.green }}'
-  blue_template: '{{ value_json.blue }}'
-  white_value_template: '{{ value_json.white }}'
+  red_template: "{{ value_json.red }}"
+  green_template: "{{ value_json.green }}"
+  blue_template: "{{ value_json.blue }}"
+  white_value_template: "{{ value_json.white }}"
   qos: 0
   retain: true
 
@@ -59,10 +59,10 @@
       off
     {% endif %}
   brightness_template: "{{ value_json.gain | float | multiply(2.55) | round(0) }}"
-  red_template: '{{ value_json.red }}'
-  green_template: '{{ value_json.green }}'
-  blue_template: '{{ value_json.blue }}'
-  white_value_template: '{{ value_json.white }}'
+  red_template: "{{ value_json.red }}"
+  green_template: "{{ value_json.green }}"
+  blue_template: "{{ value_json.blue }}"
+  white_value_template: "{{ value_json.white }}"
   qos: 0
   retain: true
 
@@ -93,9 +93,9 @@
       off
     {% endif %}
   brightness_template: "{{ value_json.gain | float | multiply(2.55) | round(0) }}"
-  red_template: '{{ value_json.red }}'
-  green_template: '{{ value_json.green }}'
-  blue_template: '{{ value_json.blue }}'
-  white_value_template: '{{ value_json.white }}'
+  red_template: "{{ value_json.red }}"
+  green_template: "{{ value_json.green }}"
+  blue_template: "{{ value_json.blue }}"
+  white_value_template: "{{ value_json.white }}"
   qos: 0
   retain: true
