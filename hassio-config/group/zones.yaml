@@ -3,6 +3,7 @@ zones:
   entities:
     - group.night_zone
     - group.day_zone
+    - group.outside_zone
 night_zone:
   name: Zona Notte
   entities:
@@ -18,3 +19,11 @@ day_zone:
     - input_text.ZN201
     - input_text.ZN202
     - input_text.ZN203
+outside_zone:
+  name: Zona Esterno
+  entities:
+    - input_text.ZN300
+    - input_text.ZN301
+    - input_text.ZN302
+    - input_text.ZN303
+    - input_text.ZN304

@@ -47,6 +47,7 @@ class KairoshubMetrics(hass.Hass):
         thermostat = self.get_state("sensor.temperatura")
         roller = self.get_state("sensor.tapparelle")
         humidity = self.get_state("sensor.umidita")
+        light = int(self.get_state("group.lights") == "on")
         entityMessage["power"] = self.get_state("sensor.em_assorbimento")
 
         if thermostat != "unknown":
@@ -55,6 +56,8 @@ class KairoshubMetrics(hass.Hass):
             entityMessage["roller"] = roller
         if humidity != "unknown":
             entityMessage["humidity"] = humidity
+        if light != "unknown":
+            entityMessage["light"] = light
 
         entityMessage["hub"] = {}
         entityMessage["hub"]["state"] = self.get_state("sensor.system_state")
@@ -104,7 +107,7 @@ class KairoshubMetrics(hass.Hass):
                 entity = self.get_state("light.group_lz"+room_id)
                 if entity_state == "on":
                     lights_state["zone"] = room_name
-                    lights_state["state"] = entity
+                    lights_state["state"] = int(entity == "on")
                     lights_state["last_update"] = self.get_state(
                         "light.group_lz"+room_id, attribute="last_updated")
                     lights.append(lights_state)

@@ -74,12 +74,33 @@
       progId: 1
       sender: HUB
 
+- alias: LIGHTS PROGRAM 2
+  trigger:
+    - platform: time_pattern
+      minutes: /15
+  condition:
+    - condition: state
+      entity_id: input_boolean.lights_program2
+      state: "on"
+    - condition: state
+      entity_id: group.lights_program1_on
+      state: "off"
+  action:
+    event: AD_LIGHTS_PROGRAM
+    event_data:
+      progId: 2
+      sender: HUB
+
 - alias: LIGHTS AUTO TURN OFF
   trigger:
     - platform: state
       entity_id: group.lights
       to: "on"
       for: "{{states('input_datetime.light_offset_sunset')}}"
+  condition:
+    - condition: template
+      value_template: >
+        {{ states('input_datetime.light_offset_sunset') != '00:00:00'}}
   action:
     - service: light.turn_off
       target:

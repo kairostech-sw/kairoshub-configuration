@@ -9,11 +9,13 @@ lights_program1:
   entities:
     - group.lights_zn100_program1
     - group.lights_zn200_program1
+    - group.lights_zn300_program1
 lights_program1_on:
   name: Programma 1 Attivo
   entities:
     - group.lights_zn100_program1_on
     - group.lights_zn200_program1_on
+    - group.lights_zn300_program1_on
 lights_zn100_program1:
   name: Zona Notte Programma 1
   entities:
@@ -56,50 +58,52 @@ lights_zn300_program1_on:
     - input_boolean.lights_zn304_program1_on
 
 lights_program2:
-  name: Programma 1
+  name: Programma 2
   entities:
     - group.lights_zn100_program2
     - group.lights_zn200_program2
+    - group.lights_zn300_program2
 lights_program2_on:
-  name: Programma 1 Attivo
+  name: Programma 2 Attivo
   entities:
     - group.lights_zn100_program2_on
     - group.lights_zn200_program2_on
+    - group.lights_zn300_program2_on
 lights_zn100_program2:
-  name: Zona Notte Programma 1
+  name: Zona Notte Programma 2
   entities:
     - input_boolean.lights_zn101_program2
     - input_boolean.lights_zn102_program2
     - input_boolean.lights_zn103_program2
     - input_boolean.lights_zn104_program2
 lights_zn100_program2_on:
-  name: Zona Notte Programma 1
+  name: Zona Notte Programma 2
   entities:
     - input_boolean.lights_zn101_program2_on
     - input_boolean.lights_zn102_program2_on
     - input_boolean.lights_zn103_program2_on
     - input_boolean.lights_zn104_program2_on
 lights_zn200_program2:
-  name: Zona Giorno Programma 1
+  name: Zona Giorno Programma 2
   entities:
     - input_boolean.lights_zn201_program2
     - input_boolean.lights_zn202_program2
     - input_boolean.lights_zn203_program2
 lights_zn200_program2_on:
-  name: Zona Giorno Programma 1
+  name: Zona Giorno Programma 21
   entities:
     - input_boolean.lights_zn201_program2_on
     - input_boolean.lights_zn202_program2_on
     - input_boolean.lights_zn203_program2_on
 lights_zn300_program2:
-  name: Zona Notte Programma 1
+  name: Zona Notte Programma 2
   entities:
     - input_boolean.lights_zn301_program2
     - input_boolean.lights_zn302_program2
     - input_boolean.lights_zn303_program2
     - input_boolean.lights_zn304_program2
 lights_zn300_program2_on:
-  name: Zona Notte Programma 1
+  name: Zona Notte Programma 2
   entities:
     - input_boolean.lights_zn301_program2_on
     - input_boolean.lights_zn302_program2_on
