@@ -131,6 +131,14 @@ noty_message = {
     "INTEGRATION_ALEXA_SUBSCRIPTION_REMOVE_ERROR": {
         "label": "Si è verificato un errore durante la cancellazione della sottoiscrizione ad Alexa.",
         "message": "Si è verificato un errore durante la cancellazione della sottoiscrizione ad Alexa."
+    },
+    "SCENE_ATHOME": {
+        "label": "Scenario In Casa",
+        "message": "Lo scenario In Casa è stato attivato"
+    },
+    "SCENE_NOTATHOME": {
+        "label": "Scenario Fuori Casa",
+        "message": "Lo scenario Fuori è stato attivato"
     }
 }
 
@@ -226,9 +234,9 @@ class Notification(hass.Hass):
             "trid": data["trid"] if "trid" in data else "",
             "entityRef": entity_id,
         }
-        extra_data = { "entity_id": entity_id }
+        extra_data = {"entity_id": entity_id}
         if "kwargs" in data:
-            extra_data = { **extra_data, **data["kwargs"]}
+            extra_data = {**extra_data, **data["kwargs"]}
 
         return noty_info, extra_data
 
@@ -332,7 +340,8 @@ class Notification(hass.Hass):
         if "VALVES" in code:
             extra_info = "Le teste termostatiche non sono state raggiunte dal sistema. Verificare che siano cariche"
         elif "NO_ZONE" in code:
-            extra_info = noty_message[code]["message"].replace("#id#", str(program))
+            extra_info = noty_message[code]["message"].replace(
+                "#id#", str(program))
         elif "HEATING" in code:
             extra_info = "Si è verificato un problema nell{} della caldaia.".format(
                 ("o spegnimento", "'accensione")["ON" in code])

@@ -214,10 +214,10 @@ def on_message(client, userdata, msg):
                 wpaSupplicant = wpaSupplicant.replace("{PWD}", params[1])
 
             # give access and writing. may have to do this manually beforehand
-            os.popen("sudo chmod a+w /etc/wpa_supplicant/wpa_supplicant-wlan0.conf")
+            os.popen("sudo chmod a+w /etc/wpa_supplicant/wpa_supplicant.conf")
 
             # writing to file
-            with open("/etc/wpa_supplicant/wpa_supplicant-wlan0.conf", "w") as wifi:
+            with open("/etc/wpa_supplicant/wpa_supplicant.conf", "w") as wifi:
                 wifi.write(wpaSupplicant)
 
             logging.info("Wifi config updated. Trying to connect..")
@@ -417,7 +417,7 @@ def hostapd_setup(ssid, pwd):
             while (maxAttempts > 0):
                 logging.info(
                     "Checking interface network. Attempts remaining: [%s]", maxAttempts)
-                connected = utilCheckInterfaceConnection("ap@wlan0", ssid)
+                connected = utilCheckInterfaceConnection("ap0", ssid)
 
                 if connected:
                     logging.info(
@@ -446,8 +446,14 @@ def utilCheckInterfaceConnection(interface, ssid):
         "checking if the interface [%s] it is connected to the target wifi [%s]", interface, ssid)
     connected = True
     try:
-        if ssid != check_output(["iwgetid", interface, "-r"]).decode("utf-8").strip():
-            connected = False
+        if "ap0" in interface:
+            # AP check
+            if ssid != check_output(["iw ap0 info | grep ssid | sed -e 's/^[ \t]*//' | sed 's/ssid //'"], shell=True).decode("utf-8").strip():
+                connected = False
+        else:
+            # wlan check
+            if ssid != check_output(["iwgetid", interface, "-r"]).decode("utf-8").strip():
+                connected = False
     except CalledProcessError as e:
         connected = False
 
@@ -458,7 +464,7 @@ def utilCheckKairosNetworkDevices():
     logging.info("Checking devices connected to the network")
     try:
         clientCount = clientCount = os.popen(
-            "sudo iw dev ap@wlan0 station dump | grep 'Station' | wc -l").read().strip()
+            "sudo iw dev ap0 station dump | grep 'Station' | wc -l").read().strip()
         client.publish(TOPIC_NET_KAIROSHUB,
                        "OK ("+clientCount+")", qos=1, retain=True)
     except Exception as e:
@@ -522,16 +528,17 @@ def runNetworkChecks():
                     "Impossible to enstabilish a new connection to the network.  interface: wlan0, SSID: [%s]", guestWifiSSID)
 
         # checking KT network
-        ktnetConnected = utilCheckInterfaceConnection("ap@wlan0", hubWifiSSID)
+        ktnetConnected = utilCheckInterfaceConnection("ap0", hubWifiSSID)
         if ktnetConnected:
-            logging.info("interface ap@wlan0 connected")
+            logging.info("interface ap0 connected")
+
             # checking KT network devices
             utilCheckKairosNetworkDevices()
 
         else:
             client.publish(TOPIC_NET_KAIROSHUB, "FAIL", qos=1, retain=True)
             logging.info(
-                "interface ap@wlan0 not connected. Trying to reconnect..")
+                "interface ap0 not connected. Trying to reconnect..")
             hostapd_setup(hubWifiSSID, hubWifiPwd)
 
         time.sleep(60*10)

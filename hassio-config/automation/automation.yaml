@@ -8,7 +8,7 @@
   action:
     - event: AD_MANAGE_HOME_ON_OFF
       event_data:
-        mode: "{{ trigger.to_state.state }}"
+        mode: "notathome"
 
 - alias: HOME TO_ON
   trigger:
@@ -19,7 +19,7 @@
   action:
     - event: AD_MANAGE_HOME_ON_OFF
       event_data:
-        mode: "{{ trigger.to_state.state }}"
+        mode: "athome"
 
 - alias: AUTOMATION_H07
   trigger:
