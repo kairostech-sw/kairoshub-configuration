@@ -101,6 +101,7 @@
     - condition: template
       value_template: >
         {{ states('input_datetime.light_offset_sunset') != '00:00:00'}}
+
   action:
     - service: light.turn_off
       target:

@@ -10,12 +10,14 @@ lights_program1:
     - group.lights_zn100_program1
     - group.lights_zn200_program1
     - group.lights_zn300_program1
+
 lights_program1_on:
   name: Programma 1 Attivo
   entities:
     - group.lights_zn100_program1_on
     - group.lights_zn200_program1_on
     - group.lights_zn300_program1_on
+
 lights_zn100_program1:
   name: Zona Notte Programma 1
   entities:
@@ -103,6 +105,7 @@ lights_zn300_program2:
     - input_boolean.lights_zn303_program2
     - input_boolean.lights_zn304_program2
 lights_zn300_program2_on:
+
   name: Zona Notte Programma 2
   entities:
     - input_boolean.lights_zn301_program2_on

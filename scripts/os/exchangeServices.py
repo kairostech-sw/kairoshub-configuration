@@ -531,6 +531,7 @@ def runNetworkChecks():
         ktnetConnected = utilCheckInterfaceConnection("ap0", hubWifiSSID)
         if ktnetConnected:
             logging.info("interface ap0 connected")
+
             # checking KT network devices
             utilCheckKairosNetworkDevices()
 
