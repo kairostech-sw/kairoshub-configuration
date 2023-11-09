@@ -4,12 +4,20 @@ kafka_entity_align:
 kairoshub_settings:
   name: Impostazioni
   entities:
-    - input_number.rollershutter_athome_position
-    - input_number.rollershutter_notathome_position
-    - input_number.manual_heating_temp
     - input_datetime.light_offset_sunset
     - input_select.light_type
     - input_select.scene_day
+    - input_number.position_rs100_athome
+    - input_number.position_rs100_notathome
+    - input_number.position_rs100_day
+    - input_number.position_rs100_night
+    - input_number.position_rs200_athome
+    - input_number.position_rs200_notathome
+    - input_number.position_rs200_day
+    - input_number.position_rs200_night
+    - input_number.temperature_tv100_manual
+    - input_number.temperature_tv200_manual
+
 kairoshub_functionalities:
   name: Funzionalità
   entities:

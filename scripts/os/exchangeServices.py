@@ -7,10 +7,10 @@ import socket
 import re
 from subprocess import check_output
 from subprocess import CalledProcessError
-from urllib.request import urlopen as url
+# from urllib.request import urlopen as url
 from threading import Thread
 import requests
-from flask import Flask
+# from flask import Flask
 
 TOPIC_COMMAND = "kairostech/command"
 TOPIC_KAIROSHUB_SW_BRANCH = "kairostech/kairoshub/branch"
@@ -46,7 +46,7 @@ KAIROSHUB_INIT_FILE = "/boot/kairoshub.json"
 logging.basicConfig(filename=KAIROSHUB_ES_LOG_FILE,
                     level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 
-flaskAPP = Flask(__name__)
+# flaskAPP = Flask(__name__)
 
 global vpn_pid
 global hubWifiSSID
@@ -548,23 +548,23 @@ def runNetworkChecks():
 ####################################################### FLASK ZONE #############################################################
 
 
-@flaskAPP.route('/')
-def hello():
-    logging.info("Requesting / web resource")
-    return 'Hello, World!'
+# @flaskAPP.route('/')
+# def hello():
+#     logging.info("Requesting / web resource")
+#     return 'Hello, World!'
 
 
-@flaskAPP.route('/network/wifi/auth/<ssid>/<pwd>')
-def networkAuth(ssid, pwd):
-    logging.info("Requesting /network/wifi/auth web resource")
-    client.publish(TOPIC_COMMAND, "WIFIAUTH_" +
-                   ssid+"_"+pwd, qos=1)
-    return "OK"
+# @flaskAPP.route('/network/wifi/auth/<ssid>/<pwd>')
+# def networkAuth(ssid, pwd):
+#     logging.info("Requesting /network/wifi/auth web resource")
+#     client.publish(TOPIC_COMMAND, "WIFIAUTH_" +
+#                    ssid+"_"+pwd, qos=1)
+#     return "OK"
 
 
-def startFlaskWS():
-    logging.info("Starting FLASK ws")
-    flaskAPP.run(debug=False, use_reloader=False, host='0.0.0.0', port=5000)
+# def startFlaskWS():
+#     logging.info("Starting FLASK ws")
+#     flaskAPP.run(debug=False, use_reloader=False, host='0.0.0.0', port=5000)
 
 
 logging.info("#################################################")
@@ -587,9 +587,9 @@ checkInternetConnectionThread = Thread(
     target=runCheckInternetConnection, daemon=True, name="checkInternetConnectionThread")
 
 checkKairosNetworkThread = Thread(
-    target=runNetworkChecks, daemon=True, name="CheckKairosNetworkThread")
+    target=runNetworkChecks, daemon=True, name="checkKairosNetworkThread")
 
-logging.info("Configuring Flask WS")
-thread = Thread(target=startFlaskWS, daemon=True, name="FlaskWsThread").start()
+# logging.info("Configuring Flask WS")
+# thread = Thread(target=startFlaskWS, daemon=True, name="FlaskWsThread").start()
 
 client.loop_forever()
