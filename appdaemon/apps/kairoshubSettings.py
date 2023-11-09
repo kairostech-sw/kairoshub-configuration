@@ -43,9 +43,9 @@ class KairoshubSettings(hass.Hass):
                     ".")[1]] = self.get_state(entity)
 
         for entity in userSettingsList:
-            if "rollers" in entity:
+            if "position" in entity:
                 domain = "rollers"
-            elif "heating" in entity:
+            elif "temperature" in entity:
                 domain = "heating"
             elif "light" in entity:
                 # domain = "light"
@@ -173,7 +173,7 @@ class KairoshubSettings(hass.Hass):
 
     def getEntityDomain(self, entity):
 
-        if "rollers" in entity or "heating" in entity:
+        if "position" in entity or "temperature" in entity:
             domain = "input_number."
         elif "zn" in entity:
             domain = "input_text."
