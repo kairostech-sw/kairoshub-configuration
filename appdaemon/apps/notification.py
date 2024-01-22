@@ -8,7 +8,7 @@ noty_message = {
         "label": "Riscaldamento Acceso",
         "message": "Impianto di riscaldamento acceso correttamente."
     },
-    "HEATING_ON_ERROR": {
+    "HEATING_COMMAND_ON_ERROR": {
         "label": "Errore Riscaldamento",
         "message": "Si è verificato un problema nell'accensione dell'impianto di riscaldamento. Verifica l'accensione della caldaia, se il problema persiste contattare l'assistenza."
     },
@@ -20,7 +20,7 @@ noty_message = {
         "label": "Riscaldamento Spento",
         "message": "Impianto di riscaldamento spento correttamente."
     },
-    "HEATING_OFF_ERROR": {
+    "HEATING_COMMAND_OFF_ERROR": {
         "label": "Errore Riscaldamento",
         "message": "Si è verificato un problema nello spegnimento dell'impianto di riscaldamento. Verifica l'accensione della caldaia, se il problema persiste contattare l'assistenza."
     },
@@ -48,7 +48,7 @@ noty_message = {
         "label": "Tapparelle Aperte",
         "message": "Le tapparelle sono state aperte correttamente."
     },
-    "ROLLERS_OPEN_ERROR": {
+    "ROLLERS_COMMAND_OPEN_ERROR": {
         "label": "Errore Tapparelle",
         "message": "Si è verificato un problema nell'apertura delle tapparelle."
     },
@@ -56,7 +56,7 @@ noty_message = {
         "label": "Tapparelle Chiuse",
         "message": "Le tapparelle sono state chiuse correttamente."
     },
-    "ROLLERS_CLOSED_ERROR": {
+    "ROLLERS_COMMAND_CLOSE_ERROR": {
         "label": "Errore Tapparelle",
         "message": "Si è verificato un problema nella chiusura delle tapparelle."
     },
