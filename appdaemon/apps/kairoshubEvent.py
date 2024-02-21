@@ -23,11 +23,13 @@ class KairoshubEvent(hass.Hass):
                 self.fire_event("AD_HEATING_OFF", data={
                                 "program": 0, **event})
 
-            if "HEATING_PROGRAM_COMMAND_ON" in eventType:
-                self.turn_on(f"input_boolean.heater_program{event['eventValue'][-1]}")
+            if "HEATING_COMMAND_PROGRAM_ON" in eventType:
+                self.turn_on(
+                    f"input_boolean.heater_program{event['eventValue'][-1]}")
 
-            if "HEATING_PROGRAM_COMMAND_OFF" in eventType:
-                self.turn_off(f"input_boolean.heater_program{event['eventValue'][-1]}")
+            if "HEATING_COMMAND_PROGRAM_OFF" in eventType:
+                self.turn_off(
+                    f"input_boolean.heater_program{event['eventValue'][-1]}")
 
             if "LIGHTS_COMMAND_ON" in eventType:
                 self.fire_event("AD_LIGHTS_ON", data={**event})
@@ -54,11 +56,11 @@ class KairoshubEvent(hass.Hass):
             if "ASSISTANCE_COMMAND_OFF" in eventType:
                 self.fire_event("HA_ASSSISTANCE_OFF")
 
-            if "ROLLERS_ATHOME_POSITION" in eventType:
+            if "ROLLERS_COMMAND_ATHOME_POSITION" in eventType:
                 self.fire_event("AD_SET_ROLLERS_POS", data={
                                 "mode": "athome", **event})
 
-            if "ROLLERS_NOTATHOME_POSITION" in eventType:
+            if "ROLLERS_COMMAND_NOTATHOME_POSITION" in eventType:
                 self.fire_event("AD_SET_ROLLERS_POS",  data={
                                 "mode": "notathome", **event})
 
