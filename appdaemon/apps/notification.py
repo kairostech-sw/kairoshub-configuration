@@ -108,30 +108,34 @@ noty_message = {
         "label": "E' stato avviato il processo di connessione ad Alexa.",
         "message": "E' stato avviato il processo di connessione ad Alexa."
     },
-    "INTEGRATION_ALEXA_REGISTRATION_ON": {
-        "label": "Alexa è stata attivata con successo.",
-        "message": "Alexa è stata attivata con successo."
+    "INTEGRATION_ALEXA_SUBSCRIPTION_UPDATE": {
+        "label": "La sottoscrizione ALEXA è stata aggiornata.",
+        "message": "La sottoscrizione ALEXA è stata aggiornata. Per maggiori dettagli consulta l'APP oppure la sezione integrazioni del tuo HUB."
     },
-    "INTEGRATION_ALEXA_REGISTRATION_OFF": {
-        "label": " Alexa è stata disattivata con successo.",
-        "message": "Alexa è stata disattivata con successo."
-    },
-    "INTEGRATION_ALEXA_REGISTRATION_ERROR": {
-        "label": "Si è verificato un errore durante il processo di integrazione con Alexa.",
-        "message": "Si è verificato un errore durante il processo di integrazione con Alexa."
-    },
-    "INTEGRATION_ALEXA_SUBSCRIPTION_RENEW_TOGGLE_TO_ON": {
-        "label": "La sottoscrizione ad Alexa si rinnoverà automaticamente.",
-        "message": "La sottoscrizione ad Alexa si rinnoverà automaticamente."
-    },
-    "INTEGRATION_ALEXA_SUBSCRIPTION_RENEW_TOGGLE_TO_OFF": {
-        "label": "Il rinnovo automatico per Alexa è stato disattivato.",
-        "message": "Il rinnovo automatico per Alexa è stato disattivato."
-    },
-    "INTEGRATION_ALEXA_SUBSCRIPTION_REMOVE_ERROR": {
-        "label": "Si è verificato un errore durante la cancellazione della sottoiscrizione ad Alexa.",
-        "message": "Si è verificato un errore durante la cancellazione della sottoiscrizione ad Alexa."
-    },
+    # "INTEGRATION_ALEXA_REGISTRATION_ON": {
+    #     "label": "Alexa è stata attivata con successo.",
+    #     "message": "Alexa è stata attivata con successo."
+    # },
+    # "INTEGRATION_ALEXA_REGISTRATION_OFF": {
+    #     "label": " Alexa è stata disattivata con successo.",
+    #     "message": "Alexa è stata disattivata con successo."
+    # },
+    # "INTEGRATION_ALEXA_REGISTRATION_ERROR": {
+    #     "label": "Si è verificato un errore durante il processo di integrazione con Alexa.",
+    #     "message": "Si è verificato un errore durante il processo di integrazione con Alexa."
+    # },
+    # "INTEGRATION_ALEXA_SUBSCRIPTION_RENEW_TOGGLE_TO_ON": {
+    #     "label": "La sottoscrizione ad Alexa si rinnoverà automaticamente.",
+    #     "message": "La sottoscrizione ad Alexa si rinnoverà automaticamente."
+    # },
+    # "INTEGRATION_ALEXA_SUBSCRIPTION_RENEW_TOGGLE_TO_OFF": {
+    #     "label": "Il rinnovo automatico per Alexa è stato disattivato.",
+    #     "message": "Il rinnovo automatico per Alexa è stato disattivato."
+    # },
+    # "INTEGRATION_ALEXA_SUBSCRIPTION_REMOVE_ERROR": {
+    #     "label": "Si è verificato un errore durante la cancellazione della sottoiscrizione ad Alexa.",
+    #     "message": "Si è verificato un errore durante la cancellazione della sottoiscrizione ad Alexa."
+    # },
     "SCENE_ATHOME": {
         "label": "Scenario In Casa",
         "message": "Lo scenario In Casa è stato attivato"

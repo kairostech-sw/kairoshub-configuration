@@ -60,7 +60,7 @@ class KairoshubEvent(hass.Hass):
                 self.fire_event("AD_SET_ROLLERS_POS", data={
                                 "mode": "athome", **event})
 
-            if "ROLLERS_NOTATHOME_POSITION" in eventType:
+            if "ROLLERS_COMMAND_NOTATHOME_POSITION" in eventType:
                 self.fire_event("AD_SET_ROLLERS_POS",  data={
                                 "mode": "notathome", **event})
 
